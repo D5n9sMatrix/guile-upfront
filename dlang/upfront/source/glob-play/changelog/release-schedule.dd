@@ -1,0 +1,47 @@
+Ddoc
+
+$(D_S $(TITLE),
+
+$(UL
+    $(LI New release are published every $(I two) months, on the first day of every even month.)
+    $(LI One month before a new release `master` is merged into `stable` and a first beta is released.)
+    $(LI Point releases are published unscheduled when important issues or regressions get fixed.)
+)
+
+$(P The release schedule for 2023 is as follows:)
+
+    $(DIVC release-schedule,
+        $(TABLE
+            $(BETA_RELEASE 2023-01-01, 2.102.0)
+            $(MINOR_RELEASE 2023-02-01, 2.102.0)
+            $(BETA_RELEASE 2023-03-01, 2.103.0)
+            $(MINOR_RELEASE 2023-04-01, 2.103.0)
+            $(BETA_RELEASE 2023-05-01, 2.104.0)
+            $(MINOR_RELEASE 2023-06-01, 2.104.0)
+            $(BETA_RELEASE 2023-07-01, 2.105.0)
+            $(MINOR_RELEASE 2023-08-01, 2.105.0)
+            $(BETA_RELEASE 2023-09-01, 2.106.0)
+            $(MINOR_RELEASE 2023-10-01, 2.106.0)
+            $(BETA_RELEASE 2023-11-01, 2.107.0)
+            $(MINOR_RELEASE 2023-12-01, 2.107.0)
+        )
+    )
+)
+
+Macros:
+    TITLE=D release schedule
+    MINOR_RELEASE=$(ROW minor, $1, $2, minor release)
+    BETA_RELEASE=$(ROW beta, $1, $2-beta.1, first beta for $2)
+    ROW=<tr class="release-schedule-$1">$(TDX2 $+)</tr>
+    TDX2=$(TDX $1, $+)
+    EXTRA_HEADERS=$(T style,
+        .release-schedule table {
+            margin: 0 auto;
+        }
+        .release-schedule-minor {
+            font-weight: bold;
+        }
+        .release-schedule-beta {
+            color: #5f0303;
+        }
+    )

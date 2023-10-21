@@ -1,0 +1,973 @@
+Ddoc
+
+$(D_S dmd - $(WINDOWS Windows)$(LINUX Linux)$(OSX Mac OS X)$(FREEBSD FreeBSD) D Compiler,
+
+    $(UL
+    $(LI $(RELATIVE_LINK2 requirements, Requirements and Downloads))
+    $(LI $(RELATIVE_LINK2 installation, Installation))
+    $(WINDOWS $(LI $(RELATIVE_LINK2 example, Example)))
+    $(LI $(RELATIVE_LINK2 switches, Compiler Arguments and Switches))
+    $(LI $(RELATIVE_LINK2 files, Files))
+    $(LI $(RELATIVE_LINK2 linking, Linking))
+    $(LI $(RELATIVE_LINK2 environment, Environment Variables))
+    $(WINDOWS $(LI $(RELATIVE_LINK2 sc-ini, sc.ini Initialization File)))
+    $(UNIX $(LI $(DMD_CONF) Initialization File))
+    $(WINDOWS $(LI $(RELATIVE_LINK2 problems, Common Installation Problems)))
+    $(LI $(RELATIVE_LINK2 differences, Differences between Windows and Linux versions))
+    $(LI $(RELATIVE_LINK2 interface-files, D Interface Files))
+    $(LI $(RELATIVE_LINK2 library, Building Libraries))
+    $(LI $(RELATIVE_LINK2 compiling-dmd, Compiling dmd))
+    $(LI $(RELATIVE_LINK2 compiling-phobos, Compiling Phobos))
+    )
+
+$(H2 $(LNAME2 requirements, Requirements and Downloads))
+
+    $(OL
+    $(LI $(LINK2 https://dlang.org/download.html, DMD Compiler))
+
+    $(WINDOWS
+    $(LI Windows operating system, Windows 7 or later, 32 or 64 bit)
+
+    $(LI Download
+     <a href="http://ftp.digitalmars.com/dmc.zip" title="download dmc.zip">
+     dmc.zip (C and C++ compiler)</a> for Win32
+     (not required, but it complements dmd for Windows)
+    )
+    )
+    $(LINUX
+    $(LI 32 bit x86 and 64 bit x86-64 Linux operating system
+    ($(LINK2 https://github.com/ldc-developers/ldc, LDC)
+    and $(LINK2 https://github.com/D-Programming-GDC/GDC, GDC)
+    provide support for more architectures)
+    )
+
+    $(LI Gnu C compiler (gcc) or LLVM C compiler (clang))
+    )
+    $(OSX
+    $(LI Mac OS X Mavericks (10.9) or later)
+
+    $(LI Xcode)
+    )
+    $(FREEBSD
+    $(LI 32 bit x86 and 64 bit x86-64 FreeBSD operating system (11 or later))
+
+    $(LI Gnu C compiler (gcc))
+    )
+    )
+
+$(H2 $(LNAME2 installation, Installation))
+
+    $(WINDOWS
+$(MESSAGE_BOX gray, $(B Hint) - The official $(LINK2 $(ROOT_DIR)download.html, installer)
+performs these steps automatically.
+)
+    $(P Open a console window (for Windows this is done by
+    clicking on [Start][Command Prompt]).
+    All the tools are command line tools, which means
+    they are run from a console window.
+    Switch to the root directory.
+    Unzip the files in the root directory.
+    $(D dmd.zip) will create
+    a $(D $(DMDDIR)) directory with all the files in it.
+    $(D dmc.zip) will create
+    a $(D \dm) directory with all the files in it.
+    )
+
+    $(P A typical session might look like:)
+
+$(CONSOLE
+C:\Documents and Settings\Your Name&gt;cd \
+C:\\&gt;unzip dmd.zip
+C:\\&gt;unzip dmc.zip
+)
+    )
+    $(LINUX
+
+    $(INSTALLATION_SCRIPT_HINT)
+
+    Unzip the archive into your home directory.
+    It will create a $(D ~/dmd) directory with all the files in it.
+
+    All the tools are command line tools, which means
+    they are run from a console window.
+    All tools can be run directly from the archive:
+$(CONSOLE
+~/dmd/linux/bin64/dmd
+)
+    To install $(D dmd) globally, add the `~/dmd/linux/bin64` folder to your $(B PATH).
+$(CONSOLE
+export PATH="$HOME/dmd/linux/bin64:$PATH"
+)
+
+    Alternatively, you can install dmd locally yourself by:
+    $(P $(UL
+
+    $(LI Create a configuration file in $(D /etc/dmd.conf):
+
+---
+[Environment64]
+DFLAGS=-I/usr/local/include/d/dmd -L-L/usr/local/lib -L--export-dynamic -fPIC
+---
+
+    )
+
+    $(LI Copy binaries to $(D /usr/local/bin):
+
+$(CONSOLE
+sudo cp $(DMDDIR)/linux/bin64/{dmd,$(DUMPOBJ),$(OBJ2ASM),rdmd,ddemangle,dub,dustmite} /usr/local/bin
+)
+    )
+
+    $(LI Copy the library to $(D /usr/local/lib):
+
+$(CONSOLE
+sudo cp $(DMDDIR)/linux/lib64/$(LIB) /usr/local/lib
+)
+    )
+
+    $(LI Copy the standard library and runtime sources to $(D /usr/include/d/dmd):
+
+$(CONSOLE
+sudo mkdir -p /usr/include/d/dmd
+sudo cp $(DMDDIR)/{phobos/std,phobos/etc,druntime/import} /usr/include/d/dmd
+)
+
+    )
+    ))
+    )
+
+    $(FREEBSD
+
+    $(INSTALLATION_SCRIPT_HINT)
+
+    $(P $(UL
+
+    $(LI Unzip the archive into your home directory.
+    It will create
+    a $(D ~/dmd) directory with all the files in it.
+    All the tools are command line tools, which means
+    they are run from a console window.)
+
+    $(LI Create a configuration file in $(D /etc/dmd.conf):
+
+---
+[Environment64]
+DFLAGS=-I/usr/local/include/d/dmd -L-L/usr/local/lib -L--export-dynamic -fPIC
+---
+
+    )
+
+
+    $(LI Put $(D $(DMDDIR)/freebsd/bin) on your $(B PATH),
+    or copy the FreeBSD executables
+    to $(D /usr/local/bin):)
+
+$(CONSOLE
+sudo cp $(DMDDIR)/linux/bin64/{dmd,$(DUMPOBJ),$(OBJ2ASM),rdmd,ddemangle,dub,dustmite} /usr/local/bin
+)
+
+    $(LI Copy the library to $(D /usr/lib):
+
+$(CONSOLE
+sudo cp $(DMDDIR)/freebsd/lib/$(LIB) /usr/lib
+)
+    )
+
+    $(LI Copy the standard library and runtime sources to $(D /usr/include/d/dmd):
+
+$(CONSOLE
+sudo mkdir -p /usr/include/d/dmd
+sudo cp $(DMDDIR)/{phobos/std,phobos/etc,druntime/import} /usr/include/d/dmd
+)
+    )
+    ))
+    )
+    $(OSX
+
+    $(INSTALLATION_SCRIPT_HINT)
+
+    $(P $(UL
+
+    $(LI Put the dmd zip file into your home directory,
+    and unzip it:
+
+$(CONSOLE
+unzip dmd.$(I VERSION).zip
+)
+    where $(I VERSION) is the particular version of the zip file.
+    )
+
+    $(LI It will create
+    a $(D ~/$(DMDDIR)) directory with all the files in it.
+    All the tools are command line tools, which means
+    they are run from a console window.)
+
+    $(LI Verify that this works by creating $(D hello.d) in your home directory
+    with these contents:
+---
+import std.stdio;
+
+void main()
+{
+    writeln("hello world!");
+}
+---
+    and compile and run it with:
+$(CONSOLE
+$(DMDDIR)/osx/bin/dmd hello
+./hello
+)
+    and it should print:
+$(CONSOLE
+hello world!
+)
+    )
+
+    $(LI To install a global copy:)
+
+    $(LI Copy binaries to $(D /usr/local/bin):
+
+$(CONSOLE
+sudo cp $(DMDDIR)/osx/bin/{dmd,$(DUMPOBJ),$(OBJ2ASM),rdmd,dub,ddemangle,dustmite} /usr/local/bin
+sudo cp $(DMDDIR)/osx/bin/dmdx.conf /usr/local/bin/$(DMD_CONF)
+)
+    )
+
+    $(LI Copy the library to $(D /usr/local/lib):
+
+$(CONSOLE
+sudo cp $(DMDDIR)/osx/lib/$(LIB) /usr/local/lib
+)
+    )
+
+    $(LI Copy the standard library and runtime sources to $(D /usr/local/include/d/dmd):
+
+$(CONSOLE
+sudo mkdir -p /usr/include/d/dmd
+sudo cp $(DMDDIR)/{phobos/std,phobos/etc,druntime/import} /usr/include/d/dmd
+)
+    )
+
+    ))
+    )
+
+$(WINDOWS
+$(H2 $(H2 $(LNAME2 example, Example)))
+
+    $(P Run:)
+
+$(CONSOLE
+$(DMDDIR)$(SEP)$(OS)$(SEP)bin$(SEP)$(SHELL) all.sh
+)
+
+    $(P in the $(D $(DMDDIR)$(SEP)samples$(SEP)d) directory for several small examples.)
+)
+
+
+$(H2 $(LNAME2 switches, Compiler Arguments and Switches))
+
+    $(DL
+      $(DT $(B dmd) $(I files)... -$(I switches)...
+        $(DD )
+      )
+
+      $(DT $(I files)...
+        $(DD
+        $(TABLE2 File Extensions,
+        $(TR
+        $(TH Extension)
+        $(TH File Type)
+        )
+        $(TR
+        $(TD $(I none))
+        $(TD D source files)
+        )
+        $(TR
+        $(TD $(B .c))
+        $(TD C source files)
+        )
+        $(TR
+        $(TD $(B .d))
+        $(TD D source files)
+        )
+        $(TR
+        $(TD $(B .dd))
+        $(TD $(LINK2 spec/ddoc.html, Ddoc) source files)
+        )
+        $(TR
+        $(TD $(B .di))
+        $(TD $(RELATIVE_LINK2 interface-files, D interface files))
+        )
+        $(TR
+        $(TD $(B .i))
+        $(TD preprocessed C source files)
+        )
+        $(TR
+        $(TD $(B .$(OBJEXT)))
+        $(TD Object files to link in)
+        )
+        $(TR
+        $(TD $(B .$(LIBEXT)))
+        $(TD Object code libraries to search)
+        )
+$(WINDOWS
+        $(TR
+        $(TD $(B .exe))
+        $(TD Output executable file)
+        )
+        $(TR
+        $(TD $(B .def))
+        $(TD $(LINK2 http://www.digitalmars.com/ctg/ctgDefFiles.html, module definition file))
+        )
+        $(TR
+        $(TD $(B .res))
+        $(TD resource file)
+        )
+)
+        )
+        )
+      )
+
+      $(SWITCH $(B @)$(I cmdfile),
+        If $(I cmdfile) is an environment variable,
+        read the compiler arguments and switches from
+        the value of that variable.
+        Otherwise, read compiler arguments and switches from
+        the text file $(I cmdfile).
+        The file may contain single-line comments starting
+        with the hash symbol ($(CODE #)).
+      )
+
+      $(CLI_SWITCHES)
+    )
+
+    $(WINDOWS
+    $(P Empty switches, i.e. "", are ignored.)
+    )
+
+$(H2 $(LNAME2 files, Files))
+
+    $(DL
+
+    $(DT $(D $(DMDDIR)$(SEP)src$(SEP)phobos$(SEP))
+    $(DD D runtime library source)
+    )
+
+    $(DT $(D $(DMDDIR)$(SEP)src$(SEP)dmd$(SEP))
+    $(DD D compiler front end source under dual (GPL and Artistic) license)
+    )
+
+    $(DT $(D $(DMDDIR)$(SEP)html$(SEP)d$(SEP))
+    $(DD Documentation)
+    )
+
+    $(DT $(D $(DMDDIR)$(SEP)samples$(SEP)d$(SEP))
+    $(DD Sample D programs)
+    )
+    $(WINDOWS
+
+    $(DT $(D $(DMDDIR)\windows\bin\ddemangle.exe)
+    $(DD D symbol demangler)
+    )
+
+    $(DT $(D $(DMDDIR)\windows\bin\dman.exe)
+    $(DD D manual lookup tool)
+    )
+
+    $(DT $(D $(DMDDIR)\windows\bin\dmd.exe)
+    $(DD D compiler executable)
+    )
+
+    $(DT $(D $(DMDDIR)\windows\bin\$(DUB))
+    $(DD D's package manager)
+    )
+
+    $(DT $(D $(DMDDIR)\windows\bin\$(DUSTMITE))
+    $(DD D source code minimizer)
+    )
+
+    $(DT $(D $(DMDDIR)\windows\bin\$(OPTLINK))
+    $(DD OPTLINK)
+    )
+
+    $(DT $(D $(DMDDIR)\windows\bin\$(LINK2 http://www.digitalmars.com/ctg/make.html, make.exe))
+    $(DD Digitalmars Make)
+    )
+
+    $(DT $(D $(DMDDIR)\windows\bin\replace.exe)
+    $(DD Find/replace text in files)
+    )
+
+    $(DT $(D $(DMDDIR)\windows\bin\$(RDMD))
+    $(DD D build tool for script-like D code execution)
+    )
+
+    $(DT $(D $(SC_INI))
+    $(DD Global compiler settings)
+    )
+
+    $(DT $(D $(DMDDIR)\windows\bin\$(LINK2 http://www.digitalmars.com/ctg/shell.html, shell.exe))
+    $(DD Simple command line shell)
+    )
+
+    $(DT $(D $(DMDDIR)\windows\lib\$(LIB))
+    $(DD D runtime library)
+    )
+    )
+    $(LINUX
+    $(DT $(D $(DMDDIR)/linux/bin/ddemangle)
+    $(DD D symbol demangler)
+    )
+
+    $(DT $(D $(DMDDIR)/linux/bin/dman)
+    $(DD D manual lookup tool)
+    )
+
+    $(DT $(D $(DMDDIR)/linux/bin/dmd)
+    $(DD D compiler executable)
+    )
+
+    $(DT $(D $(DMDDIR)/linux/bin/$(DMD_CONF))
+    $(DD Global compiler settings (copy to $(D /etc/dmd.conf)))
+    )
+
+    $(DT $(D $(DMDDIR)/linux/bin/$(DUB))
+    $(DD D's package manager)
+    )
+
+    $(DT $(D $(DMDDIR)/linux/bin/$(DUMPOBJ))
+    $(DD ELF file dumper)
+    )
+
+    $(DT $(D $(DMDDIR)/linux/bin/$(DUSTMITE))
+    $(DD D source code minimizer)
+    )
+
+    $(DT $(D $(DMDDIR)/linux/bin/$(OBJ2ASM))
+    $(DD ELF file disassembler)
+    )
+
+    $(DT $(D $(DMDDIR)/linux/bin/$(RDMD))
+    $(DD D build tool for script-like D code execution)
+    )
+
+    $(DT $(D $(DMDDIR)/linux/lib/$(LIB))
+    $(DD D runtime library (copy to $(D /usr/lib/$(LIB))))
+    )
+    )
+    $(FREEBSD
+    $(DT $(D $(DMDDIR)/freesd/bin/ddemangle)
+    $(DD D symbol demangler)
+    )
+
+    $(DT $(D $(DMDDIR)/freebsd/bin/dman)
+    $(DD D manual lookup tool)
+    )
+
+    $(DT $(D $(DMDDIR)/freebsd/bin/dmd)
+    $(DD D compiler executable)
+    )
+
+    $(DT $(D $(DMDDIR)/freebsd/bin/$(DMD_CONF))
+    $(DD Global compiler settings (copy to $(D /etc/dmd.conf)))
+    )
+
+    $(DT $(D $(DMDDIR)/freebsd/bin/$(DUB))
+    $(DD D's package manager)
+    )
+
+    $(DT $(D $(DMDDIR)/freebsd/bin/$(DUMPOBJ))
+    $(DD ELF file dumper)
+    )
+
+    $(DT $(D $(DMDDIR)/freebsd/bin/$(DUSTMITE))
+    $(DD D source code minimizer)
+    )
+
+    $(DT $(D $(DMDDIR)/freebsd/bin/$(OBJ2ASM))
+    $(DD ELF file disassembler)
+    )
+
+    $(DT $(D $(DMDDIR)/freebsd/bin/$(RDMD))
+    $(DD D build tool for script-like D code execution)
+    )
+
+    $(DT $(D $(DMDDIR)/freebsd/bin/$(SHELL))
+    $(DD Simple command line shell)
+    )
+
+    $(DT $(D $(DMDDIR)/freebsd/lib/$(LIB))
+    $(DD D runtime library (copy to $(D /usr/lib/$(LIB))))
+    )
+    )
+    $(OSX
+    $(DT $(D $(DMDDIR)/osx/bin/ddemangle)
+    $(DD D symbol demangler)
+    )
+
+    $(DT $(D $(DMDDIR)/osx/bin/dman)
+    $(DD D manual lookup tool)
+    )
+
+    $(DT $(D $(DMDDIR)/osx/bin/dmd)
+    $(DD D compiler executable)
+    )
+
+    $(DT $(D $(DMDDIR)/osx/bin/$(DMD_CONF))
+    $(DD Global compiler settings (copy to $(D /etc/dmd.conf)))
+    )
+
+    $(DT $(D $(DMDDIR)/osx/bin/$(DUB))
+    $(DD D's package manager)
+    )
+
+    $(DT $(D $(DMDDIR)/osx/bin/$(DUMPOBJ))
+    $(DD Mach-O file dumper)
+    )
+
+    $(DT $(D $(DMDDIR)/osx/bin/$(DUSTMITE))
+    $(DD D source code minimizer)
+    )
+
+    $(DT $(D $(DMDDIR)/osx/bin/$(OBJ2ASM))
+    $(DD Mach-O file disassembler)
+    )
+
+    $(DT $(D $(DMDDIR)/osx/bin/$(RDMD))
+    $(DD D build tool for script-like D code execution)
+    )
+
+    $(DT $(D $(DMDDIR)/osx/bin/$(SHELL))
+    $(DD Simple command line shell)
+    )
+
+    $(DT $(D $(DMDDIR)/osx/lib/$(LIB))
+    $(DD D runtime library (copy to $(D /usr/local/lib/$(LIB))))
+    )
+    )
+
+    )
+
+
+
+$(H2 $(LNAME2 linking, Linking))
+
+    $(P Linking is done directly by the $(B dmd) compiler after a successful
+    compile. To prevent $(B dmd) from running the linker, use the
+    $(SWLINK -c) switch.
+    )
+
+    $(WINDOWS
+    $(P 32 bit programs must be linked with the D runtime library $(B phobos.lib),
+    followed by the Digital Mars C runtime library $(B snn.lib).
+    This is done automatically as long as the directories for the
+    libraries are on the $(B LIB) environment variable path. A typical
+    way to set $(B LIB) would be:
+    )
+
+$(CONSOLE
+set LIB=$(DMDDIR)\lib;\dm\lib
+)
+
+    $(P If the $(B dmd) command is used to both compile and link
+    to an executable, it will make certain optimizations that are
+    valid only for Windows executable files. Do not use the resulting
+    .obj files in a DLL.
+    To compile modules into .obj files that can be used in an exe or
+    DLL, compile with $(SWLINK -c) and $(SWLINK -shared).
+    )
+
+    $(P Linking 32 bit programs is done using Digital Mars $(OPTLINK).
+    )
+
+    $(P Linking 64 bit programs is done using the
+    Microsoft linker by default. If the Microsoft linker is not found,
+    the included LLVM linker LLD will be used.
+    )
+     )
+     $(UNIX
+    $(P The actual linking is done by running $(B gcc).
+    This ensures compatibility with modules compiled with $(B gcc).
+    )
+     )
+
+$(H2 $(LNAME2 environment, Environment Variables))
+
+    $(P The D compiler dmd uses the following environment variables:
+    )
+
+    $(DL
+
+    $(WINDOWS
+    $(DT $(B DFLAGS))
+    $(DD The value of $(B DFLAGS) is treated as if it were appended to the
+    command line to $(B dmd.exe).)
+
+    $(DT $(B LIB))
+    $(DD The linker uses $(B LIB) to search for library files. For D, it will
+    normally be set to:)
+
+$(CONSOLE
+set LIB=$(DMDDIR)\lib;\dm\lib
+)
+
+    $(DT $(B LINKCMD))
+    $(DD $(B dmd) normally runs the linker by looking for $(OPTLINK)
+    along the $(B PATH). To use a specific linker for 32 bit programs instead, set the
+    $(B LINKCMD) environment variable to it. For example:)
+
+$(CONSOLE
+set LINKCMD=\dmd\windows\bin\link
+)
+
+    $(DT $(B LINKCMD64))
+    $(DD $(B dmd) normally runs the linker by looking for $(OPTLINK)
+    along the $(B PATH). To use a specific linker for 64 bit programs instead, set the
+    $(B LINKCMD64) environment variable to it. For example:)
+
+$(CONSOLE
+set LINKCMD64=C:\Program Files (x86)\Microsoft Visual Studio 15.0\VC\bin\amd64\link.exe
+)
+
+    $(DT $(B PATH))
+    $(DD If the linker is not found in the same directory as $(B dmd.exe)
+    is in, the $(B PATH) is searched for it.
+    $(B Note:) other linkers named
+    $(B link.exe) will likely not work.
+    Make sure the Digital Mars $(OPTLINK)
+    is found first in the $(B PATH) before other $(B link.exe)s,
+    or use $(B LINKCMD) to specifically identify which linker
+    to use.)
+    )
+    $(UNIX
+    $(DT $(B CC))
+    $(DD  $(B dmd) normally runs the linker by looking for $(B gcc)
+    along the $(B PATH). To use a specific linker instead, set the
+    $(B CC) environment variable to it. For example:)
+
+$(CONSOLE
+set CC=gcc
+)
+    $(DT $(B BROWSER)
+        $(DD This sets the browser used to open the manual page with
+        the $(SWLINK -man) switch. It defaults to $(D x-www-browser).
+        )
+    )
+
+    $(DT $(B DFLAGS))
+    $(DD The value of $(B DFLAGS) is treated as if it were appended to the
+    command line to $(B dmd).)
+    )
+    )
+
+$(WINDOWS
+$(H2 $(LEGACY_LNAME2 sc_ini, sc-ini, sc.ini Initialization File))
+
+    $(P $(B dmd) will look for the initialization file $(B sc.ini) in the
+    following sequence of directories:
+    )
+
+    $(OL
+    $(LI current working directory)
+    $(LI directory specified by the $(B HOME) environment variable)
+    $(LI directory $(B dmd.exe) resides in)
+    )
+
+    $(P If found, environment variable
+    settings in the file will override any existing settings.
+    This is handy to make $(B dmd) independent of programs with
+    conflicting use of environment variables.
+    )
+
+$(H3 Initialization File Format)
+
+    $(P Comments are lines that begin with $(D ;) and are ignored.
+    )
+
+    $(P Environment variables follow the $(D [Environment]) section
+    heading, in $(I NAME)=$(I value) pairs.
+    The $(I NAME)s are treated as upper case.
+    Comments are lines that start with ;.
+    For example:
+    )
+
+$(SCINI
+; sc.ini file for dmd
+; Names enclosed by %% are searched for in the existing environment
+; and inserted. The special name %@P% is replaced with the path
+; to this file.
+[Environment]
+LIB="%@P%\..\lib";\dm\lib
+
+DFLAGS="-I%@P%\..\src\phobos" "-I%@P%\..\src\druntime\import"
+LINKCMD="%@P%\..\..\dm\bin"
+DDOCFILE=mysettings.ddoc
+)
+
+$(H3 Location Independence of sc.ini)
+
+    $(P The $(B %@P%) is replaced with the path to $(D sc.ini).
+    Thus, if the fully qualified file name $(D sc.ini) is
+    $(D c:$(DMDDIR)\bin\sc.ini), then $(B %@P%) will be replaced with
+    $(D c:$(DMDDIR)\bin), and the above $(D sc.ini) will be
+    interpreted as:
+    )
+
+$(SCINI
+[Environment]
+LIB="c:$(DMDDIR)\bin\..\lib";\dm\lib
+
+DFLAGS="-Ic:$(DMDDIR)\bin\..\src\phobos" "-Ic:$(DMDDIR)\bin\..\src\druntime\import"
+LINKCMD="c:$(DMDDIR)\bin\..\..\dm\bin"
+DDOCFILE=mysettings.ddoc
+)
+
+    $(P This enables your dmd setup to be moved around without having
+    to re-edit $(D sc.ini).
+    )
+
+)
+$(UNIX
+$(H2 $(LEGACY_LNAME2 dmd_conf, dmd-conf, dmd.conf Initialization File))
+
+    $(P The dmd file $(D dmd.conf) is the same as $(D sc.ini)
+    for Windows, it's just that the file has a different name,
+    enabling a setup common to both Windows and this system to be created
+    without having to re-edit the file.)
+
+    $(P $(B dmd) will look for the initialization file $(D dmd.conf) in the
+    following sequence of directories:)
+
+    $(OL
+    $(LI current working directory)
+    $(LI directory specified by the $(B HOME) environment variable)
+    $(LI as dotfile $(D .dmd.conf) in the directory specified by the $(B HOME) environment variable)
+    $(LI directory $(B dmd) resides in)
+    $(LI $(D /etc/))
+    )
+
+    $(P If found, environment variable
+    settings in the file will override any existing settings.
+    This is handy to make $(B dmd) independent of programs with
+    conflicting use of environment variables.
+    )
+
+    $(P Environment variables follow the $(D [Environment]) section
+    heading, in $(I NAME)=$(I value) pairs.
+    The $(I NAME)s are treated as upper case.
+    Comments are lines that start with ;.
+    For example:
+    )
+
+$(SCINI
+; dmd.conf file for dmd
+; Names enclosed by %% are searched for in the existing environment
+; and inserted. The special name %@P% is replaced with the path
+; to this file.
+[Environment]
+
+DFLAGS=-I%@P%/../src/phobos -I%@P%/../src/druntime/import
+)
+)
+
+$(WINDOWS
+$(H2 $(LNAME2 problems, Common Installation Problems))
+
+    $(UL
+    $(LI Using Cygwin's $(B unzip) utility has been known to cause
+    strange problems.
+    )
+    $(LI Running the compiler under Cygwin's command shell has
+    been also known to cause problems. Try getting it to work
+    under the regular Windows shell $(B cmd.exe) before trying Cygwin's.
+    )
+    $(LI Installing $(B dmd) and $(B $(DMC)) into directory paths with spaces
+    in them causes problems.
+    )
+    )
+)
+
+<hr>
+$(H2 $(LNAME2 differences, Differences between Windows and Linux versions))
+
+    $(UL
+    $(LI String literals are read-only under Linux.
+    Attempting to write to them
+    will cause a segment violation.)
+    )
+<hr>
+$(H2 $(LEGACY_LNAME2 interface_files, interface-files, D Interface Files))
+
+    $(P When an import declaration is processed in a D source file,
+    the compiler searches for the D source file corresponding to
+    the import, and processes that source file to extract the
+    information needed from it. Alternatively, the compiler can
+    instead look for a corresponding $(I D interface file).
+    A D interface file contains only what an import of the module
+    needs, rather than the whole implementation of that module.
+    )
+
+    $(P The advantages of using a D interface file for imports rather
+    than a D source file are:
+    )
+
+    $(UL
+    $(LI D interface files are often significantly smaller and much
+    faster to process than the corresponding D source file.)
+    $(LI They can be used to hide the source code, for example,
+    one can ship an object code library along with D interface files
+    rather than the complete source code.)
+    )
+
+    $(P D interface files can be created by the compiler from a
+    D source file by using the $(SWLINK -H) switch to the compiler.
+    D interface files have the $(B .di) file extension.
+    When the compiler resolves an import declaration, it first looks
+    for a $(B .di) D interface file, then it looks for a D source
+    file.
+    )
+
+    $(P D interface files bear some analogous similarities to C++
+    header files. But they are not required in the way that C++
+    header files are, and they are not part of the D language.
+    They are a feature of the compiler, and serve only as an optimization
+    of the build process.
+    )
+
+$(H2 $(LNAME2 executable, Building Executables))
+
+    $(P $(B dmd) can build an executable much faster if as many of the
+    source files as possible are put on the command line.)
+
+    $(P Another advantage to putting multiple source files on the same
+    invocation of $(B dmd) is that $(B dmd) will be able to do some level
+    of cross-module optimizations, such as function inlining across modules.
+    )
+    $(P The $(D -i) flag can be used to automatically compile imported modules)
+
+$(H2 $(LNAME2 library, Building Libraries))
+
+    $(P There are three ways to build a library. For example,
+    given $(D foo.d) and $(D bar.d) which are to be compiled, and existing
+    object file $(D abc.$(OBJEXT)) and existing library
+    $(D def.$(LIBEXT)) which are
+    all to be combined into a library $(D foo.$(LIBEXT)):)
+
+    $(OL
+    $(LI Compile modules separately and then run the librarian on them:
+$(WINDOWS
+$(CONSOLE
+dmd -c foo.d
+dmd -c bar.d
+$(LIB) -c -p32 foo.lib foo.obj bar.obj abc.obj def.lib
+del foo.obj bar.obj
+)
+)
+$(UNIX
+$(CONSOLE
+dmd -c foo.d
+dmd -c bar.d
+rm -f foo.a
+ar -r foo.a foo.o bar.o abc.o def.a
+rm foo.o bar.o
+)
+)
+    This option is typical when using a makefile to avoid compiling
+    modules that have already been compiled.
+    )
+    $(LI Compile modules together and then run the librarian on them:
+$(WINDOWS
+$(CONSOLE
+dmd -c foo.d bar.d
+$(LIB) -c -p32 foo.lib foo.obj bar.obj abc.obj def.lib
+del foo.obj bar.obj
+)
+)
+$(UNIX
+$(CONSOLE
+dmd -c foo.d bar.d
+rm -f foo.a
+ar -r foo.a foo.o bar.o abc.o def.a
+rm foo.o bar.o
+)
+)
+    )
+    $(LI Use $(B dmd) to compile and build library in one operation:
+$(CONSOLE
+dmd -lib foo.d bar.d abc.$(OBJEXT) def.$(LIBEXT)
+)
+    No object files are written to disk, it's all done in memory.
+    Using $(SWLINK -lib) also has the advantage that modules may be compiled
+    into multiple object files rather than exactly one per module.
+    This improves granularity of the library without having to break
+    up the modules.
+    )
+    )
+
+$(H2 $(LEGACY_LNAME2 compiling_dmd, compiling-dmd, Compiling dmd))
+
+    $(P Complete source code is provided to build the compiler.
+    Follow these steps:)
+
+$(WINDOWS
+$(CONSOLE
+cd $(DMDDIR)\src\dmd
+make -f win32.mak
+)
+)
+$(UNIX
+$(CONSOLE
+cd ~/$(DMDDIR)/src/dmd
+make -f posix.mak
+)
+)
+
+$(H2 $(LEGACY_LNAME2 compiling_phobos, compiling-phobos, Compiling Phobos))
+
+    $(P Complete source code is provided to build Phobos, the D runtime library.
+    Follow these steps:)
+
+
+$(WINDOWS
+$(CONSOLE
+cd $(DMDDIR)\src\druntime
+make -f win32.mak
+cd ..\phobos
+make -f win32.mak
+)
+)
+$(UNIX
+$(CONSOLE
+cd ../phobos
+make -f posix.mak
+)
+)
+
+
+)
+
+Macros:
+    TITLE=DMD Compiler for $(WINDOWS Windows)$(LINUX Linux)$(OSX OSX)$(FREEBSD FreeBSD)
+    BODYCLASS=std dcompiler
+    LIB=$(WINDOWS phobos.lib)$(UNIX libphobos2.a)
+    DMD_CONF=$(RELATIVE_LINK2 dmd-conf, dmd.conf)
+    SC_INI=$(RELATIVE_LINK2 sc-ini, $(DMDDIR)\windows\bin\sc.ini)
+    DMC=$(LINK2 http://www.digitalmars.com/ctg/sc.html, dmc)
+    OPTLINK=$(LINK2 http://www.digitalmars.com/ctg/optlink.html, optlink.exe)
+    DUB=$(LINK2 https://github.com/dlang/dub, dub$(BINEXT))
+    RDMD=$(LINK2 $(ROOT_DIR)rdmd.html, rdmd$(BINEXT))
+    DUSTMITE=$(LINK2 https://github.com/CyberShadow/DustMite, dustmite$(BINEXT))
+    OBJ2ASM=$(HTTP digitalmars.com/ctg/obj2asm.html, obj2asm$(BINEXT))
+    DUMPOBJ=$(HTTP digitalmars.com/ctg/dumpobj.html, dumpobj$(BINEXT))
+    CLI_SWITCHES=$1
+    SHELL=$(HTTP digitalmars.com/ctg/shell.html, shell)
+        SUBNAV=$(SUBNAV_CLI_REFERENCE)
+    INSTALLATION_SCRIPT_HINT=
+$(P
+$(MESSAGE_BOX gray, $(B Hint) - The official $(LINK2 $(ROOT_DIR)download.html, packages)
+performs these steps automatically.
+Alternatively, you can install DMD in your user directory with
+the $(LINK2 $(ROOT_DIR)install.html, install script).
+)
+)
+    _ =
