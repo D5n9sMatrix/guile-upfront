@@ -1,0 +1,9 @@
+{
+    "name": "dlang",
+    "description": null,
+    "projects": {
+        "upfront": "upfront/dub.json"
+    },
+    "includePath": {
+    }
+}

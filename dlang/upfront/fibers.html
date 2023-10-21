@@ -1,0 +1,1588 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>fibers</title>
+    <style type="text/css" media="screen">
+      html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p,
+      blockquote, pre, a, abbr, address, cite, code, del, dfn, em, figure,
+      img, ins, kbd, q, s, samp, small, strong, sub, sup, var, b, u, i, dl,
+      dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption,
+      tbody, tfoot, thead, tr, th, td {
+        background: transparent none repeat scroll 0 0;
+        border: 0 none;
+        font-size: 100%;
+        margin: 0;
+        outline: 0 none;
+        padding: 0;
+        vertical-align: baseline;
+      }
+
+      h1 { font-size: 200%; }
+      h2 { font-size: 160%; }
+      h3 { font-size: 120%; }
+      h4 { font-size: 100%; }
+      h5 { font-size: 80%; }
+      h6 { font-size: 80%; font-weight: normal; }
+
+      ul, ol {
+        margin: 1.4em 0;
+      }
+      ul ul, ol ol, ul ol, ol ul {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      ul, ol {
+        margin-left: 2.8em;
+      }
+
+      ol {
+        list-style: decimal;
+      }
+      ol ol {
+        list-style: lower-alpha;
+      }
+      ol ol ol {
+        list-style: lower-roman;
+      }
+      ol ol ol ol {
+        list-style: decimal;
+      }
+
+      blockquote {
+        margin: 0.1em;
+        margin-left: 1em;
+        border-left: 2px solid #cccccc;
+        padding-left: 0.7em;
+      }
+
+      .color_red { color: #dc322f; }
+      .color_blue { color: #268bd2; }
+      .color_green { color: #859901; }
+      .color_yellow { color: #b58901; }
+      .color_black { color: black; }
+      .color_white { color: white; }
+
+      .font_big {
+        font-size: 1.2em;
+      }
+
+      .ddoc_section_h {
+        font-weight: bold;
+        font-size: 13px;
+        line-height: 19.5px;
+        margin-top: 11px;
+        display: block;
+      }
+
+      body.dlang .dlang {
+        display: inline-block;
+      }
+
+      body.dlang .declaration .dlang {
+          display: block;
+      }
+
+      body.dlang .ddoc_header_anchor a.dlang {
+        display: block;
+        color: rgba(0, 136, 204, 1);
+        text-decoration: none;
+      }
+
+      body.dlang .ddoc_header_anchor .code {
+        color: rgba(0, 136, 204, 1);
+      }
+
+      #ddoc_main .module {
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          overflow-x: hidden;
+          padding: 15px;
+      }
+
+      #ddoc_main .section .section {
+        margin-top: 0;
+      }
+
+      #ddoc_main .ddoc_module_members_section {
+          padding: 1px 0 0;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members section.intro {
+          background: #fff none repeat scroll 0 0;
+          list-style-type: none;
+          width: 100%;
+      }
+
+      #ddoc_main .ddoc_header_anchor {
+          font-size: 1.4em;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_header_anchor > .code {
+          display: inline-block;
+
+      }
+
+      #ddoc_main .ddoc_decl {
+        background-color: transparent;
+        height: 100%;
+        left: 0;
+        top: 0;
+        padding: 0;
+        padding-left: 15px;
+      }
+
+      #ddoc_main .ddoc_decl .section, #ddoc_main .section.ddoc_sections {
+        background: white none repeat scroll 0 0;
+        margin: 0;
+        padding: 5px;
+        position: relative;
+        border-radius: 5px;
+      }
+
+      #ddoc_main .ddoc_decl .section h4:first-of-type, #ddoc_main .section.ddoc_sections h4:first-of-type {
+        font-size: 13px;
+        line-height: 1.5;
+        margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration {
+          margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration .code {
+          color: rgba(0, 0, 0, 1);
+          margin-bottom: 15px;
+          padding-bottom: 6px;
+      }
+
+      #ddoc_main .declaration div .para {
+          margin-bottom: 0;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr td:first-of-type {
+        padding: 7px;
+        text-align: right;
+        vertical-align: top;
+        word-break: normal;
+        white-space: nowrap;
+      }
+
+      #ddoc_main .ddoc_params .graybox {
+        border: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox td {
+        border-color: rgba(214, 214, 214, 1);
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:first-child > td {
+        border-top: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:last-child > td {
+        border-bottom: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:first-child {
+        border-left: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:last-child {
+        border-right: 0 none;
+        width: 100%;
+      }
+
+      #ddoc_main em.term, #ddoc_main em.term .code {
+        color: rgba(65, 65, 65, 1);
+        font-size: 12px;
+        font-style: italic;
+        line-height: 1.5;
+      }
+
+      #ddoc_main .see-also {
+        cursor: pointer;
+        font-family: Menlo,monospace;
+      }
+
+      #ddoc_main .ddoc_decl .section > div:last-of-type {
+        margin-bottom: 15px;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members {
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .code_sample {
+        background: inherit;
+      }
+
+      #ddoc_main .declaration .code-line {
+          display: block;
+          font: 1em Menlo,monospace;
+      }
+
+      #ddoc_main a[name] {
+        margin: -112px 0 0;
+        padding-top: 112px;
+      }
+
+      #ddoc_main .ddoc_decl td {
+        max-width: inherit;
+      }
+
+      #ddoc_main .declaration a {
+        color: inherit;
+      }
+
+      #ddoc_main .declaration a:hover {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: underline;
+      }
+
+      body.ddoc {
+        background-color: transparent;
+        color: rgba(0, 0, 0, 1);
+        font-family: Helvetica,Arial,sans-serif;
+        font-size: 62.5%;
+        margin: 0;
+        border: 0;
+        left: 0;
+        top: 0;
+        padding: 0;
+      }
+
+      .ddoc a[name] {
+        display: block;
+        height: 0;
+        margin: -85px 0 0;
+        padding-top: 85px;
+        width: 0;
+      }
+
+      .ddoc .module {
+          border-color: transparent;
+          background-color: rgba(255, 255, 255, 1);
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-image: none;
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          box-shadow: 0 0 1px rgba(0, 0, 0, 0.07);
+          display: block;
+          margin-left: 0;
+          min-height: calc(100% - 173px);
+          overflow: auto;
+          padding-bottom: 100px;
+      }
+
+      .ddoc .content_wrapper {
+          background-color: rgba(242, 242, 242, 1);
+          margin: 0 auto;
+          max-width: 980px;
+      }
+
+      .ddoc .section {
+        padding: 15px 25px 30px;
+      }
+
+      .ddoc .section .section {
+        margin: 30px 0 0;
+        padding: 0;
+      }
+
+      .ddoc .para {
+        color: rgba(65, 65, 65, 1);
+        font-size: 1.4em;
+        line-height: 145%;
+        margin-bottom: 15px;
+      }
+
+      .ddoc .ddoc_examples .para {
+        margin-bottom: 0;
+      }
+
+      .ddoc .module_name {
+          color: rgba(0, 0, 0, 1);
+          display: block;
+          font-family: Helvetica;
+          font-size: 2.8em;
+          font-weight: 100;
+          margin-bottom: 0;
+          padding: 15px 0;
+      }
+
+      .ddoc .module a {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: none;
+      }
+
+      .ddoc .code {
+        color: rgba(128, 128, 128, 1);
+        font-family: Menlo,monospace;
+        font-size: 0.85em;
+        word-wrap: break-word;
+      }
+
+      .ddoc .code i {
+        font-style: normal;
+      }
+
+      .ddoc .code .code {
+        font-size: 1em;
+      }
+
+      .ddoc .code_sample {
+        background-clip: padding-box;
+        margin: 1px 0;
+        text-align: left;
+      }
+
+      .ddoc .code_sample {
+        display: block;
+        font-size: 1.4em;
+        margin-left: 21px;
+      }
+
+      .ddoc ol .code_sample {
+        font-size: 1em;
+      }
+
+      .ddoc .code_lines {
+        counter-reset: li;
+        line-height: 1.6em;
+        list-style: outside none none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .ddoc .code_listing .code_sample div {
+        margin-left: 13px;
+        width: 93%;
+      }
+
+      .ddoc .code_listing .code_sample div .code_lines li {
+        list-style-type: none;
+        margin: 0;
+        padding-right: 10px;
+      }
+
+      .ddoc .code_sample div .code_lines li::before {
+        margin-left: -33px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+10)::before {
+        margin-left: -39px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+100)::before {
+        margin-left: -46px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample .code_lines .code {
+        color: #000;
+      }
+
+      .ddoc div.dlang {
+        margin: 10px 0 21px;
+        padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+          margin: 10px 0 21px;
+          padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+        border-left: 5px solid rgba(0, 155, 51, 0.2);
+      }
+
+      .ddoc .code_lines li::before {
+        color: rgba(128, 128, 128, 1);
+        content: counter(li, decimal);
+        counter-increment: li;
+        font-family: Menlo,monospace;
+        font-size: 0.9em;
+        margin-right: 16px;
+      }
+
+      .ddoc .code_lines li {
+        padding-left: 0;
+        white-space: pre-wrap;
+      }
+
+      .ddoc .code_lines li:only-of-type::before {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:only-of-type {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:nth-child(n+10) {
+        text-indent: -17px;
+      }
+
+      .ddoc .code_lines li:nth-child(n+10)::before {
+        margin-right: 12px;
+      }
+
+      .ddoc .graybox {
+        border: 1px solid rgba(233, 233, 233, 1);
+        border-collapse: collapse;
+        border-spacing: 0;
+        empty-cells: hide;
+        margin: 20px 0 36px;
+        text-align: left;
+      }
+
+      .ddoc .graybox p {
+        margin: 0;
+        min-width: 50px;
+      }
+
+      .ddoc th {
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: bottom;
+      }
+
+      .ddoc td {
+        border: 1px solid rgba(233, 233, 233, 1);
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: middle;
+      }
+
+      .punctuation {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .comment {
+        color: rgba(0, 131, 18, 1);
+      }
+
+      .operator {
+        color: #000;
+      }
+
+      .keyword {
+        color: rgba(170, 13, 145, 1);
+      }
+
+      .keyword_type {
+        color: rgba(170, 51, 145, 1);
+      }
+
+      .string_literal {
+        color: rgba(196, 26, 22, 1);
+      }
+
+      .ddoc_psuper_symbol {
+        color: rgba(92, 38, 153, 1);
+      }
+
+      .param {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .psymbol {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .ddoc_member_header .ddoc_header_anchor .code {
+        font-size: 1em;
+      }
+    </style>
+  </head>
+  <body id="ddoc_main" class="ddoc dlang">
+    <div class="content_wrapper">
+      <article class="module">
+        <h1 class="module_name">fibers</h1>
+        <section id="module_content"><br><br>
+<br><br>
+
+<br><br>
+<p>   A fiber is a <i>thread of execution</i> enabling a single thread achieve multiple tasks. Compared to regular threads that are commonly used in parallelism and concurrency, it is more efficient to switch between fibers. Fibers are similar to <i>coroutines</i> and <i>green threads</i>.
+</p>
+<br><br>
+<p>Fibers enable multiple call stacks per thread. For that reason, to fully understand and appreciate fibers, one must first understand the <i>call stack</i> of a thread.
+</p>
+<br><br>
+<h5>  Call stack</h5>
+<br><br>
+<p> The parameters, non-static local variables, the return value, and temporary expressions of a function, as well as any additional information that may be needed during its execution, comprise the <i>local state</i> of that function. The local state of a function is allocated and initialized automatically at run time every time that function is called.
+</p>
+<br><br>
+<p> The storage space allocated for the local state of a function call is called a <i>frame</i> (or <i>stack frame</i>). As functions call other functions during the execution of a thread, their frames are conceptually placed on top of each other to form a stack of frames. The stack of frames of currently active function calls is the <i>call stack</i> of that thread.
+</p>
+<br><br>
+<p>For example, at the time the main thread of the following program starts executing the  function, there would be three levels of active function calls due to  calling  and  calling :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> main() {
+    <span class="keyword">int</span> a;
+    <span class="keyword">int</span> b;
+
+    <span class="keyword">int</span> c = (a, b);
+}
+
+<span class="keyword">int</span> foo(<span class="keyword">int</span> x, <span class="keyword">int</span> y) {
+    (x + y);
+    <span class="keyword">return</span> 42;
+}
+
+<span class="keyword">void</span> bar(<span class="keyword">int</span> param) {
+    string[] arr;
+    <span class="comment">// ...
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>During the execution of , the call stack would consist of three frames storing the local states of those currently active function calls:
+</p>
+<br><br>
+
+<br><br>
+<p>As layers of function calls get deeper when functions call other functions and shallower when functions return, the size of the call stack increases and decreases accordingly. For example, once  returns, its frame would no longer be needed and its space would later be used for another function call in the future:
+</p>
+<br><br>
+
+<br><br>
+<p>We have been taking advantage of the call stack in every program that we have written so far. The advantages of the call stack is especially clear for recursive functions.
+</p>
+<br><br>
+<h6> Recursion</h6>
+<br><br>
+<p>Recursion is the situation where a function calls itself either directly or indirectly. Recursion greatly simplifies certain kinds of algorithms like the ones that are classified as <i>divide-and-conquer</i>.
+</p>
+<br><br>
+<p>Let's consider the following function that calculates the sum of the elements of a slice. It achieves this task by calling itself recursively with a slice that is one element shorter than the one that it has received. The recursion continues until the slice becomes empty. The current result is carried over to the next recursion step as the second parameter:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.array;
+
+<span class="keyword">int</span> sum(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> currentSum = 0) {
+    <span class="keyword">if</span> (arr.empty) {
+        <span class="comment">/* No element to add. The result is what has been
+         * calculated so far. */</span>
+        <span class="keyword">return</span> currentSum;
+    }
+
+    <span class="comment">/* Add the front element to the current sum and call self
+     * with the remaining elements. */</span>
+    <span class="keyword">return</span> (arr[1..$], currentSum + arr.front);
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">assert</span>(sum([1, 2, 3]) == 6);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p> <i><b>Note:</b> The code above is only for demonstration. Otherwise, the sum of the elements of a range should be calculated by , which uses special algorithms to achieve more accurate calculations for floating point types.</i>
+</p>
+<br><br>
+<p>When  is eventually called with an empty slice for the initial argument of  above, the relevant parts of the call stack would consist of the following frames. The value of each parameter is indicated after an  sign. Remember to read the frame contents from bottom to top:
+</p>
+<br><br>
+
+<br><br>
+<p><i><b>Note:</b> In practice, when the recursive function directly returns the result of calling itself, compilers use a technique called "tail-call optimization", which eliminates separate frames for each recursive call.</i>
+</p>
+<br><br>
+<p>In a multithreaded program, since each thread would be working on its own task, every thread gets it own call stack to maintain its own execution state.
+</p>
+<br><br>
+<p>The power of fibers is based on the fact that although a fiber is not a thread, it gets its own call stack, effectively enabling multiple call stacks per thread. Since one call stack maintains the execution state of one task, multiple call stacks enable a thread work on multiple tasks.
+</p>
+<br><br>
+<h5>Usage</h5>
+<br><br>
+<p>The following are common operations of fibers. We will see examples of these later below.
+</p>
+<br><br>
+<ul><br><br>
+<li> A fiber starts its execution from a callable entity (function pointer, delegate, etc.) that does not take any parameter and does not return anything. For example, the following function can be used as a fiber function:
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> fiberFunction() {
+    <span class="comment">// ...
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+</li>
+<br><br>
+<li> A fiber can be created as an object of class  with a callable entity:
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> core.thread;
+
+<span class="comment">// ...
+</span>
+    <span class="keyword">auto</span> fiber = <span class="keyword">new</span> Fiber(fiberFunction);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Alternatively, a subclass of  can be defined and the fiber function can be passed to the constructor of the superclass. In the following example, the fiber function is a member function:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">class</span> MyFiber :  {
+    <span class="keyword">this</span>() {
+        <span class="keyword">super</span>(run);
+    }
+
+    <span class="keyword">void</span> run() {
+        <span class="comment">// ...
+</span>    }
+}
+
+<span class="comment">// ...
+</span>
+    <span class="keyword">auto</span> fiber = <span class="keyword">new</span> MyFiber();
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+</li>
+<br><br>
+<li> A fiber is started and resumed by its  member function:
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    fiber.call();
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Unlike threads, the caller is paused while the fiber is executing.
+</p>
+<br><br>
+</li>
+<br><br>
+<li> A fiber pauses itself (<i>yields</i> execution to its caller) by :
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> fiberFunction() {
+    <span class="comment">// ...
+</span>
+        Fiber.yield();
+
+    <span class="comment">// ...
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The caller's execution resumes when the fiber yields.
+</p>
+<br><br>
+</li>
+<br><br>
+<li> The execution state of a fiber is determined by its  property:
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">if</span> (fiber.state == Fiber.State.TERM) {
+        <span class="comment">// ...
+</span>    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>  is an enum with the following values:
+</p>
+<br><br>
+<ul><br><br>
+<li> : The fiber is paused, meaning that it can be started or resumed.</li>
+<br><br>
+<li> : The fiber is currently executing.</li>
+<br><br>
+<li>  : The fiber has terminated. It must be  before it can be used again.</li>
+<br><br>
+</ul>
+<br><br>
+</li>
+<br><br>
+</ul>
+<br><br>
+<h5>Fibers in range implementations</h5>
+<br><br>
+<p>Almost every range needs to store some information to remember its state of iteration. This is necessary for it to know what to do when its  is called next time. Most range examples that we saw in <a href="ranges.html">the Ranges</a> and later chapters have been storing some kind of state to achieve their tasks.
+</p>
+<br><br>
+<p>For example,  that we have defined earlier was keeping two member variables to calculate the <i>next next</i> number in the series:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">struct</span> FibonacciSeries {
+    <span class="keyword">int</span>  = 0;
+    <span class="keyword">int</span>  = 1;
+
+    <span class="keyword">enum</span> empty = <span class="keyword">false</span>;
+
+    <span class="keyword">int</span> front() <span class="keyword">const</span> {
+        <span class="keyword">return</span> current;
+    }
+
+    <span class="keyword">void</span> popFront() {
+        <span class="keyword">const</span> nextNext = current + next;
+        current = next;
+        next = nextNext;
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>While maintaining the iteration state is trivial for some ranges like , it is surprisingly harder for some others, e.g. recursive data structures like binary search trees. The reason why it is surprising is that for such data structures, the same algorithms are trivial when implemented recursively.
+</p>
+<br><br>
+<p>For example, the following recursive implementations of  and  do not define any variables and are independent of the number of elements contained in the tree. The recursive calls are highlighted. (Note that  is recursive indirectly through .)
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+<span class="keyword">import</span> std.string;
+<span class="keyword">import</span> std.conv;
+<span class="keyword">import</span> std.random;
+<span class="keyword">import</span> std.range;
+<span class="keyword">import</span> std.algorithm;
+
+<span class="comment">/* Represents the nodes of a binary tree. This type is used in
+ * the implementation of struct Tree below and should not be
+ * used directly. */</span>
+<span class="keyword">struct</span> Node {
+    <span class="keyword">int</span> element;
+    Node * left;     <span class="comment">// Left sub-tree
+</span>    Node * right;    <span class="comment">// Right sub-tree
+</span>
+    <span class="keyword">void</span> (<span class="keyword">int</span> element) {
+        <span class="keyword">if</span> (element &lt; <span class="keyword">this</span>.element) {
+            <span class="comment">/* Smaller elements go under the left sub-tree. */</span>
+            insertOrSet(left, element);
+
+        } <span class="keyword">else</span> <span class="keyword">if</span> (element &gt; <span class="keyword">this</span>.element) {
+            <span class="comment">/* Larger elements go under the right sub-tree. */</span>
+            insertOrSet(right, element);
+
+        } <span class="keyword">else</span> {
+            <span class="keyword">throw</span> <span class="keyword">new</span> Exception(format(<span class="string_literal">"%s already exists"</span>,
+                                       element));
+        }
+    }
+
+    <span class="keyword">void</span> () <span class="keyword">const</span> {
+        <span class="comment">/* First print the elements of the left sub-tree */</span>
+        <span class="keyword">if</span> (left) {
+            left.();
+            write(' ');
+        }
+
+        <span class="comment">/* Then print this element */</span>
+        write(element);
+
+        <span class="comment">/* Lastly, print the elements of the right sub-tree */</span>
+        <span class="keyword">if</span> (right) {
+            write(' ');
+            right.();
+        }
+    }
+}
+
+<span class="comment">/* Inserts the element to the specified sub-tree, potentially
+ * initializing its node. */</span>
+<span class="keyword">void</span> insertOrSet(<span class="keyword">ref</span> Node * node, <span class="keyword">int</span> element) {
+    <span class="keyword">if</span> (!node) {
+        <span class="comment">/* This is the first element of this sub-tree. */</span>
+        node = <span class="keyword">new</span> Node(element);
+
+    } <span class="keyword">else</span> {
+        node.(element);
+    }
+}
+
+<span class="comment">/* This is the actual Tree representation. It allows an empty
+ * tree by means of 'root' being equal to 'null'. */</span>
+<span class="keyword">struct</span> Tree {
+    Node * root;
+
+    <span class="comment">/* Inserts the element to this tree. */</span>
+    <span class="keyword">void</span> insert(<span class="keyword">int</span> element) {
+        insertOrSet(root, element);
+    }
+
+    <span class="comment">/* Prints the elements in sorted order. */</span>
+    <span class="keyword">void</span> print() <span class="keyword">const</span> {
+        <span class="keyword">if</span> (root) {
+            root.print();
+        }
+    }
+}
+
+<span class="comment">/* Populates the tree with 'n' random numbers picked out of a
+ * set of '10 * n' numbers. */</span>
+Tree makeRandomTree(size_t n) {
+    <span class="keyword">auto</span> numbers = iota((n * 10).to!<span class="keyword">int</span>)
+                   .randomSample(n, Random(unpredictableSeed))
+                   .array;
+
+    randomShuffle(numbers);
+
+    <span class="comment">/* Populate the tree with those numbers. */</span>
+    <span class="keyword">auto</span> tree = Tree();
+    numbers.each!(e =&gt; tree.insert(e));
+
+    <span class="keyword">return</span> tree;
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">auto</span> tree = makeRandomTree(10);
+    tree.print();
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p><i><b>Note:</b> The program above uses the following features from Phobos:</i>
+</p>
+<br><br>
+<ul><br><br>
+<li>  generates the elements of a given value range lazily. (By default, the first element is the  value). For example,  is a range of  elements from  to .
+</li>
+<br><br>
+<li>   is similar to . While  generates a new result for each element,  generates side effects for each element. Additionally,  is lazy while  is eager.
+</li>
+<br><br>
+<li>  picks a random sampling of elements from a given range without changing their order.
+</li>
+<br><br>
+<li>  shuffles the elements of a range randomly.
+</li>
+<br><br>
+</ul>
+<br><br>
+<p>Like most containers, one would like this tree to provide a range interface so that its elements can be used with existing range algorithms. This can be done by defining an  member function:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">struct</span> Tree {
+<span class="comment">// ...
+</span>
+    <span class="comment">/* Provides access to the elements of the tree in sorted
+     * order. */</span>
+    <span class="keyword">struct</span> InOrderRange {
+        
+    }
+
+    InOrderRange opSlice() <span class="keyword">const</span> {
+        <span class="keyword">return</span> InOrderRange(root);
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Although the  member function above essentially achieves the same task of visiting every element in sorted order, it is not easy to implement an  for a tree. I will not attempt to implement  here but I encourage you to implement or at least research tree iterators. (Some implementations require that tree nodes have an additional  to point at each node's parent.)
+</p>
+<br><br>
+<p>The reason why recursive tree algorithms like  are trivial is due to the automatic management of the call stack. The call stack implicitly contains information not only about what the current element is, but also how the execution of the program arrived at that element (e.g. at what nodes did the execution follow the left node versus the right node).
+</p>
+<br><br>
+<p>For example, when a recursive call to  returns after printing the elements of the left sub-tree, the local state of the current  call already implies that it is now time to print a space character:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">void</span> print() <span class="keyword">const</span> {
+        <span class="keyword">if</span> (left) {
+            left.print();
+            write(' ');   <span class="comment">// ← Call stack implies this is next
+</span>        }
+
+        <span class="comment">// ...
+</span>    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Fibers are useful for similar cases where using a call stack is much easier than maintaining state explicitly.
+</p>
+<br><br>
+<p>Although the benefits of fibers would not be apparent on a simple task like generating the Fibonacci series, for simplicity let's cover common fiber operations on a fiber implementation of one. We will implement a tree range later below.
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> core.thread;
+
+<span class="comment">/* This is the fiber function that generates each element and
+ * then sets the 'ref' parameter to that element. */</span>
+<span class="keyword">void</span> fibonacciSeries( <span class="keyword">int</span> current) {                 <span class="comment">// (1)
+</span>    current = 0;    <span class="comment">// Note that 'current' is the parameter
+</span>    <span class="keyword">int</span> next = 1;
+
+    <span class="keyword">while</span> (<span class="keyword">true</span>) {
+        ;                                  <span class="comment">// (2)
+</span>        <span class="comment">/* Next call() will continue from this point */</span> <span class="comment">// (3)
+</span>
+        <span class="keyword">const</span> nextNext = current + next;
+        current = next;
+        next = nextNext;
+    }
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">int</span> current;                                        <span class="comment">// (1)
+</span>                         <span class="comment">// (4)
+</span>    Fiber fiber = <span class="keyword">new</span> Fiber(() =&gt; fibonacciSeries(current));
+
+    <span class="keyword">foreach</span> (_; 0 .. 10) {
+        fiber;                                   <span class="comment">// (5)
+</span>
+        <span class="keyword">import</span> std.stdio;
+        writef(<span class="string_literal">"%s "</span>, current);
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<ol><br><br>
+<li>The fiber function above takes a reference to an . It uses this parameter to communicate the current element to its caller. (The parameter could be qualified as  instead of  as well).</li>
+<br><br>
+<li>When the current element is ready for use, the fiber pauses itself by calling .</li>
+<br><br>
+<li>A later  will resume the function right after the fiber's last  call. (The first  starts the function.)</li>
+<br><br>
+<li>Because fiber functions do not take parameters,  cannot be used directly as a fiber function. Instead, a parameter-less <a href="lambda.html">delegate</a> is used as an adaptor to be passed to the  constructor.</li>
+<br><br>
+<li>The caller starts and resumes the fiber by its  member function.</li>
+<br><br>
+</ol>
+<br><br>
+<p>As a result,  receives the elements of the series through  and prints them:
+</p>
+<br><br>
+
+<br><br>
+<h6>  for presenting fibers as ranges</h6>
+<br><br>
+<p>Although we have achieved generating the Fibonacci series with a fiber, that implementation has the following shortcomings:
+</p>
+<br><br>
+<ul><br><br>
+<li>The solution above does not provide a range interface, making it incompatible with existing range algorithms.</li>
+<br><br>
+<li>Presenting the elements by mutating a  parameter is less desirable compared to a design where the elements are copied to the caller's context.</li>
+<br><br>
+<li>Constructing and using the fiber explicitly through its member functions exposes <i>lower level</i> implementation details, compared to alternative designs.</li>
+<br><br>
+</ul>
+<br><br>
+<p>The  class addresses all of these issues. Note how  below is written as a simple function. The only difference is that instead of returning a single element by , it can make multiple elements available by  (<i>infinite elements</i> in this example).
+</p>
+<br><br>
+<p> Also note that this time it is the  function, not the  member function that we used above.
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+<span class="keyword">import</span> std.range;
+<span class="keyword">import</span> std.concurrency;
+
+<span class="comment">/* This alias is used for resolving the name conflict with
+ * std.range.Generator. */</span>
+<span class="keyword">alias</span> FiberRange = std.concurrency.Generator;
+
+<span class="keyword">void</span> fibonacciSeries() {
+    <span class="keyword">int</span> current = 0;
+    <span class="keyword">int</span> next = 1;
+
+    <span class="keyword">while</span> (<span class="keyword">true</span>) {
+        ;
+
+        <span class="keyword">const</span> nextNext = current + next;
+        current = next;
+        next = nextNext;
+    }
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">auto</span> series = <span class="keyword">new</span> (&amp;fibonacciSeries);
+    writefln(<span class="string_literal">"%(%s %)"</span>, series.take(10));
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>As a result, the elements that are produced by a fiber function are used conveniently as an :
+</p>
+<br><br>
+
+<br><br>
+<p>Using , we can easily present the elements of a tree as an  as well. Further, once the tree has an  interface, the  member function would not be needed anymore; hence it is removed. Especially note how  is implemented as an adaptor over the recursive function :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.concurrency;
+
+<span class="keyword">alias</span> FiberRange = std.concurrency.Generator;
+
+<span class="keyword">struct</span> Node {
+<span class="comment">// ...
+</span>
+    <span class="comment">/* Note: print() member function is removed because it is
+     * not needed anymore. */</span>
+
+    <span class="keyword">auto</span> opSlice() <span class="keyword">const</span> {
+        <span class="keyword">return</span> byNode(&amp;<span class="keyword">this</span>);
+    }
+}
+
+<span class="comment">/* This is the fiber function that yields the next tree node
+ * in sorted order. */</span>
+<span class="keyword">void</span> nextNode(<span class="keyword">const</span>(Node) * node) {
+    <span class="keyword">if</span> (!node) {
+        <span class="comment">/* No element at or under this node */</span>
+        <span class="keyword">return</span>;
+    }
+
+    nextNode(node.left);    <span class="comment">// First, elements on the left
+</span>    ;            <span class="comment">// Then, this element
+</span>    nextNode(node.right);   <span class="comment">// Finally, elements on the right
+</span>}
+
+<span class="comment">/* Returns an InputRange to the nodes of the tree. */</span>
+<span class="keyword">auto</span> byNode(<span class="keyword">const</span>(Node) * node) {
+    <span class="keyword">return</span> <span class="keyword">new</span> FiberRange!(<span class="keyword">const</span>(Node)*)(
+        () =&gt; nextNode(node));
+}
+
+<span class="comment">// ...
+</span>
+<span class="keyword">struct</span> Tree {
+<span class="comment">// ...
+</span>
+    <span class="comment">/* Note: print() member function is removed because it is
+     * not needed anymore. */</span>
+
+    <span class="keyword">auto</span> opSlice() <span class="keyword">const</span> {
+        <span class="comment">/* A translation from the nodes to the elements. */</span>
+        <span class="keyword">return</span> byNode(<span class="keyword">this</span>).map!(n =&gt; n.element);
+    }
+}
+
+<span class="comment">/* Returns an InputRange to the nodes of the tree. The
+ * returned range is empty if the tree has no elements (i.e.
+ * if 'root' is 'null'). */</span>
+<span class="keyword">auto</span> byNode(<span class="keyword">const</span>(Tree) tree) {
+    <span class="keyword">if</span> (tree.root) {
+        <span class="keyword">return</span> byNode(tree.root);
+
+    } <span class="keyword">else</span> {
+        <span class="keyword">alias</span> RangeType = <span class="keyword">typeof</span>(<span class="keyword">return</span>);
+        <span class="keyword">return</span> <span class="keyword">new</span> RangeType(() {});    
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p> objects can now be sliced with  and the result can be used as an :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    writefln(<span class="string_literal">"%(%s %)"</span>, tree);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h5> Fibers in asynchronous input and output</h5>
+<br><br>
+<p>The call stack of a fiber can simplify asynchronous input and output tasks as well.
+</p>
+<br><br>
+<p>As an example, let's imagine a system where users sign on to a service by connecting to a server and providing their <i>name</i>, <i>email</i>, and <i>age</i>, in that order. This would be similar to the <i>sign-on user flow</i> of a website. To keep the example simple, instead of implementing an actual web service, let's simulate user interactions using data entered on the command line. Let's use the following simple sign-on protocol, where input data is highlighted:
+</p>
+<br><br>
+<ul><li>: A user connects and a flow id is generated</li>
+<li>: The user of flow that corresponds to  enters the next expected data. For example, if the expected data for flow  is <i>name</i>, then the command for Alice would be .</li>
+<li>: Program exits</li>
+</ul>
+<br><br>
+<p>For example, the following can be the interactions of Alice and Bob, where the inputs to the simulation program are highlighted. Each user connects and then provides <i>name</i>, <i>email</i>, and <i>age</i>:
+</p>
+<br><br>
+<br><br>
+<p>This program can be designed to wait for the command  in a loop and then call a function to receive the input data of the connected user:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">if</span> (input == <span class="string_literal">"hi"</span>) {
+        signOnNewUser();    
+    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Unless the program had some kind of support for multitasking, such a design would be considered <i>blocking</i>, meaning that all other users would be blocked until the current user completes their sign on flow. This would impact the responsiveness of even lightly-used services if users took several minutes to provide data.
+</p>
+<br><br>
+<p>There can be several designs that makes this service <i>non-blocking</i>, meaning that more than one user can sign on at the same time:
+</p>
+<br><br>
+<ul><br><br>
+<li>Maintaining tasks explicitly: The main thread can spawn one thread per user sign-on and pass input data to that thread by means of messages. Although this method would work, it might involve thread synchronization and it can be slower than a fiber. (The reasons for this potential performance penalty will be explained in the <i>cooperative multitasking</i> section below.)</li>
+<br><br>
+<li>Maintaining state: The program can accept more than one sign-on and remember the state of each sign-on explicitly. For example, if Alice has entered only her name so far, her state would have to indicate that the next input data would be her email information.</li>
+<br><br>
+</ul>
+<br><br>
+<p>Alternatively, a design based on fibers can employ one fiber per sign-on flow. This would enable implementing the flow in a linear fashion, matching the protocol exactly: first the name, then the email, and finally the age. For example,  below does not need to do anything special to remember the state of the sign-on flow. When it is 'ed next time, it continues right after the last  call that had paused it. The next line to be executed is implied by the call stack.
+</p>
+<br><br>
+<p>Differently from earlier examples, the following program uses a  subclass:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+<span class="keyword">import</span> std.string;
+<span class="keyword">import</span> std.format;
+<span class="keyword">import</span> std.exception;
+<span class="keyword">import</span> std.conv;
+<span class="keyword">import</span> std.array;
+<span class="keyword">import</span> core.thread;
+
+<span class="keyword">struct</span> User {
+    string name;
+    string email;
+    <span class="keyword">uint</span> age;
+}
+
+<span class="comment">/* This Fiber subclass represents the sign-on flow of a
+ * user. */</span>
+<span class="keyword">class</span> SignOnFlow : Fiber {
+    <span class="comment">/* The data read most recently for this flow. */</span>
+    string inputData_;
+
+    <span class="comment">/* The information to construct a User object. */</span>
+    string name;
+    string email;
+    <span class="keyword">uint</span> age;
+
+    <span class="keyword">this</span>() {
+        <span class="comment">/* Set our 'run' member function as the starting point
+         * of the fiber. */</span>
+        <span class="keyword">super</span>(&amp;run);
+    }
+
+    <span class="keyword">void</span> run() {
+        <span class="comment">/* First input is name. */</span>
+        name = inputData_;
+        ;
+
+        <span class="comment">/* Second input is email. */</span>
+        email = inputData_;
+        ;
+
+        <span class="comment">/* Last input is age. */</span>
+        age = inputData_.to!<span class="keyword">uint</span>;
+
+        <span class="comment">/* At this point we have collected all information to
+         * construct the user. We now "return" instead of
+         * 'Fiber.yield()'. As a result, the state of this
+         * fiber becomes Fiber.State.TERM. */</span>
+    }
+
+    <span class="comment">/* This property function is to receive data from the
+     * caller. */</span>
+    <span class="keyword">void</span> inputData(string data) {
+        inputData_ = data;
+    }
+
+    <span class="comment">/* This property function is to construct a user and
+     * return it to the caller. */</span>
+    User user() <span class="keyword">const</span> {
+        <span class="keyword">return</span> User(name, email, age);
+    }
+}
+
+<span class="comment">/* Represents data read from the input for a specific flow. */</span>
+<span class="keyword">struct</span> FlowData {
+    size_t id;
+    string data;
+}
+
+<span class="comment">/* Parses data related to a flow. */</span>
+FlowData parseFlowData(string line) {
+    size_t id;
+    string data;
+
+    <span class="keyword">const</span> items = line.formattedRead!<span class="string_literal">" %s %s"</span>(id, data);
+    enforce(items == 2, format(<span class="string_literal">"Bad input '%s'."</span>, line));
+
+    <span class="keyword">return</span> FlowData(id, data);
+}
+
+<span class="keyword">void</span> main() {
+    User[] users;
+    SignOnFlow[] flows;
+
+    <span class="keyword">bool</span> done = <span class="keyword">false</span>;
+
+    <span class="keyword">while</span> (!done) {
+        write(<span class="string_literal">"&gt; "</span>);
+        string line = readln.strip;
+
+        <span class="keyword">switch</span> (line) {
+        <span class="keyword">case</span> <span class="string_literal">"hi"</span>:
+            <span class="comment">/* Start a flow for the new connection. */</span>
+            flows ~= <span class="keyword">new</span> SignOnFlow();
+
+            writefln(<span class="string_literal">"Flow %s started."</span>, flows.length - 1);
+            <span class="keyword">break</span>;
+
+        <span class="keyword">case</span> <span class="string_literal">"bye"</span>:
+            <span class="comment">/* Exit the program. */</span>
+            done = <span class="keyword">true</span>;
+            <span class="keyword">break</span>;
+
+        <span class="keyword">default</span>:
+            <span class="comment">/* Try to use the input as flow data. */</span>
+            <span class="keyword">try</span> {
+                <span class="keyword">auto</span> user = handleFlowData(line, flows);
+
+                <span class="keyword">if</span> (!user.name.empty) {
+                    users ~= user;
+                    writefln(<span class="string_literal">"Added user '%s'."</span>, user.name);
+                }
+
+            } <span class="keyword">catch</span> (Exception exc) {
+                writefln(<span class="string_literal">"Error: %s"</span>, exc.msg);
+            }
+            <span class="keyword">break</span>;
+        }
+    }
+
+    writeln(<span class="string_literal">"Goodbye."</span>);
+    writefln(<span class="string_literal">"Users:\n%(  %s\n%)"</span>, users);
+}
+
+<span class="comment">/* Identifies the owner fiber for the input, sets its input
+ * data, and resumes that fiber. Returns a user with valid
+ * fields if the flow has been completed. */</span>
+User handleFlowData(string line, SignOnFlow[] flows) {
+    <span class="keyword">const</span> input = parseFlowData(line);
+    <span class="keyword">const</span> id = input.id;
+
+    enforce(id &lt; flows.length, format(<span class="string_literal">"Invalid id: %s."</span>, id));
+
+    <span class="keyword">auto</span> flow = flows[id];
+
+    enforce(flow.state == Fiber.State.HOLD,
+            format(<span class="string_literal">"Flow %s is not runnable."</span>, id));
+
+    <span class="comment">/* Set flow data. */</span>
+    flow.inputData = input.data;
+
+    <span class="comment">/* Resume the flow. */</span>
+    flow;
+
+    User user;
+
+    <span class="keyword">if</span> (flow.state == Fiber.State.TERM) {
+        writefln(<span class="string_literal">"Flow %s has completed."</span>, id);
+
+        <span class="comment">/* Set the return value to the newly created user. */</span>
+        user = flow.user;
+
+        <span class="comment">/* TODO: This fiber's entry in the 'flows' array can
+         * be reused for a new flow in the future. However, it
+         * must first be reset by 'flow.reset()'. */</span>
+    }
+
+    <span class="keyword">return</span> user;
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p> reads lines from the input, parses them, and dispatches flow data to the appropriate flow to be processed. The call stack of each flow maintains the flow state automatically. New users are added to the system when the complete user information becomes available.
+</p>
+<br><br>
+<p>When you run the program above, you see that no matter how long a user takes to complete their individual sign-on flow, the system always accepts new user connections. As an example, Alice's interaction is highlighted:
+</p>
+<br><br>
+
+<br><br>
+<p>Although Alice, Bob, and Cindy connect in that order, they complete their sign-on flows at different paces. As a result, the  array is populated in the order that the flows are completed.
+</p>
+<br><br>
+<p>One benefit of using fibers in this program is that  is written trivially without regard to how fast or slow a user's input has been. Additionally, no user is blocked when other sign-on flows are in progress.
+</p>
+<br><br>
+<p> Many asynchronous input/output frameworks like <a href="http://vibed.org">vibe.d</a> use similar designs based on fibers.
+</p>
+<br><br>
+<h5> Exceptions and fibers</h5>
+<br><br>
+<p>In <a href="exceptions.html">the Exceptions chapter</a> we saw how "an exception object that is thrown from a lower level function is transferred to the higher level functions one level at a time". We also saw that an uncaught exception "causes the program to finally exit the  function." Although that chapter did not mention the call stack, the described behavior of the exception mechanism is achieved by the call stack as well.
+</p>
+<br><br>
+<p> Continuing with the first example in this chapter, if an exception is thrown inside , first the frame of  would be removed from the call stack, then 's, and finally 's. As functions are exited and their frames are removed from the call stack, the destructors of local variables are executed for their final operations. The process of leaving functions and executing destructors of local variables due to a thrown exception is called <i>stack unwinding</i>.
+</p>
+<br><br>
+<p>Since fibers have their own stack, an exception that is thrown during the execution of the fiber unwinds the fiber's call stack, not its caller's. If the exception is not caught, the fiber function terminates and the fiber's state becomes .
+</p>
+<br><br>
+<p> Although that may be the desired behavior in some cases, sometimes a fiber may need to communicate an error condition to its caller without losing its execution state.  allows a fiber to yield and immediately throw an exception in the caller's context.
+</p>
+<br><br>
+<p>To see how it can be used let's enter invalid age data to the sign-on program:
+</p>
+<br><br>
+<br><br>
+<p>Instead of terminating the fiber and losing the entire sign-on flow, the fiber can catch the conversion error and communicate it to the caller by . This can be done by replacing the following line of the program where the fiber converts age data:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">        age = inputData_.to!<span class="keyword">uint</span>;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Wrapping that line with a  statement inside an unconditional loop would be sufficient to keep the fiber alive until there is data that can be converted to a :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">        <span class="keyword">while</span> (<span class="keyword">true</span>) {
+            <span class="keyword">try</span> {
+                age = inputData_.to!<span class="keyword">uint</span>;
+                <span class="keyword">break</span>;  <span class="comment">// ← Conversion worked; leave the loop
+</span>
+            } <span class="keyword">catch</span> (ConvException exc) {
+                Fiber.yieldAndThrow(exc);
+            }
+        }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>This time the fiber remains in an unconditional loop until data is valid:
+</p>
+<br><br>
+
+<br><br>
+<p>As can be seen from the output, this time the sign-on flow is not lost and the user is added to the system.
+</p>
+<br><br>
+<h5>   Cooperative multitasking</h5>
+<br><br>
+<p>Unlike operating system threads, which are paused (suspended) and resumed by the operating system at unknown points in time, a fiber pauses itself explicitly and is resumed by its caller explicitly. According to this distinction, the kind of multitasking that the operating system provides is called <i>preemptive multitasking</i> and the kind that fibers provide is called <i>cooperative multitasking</i>.
+</p>
+<br><br>
+<p> In preemptive multitasking, the operating system allots a certain amount of time to a thread when it starts or resumes its execution. When the time is up, that thread is paused and another one is resumed in its place. Moving from one thread to another is called <i>context switching</i>. Context switching takes a relatively large amount of time, which could have better been spent doing actual work by threads.
+</p>
+<br><br>
+<p>Considering that a system is usually busy with high number of threads, context switching is unavoidable and is actually desired. However, sometimes threads need to pause themselves voluntarily before they use up the entire time that was alloted to them. This can happen when a thread needs information from another thread or from a device. When a thread pauses itself, the operating system must spend time again to switch to another thread. As a result, time that could have been used for doing actual work ends up being used for context switching.
+</p>
+<br><br>
+<p>With fibers, the caller and the fiber execute as parts of the same thread. (That is the reason why the caller and the fiber cannot execute at the same time.) As a benefit, there is no overhead of context switching between the caller and the fiber. (However, there is still some light overhead which is comparable to the overhead of a regular function call.)
+</p>
+<br><br>
+<p>Another benefit of cooperative multitasking is that the data that the caller and the fiber exchange is more likely to be in the CPU's data cache. Because data that is in the CPU cache can be accessed hundreds of times faster than data that needs to be read back from system memory, this further improves the performance of fibers.
+</p>
+<br><br>
+<p>Additionally, because the caller and the fiber are never executed at the same time, there is no possibility of race conditions, obviating the need for data synchronization. However, the programmer must still ensure that a fiber yields at the intended time (e.g. when data is actually ready). For example, the  call below must not execute a  call, even indirectly, as that would be premature, before the value of  was doubled:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> fiberFunction() {
+    <span class="comment">// ...
+</span>
+        func();           
+        sharedData *= 2;
+        Fiber.yield();    
+
+    <span class="comment">// ...
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p> One obvious shortcoming of fibers is that only one core of the CPU is used for the caller and its fibers. The other cores of the CPU might be sitting idle, effectively wasting resources. It is possible to use different designs like the <i>M:N threading model (hybrid threading)</i> that employ other cores as well. I encourage you to research and compare different threading models.
+</p>
+<br><br>
+<h5>Summary</h5>
+<br><br>
+<ul><br><br>
+<li>The call stack enables efficient allocation of local state and simplifies certain algorithms, especially the recursive ones.</li>
+<br><br>
+<li>Fibers enable multiple call stacks per thread instead of the default single call stack per thread.</li>
+<br><br>
+<li>A fiber and its caller are executed on the same thread (i.e. not at the same time).</li>
+<br><br>
+<li>A fiber pauses itself by <i>yielding</i> to its caller and the caller resumes its fiber by <i>calling</i> it again.</li>
+<br><br>
+<li> presents a fiber as an .</li>
+<br><br>
+<li>Fibers simplify algorithms that rely heavily on the call stack.</li>
+<br><br>
+<li>Fibers simplify asynchronous input/output operations.</li>
+<br><br>
+<li>Fibers provide cooperative multitasking, which has different trade-offs from preemptive multitasking.</li>
+<br><br>
+</ul>
+<br><br>
+macros:
+        TITLE=Fibers
+<br><br>
+        DESCRIPTION=Generators and cooperative multitasking by fibers.
+<br><br>
+        KEYWORDS=d programming language tutorial book fiber cooperative multitasking
+</section>
+      </article>
+    </div>
+  </body>
+</html>

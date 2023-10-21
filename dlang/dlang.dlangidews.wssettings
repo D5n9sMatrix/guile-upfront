@@ -1,0 +1,25 @@
+{
+    "startupProject": "upfront",
+    "breakpoints": [
+    ],
+    "bookmarks": [
+    ],
+    "files": [
+        {
+            "file": "/home/admin/dlang-project/guile-upfront/dlang/upfront/source/app.d",
+            "column": 0,
+            "row": 0
+        },
+        {
+            "file": "/home/admin/dlang-project/guile-upfront/dlang/upfront/source/cnn-news/book/d.en/is_expr.d",
+            "column": 538,
+            "row": 0
+        }
+    ],
+    "expandedItems": [
+        "/home/admin/dlang-project/guile-upfront/dlang/upfront/dub.json",
+        "/home/admin/dlang-project/guile-upfront/dlang/upfront/source/cnn-news/book/d.en",
+        "/home/admin/dlang-project/guile-upfront/dlang/upfront/source"
+    ],
+    "selectedWorkspaceItem": "/home/admin/dlang-project/guile-upfront/dlang/upfront/source/cnn-news/book/d.en/is_expr.d"
+}

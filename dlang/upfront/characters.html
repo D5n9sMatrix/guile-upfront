@@ -1,0 +1,1084 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Characters</title>
+    <style type="text/css" media="screen">
+      html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p,
+      blockquote, pre, a, abbr, address, cite, code, del, dfn, em, figure,
+      img, ins, kbd, q, s, samp, small, strong, sub, sup, var, b, u, i, dl,
+      dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption,
+      tbody, tfoot, thead, tr, th, td {
+        background: transparent none repeat scroll 0 0;
+        border: 0 none;
+        font-size: 100%;
+        margin: 0;
+        outline: 0 none;
+        padding: 0;
+        vertical-align: baseline;
+      }
+
+      h1 { font-size: 200%; }
+      h2 { font-size: 160%; }
+      h3 { font-size: 120%; }
+      h4 { font-size: 100%; }
+      h5 { font-size: 80%; }
+      h6 { font-size: 80%; font-weight: normal; }
+
+      ul, ol {
+        margin: 1.4em 0;
+      }
+      ul ul, ol ol, ul ol, ol ul {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      ul, ol {
+        margin-left: 2.8em;
+      }
+
+      ol {
+        list-style: decimal;
+      }
+      ol ol {
+        list-style: lower-alpha;
+      }
+      ol ol ol {
+        list-style: lower-roman;
+      }
+      ol ol ol ol {
+        list-style: decimal;
+      }
+
+      blockquote {
+        margin: 0.1em;
+        margin-left: 1em;
+        border-left: 2px solid #cccccc;
+        padding-left: 0.7em;
+      }
+
+      .color_red { color: #dc322f; }
+      .color_blue { color: #268bd2; }
+      .color_green { color: #859901; }
+      .color_yellow { color: #b58901; }
+      .color_black { color: black; }
+      .color_white { color: white; }
+
+      .font_big {
+        font-size: 1.2em;
+      }
+
+      .ddoc_section_h {
+        font-weight: bold;
+        font-size: 13px;
+        line-height: 19.5px;
+        margin-top: 11px;
+        display: block;
+      }
+
+      body.dlang .dlang {
+        display: inline-block;
+      }
+
+      body.dlang .declaration .dlang {
+          display: block;
+      }
+
+      body.dlang .ddoc_header_anchor a.dlang {
+        display: block;
+        color: rgba(0, 136, 204, 1);
+        text-decoration: none;
+      }
+
+      body.dlang .ddoc_header_anchor .code {
+        color: rgba(0, 136, 204, 1);
+      }
+
+      #ddoc_main .module {
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          overflow-x: hidden;
+          padding: 15px;
+      }
+
+      #ddoc_main .section .section {
+        margin-top: 0;
+      }
+
+      #ddoc_main .ddoc_module_members_section {
+          padding: 1px 0 0;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members section.intro {
+          background: #fff none repeat scroll 0 0;
+          list-style-type: none;
+          width: 100%;
+      }
+
+      #ddoc_main .ddoc_header_anchor {
+          font-size: 1.4em;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_header_anchor > .code {
+          display: inline-block;
+
+      }
+
+      #ddoc_main .ddoc_decl {
+        background-color: transparent;
+        height: 100%;
+        left: 0;
+        top: 0;
+        padding: 0;
+        padding-left: 15px;
+      }
+
+      #ddoc_main .ddoc_decl .section, #ddoc_main .section.ddoc_sections {
+        background: white none repeat scroll 0 0;
+        margin: 0;
+        padding: 5px;
+        position: relative;
+        border-radius: 5px;
+      }
+
+      #ddoc_main .ddoc_decl .section h4:first-of-type, #ddoc_main .section.ddoc_sections h4:first-of-type {
+        font-size: 13px;
+        line-height: 1.5;
+        margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration {
+          margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration .code {
+          color: rgba(0, 0, 0, 1);
+          margin-bottom: 15px;
+          padding-bottom: 6px;
+      }
+
+      #ddoc_main .declaration div .para {
+          margin-bottom: 0;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr td:first-of-type {
+        padding: 7px;
+        text-align: right;
+        vertical-align: top;
+        word-break: normal;
+        white-space: nowrap;
+      }
+
+      #ddoc_main .ddoc_params .graybox {
+        border: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox td {
+        border-color: rgba(214, 214, 214, 1);
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:first-child > td {
+        border-top: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:last-child > td {
+        border-bottom: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:first-child {
+        border-left: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:last-child {
+        border-right: 0 none;
+        width: 100%;
+      }
+
+      #ddoc_main em.term, #ddoc_main em.term .code {
+        color: rgba(65, 65, 65, 1);
+        font-size: 12px;
+        font-style: italic;
+        line-height: 1.5;
+      }
+
+      #ddoc_main .see-also {
+        cursor: pointer;
+        font-family: Menlo,monospace;
+      }
+
+      #ddoc_main .ddoc_decl .section > div:last-of-type {
+        margin-bottom: 15px;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members {
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .code_sample {
+        background: inherit;
+      }
+
+      #ddoc_main .declaration .code-line {
+          display: block;
+          font: 1em Menlo,monospace;
+      }
+
+      #ddoc_main a[name] {
+        margin: -112px 0 0;
+        padding-top: 112px;
+      }
+
+      #ddoc_main .ddoc_decl td {
+        max-width: inherit;
+      }
+
+      #ddoc_main .declaration a {
+        color: inherit;
+      }
+
+      #ddoc_main .declaration a:hover {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: underline;
+      }
+
+      body.ddoc {
+        background-color: transparent;
+        color: rgba(0, 0, 0, 1);
+        font-family: Helvetica,Arial,sans-serif;
+        font-size: 62.5%;
+        margin: 0;
+        border: 0;
+        left: 0;
+        top: 0;
+        padding: 0;
+      }
+
+      .ddoc a[name] {
+        display: block;
+        height: 0;
+        margin: -85px 0 0;
+        padding-top: 85px;
+        width: 0;
+      }
+
+      .ddoc .module {
+          border-color: transparent;
+          background-color: rgba(255, 255, 255, 1);
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-image: none;
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          box-shadow: 0 0 1px rgba(0, 0, 0, 0.07);
+          display: block;
+          margin-left: 0;
+          min-height: calc(100% - 173px);
+          overflow: auto;
+          padding-bottom: 100px;
+      }
+
+      .ddoc .content_wrapper {
+          background-color: rgba(242, 242, 242, 1);
+          margin: 0 auto;
+          max-width: 980px;
+      }
+
+      .ddoc .section {
+        padding: 15px 25px 30px;
+      }
+
+      .ddoc .section .section {
+        margin: 30px 0 0;
+        padding: 0;
+      }
+
+      .ddoc .para {
+        color: rgba(65, 65, 65, 1);
+        font-size: 1.4em;
+        line-height: 145%;
+        margin-bottom: 15px;
+      }
+
+      .ddoc .ddoc_examples .para {
+        margin-bottom: 0;
+      }
+
+      .ddoc .module_name {
+          color: rgba(0, 0, 0, 1);
+          display: block;
+          font-family: Helvetica;
+          font-size: 2.8em;
+          font-weight: 100;
+          margin-bottom: 0;
+          padding: 15px 0;
+      }
+
+      .ddoc .module a {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: none;
+      }
+
+      .ddoc .code {
+        color: rgba(128, 128, 128, 1);
+        font-family: Menlo,monospace;
+        font-size: 0.85em;
+        word-wrap: break-word;
+      }
+
+      .ddoc .code i {
+        font-style: normal;
+      }
+
+      .ddoc .code .code {
+        font-size: 1em;
+      }
+
+      .ddoc .code_sample {
+        background-clip: padding-box;
+        margin: 1px 0;
+        text-align: left;
+      }
+
+      .ddoc .code_sample {
+        display: block;
+        font-size: 1.4em;
+        margin-left: 21px;
+      }
+
+      .ddoc ol .code_sample {
+        font-size: 1em;
+      }
+
+      .ddoc .code_lines {
+        counter-reset: li;
+        line-height: 1.6em;
+        list-style: outside none none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .ddoc .code_listing .code_sample div {
+        margin-left: 13px;
+        width: 93%;
+      }
+
+      .ddoc .code_listing .code_sample div .code_lines li {
+        list-style-type: none;
+        margin: 0;
+        padding-right: 10px;
+      }
+
+      .ddoc .code_sample div .code_lines li::before {
+        margin-left: -33px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+10)::before {
+        margin-left: -39px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+100)::before {
+        margin-left: -46px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample .code_lines .code {
+        color: #000;
+      }
+
+      .ddoc div.dlang {
+        margin: 10px 0 21px;
+        padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+          margin: 10px 0 21px;
+          padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+        border-left: 5px solid rgba(0, 155, 51, 0.2);
+      }
+
+      .ddoc .code_lines li::before {
+        color: rgba(128, 128, 128, 1);
+        content: counter(li, decimal);
+        counter-increment: li;
+        font-family: Menlo,monospace;
+        font-size: 0.9em;
+        margin-right: 16px;
+      }
+
+      .ddoc .code_lines li {
+        padding-left: 0;
+        white-space: pre-wrap;
+      }
+
+      .ddoc .code_lines li:only-of-type::before {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:only-of-type {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:nth-child(n+10) {
+        text-indent: -17px;
+      }
+
+      .ddoc .code_lines li:nth-child(n+10)::before {
+        margin-right: 12px;
+      }
+
+      .ddoc .graybox {
+        border: 1px solid rgba(233, 233, 233, 1);
+        border-collapse: collapse;
+        border-spacing: 0;
+        empty-cells: hide;
+        margin: 20px 0 36px;
+        text-align: left;
+      }
+
+      .ddoc .graybox p {
+        margin: 0;
+        min-width: 50px;
+      }
+
+      .ddoc th {
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: bottom;
+      }
+
+      .ddoc td {
+        border: 1px solid rgba(233, 233, 233, 1);
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: middle;
+      }
+
+      .punctuation {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .comment {
+        color: rgba(0, 131, 18, 1);
+      }
+
+      .operator {
+        color: #000;
+      }
+
+      .keyword {
+        color: rgba(170, 13, 145, 1);
+      }
+
+      .keyword_type {
+        color: rgba(170, 51, 145, 1);
+      }
+
+      .string_literal {
+        color: rgba(196, 26, 22, 1);
+      }
+
+      .ddoc_psuper_symbol {
+        color: rgba(92, 38, 153, 1);
+      }
+
+      .param {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .psymbol {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .ddoc_member_header .ddoc_header_anchor .code {
+        font-size: 1em;
+      }
+    </style>
+  </head>
+  <body id="ddoc_main" class="ddoc dlang">
+    <div class="content_wrapper">
+      <article class="module">
+        <h1 class="module_name">Characters</h1>
+        <section id="module_content"><br><br>
+<br><br>
+
+<br><br>
+<p>Characters are building blocks of strings. Any symbol of a writing system is called a character: letters of alphabets, numerals, punctuation marks, the space character, etc. Confusingly, building blocks of characters themselves are called characters as well.
+</p>
+<br><br>
+<p>Arrays of characters make up <i>strings</i>. We have seen arrays in the previous chapter; strings will be covered two chapters later.
+</p>
+<br><br>
+<p>Like any other data, characters are also represented as integer values that are made up of bits. For example, the integer value of the lowercase  is 97 and the integer value of the numeral  is 49. These values are merely a convention, assigned when the ASCII standard was designed.
+</p>
+<br><br>
+<p>In many programming languages, characters are represented by the  type, which can hold only 256 distinct values. If you are familiar with the  type from other languages, you may already know that it is not large enough to support the symbols of many writing systems. Before getting to the three distinct character types of D, let's first take a look at the history of characters in computer systems.
+</p>
+<br><br>
+<h5>History</h5>
+<br><br>
+<h6> ASCII Table</h6>
+<br><br>
+<p>The ASCII table was designed at a time when computer hardware was very limited compared to modern systems. Having been based on 7 bits, the ASCII table can have 128 distinct code values. That many distinct values are sufficient to represent the lowercase and uppercase versions of the 26 letters of the basic Latin alphabet, numerals, commonly used punctuation marks, and some terminal control characters.
+</p>
+<br><br>
+<p>As an example, the ASCII codes of the characters of the string  are the following (the commas are inserted just to make it easier to read):
+</p>
+<br><br>
+
+<br><br>
+<p>Every code above represents a single letter of . For example, there are two 108 values corresponding to the two  letters.
+</p>
+<br><br>
+<p>The codes of the ASCII table were later increased to 8 bits to become the Extended ASCII table. The Extended ASCII table has 256 distinct codes.
+</p>
+<br><br>
+<h6> IBM Code Pages</h6>
+<br><br>
+<p>IBM Corporation has defined a set of tables, each one of which assign the codes of the Extended ASCII table from 128 to 255 to one or more writing systems. These code tables allowed supporting the letters of many more alphabets. For example, the special letters of the Turkish alphabet are a part of IBM's code page 857.
+</p>
+<br><br>
+<p>Despite being much more useful than ASCII, code pages have some problems and limitations: In order to display text correctly, it must be known what code page a given text was originally written in. This is because the same code corresponds to a different character in most other tables. For example, the code that represents  in table 857 corresponds to  in table 437.
+</p>
+<br><br>
+<p>In addition to the difficulty in supporting multiple alphabets in a single document, alphabets that have more than 128 non-ASCII characters cannot be supported by an IBM table at all.
+</p>
+<br><br>
+<h6>ISO/IEC 8859 Code Pages</h6>
+<br><br>
+<p>The ISO/IEC 8859 code pages are a result of international standardization efforts. They are similar to IBM's code pages in how they assign codes to characters. As an example, the special letters of the Turkish alphabet appear in code page 8859-9. These tables have the same problems and limitations as IBM's tables. For example, the Dutch digraph ĳ does not appear in any of these tables.
+</p>
+<br><br>
+<h6> Unicode</h6>
+<br><br>
+<p>Unicode solves all problems and limitations of previous solutions. Unicode includes more than a hundred thousand characters and symbols of the writing systems of many human languages, current and old. (New ones are constanly under review for addition to the table.) Each of these characters has a unique code. Documents that are encoded in Unicode can include all characters of separate writing systems without any confusion or limitation.
+</p>
+<br><br>
+<h5> Unicode encodings</h5>
+<br><br>
+<p>Unicode assigns a unique code for each character. Since there are more Unicode characters than an 8-bit value can hold, some characters must be represented by at least two 8-bit values. For example, the Unicode character code of  (286) is greater than the maximum value of a .
+</p>
+<br><br>
+<p>The way characters are represented in electronic mediums is called their <i>encoding</i>. We have seen above how the string  is encoded in ASCII. We will now see three Unicode encodings that correspond to D's character types.
+</p>
+<br><br>
+<p> <b>UTF-32:</b> This encoding uses 32 bits (4 bytes) for every Unicode character. The UTF-32 encoding of  is similar to its ASCII encoding, but every character is represented with 4 bytes:
+</p>
+<br><br>
+
+<br><br>
+<p>As another example, the UTF-32 encoding of  is the following:
+</p>
+<br><br>
+
+<br><br>
+<p><i><b>Note:</b> The order of the bytes of UTF-32 may be different on different computer systems.</i>
+</p>
+<br><br>
+<p> and  are represented by 1 and 2 significant bytes respectively, and the values of the other 5 bytes are all zeros. These zeros can be thought of as filler bytes to make every Unicode character occupy 4 bytes each.
+</p>
+<br><br>
+<p>For documents based on the basic Latin alphabet, this encoding always uses 4 times as many bytes as the ASCII encoding. When most of the characters of a given document have ASCII equivalents, the 3 filler bytes for each of those characters make this encoding more wasteful compared to other encodings.
+</p>
+<br><br>
+<p>On the other hand, there are benefits of representing every character by an equal number of bytes. For example, the next Unicode character is always exactly four bytes away.
+</p>
+<br><br>
+<p> <b>UTF-16:</b> This encoding uses 16 bits (2 bytes) to represent most of the Unicode characters. Since 16 bits can have about 65 thousand unique values, the other (less commonly used) 35 thousand Unicode characters must be represented using additional bytes.
+</p>
+<br><br>
+<p>As an example,  is encoded by 4 bytes in UTF-16:
+</p>
+<br><br>
+
+<br><br>
+<p><i><b>Note:</b> The order of the bytes of UTF-16 may be different on different computer systems.</i>
+</p>
+<br><br>
+<p>Compared to UTF-32, this encoding takes less space for most documents, but because some characters must be represented by more than 2 bytes, UTF-16 is more complicated to process.
+</p>
+<br><br>
+<p> <b>UTF-8:</b> This encoding uses 1 to 4 bytes for every character. If a character has an equivalent in the ASCII table, it is represented by 1 byte, with the same numeric code as in the ASCII table. The rest of the Unicode characters are represented by 2, 3, or 4 bytes. Most of the special characters of the European writing systems are among the group of characters that are represented by 2 bytes.
+</p>
+<br><br>
+<p>For most documents in western countries, UTF-8 is the encoding that takes the least amount of space. Another benefit of UTF-8 is that the documents that were produced using ASCII can be opened directly (without conversion) as UTF-8 documents. UTF-8 also does not waste any space with filler bytes, as every character is represented by significant bytes. As an example, the UTF-8 encoding of  is:
+</p>
+<br><br>
+
+<br><br>
+<h5>The character types of D</h5>
+<br><br>
+<p>
+
+
+There are three D types to represent characters. These characters correspond to the three Unicode encodings mentioned above. Copying from <a href="types.html">the Fundamental Types chapter</a>:
+</p>
+<br><br>
+<table class="wide" border="1" cellpadding="4" cellspacing="0">
+<tr><th scope="col">Type</th> <th scope="col">Definition</th> <th scope="col">Initial Value</th>
+</tr>
+<tr>		<td>char</td>
+	<td>UTF-8 code unit</td>
+	<td>0xFF</td>
+</tr>
+<br><br>
+<tr>		<td>wchar</td>
+	<td>UTF-16 code unit</td>
+	<td>0xFFFF</td>
+</tr>
+<tr>		<td>dchar</td>
+	<td>UTF-32 code unit and Unicode code point</td>
+<br><br>
+	<td>0x0000FFFF</td>
+</tr>
+</table>
+<br><br>
+<p>Contrary to some other programming languages, characters in D may consist of different numbers of bytes. For example, because  must be represented by at least 2 bytes in Unicode, it doesn't fit in a variable of type . On the other hand, because  consists of 4 bytes, it can hold any Unicode character.
+</p>
+<br><br>
+<h5> Character literals</h5>
+<br><br>
+<p>Literals are constant values that are written in the program as a part of the source code. In D, character literals are specified within single quotes:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">char</span>  letter_a = 'a';
+    <span class="keyword">wchar</span> letter_e_acute = 'é';
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Double quotes are not valid for characters because double quotes are used when specifying <i>strings</i>, which we will see in <a href="strings.html">a later chapter</a>.  is a character literal and  is a string literal that consists of a single character.
+</p>
+<br><br>
+<p>Variables of type  can only hold letters that are in the ASCII table.
+</p>
+<br><br>
+<p>There are many ways of inserting characters in code:
+</p>
+<br><br>
+<ul><li>Most naturally, typing them on the keyboard.
+</li>
+<br><br>
+<li>Copying from another program or another text. For example, you can copy and paste from a web site, or from a program that is specifically for displaying Unicode characters. (One such program in most Linux environments is <i>Character Map</i> ( on the terminal).)
+</li>
+<br><br>
+<li>Using short names of the characters. The syntax for this feature is . For example, the name of the Euro sign is  and it can be specified in the program as follows:
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">wchar</span> currencySymbol = '\&amp;euro;';
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>See <a href="http://dlang.org/entity.html">the list of named characters</a> for all characters that can be specified this way.
+</p>
+<br><br>
+</li>
+<br><br>
+<li>Specifying characters by their integer Unicode values:
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">char</span> a = 97;
+    <span class="keyword">wchar</span> Ğ = 286;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+</li>
+<br><br>
+<li>Specifying the codes of the characters of the ASCII table either by  or  syntax:
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">char</span> questionMarkOctal = '\77';
+    <span class="keyword">char</span> questionMarkHexadecimal = '\x3f';
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+</li>
+<br><br>
+<li>Specifying the Unicode values of the characters by using the  syntax for , and the  syntax for  (note  versus ). The Unicode values must be specified in hexadecimal:
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">wchar</span> Ğ_w = '\u011e';
+    <span class="keyword">dchar</span> Ğ_d = '\U0000011e';
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+</li>
+<br><br>
+</ul>
+<br><br>
+<p>These methods can be used to specify the characters within strings as well. For example, the following two lines have the same string literals:
+</p>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    writeln(<span class="string_literal">"Résumé preparation: 10.25€"</span>);
+    writeln(<span class="string_literal">"\x52\&amp;eacute;sum\u00e9 preparation: 10.25\&amp;euro;"</span>);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h5> Control characters</h5>
+<br><br>
+<p>Some characters only affect the formatting of the text, they don't have a visual representation themselves. For example, the <i>new-line</i> character, which specifies that the output should continue on a new line, does not have a visual representation. Such characters are called <i>control characters</i>. Some common control characters can be specified with the  syntax.
+</p>
+<br><br>
+<table class="wide" border="1" cellpadding="4" cellspacing="0">
+<tr><th scope="col">Syntax</th> <th scope="col">Name</th> <th scope="col">Definition</th>
+<br><br>
+</tr>
+<tr>
+ <td>\n</td>
+ <td>new&nbsp;line</td>
+ <td>Moves the printing to a new line</td>
+</tr>
+<tr>
+ <td>\r</td>
+ <td>carriage&nbsp;return</td>
+ <td>Moves the printing to the beginning of the current line</td>
+</tr>
+<tr>
+ <td>\t</td>
+ <td>tab</td>
+ <td>Moves the printing to the next tab stop</td>
+</tr>
+</table>
+<br><br>
+<p>For example, the  function, which does not start a new line automatically, would do so for every  character. Every occurrence of the  control character within the following literal represents the start of a new line:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    write(<span class="string_literal">"first line\nsecond line\nthird line\n"</span>);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output:
+</p>
+<br><br>
+
+<br><br>
+<h5>  Single quote and backslash</h5>
+<br><br>
+<p>The single quote character itself cannot be written within single quotes because the compiler would take the second one as the closing character of the first one: . The first two would be the opening and closing quotes, and the third one would be left alone, causing a compilation error.
+</p>
+<br><br>
+<p>Similarly, since the backslash character has a special meaning in the control character and literal syntaxes, the compiler would take it as the start of such a syntax: . The compiler then would be looking for a closing single quote character, not finding one, and emitting a compilation error.
+</p>
+<br><br>
+<p>For those reasons, the single quote and the backslash characters are <i>escaped</i> by a preceding backslash character:
+</p>
+<br><br>
+<table class="wide" border="1" cellpadding="4" cellspacing="0">
+<tr><th scope="col">Syntax</th> <th scope="col">Name</th> <th scope="col">Definition</th>
+<br><br>
+</tr>
+<tr>
+ <td>'</td>
+ <td>single&nbsp;quote</td>
+ <td>Allows specifying the single quote character:'''</td>
+</tr>
+<tr>
+ <td>\</td>
+ <td>backslash</td>
+ <td>Allows specifying the backslash character: '\' or "\"</td>
+</tr>
+</table>
+<br><br>
+<h5> The std.uni module</h5>
+<br><br>
+<p>The  module includes functions that are useful for working with Unicode characters. You can see this module at <a href="http://dlang.org/phobos/std_uni.html">its documentation</a>.
+</p>
+<br><br>
+<p>The functions that start with  answer certain questions about characters. The result is  or  depending on whether the answer is no or yes, respectively. These functions are useful in logical expressions:
+</p>
+<br><br>
+<ul><li>: is it a lowercase character?
+</li>
+<li>: is it an uppercase character?
+</li>
+<li>: is it a Unicode alphabetic character?
+</li>
+<li>: is it a whitespace character?
+</li>
+</ul>
+<br><br>
+<p>The functions that start with  produce new characters from existing ones:
+</p>
+<br><br>
+<ul><li>: produces the lowercase version of the given character
+</li>
+<li>: produces the uppercase version of the given character
+</li>
+</ul>
+<br><br>
+<p>Here is a program that uses all those functions:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+<span class="keyword">import</span> std.uni;
+
+<span class="keyword">void</span> main() {
+    writeln(<span class="string_literal">"Is ğ lowercase? "</span>, isLower('ğ'));
+    writeln(<span class="string_literal">"Is Ş lowercase? "</span>, isLower('Ş'));
+
+    writeln(<span class="string_literal">"Is İ uppercase? "</span>, isUpper('İ'));
+    writeln(<span class="string_literal">"Is ç uppercase? "</span>, isUpper('ç'));
+
+    writeln(<span class="string_literal">"Is z alphabetic? "</span>,       isAlpha('z'));
+    writeln(<span class="string_literal">"Is \&amp;euro; alphabetic? "</span>, isAlpha('\&amp;euro;'));
+
+    writeln(<span class="string_literal">"Is new-line whitespace? "</span>,   isWhite('\n'));
+    writeln(<span class="string_literal">"Is the underscore whitespace? "</span>, isWhite('_'));
+
+    writeln(<span class="string_literal">"The lowercase of Ğ: "</span>, toLower('Ğ'));
+    writeln(<span class="string_literal">"The lowercase of İ: "</span>, toLower('İ'));
+
+    writeln(<span class="string_literal">"The uppercase of ş: "</span>, toUpper('ş'));
+    writeln(<span class="string_literal">"The uppercase of ı: "</span>, toUpper('ı'));
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output:
+</p>
+<br><br>
+
+<br><br>
+<h5>Limited support for ı and i</h5>
+<br><br>
+<p>The lowercase and uppercase versions of the letters  and  are consistently dotted or undotted in some alphabets (e.g. the Turkish alphabet). Most other aphabets are inconsistent in this regard: the uppercase of the dotted  is undotted .
+</p>
+<br><br>
+<p>Because the computer systems have started with the ASCII table, traditionally the uppercase of  is  and the lowercase of  is . For that reason, these two letters may need special attention. The following program demonstrates this problem:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+<span class="keyword">import</span> std.uni;
+
+<span class="keyword">void</span> main() {
+    writeln(<span class="string_literal">"The uppercase of i: "</span>, toUpper('i'));
+    writeln(<span class="string_literal">"The lowercase of I: "</span>, toLower('I'));
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output is according to the basic Latin alphabet:
+</p>
+<br><br>
+
+<br><br>
+<p>Characters are converted between their uppercase and lowercase versions normally by their Unicode character codes. This method is problematic for many alphabets. For example, the Azeri and Celt alphabets are subject to the same problem of producing the lowercase of  as .
+</p>
+<br><br>
+<p>There are similar problems with sorting: Many letters like  and  may be sorted after  even for the basic Latin alphabet.
+</p>
+<br><br>
+<h5> Problems with reading characters</h5>
+<br><br>
+<p>The flexibility and power of D's Unicode characters may cause unexpected results when reading characters from an input stream. This contradiction is due to the multiple meanings of the term <i>character</i>. Before expanding on this further, let's look at a program that exhibits this problem:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">char</span> letter;
+    write(<span class="string_literal">"Please enter a letter: "</span>);
+    readf(<span class="string_literal">" %s"</span>, &amp;letter);
+    writeln(<span class="string_literal">"The letter that has been read: "</span>, letter);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>If you try that program in an environment that does not use Unicode, you may see that even the non-ASCII characters are read and printed correctly.
+</p>
+<br><br>
+<p>On the other hand, if you start the same program in a Unicode environment (e.g. a Linux terminal), you may see that the character printed on the output is not the same character that has been entered. To see this, let's enter a non-ASCII character in a terminal that uses the UTF-8 encoding (like most Linux terminals):
+</p>
+<br><br>
+
+<br><br>
+<p>The reason for this problem is that the non-ASCII characters like  are represented by two codes, and reading a  from the input reads only the first one of those codes. Since that single  is not sufficient to represent the whole Unicode character, the program does not have a complete character to display.
+</p>
+<br><br>
+<p>To show that the UTF-8 codes that make up a character are indeed read one  at a time, let's read two  variables and print them one after the other:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">char</span> firstCode;
+    <span class="keyword">char</span> secondCode;
+
+    write(<span class="string_literal">"Please enter a letter: "</span>);
+    readf(<span class="string_literal">" %s"</span>, &amp;firstCode);
+    readf(<span class="string_literal">" %s"</span>, &amp;secondCode);
+
+    writeln(<span class="string_literal">"The letter that has been read: "</span>,
+            firstCode, secondCode);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The program reads two  variables from the input and prints them in the same order that they are read. When those codes are sent to the terminal in that same order, they complete the UTF-8 encoding of the Unicode character on the terminal and this time the Unicode character is printed correctly:
+</p>
+<br><br>
+
+<br><br>
+<p>These results are also related to the fact that the standard inputs and outputs of programs are  streams.
+</p>
+<br><br>
+<p>We will see later in <a href="strings.html">the Strings chapter</a> that it is easier to read characters as strings, instead of dealing with UTF codes individually.
+</p>
+<br><br>
+<h5>D's Unicode support</h5>
+<br><br>
+<p>Unicode is a large and complicated standard. D supports a very useful subset of it.
+</p>
+<br><br>
+<p>A Unicode-encoded document consists of the following levels of concepts, from the lowermost to the uppermost:
+</p>
+<br><br>
+<ul><br><br>
+<li> <b>Code unit</b>: The values that make up the UTF encodings are called code units. Depending on the encoding and the characters themselves, Unicode characters are made up of one or more code units. For example, in the UTF-8 encoding the letter  is made up of a single code unit and the letter  is made up of two code units.
+<br><br>
+<p>D's character types , , and  correspond to UTF-8, UTF-16, and UTF-32 code units, respectively.
+</p>
+<br><br>
+</li>
+<br><br>
+<li> <b>Code point</b>: Every letter, numeral, symbol, etc. that the Unicode standard defines is called a code point. For example, the Unicode code values of  and  are two distinct code points.
+<br><br>
+<p>Depending on the encoding, code points are represented by one or more code units. As mentioned above, in the UTF-8 encoding  is represented by a single code unit, and  is represented by two code units. On the other hand, both  and  are represented by a single code unit in both UTF-16 and UTF-32 encodings.
+</p>
+<br><br>
+<p>The D type that supports code points is .  and  can only be used as code units.
+</p>
+<br><br>
+</li>
+<br><br>
+<li><b>Character</b>: Any symbol that the Unicode standard defines and what we call "character" or "letter" in daily talk is a character.
+<br><br>
+<p> This definition of character is flexible in Unicode, which brings a complication. Some characters can be formed by more than one code point. For example, the letter  can be specified in two ways:
+</p>
+<br><br>
+<ul><br><br>
+<li>as the single code point for </li>
+<br><br>
+<li>as the two code points for  and  (combining breve)
+<br><br>
+</li>
+<br><br>
+</ul>
+<br><br>
+<p>Although they would mean the same character to a human reader, the single code point  is different from the two consecutive code points  and .
+</p>
+<br><br>
+</li>
+<br><br>
+</ul>
+<br><br>
+<h5>Summary</h5>
+<br><br>
+<ul><br><br>
+<li>Unicode supports all characters of all writing systems.</li>
+<br><br>
+<li> is for UTF-8 encoding; although it is not suitable to represent characters in general, it supports the ASCII table.</li>
+<br><br>
+<li> is for UTF-16 encoding; although it is not suitable to represent characters in general, it can support letters of multiple alphabets.</li>
+<br><br>
+<li> is for UTF-32 encoding; as it is 32 bits, it can also represent code points.</li>
+<br><br>
+</ul>
+
+</section>
+      </article>
+    </div>
+  </body>
+</html>

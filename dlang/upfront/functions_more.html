@@ -1,0 +1,1606 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>More Functions</title>
+    <style type="text/css" media="screen">
+      html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p,
+      blockquote, pre, a, abbr, address, cite, code, del, dfn, em, figure,
+      img, ins, kbd, q, s, samp, small, strong, sub, sup, var, b, u, i, dl,
+      dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption,
+      tbody, tfoot, thead, tr, th, td {
+        background: transparent none repeat scroll 0 0;
+        border: 0 none;
+        font-size: 100%;
+        margin: 0;
+        outline: 0 none;
+        padding: 0;
+        vertical-align: baseline;
+      }
+
+      h1 { font-size: 200%; }
+      h2 { font-size: 160%; }
+      h3 { font-size: 120%; }
+      h4 { font-size: 100%; }
+      h5 { font-size: 80%; }
+      h6 { font-size: 80%; font-weight: normal; }
+
+      ul, ol {
+        margin: 1.4em 0;
+      }
+      ul ul, ol ol, ul ol, ol ul {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      ul, ol {
+        margin-left: 2.8em;
+      }
+
+      ol {
+        list-style: decimal;
+      }
+      ol ol {
+        list-style: lower-alpha;
+      }
+      ol ol ol {
+        list-style: lower-roman;
+      }
+      ol ol ol ol {
+        list-style: decimal;
+      }
+
+      blockquote {
+        margin: 0.1em;
+        margin-left: 1em;
+        border-left: 2px solid #cccccc;
+        padding-left: 0.7em;
+      }
+
+      .color_red { color: #dc322f; }
+      .color_blue { color: #268bd2; }
+      .color_green { color: #859901; }
+      .color_yellow { color: #b58901; }
+      .color_black { color: black; }
+      .color_white { color: white; }
+
+      .font_big {
+        font-size: 1.2em;
+      }
+
+      .ddoc_section_h {
+        font-weight: bold;
+        font-size: 13px;
+        line-height: 19.5px;
+        margin-top: 11px;
+        display: block;
+      }
+
+      body.dlang .dlang {
+        display: inline-block;
+      }
+
+      body.dlang .declaration .dlang {
+          display: block;
+      }
+
+      body.dlang .ddoc_header_anchor a.dlang {
+        display: block;
+        color: rgba(0, 136, 204, 1);
+        text-decoration: none;
+      }
+
+      body.dlang .ddoc_header_anchor .code {
+        color: rgba(0, 136, 204, 1);
+      }
+
+      #ddoc_main .module {
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          overflow-x: hidden;
+          padding: 15px;
+      }
+
+      #ddoc_main .section .section {
+        margin-top: 0;
+      }
+
+      #ddoc_main .ddoc_module_members_section {
+          padding: 1px 0 0;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members section.intro {
+          background: #fff none repeat scroll 0 0;
+          list-style-type: none;
+          width: 100%;
+      }
+
+      #ddoc_main .ddoc_header_anchor {
+          font-size: 1.4em;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_header_anchor > .code {
+          display: inline-block;
+
+      }
+
+      #ddoc_main .ddoc_decl {
+        background-color: transparent;
+        height: 100%;
+        left: 0;
+        top: 0;
+        padding: 0;
+        padding-left: 15px;
+      }
+
+      #ddoc_main .ddoc_decl .section, #ddoc_main .section.ddoc_sections {
+        background: white none repeat scroll 0 0;
+        margin: 0;
+        padding: 5px;
+        position: relative;
+        border-radius: 5px;
+      }
+
+      #ddoc_main .ddoc_decl .section h4:first-of-type, #ddoc_main .section.ddoc_sections h4:first-of-type {
+        font-size: 13px;
+        line-height: 1.5;
+        margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration {
+          margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration .code {
+          color: rgba(0, 0, 0, 1);
+          margin-bottom: 15px;
+          padding-bottom: 6px;
+      }
+
+      #ddoc_main .declaration div .para {
+          margin-bottom: 0;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr td:first-of-type {
+        padding: 7px;
+        text-align: right;
+        vertical-align: top;
+        word-break: normal;
+        white-space: nowrap;
+      }
+
+      #ddoc_main .ddoc_params .graybox {
+        border: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox td {
+        border-color: rgba(214, 214, 214, 1);
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:first-child > td {
+        border-top: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:last-child > td {
+        border-bottom: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:first-child {
+        border-left: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:last-child {
+        border-right: 0 none;
+        width: 100%;
+      }
+
+      #ddoc_main em.term, #ddoc_main em.term .code {
+        color: rgba(65, 65, 65, 1);
+        font-size: 12px;
+        font-style: italic;
+        line-height: 1.5;
+      }
+
+      #ddoc_main .see-also {
+        cursor: pointer;
+        font-family: Menlo,monospace;
+      }
+
+      #ddoc_main .ddoc_decl .section > div:last-of-type {
+        margin-bottom: 15px;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members {
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .code_sample {
+        background: inherit;
+      }
+
+      #ddoc_main .declaration .code-line {
+          display: block;
+          font: 1em Menlo,monospace;
+      }
+
+      #ddoc_main a[name] {
+        margin: -112px 0 0;
+        padding-top: 112px;
+      }
+
+      #ddoc_main .ddoc_decl td {
+        max-width: inherit;
+      }
+
+      #ddoc_main .declaration a {
+        color: inherit;
+      }
+
+      #ddoc_main .declaration a:hover {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: underline;
+      }
+
+      body.ddoc {
+        background-color: transparent;
+        color: rgba(0, 0, 0, 1);
+        font-family: Helvetica,Arial,sans-serif;
+        font-size: 62.5%;
+        margin: 0;
+        border: 0;
+        left: 0;
+        top: 0;
+        padding: 0;
+      }
+
+      .ddoc a[name] {
+        display: block;
+        height: 0;
+        margin: -85px 0 0;
+        padding-top: 85px;
+        width: 0;
+      }
+
+      .ddoc .module {
+          border-color: transparent;
+          background-color: rgba(255, 255, 255, 1);
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-image: none;
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          box-shadow: 0 0 1px rgba(0, 0, 0, 0.07);
+          display: block;
+          margin-left: 0;
+          min-height: calc(100% - 173px);
+          overflow: auto;
+          padding-bottom: 100px;
+      }
+
+      .ddoc .content_wrapper {
+          background-color: rgba(242, 242, 242, 1);
+          margin: 0 auto;
+          max-width: 980px;
+      }
+
+      .ddoc .section {
+        padding: 15px 25px 30px;
+      }
+
+      .ddoc .section .section {
+        margin: 30px 0 0;
+        padding: 0;
+      }
+
+      .ddoc .para {
+        color: rgba(65, 65, 65, 1);
+        font-size: 1.4em;
+        line-height: 145%;
+        margin-bottom: 15px;
+      }
+
+      .ddoc .ddoc_examples .para {
+        margin-bottom: 0;
+      }
+
+      .ddoc .module_name {
+          color: rgba(0, 0, 0, 1);
+          display: block;
+          font-family: Helvetica;
+          font-size: 2.8em;
+          font-weight: 100;
+          margin-bottom: 0;
+          padding: 15px 0;
+      }
+
+      .ddoc .module a {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: none;
+      }
+
+      .ddoc .code {
+        color: rgba(128, 128, 128, 1);
+        font-family: Menlo,monospace;
+        font-size: 0.85em;
+        word-wrap: break-word;
+      }
+
+      .ddoc .code i {
+        font-style: normal;
+      }
+
+      .ddoc .code .code {
+        font-size: 1em;
+      }
+
+      .ddoc .code_sample {
+        background-clip: padding-box;
+        margin: 1px 0;
+        text-align: left;
+      }
+
+      .ddoc .code_sample {
+        display: block;
+        font-size: 1.4em;
+        margin-left: 21px;
+      }
+
+      .ddoc ol .code_sample {
+        font-size: 1em;
+      }
+
+      .ddoc .code_lines {
+        counter-reset: li;
+        line-height: 1.6em;
+        list-style: outside none none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .ddoc .code_listing .code_sample div {
+        margin-left: 13px;
+        width: 93%;
+      }
+
+      .ddoc .code_listing .code_sample div .code_lines li {
+        list-style-type: none;
+        margin: 0;
+        padding-right: 10px;
+      }
+
+      .ddoc .code_sample div .code_lines li::before {
+        margin-left: -33px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+10)::before {
+        margin-left: -39px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+100)::before {
+        margin-left: -46px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample .code_lines .code {
+        color: #000;
+      }
+
+      .ddoc div.dlang {
+        margin: 10px 0 21px;
+        padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+          margin: 10px 0 21px;
+          padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+        border-left: 5px solid rgba(0, 155, 51, 0.2);
+      }
+
+      .ddoc .code_lines li::before {
+        color: rgba(128, 128, 128, 1);
+        content: counter(li, decimal);
+        counter-increment: li;
+        font-family: Menlo,monospace;
+        font-size: 0.9em;
+        margin-right: 16px;
+      }
+
+      .ddoc .code_lines li {
+        padding-left: 0;
+        white-space: pre-wrap;
+      }
+
+      .ddoc .code_lines li:only-of-type::before {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:only-of-type {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:nth-child(n+10) {
+        text-indent: -17px;
+      }
+
+      .ddoc .code_lines li:nth-child(n+10)::before {
+        margin-right: 12px;
+      }
+
+      .ddoc .graybox {
+        border: 1px solid rgba(233, 233, 233, 1);
+        border-collapse: collapse;
+        border-spacing: 0;
+        empty-cells: hide;
+        margin: 20px 0 36px;
+        text-align: left;
+      }
+
+      .ddoc .graybox p {
+        margin: 0;
+        min-width: 50px;
+      }
+
+      .ddoc th {
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: bottom;
+      }
+
+      .ddoc td {
+        border: 1px solid rgba(233, 233, 233, 1);
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: middle;
+      }
+
+      .punctuation {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .comment {
+        color: rgba(0, 131, 18, 1);
+      }
+
+      .operator {
+        color: #000;
+      }
+
+      .keyword {
+        color: rgba(170, 13, 145, 1);
+      }
+
+      .keyword_type {
+        color: rgba(170, 51, 145, 1);
+      }
+
+      .string_literal {
+        color: rgba(196, 26, 22, 1);
+      }
+
+      .ddoc_psuper_symbol {
+        color: rgba(92, 38, 153, 1);
+      }
+
+      .param {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .psymbol {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .ddoc_member_header .ddoc_header_anchor .code {
+        font-size: 1em;
+      }
+    </style>
+  </head>
+  <body id="ddoc_main" class="ddoc dlang">
+    <div class="content_wrapper">
+      <article class="module">
+        <h1 class="module_name">More Functions</h1>
+        <section id="module_content"><br><br>
+<br><br>
+
+<br><br>
+<p>Functions have been covered in the following chapters so far in the book:
+</p>
+<br><br>
+<ul><li><a href="functions.html">Functions</a></li>
+<br><br>
+<li><a href="function_parameters.html">Function Parameters</a></li>
+<br><br>
+<li><a href="function_overloading.html">Function Overloading</a></li>
+<br><br>
+<li><a href="lambda.html">Function Pointers, Delegates, and Lambdas</a></li>
+<br><br>
+</ul>
+<br><br>
+<p>This chapter will cover more features of functions.
+</p>
+<br><br>
+<h5>Return type attributes</h5>
+<br><br>
+<p>Functions can be marked as , , , and . These attributes are about return types of functions.
+</p>
+<br><br>
+<h6>   functions</h6>
+<br><br>
+<p>The return types of  functions need not be specified:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"> add(<span class="keyword">int</span> first, <span class="keyword">double</span> second) {
+    <span class="keyword">double</span> result = first + second;
+    <span class="keyword">return</span> result;
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The return type is deduced by the compiler from the  expression. Since the type of  is , the return type of  is .
+</p>
+<br><br>
+<p>If there are more than one  statement, then the return type of the function is their <i>common type</i>. (We have seen common type in <a href="ternary.html">the Ternary Operator ?: chapter</a>.) For example, because the common type of  and  is , the return type of the following  function is  as well:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">auto</span> func(<span class="keyword">int</span> i) {
+    <span class="keyword">if</span> (i &lt; 0) {
+        <span class="keyword">return</span> i;      <span class="comment">// returns 'int' here
+</span>    }
+
+    <span class="keyword">return</span> i * 1.5;    <span class="comment">// returns 'double' here
+</span>}
+
+<span class="keyword">void</span> main() {
+    <span class="comment">// The return type of the function is 'double'
+</span>    <span class="keyword">auto</span> result = func(42);
+    <span class="keyword">static</span> <span class="keyword">assert</span>(<span class="keyword">is</span> (<span class="keyword">typeof</span>(result) == ));
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h6>  functions</h6>
+<br><br>
+<p>Normally, the expression that is returned from a function is copied to the caller's context.  specifies that the expression should be returned by-reference instead.
+</p>
+<br><br>
+<p>For example, the following function returns the greater of its two parameters:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">int</span> greater(<span class="keyword">int</span> first, <span class="keyword">int</span> second) {
+    <span class="keyword">return</span> (first &gt; second) ? first : second;
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Normally, both the parameters and the return value of that function are copied:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">int</span> a = 1;
+    <span class="keyword">int</span> b = 2;
+    <span class="keyword">int</span> result = greater(a, b);
+    result += 10;                <span class="comment">// ← neither a nor b changes
+</span>    writefln(<span class="string_literal">"a: %s, b: %s, result: %s"</span>, a, b, result);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Because the return value of  is copied to , adding to  affects only that variable; neither  nor  changes:
+</p>
+<br><br>
+
+<br><br>
+<p> parameters are passed by references instead of being copied. The same keyword has the same effect on return values:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"> <span class="keyword">int</span> greater( <span class="keyword">int</span> first,  <span class="keyword">int</span> second) {
+    <span class="keyword">return</span> (first &gt; second) ? first : second;
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>This time, the returned reference would be an alias to one of the arguments and mutating the returned reference would modify either  or :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span> a = 1;
+    <span class="keyword">int</span> b = 2;
+    greater(a, b) += 10;         <span class="comment">// ← either a or b changes
+</span>    writefln(<span class="string_literal">"a: %s, b: %s"</span>, a, b);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Note that the returned reference is incremented directly. As a result, the greater of the two arguments changes:
+</p>
+<br><br>
+
+<br><br>
+<p>   <b>Local reference requires a pointer:</b> An important point is that although the return type is marked as ,  and  would still not change if the return value were assigned to a local variable:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span> result = greater(a, b);
+    result += 10;                <span class="comment">// ← only result changes
+</span></code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Although  returns a reference to  or , that reference gets copied to the local variable , and again neither  nor  changes:
+</p>
+<br><br>
+
+<br><br>
+<p>For  be a reference to  or , it has to be defined as a pointer:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span>  result = greater(a, b);
+    result += 10;
+    writefln(<span class="string_literal">"a: %s, b: %s, result: %s"</span>, a, b, result);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>This time  would be a reference to either  or  and the mutation through it would affect the actual variable:
+</p>
+<br><br>
+
+<br><br>
+<p><b>It is not possible to return a reference to a local variable:</b> The  return value is an alias to one of the arguments that start their lives even before the function is called. That means, regardless of whether a reference to  or  is returned, the returned reference refers to a variable that is still alive.
+</p>
+<br><br>
+<p>Conversely, it is not possible to return a reference to a variable that is not going to be alive upon leaving the function:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"> string parenthesized(string phrase) {
+    string result = '(' ~ phrase ~ ')';
+    <span class="keyword">return</span> result;    
+} <span class="comment">// ← the lifetime of result ends here
+</span></code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The lifetime of local  ends upon leaving the function. For that reason, it is not possible to return a reference to that variable:
+</p>
+<br><br>
+
+<br><br>
+<h6>  functions</h6>
+<br><br>
+<p> helps with functions like  above. Similar to , the return type of an  function is deduced by the compiler. Additionally, if the returned expression can be a reference, that variable is returned by reference as opposed to being copied.
+</p>
+<br><br>
+<p> can be compiled if the return type is :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"> string parenthesized(string phrase) {
+    string result = '(' ~ phrase ~ ')';
+    <span class="keyword">return</span> result;                  <span class="comment">// ← compiles
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The very first  statement of the function determines whether the function returns a copy or a reference.
+</p>
+<br><br>
+<p> is more useful in function templates where template parameters may be references or copies depending on context.
+</p>
+<br><br>
+<h6>  functions</h6>
+<br><br>
+<p>The  keyword appears for parameter and return types of functions. It works like a template for , , and <i>mutable</i>.
+</p>
+<br><br>
+<p>Let's rewrite the previous function as taking  (i.e. ) and returning :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">string parenthesized(string phrase) {
+    <span class="keyword">return</span> '(' ~ phrase ~ ')';
+}
+
+<span class="comment">// ...
+</span>
+    writeln(parenthesized(<span class="string_literal">"hello"</span>));
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>As expected, the code works with that  argument:
+</p>
+<br><br>
+
+<br><br>
+<p>However, as it works only with  strings, the function can be seen as being less useful than it could have been:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">char</span>[] m;    <span class="comment">// has mutable elements
+</span>    m ~= <span class="string_literal">"hello"</span>;
+    writeln(parenthesized(m));    
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<p>The same limitation applies to  strings as well.
+</p>
+<br><br>
+<p>One solution for this usability issue is to overload the function for  and <i>mutable</i> strings:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">char</span>[] parenthesized(<span class="keyword">char</span>[] phrase) {
+    <span class="keyword">return</span> '(' ~ phrase ~ ')';
+}
+
+<span class="keyword">const</span>(<span class="keyword">char</span>)[] parenthesized(<span class="keyword">const</span>(<span class="keyword">char</span>)[] phrase) {
+    <span class="keyword">return</span> '(' ~ phrase ~ ')';
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>That design would be less than ideal due to the obvious code duplications. Another solution would be to define the function as a template:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">T parenthesized(T)(T phrase) {
+    <span class="keyword">return</span> '(' ~ phrase ~ ')';
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Although that would work, this time it may be seen as being too flexible and potentially requiring template constraints.
+</p>
+<br><br>
+<p> is very similar to the template solution. The difference is that not the entire type but just the mutability attribute is deduced from the parameter:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">(<span class="keyword">char</span>)[] parenthesized((<span class="keyword">char</span>)[] phrase) {
+    <span class="keyword">return</span> '(' ~ phrase ~ ')';
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p> transfers the deduced mutability attribute to the return type.
+</p>
+<br><br>
+<p>When the function is called with  , it gets compiled as if  is not specified at all. On the other hand, when called with  or ,  means  or , respectively.
+</p>
+<br><br>
+<p>The following code demonstrates this by printing the type of the returned expression:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">char</span>[] m;
+    writeln(<span class="keyword">typeof</span>(parenthesized(m)).stringof);
+
+    <span class="keyword">const</span>(<span class="keyword">char</span>)[] c;
+    writeln(<span class="keyword">typeof</span>(parenthesized(c)).stringof);
+
+    <span class="keyword">immutable</span>(<span class="keyword">char</span>)[] i;
+    writeln(<span class="keyword">typeof</span>(parenthesized(i)).stringof);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output:
+</p>
+<br><br>
+
+<br><br>
+<h5>Behavioral attributes</h5>
+<br><br>
+<p>, , and  are about function behaviors.
+</p>
+<br><br>
+<h6>  functions</h6>
+<br><br>
+<p>As we have seen in <a href="functions.html">the Functions chapter</a>, functions can produce return values and side effects. When possible, return values should be preferred over side effects because functions that do not have side effects are easier to make sense of, which in turn helps with program correctness and maintainability.
+</p>
+<br><br>
+<p>A similar concept is the purity of a function. Purity is defined differently in D from most other programming languages: In D, a function that does not access <i>mutable</i> global or  state is pure. (Since input and output streams are considered as mutable global state, pure functions cannot perform input or output operations either.)
+</p>
+<br><br>
+<p>In other words, a function is pure if it produces its return value and side effects only by accessing its parameters, local variables, and <i>immutable</i> global state.
+</p>
+<br><br>
+<p>An important aspect of purity in D is that pure functions can mutate their parameters.
+</p>
+<br><br>
+<p>Additionally, the following operations that mutate the global state of the program are explicitly allowed in pure functions:
+</p>
+<br><br>
+<ul><li>Allocate memory with the  expression</li>
+<li>Terminate the program</li>
+<li>Access the floating point processing flags</li>
+<li>Throw exceptions</li>
+</ul>
+<br><br>
+<p>The  keyword specifies that a function should behave according to those conditions and the compiler guarantees that it does so.
+</p>
+<br><br>
+<p>Naturally, since impure functions do not provide the same guarantees, a pure function cannot call impure functions.
+</p>
+<br><br>
+<p>The following program demonstrates some of the operations that a pure function can and cannot perform:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+<span class="keyword">import</span> std.exception;
+
+<span class="keyword">int</span> mutableGlobal;
+<span class="keyword">const</span> <span class="keyword">int</span> constGlobal;
+<span class="keyword">immutable</span> <span class="keyword">int</span> immutableGlobal;
+
+<span class="keyword">void</span> impureFunction() {
+}
+
+<span class="keyword">int</span> pureFunction(<span class="keyword">ref</span> <span class="keyword">int</span> i, <span class="keyword">int</span>[] slice)  {
+    <span class="comment">// Can throw exceptions:
+</span>    enforce(slice.length &gt;= 1);
+
+    <span class="comment">// Can mutate its parameters:
+</span>    i = 42;
+    slice[0] = 43;
+
+    <span class="comment">// Can access immutable global state:
+</span>    i = constGlobal;
+    i = immutableGlobal;
+
+    <span class="comment">// Can use the new expression:
+</span>    <span class="keyword">auto</span> p = <span class="keyword">new</span> <span class="keyword">int</span>;
+
+    <span class="comment">// Cannot access mutable global state:
+</span>    i = mutableGlobal;    
+
+    <span class="comment">// Cannot perform input and output operations:
+</span>    writeln(i);           
+
+    <span class="keyword">static</span> <span class="keyword">int</span> mutableStatic;
+
+    <span class="comment">// Cannot access mutable static state:
+</span>    i = mutableStatic;    
+
+    <span class="comment">// Cannot call impure functions:
+</span>    impureFunction();     
+
+    <span class="keyword">return</span> 0;
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">int</span> i;
+    <span class="keyword">int</span>[] slice = [ 1 ];
+    pureFunction(i, slice);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Although they are allowed to, some pure functions do not mutate their parameters. Following from the rules of purity, the only observable effect of such a function would be its return value. Further, since the function cannot access any mutable global state, the return value would be the same for a given set of arguments, regardless of when and how many times the function is called during the execution of the program. This fact gives both the compiler and the programmer optimization opportunities. For example, instead of calling the function a second time for a given set of arguments, its return value from the first call can be cached and used instead of actually calling the function again.
+</p>
+<br><br>
+<p>  Since the exact code that gets generated for a template instantiation depends on the actual template arguments, whether the generated code is pure depends on the arguments as well. For that reason, the purity of a template is inferred by the compiler from the generated code. (The  keyword can still be specified by the programmer.) Similarly, the purity of an  function is inferred.
+</p>
+<br><br>
+<p>As a simple example, since the following function template would be impure when  is zero, it would not be possible to call  from a pure function:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="comment">// This template is impure when N is zero
+</span><span class="keyword">void</span> templ(size_t N)() {
+    <span class="keyword">static</span> <span class="keyword">if</span> (N == 0) {
+        <span class="comment">// Prints when N is zero:
+</span>        writeln(<span class="string_literal">"zero"</span>);
+    }
+}
+
+<span class="keyword">void</span> foo()  {
+    templ!0();    
+}
+
+<span class="keyword">void</span> main() {
+    foo();
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The compiler infers that the  instantiation of the template is impure and rejects calling it from the pure function :
+</p>
+<br><br>
+
+<br><br>
+<p>However, since the instantiation of the template for values other than zero is pure, the program can be compiled for such values:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> foo()  {
+    templ!1();    <span class="comment">// ← compiles
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>We have seen earlier above that input and output functions like  cannot be used in pure functions because they access global state. Sometimes such limitations are too restrictive e.g. when needing to print a message temporarily during debugging. For that reason, the purity rules are relaxed for code that is marked as :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">debug</span> size_t fooCounter;
+
+<span class="keyword">void</span> foo(<span class="keyword">int</span> i)  {
+     ++fooCounter;
+
+    <span class="keyword">if</span> (i == 0) {
+         writeln(<span class="string_literal">"i is zero"</span>);
+        i = 42;
+    }
+
+    <span class="comment">// ...
+</span>}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">foreach</span> (i; 0..100) {
+        <span class="keyword">if</span> ((i % 10) == 0) {
+            foo(i);
+        }
+    }
+
+    <span class="keyword">debug</span> writefln(<span class="string_literal">"foo is called %s times"</span>, fooCounter);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The pure function above mutates the global state of the program by modifying a global variable and printing a message. Despite those impure operations, it still can be compiled because those operations are marked as .
+</p>
+<br><br>
+<p><i><b>Note:</b> Remember that those statements are included in the program only if the program is compiled with the  command line switch.</i>
+</p>
+<br><br>
+<p>Member functions can be marked as  as well. Subclasses can override impure functions as  but the reverse is not allowed:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">interface</span> Iface {
+    <span class="keyword">void</span> foo() <span class="keyword">pure</span>;    <span class="comment">// Subclasses must define foo as pure.
+</span>
+    <span class="keyword">void</span> bar();         <span class="comment">// Subclasses may define bar as pure.
+</span>}
+
+<span class="keyword">class</span> Class : Iface {
+    <span class="keyword">void</span> foo() <span class="keyword">pure</span> {   <span class="comment">// Required to be pure
+</span>        <span class="comment">// ...
+</span>    }
+
+    <span class="keyword">void</span> bar() <span class="keyword">pure</span> {   <span class="comment">// pure although not required
+</span>        <span class="comment">// ...
+</span>    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Delegates and anonymous functions can be pure as well. Similar to templates, whether a function or delegate literal, or  function is pure is inferred by the compiler:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> foo(<span class="keyword">int</span> <span class="keyword">delegate</span>(<span class="keyword">double</span>)  dg) {
+    <span class="keyword">int</span> i = dg(1.5);
+}
+
+<span class="keyword">void</span> main() {
+    foo(a =&gt; 42);                <span class="comment">// ← compiles
+</span>
+    foo((a) {                    
+            writeln(<span class="string_literal">"hello"</span>);
+            <span class="keyword">return</span> 42;
+        });
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p> above requires that its parameter be a pure delegate. The compiler infers that the lambda  is pure and allows it as an argument for . However, since the other delegate is impure it cannot be passed to :
+</p>
+<br><br>
+
+<br><br>
+<p>One benefit of  functions is that their return values can be used to initialize  variables. Although the array produced by  below is mutable, it is not possible for its elements to be changed by any code outside of that function. For that reason, the initialization works.
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">int</span>[] makeNumbers() <span class="keyword">pure</span> {
+    <span class="keyword">int</span>[] result;
+    result ~= 42;
+    <span class="keyword">return</span> result;
+}
+
+<span class="keyword">void</span> main() {
+     array = makeNumbers();
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h6>   functions</h6>
+<br><br>
+<p>We saw the exception mechanism in <a href="exceptions.html">the Exceptions chapter.</a>
+</p>
+<br><br>
+<p>It would be good practice for functions to document the types of exceptions that they may throw under specific error conditions. However, as a general rule, callers should assume that any function can throw any exception.
+</p>
+<br><br>
+<p>Sometimes it is more important to know that a function does not emit any exception at all. For example, some algorithms can take advantage of the fact that certain of their steps cannot be interrupted by an exception.
+</p>
+<br><br>
+<p> guarantees that a function does not emit any exception:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">int</span> add(<span class="keyword">int</span> lhs, <span class="keyword">int</span> rhs)  {
+    <span class="comment">// ...
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p><i><b>Note:</b> Remember that it is not recommended to catch  nor its base class . What is meant here by "any exception" is "any exception that is defined under the  hierarchy." A  function can still emit exceptions that are under the  hierarchy, which represents irrecoverable error conditions that should preclude the program from continuing its execution.</i>
+</p>
+<br><br>
+<p>Such a function can neither throw an exception itself nor can call a function that may throw an exception:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">int</span> add(<span class="keyword">int</span> lhs, <span class="keyword">int</span> rhs) <span class="keyword">nothrow</span> {
+    writeln(<span class="string_literal">"adding"</span>);    
+    <span class="keyword">return</span> lhs + rhs;
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The compiler rejects the code because  violates the no-throw guarantee:
+</p>
+<br><br>
+
+<br><br>
+<p>This is because  is not (and cannot be) a  function.
+</p>
+<br><br>
+<p>  The compiler can infer that a function can never emit an exception. The following implementation of  is  because it is obvious to the compiler that the  block prevents any exception from escaping the function:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">int</span> add(<span class="keyword">int</span> lhs, <span class="keyword">int</span> rhs) <span class="keyword">nothrow</span> {
+    <span class="keyword">int</span> result;
+
+    <span class="keyword">try</span> {
+        writeln(<span class="string_literal">"adding"</span>);    <span class="comment">// ← compiles
+</span>        result = lhs + rhs;
+
+    } <span class="keyword">catch</span> (Exception error) {   <span class="comment">// catches all exceptions
+</span>        <span class="comment">// ...
+</span>    }
+
+    <span class="keyword">return</span> result;
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>As mentioned above,  does not include exceptions that are under the  hierarchy. For example, although accessing an element of an array with  can throw , the following function can still be defined as :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">int</span> foo(<span class="keyword">int</span>[] arr, size_t i)  {
+    <span class="keyword">return</span> 10 * arr;
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>As with purity, the compiler automatically deduces whether a template, delegate, or anonymous function is .
+</p>
+<br><br>
+<h6>  functions</h6>
+<br><br>
+<p>D is a garbage collected language. Many data structures and algorithms in most D programs take advantage of dynamic memory blocks that are managed by the garbage collector (GC). Such memory blocks are reclaimed again by the GC by an algorithm called <i>garbage collection</i>.
+</p>
+<br><br>
+<p>Some commonly used D operations take advantage of the GC as well. For example, elements of arrays live on dynamic memory blocks:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="comment">// A function that takes advantage of the GC indirectly
+</span><span class="keyword">int</span>[] append(<span class="keyword">int</span>[] slice) {
+    slice  42;
+    <span class="keyword">return</span> slice;
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>If the slice does not have sufficient capacity, the  operator above allocates a new memory block from the GC.
+</p>
+<br><br>
+<p>Although the GC is a significant convenience for data structures and algorithms, memory allocation and garbage collection are costly operations that make the execution of some programs noticeably slow.
+</p>
+<br><br>
+<p> means that a function cannot use the GC directly or indirectly:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> foo()  {
+    <span class="comment">// ...
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The compiler guarantees that a  function does not involve GC operations. For example, the following function cannot call  above, which does not provide the  guarantee:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> foo()  {
+    <span class="keyword">int</span>[] slice;
+    <span class="comment">// ...
+</span>    append(slice);    
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<h5>Code safety attributes</h5>
+<br><br>
+<p>  , , and  are about the code safety that a function provides. As with purity, the compiler infers the safety level of templates, delegates, anonymous functions, and  functions.
+</p>
+<br><br>
+<h6>  functions</h6>
+<br><br>
+<p>A class of programming errors involve <i>corrupting</i> data at unrelated locations in memory by writing at those locations unintentionally. Such errors are mostly due to mistakes made in using pointers and applying type casts.
+</p>
+<br><br>
+<p> functions guarantee that they do not contain any operation that may corrupt memory. The compiler does not allow the following operations in  functions:
+</p>
+<br><br>
+<ul><br><br>
+<li>Pointers cannot be converted to other pointer types other than .</li>
+<br><br>
+<li>A non-pointer expression cannot be converted to a pointer value.</li>
+<br><br>
+<li>Pointer values cannot be changed (no pointer <i>arithmetic</i>; however, assigning a pointer to another pointer of the same type is safe).</li>
+<br><br>
+<li>Unions that have pointer or reference members cannot be used.</li>
+<br><br>
+<li>Functions marked as  cannot be called.</li>
+<br><br>
+<li>Exceptions that are not descended from  cannot be caught.</li>
+<br><br>
+<li><i>Inline assembler</i> cannot be used.</li>
+<br><br>
+<li><i>Mutable</i> variables cannot be cast to .</li>
+<br><br>
+<li> variables cannot be cast to <i>mutable</i>.</li>
+<br><br>
+<li>Thread-local variables cannot be cast to .</li>
+<br><br>
+<li> variables cannot be cast to thread-local.</li>
+<br><br>
+<li>Addresses of function-local variables cannot be taken.</li>
+<br><br>
+<li> variables cannot be accessed.</li>
+<br><br>
+</ul>
+<br><br>
+<h6>  functions</h6>
+<br><br>
+<p>Some functions may actually be safe but cannot be marked as  for various reasons. For example, a function may have to call a library written in C, where no language support exists for safety in that language.
+</p>
+<br><br>
+<p>Some other functions may actually perform operations that are not allowed in  code, but may be well tested and <i>trusted</i> to be correct.
+</p>
+<br><br>
+<p> is an attribute that communicates to the compiler that <i>although the function cannot be marked as , consider it safe</i>. The compiler trusts the programmer and treats  code as if it is safe. For example, it allows  code to call  code.
+</p>
+<br><br>
+<h6>  functions</h6>
+<br><br>
+<p>Any function that is not marked as  or  is considered , which is the default safety attribute.
+</p>
+<br><br>
+<h5>  Compile time function execution (CTFE)</h5>
+<br><br>
+<p>In many programming languages, computations that are performed at compile time are very limited. Such computations are usually as simple as calculating the length of a fixed-length array or simple arithmetic operations:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    writeln(1 + 2);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The  expression above is compiled as if it has been written as ; there is no computation at runtime.
+</p>
+<br><br>
+<p>D has CTFE, which allows any function to be executed at compile time as long as it is possible to do so.
+</p>
+<br><br>
+<p>Let's consider the following program that prints a menu to the output:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+<span class="keyword">import</span> std.string;
+<span class="keyword">import</span> std.range;
+
+string menuLines(string[] choices) {
+    string result;
+
+    <span class="keyword">foreach</span> (i, choice; choices) {
+        result ~= format(<span class="string_literal">" %s. %s\n"</span>, i + 1, choice);
+    }
+
+    <span class="keyword">return</span> result;
+}
+
+string menu(string title,
+            string[] choices,
+            size_t width) {
+    <span class="keyword">return</span> format(<span class="string_literal">"%s\n%s\n%s"</span>,
+                  title.center(width),
+                  '='.repeat(width),    <span class="comment">// horizontal line
+</span>                  menuLines(choices));
+}
+
+<span class="keyword">void</span> main() {
+     drinks =
+        menu(<span class="string_literal">"Drinks"</span>,
+             [ <span class="string_literal">"Coffee"</span>, <span class="string_literal">"Tea"</span>, <span class="string_literal">"Hot chocolate"</span> ], 20);
+
+    writeln(drinks);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Although the same result can be achieved in different ways, the program above performs non-trivial operations to produce the following :
+</p>
+<br><br>
+
+<br><br>
+<p>Remember that the initial value of  constants like  must be known at compile time. That fact is sufficient for  to be executed at compile time. The value that it returns at compile time is used as the initial value of . As a result, the program is compiled as if that value is written explicitly in the program:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="comment">// The equivalent of the code above:
+</span>    <span class="keyword">enum</span> drinks = <span class="string_literal">"       Drinks       \n"</span>
+                  <span class="string_literal">"====================\n"</span>
+                  <span class="string_literal">" 1. Coffee\n"</span>
+                  <span class="string_literal">" 2. Tea\n"</span>
+                  <span class="string_literal">" 3. Hot chocolate\n"</span>;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>For a function to be executed at compile time, it must appear in an expression that in fact is needed at compile time:
+</p>
+<br><br>
+<ul><li>Initializing a  variable</li>
+<li>Initializing an  variable</li>
+<li>Calculating the length of a fixed-length array</li>
+<li>Calculating a template <i>value</i> argument</li>
+</ul>
+<br><br>
+<p>Clearly, it would not be possible to execute every function at compile time. For example, a function that accesses a global variable cannot be executed at compile time because the global variable does not start its life until run time. Similarly, since  is available only at run time, functions that print cannot be executed at compile time.
+</p>
+<br><br>
+<h6> The  variable</h6>
+<br><br>
+<p>It is a powerful aspect of CTFE that the same function is used for both compile time and run time depending on when its result is needed. Although the function need not be written in any special way for CTFE, some operations in the function may make sense only at compile time or run time. The special variable  can be used to differentiate the code that are only for compile time or only for run time. The value of this variable is  when the function is being executed for CTFE,  otherwise:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+size_t counter;
+
+<span class="keyword">int</span> foo() {
+    <span class="keyword">if</span> (!) {
+        <span class="comment">// This code is for execution at run time
+</span>        ++counter;
+    }
+
+    <span class="keyword">return</span> 42;
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">enum</span> i = foo();
+    <span class="keyword">auto</span> j = foo();
+    writefln(<span class="string_literal">"foo is called %s times."</span>, counter);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>As  lives only at run time, it cannot be incremented at compile time. For that reason, the code above attempts to increment it only for run-time execution. Since the value of  is determined at compile time and the value of  is determined at run time,  is reported to have been called just once during the execution of the program:
+</p>
+<br><br>
+
+<br><br>
+<h5>Summary</h5>
+<br><br>
+<ul><br><br>
+<li>The return type of an  function is deduced automatically.</li>
+<br><br>
+<li>The return value of a  function is a reference to an existing variable.</li>
+<br><br>
+<li>The return value of an  function is a reference if possible, a copy otherwise.</li>
+<br><br>
+<li> carries the , , or <i>mutable</i> attribute of the parameter to the return type.</li>
+<br><br>
+<li>A  function cannot access <i>mutable</i> global or static state. The compiler infers the purity of templates, delegates, anonymous functions, and  functions.</li>
+<br><br>
+<li> functions cannot emit exceptions. The compiler infers whether a template, delegate, anonymous function, or  function is no-throw.</li>
+<br><br>
+<li> functions cannot involve GC operations.</li>
+<br><br>
+<li> functions cannot corrupt memory. The compiler infers the safety attributes of templates, delegates, anonymous functions, and  functions.</li>
+<br><br>
+<li> functions are indeed safe but cannot be specified as such; they are considered  both by the programmer and the compiler.</li>
+<br><br>
+<li> functions can use every D feature.  is the default safety attribute.</li>
+<br><br>
+<li>Functions can be executed at compile time as well (CTFE). This can be differentiated by the value of the special variable .</li>
+<br><br>
+</ul>
+
+</section>
+      </article>
+    </div>
+  </body>
+</html>
