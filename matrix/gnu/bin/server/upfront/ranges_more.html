@@ -1,0 +1,1026 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>ranges_more</title>
+    <style type="text/css" media="screen">
+      html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p,
+      blockquote, pre, a, abbr, address, cite, code, del, dfn, em, figure,
+      img, ins, kbd, q, s, samp, small, strong, sub, sup, var, b, u, i, dl,
+      dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption,
+      tbody, tfoot, thead, tr, th, td {
+        background: transparent none repeat scroll 0 0;
+        border: 0 none;
+        font-size: 100%;
+        margin: 0;
+        outline: 0 none;
+        padding: 0;
+        vertical-align: baseline;
+      }
+
+      h1 { font-size: 200%; }
+      h2 { font-size: 160%; }
+      h3 { font-size: 120%; }
+      h4 { font-size: 100%; }
+      h5 { font-size: 80%; }
+      h6 { font-size: 80%; font-weight: normal; }
+
+      ul, ol {
+        margin: 1.4em 0;
+      }
+      ul ul, ol ol, ul ol, ol ul {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      ul, ol {
+        margin-left: 2.8em;
+      }
+
+      ol {
+        list-style: decimal;
+      }
+      ol ol {
+        list-style: lower-alpha;
+      }
+      ol ol ol {
+        list-style: lower-roman;
+      }
+      ol ol ol ol {
+        list-style: decimal;
+      }
+
+      blockquote {
+        margin: 0.1em;
+        margin-left: 1em;
+        border-left: 2px solid #cccccc;
+        padding-left: 0.7em;
+      }
+
+      .color_red { color: #dc322f; }
+      .color_blue { color: #268bd2; }
+      .color_green { color: #859901; }
+      .color_yellow { color: #b58901; }
+      .color_black { color: black; }
+      .color_white { color: white; }
+
+      .font_big {
+        font-size: 1.2em;
+      }
+
+      .ddoc_section_h {
+        font-weight: bold;
+        font-size: 13px;
+        line-height: 19.5px;
+        margin-top: 11px;
+        display: block;
+      }
+
+      body.dlang .dlang {
+        display: inline-block;
+      }
+
+      body.dlang .declaration .dlang {
+          display: block;
+      }
+
+      body.dlang .ddoc_header_anchor a.dlang {
+        display: block;
+        color: rgba(0, 136, 204, 1);
+        text-decoration: none;
+      }
+
+      body.dlang .ddoc_header_anchor .code {
+        color: rgba(0, 136, 204, 1);
+      }
+
+      #ddoc_main .module {
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          overflow-x: hidden;
+          padding: 15px;
+      }
+
+      #ddoc_main .section .section {
+        margin-top: 0;
+      }
+
+      #ddoc_main .ddoc_module_members_section {
+          padding: 1px 0 0;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members section.intro {
+          background: #fff none repeat scroll 0 0;
+          list-style-type: none;
+          width: 100%;
+      }
+
+      #ddoc_main .ddoc_header_anchor {
+          font-size: 1.4em;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_header_anchor > .code {
+          display: inline-block;
+
+      }
+
+      #ddoc_main .ddoc_decl {
+        background-color: transparent;
+        height: 100%;
+        left: 0;
+        top: 0;
+        padding: 0;
+        padding-left: 15px;
+      }
+
+      #ddoc_main .ddoc_decl .section, #ddoc_main .section.ddoc_sections {
+        background: white none repeat scroll 0 0;
+        margin: 0;
+        padding: 5px;
+        position: relative;
+        border-radius: 5px;
+      }
+
+      #ddoc_main .ddoc_decl .section h4:first-of-type, #ddoc_main .section.ddoc_sections h4:first-of-type {
+        font-size: 13px;
+        line-height: 1.5;
+        margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration {
+          margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration .code {
+          color: rgba(0, 0, 0, 1);
+          margin-bottom: 15px;
+          padding-bottom: 6px;
+      }
+
+      #ddoc_main .declaration div .para {
+          margin-bottom: 0;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr td:first-of-type {
+        padding: 7px;
+        text-align: right;
+        vertical-align: top;
+        word-break: normal;
+        white-space: nowrap;
+      }
+
+      #ddoc_main .ddoc_params .graybox {
+        border: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox td {
+        border-color: rgba(214, 214, 214, 1);
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:first-child > td {
+        border-top: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:last-child > td {
+        border-bottom: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:first-child {
+        border-left: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:last-child {
+        border-right: 0 none;
+        width: 100%;
+      }
+
+      #ddoc_main em.term, #ddoc_main em.term .code {
+        color: rgba(65, 65, 65, 1);
+        font-size: 12px;
+        font-style: italic;
+        line-height: 1.5;
+      }
+
+      #ddoc_main .see-also {
+        cursor: pointer;
+        font-family: Menlo,monospace;
+      }
+
+      #ddoc_main .ddoc_decl .section > div:last-of-type {
+        margin-bottom: 15px;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members {
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .code_sample {
+        background: inherit;
+      }
+
+      #ddoc_main .declaration .code-line {
+          display: block;
+          font: 1em Menlo,monospace;
+      }
+
+      #ddoc_main a[name] {
+        margin: -112px 0 0;
+        padding-top: 112px;
+      }
+
+      #ddoc_main .ddoc_decl td {
+        max-width: inherit;
+      }
+
+      #ddoc_main .declaration a {
+        color: inherit;
+      }
+
+      #ddoc_main .declaration a:hover {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: underline;
+      }
+
+      body.ddoc {
+        background-color: transparent;
+        color: rgba(0, 0, 0, 1);
+        font-family: Helvetica,Arial,sans-serif;
+        font-size: 62.5%;
+        margin: 0;
+        border: 0;
+        left: 0;
+        top: 0;
+        padding: 0;
+      }
+
+      .ddoc a[name] {
+        display: block;
+        height: 0;
+        margin: -85px 0 0;
+        padding-top: 85px;
+        width: 0;
+      }
+
+      .ddoc .module {
+          border-color: transparent;
+          background-color: rgba(255, 255, 255, 1);
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-image: none;
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          box-shadow: 0 0 1px rgba(0, 0, 0, 0.07);
+          display: block;
+          margin-left: 0;
+          min-height: calc(100% - 173px);
+          overflow: auto;
+          padding-bottom: 100px;
+      }
+
+      .ddoc .content_wrapper {
+          background-color: rgba(242, 242, 242, 1);
+          margin: 0 auto;
+          max-width: 980px;
+      }
+
+      .ddoc .section {
+        padding: 15px 25px 30px;
+      }
+
+      .ddoc .section .section {
+        margin: 30px 0 0;
+        padding: 0;
+      }
+
+      .ddoc .para {
+        color: rgba(65, 65, 65, 1);
+        font-size: 1.4em;
+        line-height: 145%;
+        margin-bottom: 15px;
+      }
+
+      .ddoc .ddoc_examples .para {
+        margin-bottom: 0;
+      }
+
+      .ddoc .module_name {
+          color: rgba(0, 0, 0, 1);
+          display: block;
+          font-family: Helvetica;
+          font-size: 2.8em;
+          font-weight: 100;
+          margin-bottom: 0;
+          padding: 15px 0;
+      }
+
+      .ddoc .module a {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: none;
+      }
+
+      .ddoc .code {
+        color: rgba(128, 128, 128, 1);
+        font-family: Menlo,monospace;
+        font-size: 0.85em;
+        word-wrap: break-word;
+      }
+
+      .ddoc .code i {
+        font-style: normal;
+      }
+
+      .ddoc .code .code {
+        font-size: 1em;
+      }
+
+      .ddoc .code_sample {
+        background-clip: padding-box;
+        margin: 1px 0;
+        text-align: left;
+      }
+
+      .ddoc .code_sample {
+        display: block;
+        font-size: 1.4em;
+        margin-left: 21px;
+      }
+
+      .ddoc ol .code_sample {
+        font-size: 1em;
+      }
+
+      .ddoc .code_lines {
+        counter-reset: li;
+        line-height: 1.6em;
+        list-style: outside none none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .ddoc .code_listing .code_sample div {
+        margin-left: 13px;
+        width: 93%;
+      }
+
+      .ddoc .code_listing .code_sample div .code_lines li {
+        list-style-type: none;
+        margin: 0;
+        padding-right: 10px;
+      }
+
+      .ddoc .code_sample div .code_lines li::before {
+        margin-left: -33px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+10)::before {
+        margin-left: -39px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+100)::before {
+        margin-left: -46px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample .code_lines .code {
+        color: #000;
+      }
+
+      .ddoc div.dlang {
+        margin: 10px 0 21px;
+        padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+          margin: 10px 0 21px;
+          padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+        border-left: 5px solid rgba(0, 155, 51, 0.2);
+      }
+
+      .ddoc .code_lines li::before {
+        color: rgba(128, 128, 128, 1);
+        content: counter(li, decimal);
+        counter-increment: li;
+        font-family: Menlo,monospace;
+        font-size: 0.9em;
+        margin-right: 16px;
+      }
+
+      .ddoc .code_lines li {
+        padding-left: 0;
+        white-space: pre-wrap;
+      }
+
+      .ddoc .code_lines li:only-of-type::before {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:only-of-type {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:nth-child(n+10) {
+        text-indent: -17px;
+      }
+
+      .ddoc .code_lines li:nth-child(n+10)::before {
+        margin-right: 12px;
+      }
+
+      .ddoc .graybox {
+        border: 1px solid rgba(233, 233, 233, 1);
+        border-collapse: collapse;
+        border-spacing: 0;
+        empty-cells: hide;
+        margin: 20px 0 36px;
+        text-align: left;
+      }
+
+      .ddoc .graybox p {
+        margin: 0;
+        min-width: 50px;
+      }
+
+      .ddoc th {
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: bottom;
+      }
+
+      .ddoc td {
+        border: 1px solid rgba(233, 233, 233, 1);
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: middle;
+      }
+
+      .punctuation {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .comment {
+        color: rgba(0, 131, 18, 1);
+      }
+
+      .operator {
+        color: #000;
+      }
+
+      .keyword {
+        color: rgba(170, 13, 145, 1);
+      }
+
+      .keyword_type {
+        color: rgba(170, 51, 145, 1);
+      }
+
+      .string_literal {
+        color: rgba(196, 26, 22, 1);
+      }
+
+      .ddoc_psuper_symbol {
+        color: rgba(92, 38, 153, 1);
+      }
+
+      .param {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .psymbol {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .ddoc_member_header .ddoc_header_anchor .code {
+        font-size: 1em;
+      }
+    </style>
+  </head>
+  <body id="ddoc_main" class="ddoc dlang">
+    <div class="content_wrapper">
+      <article class="module">
+        <h1 class="module_name">ranges_more</h1>
+        <section id="module_content"><br><br>
+<br><br>
+
+<br><br>
+<p>We used mostly  ranges in the previous chapter. In practice, containers, algorithms, and ranges are almost always implemented as templates. The  example in that chapter was a template as well:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> print(T range) {
+    <span class="comment">// ...
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>What lacks from the implementation of  is that even though it requires  to be a kind of , it does not formalize that requirement with a template constraint. (We have seen template constraints in <a href="templates_more.html">the More Templates chapter</a>.)
+</p>
+<br><br>
+<p>The  module contains templates that are useful both in template constraints and in  statements.
+</p>
+<br><br>
+<h5>Range kind templates</h5>
+<br><br>
+<p>The group of templates with names starting with  determine whether a type satisfies the requirements of a certain kind of range. For example,  answers the question "is  an ?" The following templates are for determining whether a type is of a specific general range kind:
+</p>
+<br><br>
+<ul><li> </li>
+<li> </li>
+<li> </li>
+<li> </li>
+<li> </li>
+</ul>
+<br><br>
+<p>Accordingly, the template constraint of  can use :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> print(T)(T range)
+        <span class="keyword">if</span> () {
+    <span class="comment">// ...
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Unlike the others,  takes two template parameters: The first one is a range type and the second one is an element type. It returns  if that range type allows outputting that element type. For example, the following constraint is for requiring that the range must be an  that accepts  elements:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> foo(T)(T range)
+        <span class="keyword">if</span> (isOutputRange!()) {
+    <span class="comment">// ...
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>When used in conjunction with , these constraints can determine the capabilities of user-defined ranges as well. For example, when a dependent range of a user-defined range is a , the user-defined range can take advantage of that fact and can provide the  function as well.
+</p>
+<br><br>
+<p>Let's see this on a range that produces the negatives of the elements of an existing range (more accurately, the <i>numeric complements</i> of the elements). Let's start with just the  functions:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">struct</span> Negative(T)
+        <span class="keyword">if</span> (isInputRange!T) {
+    T range;
+
+    <span class="keyword">bool</span> empty() {
+        <span class="keyword">return</span> range.empty;
+    }
+
+    <span class="keyword">auto</span> front() {
+        <span class="keyword">return</span> ;
+    }
+
+    <span class="keyword">void</span> popFront() {
+        range.popFront();
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p><i><b>Note:</b> As we will see below, the return type of  can be specified as  as well.</i>
+</p>
+<br><br>
+<p>The only functionality of this range is in the  function where it produces the negative of the front element of the original range.
+</p>
+<br><br>
+<p>As usual, the following is the convenience function that goes with that range:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">Negative!T negative(T)(T range) {
+    <span class="keyword">return</span> Negative!T(range);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>This range is ready to be used with e.g.  that was defined in the previous chapter:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">struct</span> FibonacciSeries {
+    <span class="keyword">int</span> current = 0;
+    <span class="keyword">int</span> next = 1;
+
+    <span class="keyword">enum</span> empty = <span class="keyword">false</span>;
+
+    <span class="keyword">int</span> front() <span class="keyword">const</span> {
+        <span class="keyword">return</span> current;
+    }
+
+    <span class="keyword">void</span> popFront() {
+        <span class="keyword">const</span> nextNext = current + next;
+        current = next;
+        next = nextNext;
+    }
+
+    FibonacciSeries save() <span class="keyword">const</span> {
+        <span class="keyword">return</span> <span class="keyword">this</span>;
+    }
+}
+
+<span class="comment">// ...
+</span>
+    writeln(FibonacciSeries().take(5).);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output contains the negatives of the first five elements of the series:
+</p>
+<br><br>
+
+<br><br>
+<p>Naturally, being just an ,  cannot be used with algorithms like  that require a :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    writeln(FibonacciSeries()
+            .take(5)
+            .negative
+            .cycle        
+            .take(10));
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>However, when the original range is already a , there is no reason for  not to provide the  function as well. This condition can be determined by a  statement and  can be provided if the original range is a . In this case it is as trivial as returning a new  object that is constructed by a copy of the original range:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">struct</span> Negative(T)
+        <span class="keyword">if</span> (isInputRange!T) {
+<span class="comment">// ...
+</span>
+     (isForwardRange!T) {
+        Negative save() {
+            <span class="keyword">return</span> Negative(range.save);
+        }
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The addition of the new  function makes  a  as well and the  call can now be compiled:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    writeln(FibonacciSeries()
+            .take(5)
+            .negative
+            .cycle        <span class="comment">// ← now compiles
+</span>            .take(10));
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output of the entire expression can be described as <i>take the first five elements of the Fibonacci series, take their negatives, cycle those indefinitely, and take the first ten of those elements</i>:
+</p>
+<br><br>
+
+<br><br>
+<p>With the same approach,  can be made a  and a  if the original range supports those functionalities:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">struct</span> Negative(T)
+        <span class="keyword">if</span> (isInputRange!T) {
+<span class="comment">// ...
+</span>
+    <span class="keyword">static</span> <span class="keyword">if</span> (isBidirectionalRange!T) {
+        <span class="keyword">auto</span> back() {
+            <span class="keyword">return</span> -range.back;
+        }
+
+        <span class="keyword">void</span> popBack() {
+            range.popBack();
+        }
+    }
+
+    <span class="keyword">static</span> <span class="keyword">if</span> (isRandomAccessRange!T) {
+        <span class="keyword">auto</span> opIndex(size_t index) {
+            <span class="keyword">return</span> -range[index];
+        }
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>For example, when it is used with a slice, the negative elements can be accessed by the  operator:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> d = [ 1.5, 2.75 ];
+    <span class="keyword">auto</span> n = d.negative;
+    writeln(n);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output:
+</p>
+<br><br>
+
+<br><br>
+<h5>   and </h5>
+<br><br>
+<p> provides the types of the elements of the range.
+</p>
+<br><br>
+<p>For example, the following template constraint includes a requirement that is about the element type of the first range:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> foo(I1, I2, O)(I1 input1, I2 input2, O output)
+        <span class="keyword">if</span> (isInputRange!I1 &amp;&amp;
+            isForwardRange!I2 &amp;&amp;
+            isOutputRange!(O, )) {
+    <span class="comment">// ...
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The previous constraint can be described as <i>if  is an  and  is a  and  is an  that accepts the element type of </i>.
+</p>
+<br><br>
+<p> Since strings are always ranges of Unicode characters, regardless of their actual character types, they are always ranges of , which means that even  and  are . For that reason, when needed in a template, the actual UTF encoding type of a string range can be obtained by .
+</p>
+<br><br>
+<h5>More range templates</h5>
+<br><br>
+<p>The  module has many more range templates that can be used with D's other compile-time features. The following is a sampling:
+</p>
+<br><br>
+<ul><br><br>
+<li> : Whether the range is infinite</li>
+<br><br>
+<li> : Whether the range has a  property</li>
+<br><br>
+<li> : Whether the range supports slicing i.e. with </li>
+<br><br>
+<li> : Whether the return type of  is assignable</li>
+<br><br>
+<li> : Whether the elements of the range are swappable e.g. with </li>
+<br><br>
+<li>  : Whether the elements of the range are movable e.g. with 
+<br><br>
+<p>   This implies that the range has , , or , depending on the actual kind of the range. Since moving elements is usually faster than copying them, depending on the result of  a range can provide faster operations by calling .
+</p>
+<br><br>
+</li>
+<br><br>
+<li>  : Whether the elements of the range are <i>lvalues</i> (roughly meaning that the elements are not copies of actual elements nor are temporary objects that are created on the fly)
+<br><br>
+<p>For example,  is  because the elements of  do not exist as themselves; rather, they are copies of the member  that is returned by . Similarly,  is  because although the  slice does have actual elements, the range that is represented by  does not provide access to those elements; rather, it returns copies that have the negative signs of the elements of the actual slice. Conversely,  is  because a slice provides access to actual elements of an array.
+</p>
+<br><br>
+</li>
+<br><br>
+</ul>
+<br><br>
+<p>The following example takes advantage of  to provide  as an  when the original range is infinite, making it known at compile time that  is infinite as well:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">struct</span> Negative(T)
+        <span class="keyword">if</span> (isInputRange!T) {
+<span class="comment">// ...
+</span>
+    <span class="keyword">static</span> <span class="keyword">if</span> (isInfinite!T) {
+        <span class="comment">// Negative!T is infinite as well
+</span>        <span class="keyword">enum</span> empty = <span class="keyword">false</span>;
+
+    } <span class="keyword">else</span> {
+        <span class="keyword">bool</span> empty() {
+            <span class="keyword">return</span> range.empty;
+        }
+    }
+
+<span class="comment">// ...
+</span>}
+
+<span class="keyword">static</span> <span class="keyword">assert</span>( isInfinite!(Negative!FibonacciSeries));
+<span class="keyword">static</span> <span class="keyword">assert</span>(!isInfinite!(<span class="keyword">int</span>[]));
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h5>   Run-time polymorphism with  and </h5>
+<br><br>
+<p>Being implemented mostly as templates, ranges exhibit <i>compile-time polymorphism</i>, which we have been taking advantage of in the examples of this chapter and previous chapters. (<i>For differences between compile-time polymorphism and run-time polymorphism, see the "Compile-time polymorphism" section in <a href="templates_more.html">the More Templates chapter</a>.</i>)
+</p>
+<br><br>
+<p>Compile-time polymorphism has to deal with the fact that every instantiation of a template is a different type. For example, the return type of the  template is directly related to the original range:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    writeln(<span class="keyword">typeof</span>([11, 22].negative.take(1)).stringof);
+    writeln(<span class="keyword">typeof</span>(FibonacciSeries().take(1)).stringof);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output:
+</p>
+<br><br>
+
+<br><br>
+<p>A natural consequence of this fact is that different range types cannot be assigned to each other. The following is an example of this incompatibility between two  ranges:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> range = [11, 22].negative;
+    <span class="comment">// ... at a later point ...
+</span>    range = FibonacciSeries();    
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>As expected, the compilation error indicates that  and  are not compatible:
+</p>
+<br><br>
+
+<br><br>
+<p>However, although the actual types of the ranges are different, since they both are <i>ranges of </i>, this incompatibility can be seen as an unnecessary limitation. From the usage point of view, since both ranges simply provide  elements, the actual mechanism that produces those elements should not be important.
+</p>
+<br><br>
+<p>Phobos helps with this issue by  and .  allows presenting ranges as <i>a specific kind of range of specific types of elements</i>. With its help, a range can be used e.g. as <i>an  of  elements</i>, regardless of the actual type of the range.
+</p>
+<br><br>
+<p> is flexible enough to support all of the non-output ranges: , , , and . Because of that flexibility, the object that it returns cannot be defined by . The exact kind of range that is required must be specified explicitly:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="comment">// Meaning "InputRange of ints":
+</span>     range = [11, 22].negative.;
+
+    <span class="comment">// ... at a later point ...
+</span>
+    <span class="comment">// The following assignment now compiles
+</span>    range = FibonacciSeries().;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>As another example, when the range needs to be used as <i>a  of  elements</i>, its type must be specified explicitly as :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">     range = [11, 22].negative.inputRangeObject;
+
+    <span class="keyword">auto</span> copy = range.;
+
+    range = FibonacciSeries().inputRangeObject;
+    writeln(range..take(10));
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The example calls  just to prove that the ranges can indeed be used as  ranges.
+</p>
+<br><br>
+<p>Similarly,  works with  ranges and allows their use as <i>an  that accepts specific types of elements</i>.
+</p>
+<br><br>
+<h5>Summary</h5>
+<br><br>
+<ul><br><br>
+<li>The  module contains many useful range templates.</li>
+<br><br>
+<li>Some of those templates allow templates be more capable depending on the capabilities of original ranges.</li>
+<br><br>
+<li> and  provide run-time polymorphism, allowing using different types of ranges as <i>specific kinds of ranges of specific types of elements</i>.</li>
+</ul>
+<br><br>
+macros:
+        TITLE=More Ranges
+<br><br>
+        DESCRIPTION=Many useful range templates of the std.range module.
+<br><br>
+        KEYWORDS=d programming language tutorial book ranges
+</section>
+      </article>
+    </div>
+  </body>
+</html>

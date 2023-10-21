@@ -1,0 +1,1073 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Variable Number of Parameters</title>
+    <style type="text/css" media="screen">
+      html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p,
+      blockquote, pre, a, abbr, address, cite, code, del, dfn, em, figure,
+      img, ins, kbd, q, s, samp, small, strong, sub, sup, var, b, u, i, dl,
+      dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption,
+      tbody, tfoot, thead, tr, th, td {
+        background: transparent none repeat scroll 0 0;
+        border: 0 none;
+        font-size: 100%;
+        margin: 0;
+        outline: 0 none;
+        padding: 0;
+        vertical-align: baseline;
+      }
+
+      h1 { font-size: 200%; }
+      h2 { font-size: 160%; }
+      h3 { font-size: 120%; }
+      h4 { font-size: 100%; }
+      h5 { font-size: 80%; }
+      h6 { font-size: 80%; font-weight: normal; }
+
+      ul, ol {
+        margin: 1.4em 0;
+      }
+      ul ul, ol ol, ul ol, ol ul {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      ul, ol {
+        margin-left: 2.8em;
+      }
+
+      ol {
+        list-style: decimal;
+      }
+      ol ol {
+        list-style: lower-alpha;
+      }
+      ol ol ol {
+        list-style: lower-roman;
+      }
+      ol ol ol ol {
+        list-style: decimal;
+      }
+
+      blockquote {
+        margin: 0.1em;
+        margin-left: 1em;
+        border-left: 2px solid #cccccc;
+        padding-left: 0.7em;
+      }
+
+      .color_red { color: #dc322f; }
+      .color_blue { color: #268bd2; }
+      .color_green { color: #859901; }
+      .color_yellow { color: #b58901; }
+      .color_black { color: black; }
+      .color_white { color: white; }
+
+      .font_big {
+        font-size: 1.2em;
+      }
+
+      .ddoc_section_h {
+        font-weight: bold;
+        font-size: 13px;
+        line-height: 19.5px;
+        margin-top: 11px;
+        display: block;
+      }
+
+      body.dlang .dlang {
+        display: inline-block;
+      }
+
+      body.dlang .declaration .dlang {
+          display: block;
+      }
+
+      body.dlang .ddoc_header_anchor a.dlang {
+        display: block;
+        color: rgba(0, 136, 204, 1);
+        text-decoration: none;
+      }
+
+      body.dlang .ddoc_header_anchor .code {
+        color: rgba(0, 136, 204, 1);
+      }
+
+      #ddoc_main .module {
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          overflow-x: hidden;
+          padding: 15px;
+      }
+
+      #ddoc_main .section .section {
+        margin-top: 0;
+      }
+
+      #ddoc_main .ddoc_module_members_section {
+          padding: 1px 0 0;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members section.intro {
+          background: #fff none repeat scroll 0 0;
+          list-style-type: none;
+          width: 100%;
+      }
+
+      #ddoc_main .ddoc_header_anchor {
+          font-size: 1.4em;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_header_anchor > .code {
+          display: inline-block;
+
+      }
+
+      #ddoc_main .ddoc_decl {
+        background-color: transparent;
+        height: 100%;
+        left: 0;
+        top: 0;
+        padding: 0;
+        padding-left: 15px;
+      }
+
+      #ddoc_main .ddoc_decl .section, #ddoc_main .section.ddoc_sections {
+        background: white none repeat scroll 0 0;
+        margin: 0;
+        padding: 5px;
+        position: relative;
+        border-radius: 5px;
+      }
+
+      #ddoc_main .ddoc_decl .section h4:first-of-type, #ddoc_main .section.ddoc_sections h4:first-of-type {
+        font-size: 13px;
+        line-height: 1.5;
+        margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration {
+          margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration .code {
+          color: rgba(0, 0, 0, 1);
+          margin-bottom: 15px;
+          padding-bottom: 6px;
+      }
+
+      #ddoc_main .declaration div .para {
+          margin-bottom: 0;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr td:first-of-type {
+        padding: 7px;
+        text-align: right;
+        vertical-align: top;
+        word-break: normal;
+        white-space: nowrap;
+      }
+
+      #ddoc_main .ddoc_params .graybox {
+        border: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox td {
+        border-color: rgba(214, 214, 214, 1);
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:first-child > td {
+        border-top: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:last-child > td {
+        border-bottom: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:first-child {
+        border-left: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:last-child {
+        border-right: 0 none;
+        width: 100%;
+      }
+
+      #ddoc_main em.term, #ddoc_main em.term .code {
+        color: rgba(65, 65, 65, 1);
+        font-size: 12px;
+        font-style: italic;
+        line-height: 1.5;
+      }
+
+      #ddoc_main .see-also {
+        cursor: pointer;
+        font-family: Menlo,monospace;
+      }
+
+      #ddoc_main .ddoc_decl .section > div:last-of-type {
+        margin-bottom: 15px;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members {
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .code_sample {
+        background: inherit;
+      }
+
+      #ddoc_main .declaration .code-line {
+          display: block;
+          font: 1em Menlo,monospace;
+      }
+
+      #ddoc_main a[name] {
+        margin: -112px 0 0;
+        padding-top: 112px;
+      }
+
+      #ddoc_main .ddoc_decl td {
+        max-width: inherit;
+      }
+
+      #ddoc_main .declaration a {
+        color: inherit;
+      }
+
+      #ddoc_main .declaration a:hover {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: underline;
+      }
+
+      body.ddoc {
+        background-color: transparent;
+        color: rgba(0, 0, 0, 1);
+        font-family: Helvetica,Arial,sans-serif;
+        font-size: 62.5%;
+        margin: 0;
+        border: 0;
+        left: 0;
+        top: 0;
+        padding: 0;
+      }
+
+      .ddoc a[name] {
+        display: block;
+        height: 0;
+        margin: -85px 0 0;
+        padding-top: 85px;
+        width: 0;
+      }
+
+      .ddoc .module {
+          border-color: transparent;
+          background-color: rgba(255, 255, 255, 1);
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-image: none;
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          box-shadow: 0 0 1px rgba(0, 0, 0, 0.07);
+          display: block;
+          margin-left: 0;
+          min-height: calc(100% - 173px);
+          overflow: auto;
+          padding-bottom: 100px;
+      }
+
+      .ddoc .content_wrapper {
+          background-color: rgba(242, 242, 242, 1);
+          margin: 0 auto;
+          max-width: 980px;
+      }
+
+      .ddoc .section {
+        padding: 15px 25px 30px;
+      }
+
+      .ddoc .section .section {
+        margin: 30px 0 0;
+        padding: 0;
+      }
+
+      .ddoc .para {
+        color: rgba(65, 65, 65, 1);
+        font-size: 1.4em;
+        line-height: 145%;
+        margin-bottom: 15px;
+      }
+
+      .ddoc .ddoc_examples .para {
+        margin-bottom: 0;
+      }
+
+      .ddoc .module_name {
+          color: rgba(0, 0, 0, 1);
+          display: block;
+          font-family: Helvetica;
+          font-size: 2.8em;
+          font-weight: 100;
+          margin-bottom: 0;
+          padding: 15px 0;
+      }
+
+      .ddoc .module a {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: none;
+      }
+
+      .ddoc .code {
+        color: rgba(128, 128, 128, 1);
+        font-family: Menlo,monospace;
+        font-size: 0.85em;
+        word-wrap: break-word;
+      }
+
+      .ddoc .code i {
+        font-style: normal;
+      }
+
+      .ddoc .code .code {
+        font-size: 1em;
+      }
+
+      .ddoc .code_sample {
+        background-clip: padding-box;
+        margin: 1px 0;
+        text-align: left;
+      }
+
+      .ddoc .code_sample {
+        display: block;
+        font-size: 1.4em;
+        margin-left: 21px;
+      }
+
+      .ddoc ol .code_sample {
+        font-size: 1em;
+      }
+
+      .ddoc .code_lines {
+        counter-reset: li;
+        line-height: 1.6em;
+        list-style: outside none none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .ddoc .code_listing .code_sample div {
+        margin-left: 13px;
+        width: 93%;
+      }
+
+      .ddoc .code_listing .code_sample div .code_lines li {
+        list-style-type: none;
+        margin: 0;
+        padding-right: 10px;
+      }
+
+      .ddoc .code_sample div .code_lines li::before {
+        margin-left: -33px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+10)::before {
+        margin-left: -39px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+100)::before {
+        margin-left: -46px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample .code_lines .code {
+        color: #000;
+      }
+
+      .ddoc div.dlang {
+        margin: 10px 0 21px;
+        padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+          margin: 10px 0 21px;
+          padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+        border-left: 5px solid rgba(0, 155, 51, 0.2);
+      }
+
+      .ddoc .code_lines li::before {
+        color: rgba(128, 128, 128, 1);
+        content: counter(li, decimal);
+        counter-increment: li;
+        font-family: Menlo,monospace;
+        font-size: 0.9em;
+        margin-right: 16px;
+      }
+
+      .ddoc .code_lines li {
+        padding-left: 0;
+        white-space: pre-wrap;
+      }
+
+      .ddoc .code_lines li:only-of-type::before {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:only-of-type {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:nth-child(n+10) {
+        text-indent: -17px;
+      }
+
+      .ddoc .code_lines li:nth-child(n+10)::before {
+        margin-right: 12px;
+      }
+
+      .ddoc .graybox {
+        border: 1px solid rgba(233, 233, 233, 1);
+        border-collapse: collapse;
+        border-spacing: 0;
+        empty-cells: hide;
+        margin: 20px 0 36px;
+        text-align: left;
+      }
+
+      .ddoc .graybox p {
+        margin: 0;
+        min-width: 50px;
+      }
+
+      .ddoc th {
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: bottom;
+      }
+
+      .ddoc td {
+        border: 1px solid rgba(233, 233, 233, 1);
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: middle;
+      }
+
+      .punctuation {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .comment {
+        color: rgba(0, 131, 18, 1);
+      }
+
+      .operator {
+        color: #000;
+      }
+
+      .keyword {
+        color: rgba(170, 13, 145, 1);
+      }
+
+      .keyword_type {
+        color: rgba(170, 51, 145, 1);
+      }
+
+      .string_literal {
+        color: rgba(196, 26, 22, 1);
+      }
+
+      .ddoc_psuper_symbol {
+        color: rgba(92, 38, 153, 1);
+      }
+
+      .param {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .psymbol {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .ddoc_member_header .ddoc_header_anchor .code {
+        font-size: 1em;
+      }
+    </style>
+  </head>
+  <body id="ddoc_main" class="ddoc dlang">
+    <div class="content_wrapper">
+      <article class="module">
+        <h1 class="module_name">Variable Number of Parameters</h1>
+        <section id="module_content"><br><br>
+<br><br>
+
+<br><br>
+<p>This chapter covers two D features that bring flexibility on parameters when calling functions:
+</p>
+<br><br>
+<ul><li>Default arguments</li>
+<li>Variadic functions</li>
+</ul>
+<br><br>
+<h5>  Default arguments</h5>
+<br><br>
+<p>A convenience with function parameters is the ability to specify default values for them. This is similar to the default initial values of struct members.
+</p>
+<br><br>
+<p>Some of the parameters of some functions are called mostly by the same values. To see an example of this, let's consider a function that prints the elements of an associative array of type . Let's assume that the function takes the separator characters as parameters as well:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.algorithm;
+
+<span class="comment">// ...
+</span>
+<span class="keyword">void</span> printAA(string title,
+             string[string] aa,
+             string keySeparator,
+             string elementSeparator) {
+    writeln(<span class="string_literal">"-- "</span>, title, <span class="string_literal">" --"</span>);
+
+    <span class="keyword">auto</span> keys = sort(aa.keys);
+
+    <span class="comment">// Don't print element separator before the first element
+</span>    <span class="keyword">if</span> (keys.length != 0) {
+        <span class="keyword">auto</span> key = keys[0];
+        write(key, keySeparator, aa[key]);
+        keys = keys[1..$];    <span class="comment">// Remove the first element
+</span>    }
+
+    <span class="comment">// Print element separator before the remaining elements
+</span>    <span class="keyword">foreach</span> (key; keys) {
+        write(elementSeparator);
+        write(key, keySeparator, aa[key]);
+    }
+
+    writeln();
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>That function is being called below with  as the key separator and  as the element separator:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> main() {
+    string[string] dictionary = [
+        <span class="string_literal">"blue"</span>:<span class="string_literal">"mavi"</span>, <span class="string_literal">"red"</span>:<span class="string_literal">"kırmızı"</span>, <span class="string_literal">"gray"</span>:<span class="string_literal">"gri"</span> ];
+
+    printAA(<span class="string_literal">"Color Dictionary"</span>, dictionary, <span class="string_literal">":"</span>, <span class="string_literal">", "</span>);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output:
+</p>
+<br><br>
+
+<br><br>
+<p>If the separators are almost always going to be those two, they can be defined with default values:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> printAA(string title,
+             string[string] aa,
+             string keySeparator ,
+             string elementSeparator ) {
+    <span class="comment">// ...
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Parameters with default values need not be specified when the function is called:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    printAA(<span class="string_literal">"Color Dictionary"</span>,
+            dictionary);  <span class="comment">/* ← No separator specified. Both
+                           *   parameters will get their
+                           *   default values. */</span>
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The parameter values can still be specified when needed, and not necessarily all of them:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    printAA(<span class="string_literal">"Color Dictionary"</span>, dictionary);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output:
+</p>
+<br><br>
+
+<br><br>
+<p>The following call specifies both of the parameters:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    printAA(<span class="string_literal">"Color Dictionary"</span>, dictionary);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output:
+</p>
+<br><br>
+
+<br><br>
+<p>Default values can only be defined for the parameters that are at the end of the parameter list.
+</p>
+<br><br>
+<h6>Special keywords as default arguments</h6>
+<br><br>
+<p>  The following special keywords act like compile-time literals having values corresponding to where they appear in code:
+</p>
+<br><br>
+<ul><br><br>
+<li> : Name of the module as </li>
+<li> : Name of the source file as </li>
+<li> : Name of the source file including its full path as </li>
+<li> : Line number as </li>
+<li> : Name of the function as </li>
+<li> : Full signature of the function as </li>
+<br><br>
+</ul>
+<br><br>
+<p>Although they can be useful anywhere in code, they work differently when used as default arguments. When they are used in regular code, their values refer to where they appear in code:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> func(<span class="keyword">int</span> parameter) {
+    writefln(<span class="string_literal">"Inside function %s at file %s, line %s."</span>,
+             <span class="keyword">__FUNCTION__</span>, <span class="keyword">__FILE__</span>, <span class="keyword">__LINE__</span>);    
+}
+
+<span class="keyword">void</span> main() {
+    func(42);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The reported line 5 is inside the function:
+</p>
+<br><br>
+
+<br><br>
+<p>However, sometimes it is more interesting to determine the line where a function is called from, not where the definition of the function is. When these special keywords are provided as default arguments, their values refer to where the function is called from:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> func(<span class="keyword">int</span> parameter,
+          string functionName = ,
+          string file = ,
+          <span class="keyword">int</span> line = ) {
+    writefln(<span class="string_literal">"Called from function %s at file %s, line %s."</span>,
+             functionName, file, line);
+}
+
+<span class="keyword">void</span> main() {
+    func(42);    
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>This time the special keywords refer to , the caller of the function:
+</p>
+<br><br>
+
+<br><br>
+<p>  In addition to the above, there are also the following <i>special tokens</i> that take values depending on the compiler and the time of day:
+</p>
+<br><br>
+<ul><br><br>
+<li> : Date of compilation as </li>
+<br><br>
+<li> : Time of compilation as </li>
+<br><br>
+<li> : Date and time of compilation as </li>
+<br><br>
+<li> : Compiler vendor as  (e.g. )</li>
+<br><br>
+<li> : Compiler version as  (e.g. the value  for version 2.081)</li>
+<br><br>
+</ul>
+<br><br>
+<h5>  Variadic functions</h5>
+<br><br>
+<p>Despite appearances, default parameter values do not change the number of parameters that a function receives. For example, even though some parameters may be assigned their default values,  always takes four parameters and uses them according to its implementation.
+</p>
+<br><br>
+<p>On the other hand, variadic functions can be called with unspecified number of arguments. We have already been taking advantage of this feature with functions like .  can be called with any number of arguments:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    writeln(
+        <span class="string_literal">"hello"</span>, 7, <span class="string_literal">"world"</span>, 9.8 <span class="comment">/*, and any number of other
+                                  *  arguments as needed */</span>);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>There are four ways of defining variadic functions in D:
+</p>
+<br><br>
+<ul><br><br>
+<li> The feature that works only for functions that are marked as . This feature defines the hidden  variable that is used for accessing the parameters. This book does not cover this feature partly because it is unsafe.</li>
+<br><br>
+<li> The feature that works with regular D functions, which also uses the hidden  variable, as well as the  variable, the latter being of type . This book does not cover this feature as well both because it relies on <i>pointers</i>, which have not been covered yet, and because this feature can be used in unsafe ways as well.</li>
+<br><br>
+<li>A safe feature with the limitation that the unspecified number of parameters must all be of the same type. This is the feature that is covered in this section.</li>
+<br><br>
+<li>Unspecified number of template parameters. This feature will be explained later in the templates chapters.</li>
+<br><br>
+</ul>
+<br><br>
+<p> The parameters of variadic functions are passed to the function as a slice. Variadic functions are defined with a single parameter of a specific type of slice followed immediately by the  characters:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">double</span> sum(<span class="keyword">double</span>[] numbers) {
+    <span class="keyword">double</span> result = 0.0;
+
+    <span class="keyword">foreach</span> (number; numbers) {
+        result += number;
+    }
+
+    <span class="keyword">return</span> result;
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>That definition makes  a variadic function, meaning that it is able to receive any number of arguments as long as they are  or any other type that can implicitly be convertible to :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    writeln(sum());
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The single slice parameter and the  characters represent all of the arguments. For example, the slice would have five elements if the function were called with five  values.
+</p>
+<br><br>
+<p>In fact, the variable number of parameters can also be passed as a single slice:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    writeln(sum( 1.1, 2.2, 3.3 ));    <span class="comment">// same as above
+</span></code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Variadic functions can also have required parameters, which must be defined first in the parameter list. For example, the following function prints an unspecified number of parameters within parentheses. Although the function leaves the number of the elements flexible, it requires that the parentheses are always specified:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">char</span>[] parenthesize(
+    string opening,  <span class="comment">// ← The first two parameters must be
+</span>    string closing,  <span class="comment">//   specified when the function is called
+</span>    string[] words...) {  <span class="comment">// ← Need not be specified
+</span>    <span class="keyword">char</span>[] result;
+
+    <span class="keyword">foreach</span> (word; words) {
+        result ~= opening;
+        result ~= word;
+        result ~= closing;
+    }
+
+    <span class="keyword">return</span> result;
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The first two parameters are mandatory:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    parenthesize(<span class="string_literal">"{"</span>);     
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>As long as the mandatory parameters are specified, the rest are optional:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    writeln(parenthesize(<span class="string_literal">"{"</span>, <span class="string_literal">"}"</span>, <span class="string_literal">"apple"</span>, <span class="string_literal">"pear"</span>, <span class="string_literal">"banana"</span>));
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output:
+</p>
+<br><br>
+
+<br><br>
+<h6>Variadic function arguments have a short lifetime</h6>
+<br><br>
+<p>The slice argument that is automatically generated for a variadic parameter points at a temporary array that has a short lifetime. This fact does not matter if the function uses the arguments only during its execution. However, it would be a bug if the function kept a slice to those elements for later use:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">int</span>[] numbersForLaterUse;
+
+<span class="keyword">void</span> foo(<span class="keyword">int</span>[] numbers...) {
+    numbersForLaterUse = numbers;    
+}
+
+<span class="keyword">struct</span> S {
+    string[] namesForLaterUse;
+
+    <span class="keyword">void</span> foo(string[] names...) {
+        namesForLaterUse = names;    
+    }
+}
+
+<span class="keyword">void</span> bar() {
+    foo(1, 10, 100);  <span class="comment">/* The temporary array [ 1, 10, 100 ] is
+                       * not valid beyond this point. */</span>
+
+    <span class="keyword">auto</span> s = S();
+    s.foo(<span class="string_literal">"hello"</span>, <span class="string_literal">"world"</span>);  <span class="comment">/* The temporary array
+                               * [ "hello", "world" ] is not
+                               * valid beyond this point. */</span>
+
+    <span class="comment">// ...
+</span>}
+
+<span class="keyword">void</span> main() {
+    bar();
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Both the free-standing function  and the member function  are in error because they store slices to automatically-generated temporary arrays that live on the program stack. Those arrays are valid only during the execution of the variadic functions.
+</p>
+<br><br>
+<p>For that reason, if a function needs to store a slice to the elements of a variadic parameter, it must first take a copy of those elements:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> foo(<span class="keyword">int</span>[] numbers...) {
+    numbersForLaterUse = numbers;    
+}
+
+<span class="comment">// ...
+</span>
+    <span class="keyword">void</span> foo(string[] names...) {
+        namesForLaterUse = names;    
+    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>However, since variadic functions can also be called with slices of proper arrays, copying the elements would be unnecessary in those cases.
+</p>
+<br><br>
+<p>A solution that is both correct and efficient is to define two functions having the same name, one taking a variadic parameter and the other taking a proper slice. If the caller passes variable number of arguments, then the variadic version of the function is called; and if the caller passes a proper slice, then the version that takes a proper slice is called:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">int</span>[] numbersForLaterUse;
+
+<span class="keyword">void</span> foo(<span class="keyword">int</span>[] numbers) {
+    <span class="comment">/* Since this is the variadic version of foo(), we must
+     * first take a copy of the elements before storing a
+     * slice to them. */</span>
+    numbersForLaterUse = numbers;
+}
+
+<span class="keyword">void</span> foo(<span class="keyword">int</span>[] numbers) {
+    <span class="comment">/* Since this is the non-variadic version of foo(), we can
+     * store the slice as is. */</span>
+    numbersForLaterUse = numbers;
+}
+
+<span class="keyword">struct</span> S {
+    string[] namesForLaterUse;
+
+    <span class="keyword">void</span> foo(string[] names) {
+        <span class="comment">/* Since this is the variadic version of S.foo(), we
+         * must first take a copy of the elements before
+         * storing a slice to them. */</span>
+        namesForLaterUse = names;
+    }
+
+    <span class="keyword">void</span> foo(string[] names) {
+        <span class="comment">/* Since this is the non-variadic version of S.foo(),
+         * we can store the slice as is. */</span>
+        namesForLaterUse = names;
+    }
+}
+
+<span class="keyword">void</span> bar() {
+    <span class="comment">// This call is dispatched to the variadic function.
+</span>    foo(1, 10, 100);
+
+    <span class="comment">// This call is dispatched to the proper slice function.
+</span>    foo( 2, 20, 200 );
+
+    <span class="keyword">auto</span> s = S();
+
+    <span class="comment">// This call is dispatched to the variadic function.
+</span>    s.foo(<span class="string_literal">"hello"</span>, <span class="string_literal">"world"</span>);
+
+    <span class="comment">// This call is dispatched to the proper slice function.
+</span>    s.foo( <span class="string_literal">"hi"</span>, <span class="string_literal">"moon"</span> );
+
+    <span class="comment">// ...
+</span>}
+
+<span class="keyword">void</span> main() {
+    bar();
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Defining multiple functions with the same name but with different parameters is called <i>function overloading</i>, which is the subject of the next chapter.
+</p>
+<br><br>
+
+<br><br>
+
+</section>
+      </article>
+    </div>
+  </body>
+</html>

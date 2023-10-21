@@ -1,0 +1,821 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Universal Function Call Syntax (UFCS)</title>
+    <style type="text/css" media="screen">
+      html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p,
+      blockquote, pre, a, abbr, address, cite, code, del, dfn, em, figure,
+      img, ins, kbd, q, s, samp, small, strong, sub, sup, var, b, u, i, dl,
+      dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption,
+      tbody, tfoot, thead, tr, th, td {
+        background: transparent none repeat scroll 0 0;
+        border: 0 none;
+        font-size: 100%;
+        margin: 0;
+        outline: 0 none;
+        padding: 0;
+        vertical-align: baseline;
+      }
+
+      h1 { font-size: 200%; }
+      h2 { font-size: 160%; }
+      h3 { font-size: 120%; }
+      h4 { font-size: 100%; }
+      h5 { font-size: 80%; }
+      h6 { font-size: 80%; font-weight: normal; }
+
+      ul, ol {
+        margin: 1.4em 0;
+      }
+      ul ul, ol ol, ul ol, ol ul {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      ul, ol {
+        margin-left: 2.8em;
+      }
+
+      ol {
+        list-style: decimal;
+      }
+      ol ol {
+        list-style: lower-alpha;
+      }
+      ol ol ol {
+        list-style: lower-roman;
+      }
+      ol ol ol ol {
+        list-style: decimal;
+      }
+
+      blockquote {
+        margin: 0.1em;
+        margin-left: 1em;
+        border-left: 2px solid #cccccc;
+        padding-left: 0.7em;
+      }
+
+      .color_red { color: #dc322f; }
+      .color_blue { color: #268bd2; }
+      .color_green { color: #859901; }
+      .color_yellow { color: #b58901; }
+      .color_black { color: black; }
+      .color_white { color: white; }
+
+      .font_big {
+        font-size: 1.2em;
+      }
+
+      .ddoc_section_h {
+        font-weight: bold;
+        font-size: 13px;
+        line-height: 19.5px;
+        margin-top: 11px;
+        display: block;
+      }
+
+      body.dlang .dlang {
+        display: inline-block;
+      }
+
+      body.dlang .declaration .dlang {
+          display: block;
+      }
+
+      body.dlang .ddoc_header_anchor a.dlang {
+        display: block;
+        color: rgba(0, 136, 204, 1);
+        text-decoration: none;
+      }
+
+      body.dlang .ddoc_header_anchor .code {
+        color: rgba(0, 136, 204, 1);
+      }
+
+      #ddoc_main .module {
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          overflow-x: hidden;
+          padding: 15px;
+      }
+
+      #ddoc_main .section .section {
+        margin-top: 0;
+      }
+
+      #ddoc_main .ddoc_module_members_section {
+          padding: 1px 0 0;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members section.intro {
+          background: #fff none repeat scroll 0 0;
+          list-style-type: none;
+          width: 100%;
+      }
+
+      #ddoc_main .ddoc_header_anchor {
+          font-size: 1.4em;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_header_anchor > .code {
+          display: inline-block;
+
+      }
+
+      #ddoc_main .ddoc_decl {
+        background-color: transparent;
+        height: 100%;
+        left: 0;
+        top: 0;
+        padding: 0;
+        padding-left: 15px;
+      }
+
+      #ddoc_main .ddoc_decl .section, #ddoc_main .section.ddoc_sections {
+        background: white none repeat scroll 0 0;
+        margin: 0;
+        padding: 5px;
+        position: relative;
+        border-radius: 5px;
+      }
+
+      #ddoc_main .ddoc_decl .section h4:first-of-type, #ddoc_main .section.ddoc_sections h4:first-of-type {
+        font-size: 13px;
+        line-height: 1.5;
+        margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration {
+          margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration .code {
+          color: rgba(0, 0, 0, 1);
+          margin-bottom: 15px;
+          padding-bottom: 6px;
+      }
+
+      #ddoc_main .declaration div .para {
+          margin-bottom: 0;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr td:first-of-type {
+        padding: 7px;
+        text-align: right;
+        vertical-align: top;
+        word-break: normal;
+        white-space: nowrap;
+      }
+
+      #ddoc_main .ddoc_params .graybox {
+        border: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox td {
+        border-color: rgba(214, 214, 214, 1);
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:first-child > td {
+        border-top: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:last-child > td {
+        border-bottom: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:first-child {
+        border-left: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:last-child {
+        border-right: 0 none;
+        width: 100%;
+      }
+
+      #ddoc_main em.term, #ddoc_main em.term .code {
+        color: rgba(65, 65, 65, 1);
+        font-size: 12px;
+        font-style: italic;
+        line-height: 1.5;
+      }
+
+      #ddoc_main .see-also {
+        cursor: pointer;
+        font-family: Menlo,monospace;
+      }
+
+      #ddoc_main .ddoc_decl .section > div:last-of-type {
+        margin-bottom: 15px;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members {
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .code_sample {
+        background: inherit;
+      }
+
+      #ddoc_main .declaration .code-line {
+          display: block;
+          font: 1em Menlo,monospace;
+      }
+
+      #ddoc_main a[name] {
+        margin: -112px 0 0;
+        padding-top: 112px;
+      }
+
+      #ddoc_main .ddoc_decl td {
+        max-width: inherit;
+      }
+
+      #ddoc_main .declaration a {
+        color: inherit;
+      }
+
+      #ddoc_main .declaration a:hover {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: underline;
+      }
+
+      body.ddoc {
+        background-color: transparent;
+        color: rgba(0, 0, 0, 1);
+        font-family: Helvetica,Arial,sans-serif;
+        font-size: 62.5%;
+        margin: 0;
+        border: 0;
+        left: 0;
+        top: 0;
+        padding: 0;
+      }
+
+      .ddoc a[name] {
+        display: block;
+        height: 0;
+        margin: -85px 0 0;
+        padding-top: 85px;
+        width: 0;
+      }
+
+      .ddoc .module {
+          border-color: transparent;
+          background-color: rgba(255, 255, 255, 1);
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-image: none;
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          box-shadow: 0 0 1px rgba(0, 0, 0, 0.07);
+          display: block;
+          margin-left: 0;
+          min-height: calc(100% - 173px);
+          overflow: auto;
+          padding-bottom: 100px;
+      }
+
+      .ddoc .content_wrapper {
+          background-color: rgba(242, 242, 242, 1);
+          margin: 0 auto;
+          max-width: 980px;
+      }
+
+      .ddoc .section {
+        padding: 15px 25px 30px;
+      }
+
+      .ddoc .section .section {
+        margin: 30px 0 0;
+        padding: 0;
+      }
+
+      .ddoc .para {
+        color: rgba(65, 65, 65, 1);
+        font-size: 1.4em;
+        line-height: 145%;
+        margin-bottom: 15px;
+      }
+
+      .ddoc .ddoc_examples .para {
+        margin-bottom: 0;
+      }
+
+      .ddoc .module_name {
+          color: rgba(0, 0, 0, 1);
+          display: block;
+          font-family: Helvetica;
+          font-size: 2.8em;
+          font-weight: 100;
+          margin-bottom: 0;
+          padding: 15px 0;
+      }
+
+      .ddoc .module a {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: none;
+      }
+
+      .ddoc .code {
+        color: rgba(128, 128, 128, 1);
+        font-family: Menlo,monospace;
+        font-size: 0.85em;
+        word-wrap: break-word;
+      }
+
+      .ddoc .code i {
+        font-style: normal;
+      }
+
+      .ddoc .code .code {
+        font-size: 1em;
+      }
+
+      .ddoc .code_sample {
+        background-clip: padding-box;
+        margin: 1px 0;
+        text-align: left;
+      }
+
+      .ddoc .code_sample {
+        display: block;
+        font-size: 1.4em;
+        margin-left: 21px;
+      }
+
+      .ddoc ol .code_sample {
+        font-size: 1em;
+      }
+
+      .ddoc .code_lines {
+        counter-reset: li;
+        line-height: 1.6em;
+        list-style: outside none none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .ddoc .code_listing .code_sample div {
+        margin-left: 13px;
+        width: 93%;
+      }
+
+      .ddoc .code_listing .code_sample div .code_lines li {
+        list-style-type: none;
+        margin: 0;
+        padding-right: 10px;
+      }
+
+      .ddoc .code_sample div .code_lines li::before {
+        margin-left: -33px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+10)::before {
+        margin-left: -39px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+100)::before {
+        margin-left: -46px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample .code_lines .code {
+        color: #000;
+      }
+
+      .ddoc div.dlang {
+        margin: 10px 0 21px;
+        padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+          margin: 10px 0 21px;
+          padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+        border-left: 5px solid rgba(0, 155, 51, 0.2);
+      }
+
+      .ddoc .code_lines li::before {
+        color: rgba(128, 128, 128, 1);
+        content: counter(li, decimal);
+        counter-increment: li;
+        font-family: Menlo,monospace;
+        font-size: 0.9em;
+        margin-right: 16px;
+      }
+
+      .ddoc .code_lines li {
+        padding-left: 0;
+        white-space: pre-wrap;
+      }
+
+      .ddoc .code_lines li:only-of-type::before {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:only-of-type {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:nth-child(n+10) {
+        text-indent: -17px;
+      }
+
+      .ddoc .code_lines li:nth-child(n+10)::before {
+        margin-right: 12px;
+      }
+
+      .ddoc .graybox {
+        border: 1px solid rgba(233, 233, 233, 1);
+        border-collapse: collapse;
+        border-spacing: 0;
+        empty-cells: hide;
+        margin: 20px 0 36px;
+        text-align: left;
+      }
+
+      .ddoc .graybox p {
+        margin: 0;
+        min-width: 50px;
+      }
+
+      .ddoc th {
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: bottom;
+      }
+
+      .ddoc td {
+        border: 1px solid rgba(233, 233, 233, 1);
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: middle;
+      }
+
+      .punctuation {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .comment {
+        color: rgba(0, 131, 18, 1);
+      }
+
+      .operator {
+        color: #000;
+      }
+
+      .keyword {
+        color: rgba(170, 13, 145, 1);
+      }
+
+      .keyword_type {
+        color: rgba(170, 51, 145, 1);
+      }
+
+      .string_literal {
+        color: rgba(196, 26, 22, 1);
+      }
+
+      .ddoc_psuper_symbol {
+        color: rgba(92, 38, 153, 1);
+      }
+
+      .param {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .psymbol {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .ddoc_member_header .ddoc_header_anchor .code {
+        font-size: 1em;
+      }
+    </style>
+  </head>
+  <body id="ddoc_main" class="ddoc dlang">
+    <div class="content_wrapper">
+      <article class="module">
+        <h1 class="module_name">Universal Function Call Syntax (UFCS)</h1>
+        <section id="module_content"><br><br>
+<br><br>
+
+<br><br>
+<p>UFCS is a feature that is applied by the compiler automatically. It enables the member function syntax even for regular functions. It can be explained simply by comparing two expressions:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    variable.foo(<i>arguments</i>)
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>When the compiler encounters an expression such as the one above, if there is no member function named  that can be called on  with the provided arguments, then the compiler also tries to compile the following expression:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    foo(variable, <i>arguments</i>)
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>If this new expression can indeed be compiled, then the compiler simply accepts that one. As a result, although  evidently has been a regular function, it gets accepted to be used by the member function syntax.
+</p>
+<br><br>
+<p><i><b>Note:</b> UFCS considers only functions that are defined at module scope; for example, <a href="nested.html">nested functions</a> cannot be called with the UFCS syntax.</i>
+</p>
+<br><br>
+<p>We know that functions that are closely related to a type are defined as member functions of that type. This is especially important for encapsulation as only the member functions of a type (and that type's module) can access its  members.
+</p>
+<br><br>
+<p>Let's consider a  class which maintains the amount of fuel:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">class</span> Car {
+    <span class="keyword">enum</span> economy = 12.5;          <span class="comment">// kilometers per liter (average)
+</span>    <span class="keyword">private</span> <span class="keyword">double</span> fuelAmount;    <span class="comment">// liters
+</span>
+    <span class="keyword">this</span>(<span class="keyword">double</span> fuelAmount) {
+        <span class="keyword">this</span>.fuelAmount = fuelAmount;
+    }
+
+    <span class="keyword">double</span> fuel() <span class="keyword">const</span> {
+        <span class="keyword">return</span> fuelAmount;
+    }
+
+    <span class="comment">// ...
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Although member functions are very useful and sometimes necessary, not every function that operates on a type should be a member function. Some operations on a type are too specific to a certain application to be member functions. For example, a function that determines whether a car can travel a specific distance may more appropriately be defined as a regular function:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">bool</span> canTravel(Car car, <span class="keyword">double</span> distance) {
+    <span class="keyword">return</span> (car.fuel() * car.economy) &gt;= distance;
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>This naturally brings a discrepancy in calling functions that are related to a type: objects appear at different places in these two syntaxes:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> main() {
+    <span class="keyword">auto</span> car = <span class="keyword">new</span> Car(5);
+
+    <span class="keyword">auto</span> remainingFuel = .fuel();  <span class="comment">// Member function syntax
+</span>
+    <span class="keyword">if</span> (canTravel(, 100)) {        <span class="comment">// Regular function syntax
+</span>        <span class="comment">// ...
+</span>    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>UFCS removes this discrepancy by allowing regular functions to be called by the member function syntax:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">if</span> (.canTravel(100)) {  <span class="comment">// Regular function, called by the
+</span>                               <span class="comment">// member function syntax
+</span>        <span class="comment">// ...
+</span>    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>This feature is available for fundamental types as well, including literals:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">int</span> half(<span class="keyword">int</span> value) {
+    <span class="keyword">return</span> value / 2;
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">assert</span>(42.half() == 21);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>As we will see in the next chapter, when there are no arguments to pass to a function, that function can be called without parentheses. When that feature is used as well, the expression above gets even shorter. All three of the following statements are equivalent:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    result = half(value);
+    result = value.half();
+    result = value.half;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>  UFCS is especially useful when function calls are <i>chained</i>. Let's see this on a group of functions that operate on  slices:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="comment">// Returns the result of dividing all of the elements by
+</span><span class="comment">// 'divisor'
+</span><span class="keyword">int</span>[] divide(<span class="keyword">int</span>[] slice, <span class="keyword">int</span> divisor) {
+    <span class="keyword">int</span>[] result;
+    result.reserve(slice.length);
+
+    <span class="keyword">foreach</span> (value; slice) {
+        result ~= value / divisor;
+    }
+
+    <span class="keyword">return</span> result;
+}
+
+<span class="comment">// Returns the result of multiplying all of the elements by
+</span><span class="comment">// 'multiplier'
+</span><span class="keyword">int</span>[] multiply(<span class="keyword">int</span>[] slice, <span class="keyword">int</span> multiplier) {
+    <span class="keyword">int</span>[] result;
+    result.reserve(slice.length);
+
+    <span class="keyword">foreach</span> (value; slice) {
+        result ~= value * multiplier;
+    }
+
+    <span class="keyword">return</span> result;
+}
+
+<span class="comment">// Filters out elements that have odd values
+</span><span class="keyword">int</span>[] evens(<span class="keyword">int</span>[] slice) {
+    <span class="keyword">int</span>[] result;
+    result.reserve(slice.length);
+
+    <span class="keyword">foreach</span> (value; slice) {
+        <span class="keyword">if</span> (!(value % 2)) {
+            result ~= value;
+        }
+    }
+
+    <span class="keyword">return</span> result;
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>When written by the regular syntax, without taking advantage of UFCS, an expression that chains three calls to these functions can be written as in the following program:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="comment">// ...
+</span>
+<span class="keyword">void</span> main() {
+    <span class="keyword">auto</span> values = [ 1, 2, 3, 4, 5 ];
+    writeln(evens(divide(multiply(values, 10), 3)));
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The values are first multiplied by 10, then divided by 3, and finally only the even numbers are used:
+</p>
+<br><br>
+
+<br><br>
+<p>A problem with the expression above is that although the pair of  and  are related and the pair of  and  are related, parts of each pair end up written away from each other. UFCS eliminates this issue and enables a more natural syntax that reflects the actual order of operations:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    writeln(values.multiply(10).divide(3).evens);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Some programmers take advantage of UFCS even for calls like :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    values.multiply(10).divide(3).evens.writeln;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>As an aside, the entire program above could have been written in a much simpler way by  and :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+<span class="keyword">import</span> std.algorithm;
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">auto</span> values = [ 1, 2, 3, 4, 5 ];
+
+    writeln(values
+            .map!(a =&gt; a * 10)
+            .map!(a =&gt; a / 3)
+            .filter!(a =&gt; !(a % 2)));
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The program above takes advantage of <a href="templates.html">templates</a>, <a href="ranges.html">ranges</a>, and <a href="lambda.html">lambda functions</a>, all of which will be explained in later chapters.
+</p>
+
+</section>
+      </article>
+    </div>
+  </body>
+</html>

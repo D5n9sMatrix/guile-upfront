@@ -1,0 +1,11 @@
+.Rproj.user
+.Rhistory
+.RData
+inst/doc
+.httr-oauth
+revdep/checks
+revdep/library
+revdep/cloud.noindex
+src/config.h
+docs/
+.vscode

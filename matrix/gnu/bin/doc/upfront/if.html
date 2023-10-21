@@ -1,0 +1,803 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>if Statement</title>
+    <style type="text/css" media="screen">
+      html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p,
+      blockquote, pre, a, abbr, address, cite, code, del, dfn, em, figure,
+      img, ins, kbd, q, s, samp, small, strong, sub, sup, var, b, u, i, dl,
+      dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption,
+      tbody, tfoot, thead, tr, th, td {
+        background: transparent none repeat scroll 0 0;
+        border: 0 none;
+        font-size: 100%;
+        margin: 0;
+        outline: 0 none;
+        padding: 0;
+        vertical-align: baseline;
+      }
+
+      h1 { font-size: 200%; }
+      h2 { font-size: 160%; }
+      h3 { font-size: 120%; }
+      h4 { font-size: 100%; }
+      h5 { font-size: 80%; }
+      h6 { font-size: 80%; font-weight: normal; }
+
+      ul, ol {
+        margin: 1.4em 0;
+      }
+      ul ul, ol ol, ul ol, ol ul {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      ul, ol {
+        margin-left: 2.8em;
+      }
+
+      ol {
+        list-style: decimal;
+      }
+      ol ol {
+        list-style: lower-alpha;
+      }
+      ol ol ol {
+        list-style: lower-roman;
+      }
+      ol ol ol ol {
+        list-style: decimal;
+      }
+
+      blockquote {
+        margin: 0.1em;
+        margin-left: 1em;
+        border-left: 2px solid #cccccc;
+        padding-left: 0.7em;
+      }
+
+      .color_red { color: #dc322f; }
+      .color_blue { color: #268bd2; }
+      .color_green { color: #859901; }
+      .color_yellow { color: #b58901; }
+      .color_black { color: black; }
+      .color_white { color: white; }
+
+      .font_big {
+        font-size: 1.2em;
+      }
+
+      .ddoc_section_h {
+        font-weight: bold;
+        font-size: 13px;
+        line-height: 19.5px;
+        margin-top: 11px;
+        display: block;
+      }
+
+      body.dlang .dlang {
+        display: inline-block;
+      }
+
+      body.dlang .declaration .dlang {
+          display: block;
+      }
+
+      body.dlang .ddoc_header_anchor a.dlang {
+        display: block;
+        color: rgba(0, 136, 204, 1);
+        text-decoration: none;
+      }
+
+      body.dlang .ddoc_header_anchor .code {
+        color: rgba(0, 136, 204, 1);
+      }
+
+      #ddoc_main .module {
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          overflow-x: hidden;
+          padding: 15px;
+      }
+
+      #ddoc_main .section .section {
+        margin-top: 0;
+      }
+
+      #ddoc_main .ddoc_module_members_section {
+          padding: 1px 0 0;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members section.intro {
+          background: #fff none repeat scroll 0 0;
+          list-style-type: none;
+          width: 100%;
+      }
+
+      #ddoc_main .ddoc_header_anchor {
+          font-size: 1.4em;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_header_anchor > .code {
+          display: inline-block;
+
+      }
+
+      #ddoc_main .ddoc_decl {
+        background-color: transparent;
+        height: 100%;
+        left: 0;
+        top: 0;
+        padding: 0;
+        padding-left: 15px;
+      }
+
+      #ddoc_main .ddoc_decl .section, #ddoc_main .section.ddoc_sections {
+        background: white none repeat scroll 0 0;
+        margin: 0;
+        padding: 5px;
+        position: relative;
+        border-radius: 5px;
+      }
+
+      #ddoc_main .ddoc_decl .section h4:first-of-type, #ddoc_main .section.ddoc_sections h4:first-of-type {
+        font-size: 13px;
+        line-height: 1.5;
+        margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration {
+          margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration .code {
+          color: rgba(0, 0, 0, 1);
+          margin-bottom: 15px;
+          padding-bottom: 6px;
+      }
+
+      #ddoc_main .declaration div .para {
+          margin-bottom: 0;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr td:first-of-type {
+        padding: 7px;
+        text-align: right;
+        vertical-align: top;
+        word-break: normal;
+        white-space: nowrap;
+      }
+
+      #ddoc_main .ddoc_params .graybox {
+        border: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox td {
+        border-color: rgba(214, 214, 214, 1);
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:first-child > td {
+        border-top: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:last-child > td {
+        border-bottom: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:first-child {
+        border-left: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:last-child {
+        border-right: 0 none;
+        width: 100%;
+      }
+
+      #ddoc_main em.term, #ddoc_main em.term .code {
+        color: rgba(65, 65, 65, 1);
+        font-size: 12px;
+        font-style: italic;
+        line-height: 1.5;
+      }
+
+      #ddoc_main .see-also {
+        cursor: pointer;
+        font-family: Menlo,monospace;
+      }
+
+      #ddoc_main .ddoc_decl .section > div:last-of-type {
+        margin-bottom: 15px;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members {
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .code_sample {
+        background: inherit;
+      }
+
+      #ddoc_main .declaration .code-line {
+          display: block;
+          font: 1em Menlo,monospace;
+      }
+
+      #ddoc_main a[name] {
+        margin: -112px 0 0;
+        padding-top: 112px;
+      }
+
+      #ddoc_main .ddoc_decl td {
+        max-width: inherit;
+      }
+
+      #ddoc_main .declaration a {
+        color: inherit;
+      }
+
+      #ddoc_main .declaration a:hover {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: underline;
+      }
+
+      body.ddoc {
+        background-color: transparent;
+        color: rgba(0, 0, 0, 1);
+        font-family: Helvetica,Arial,sans-serif;
+        font-size: 62.5%;
+        margin: 0;
+        border: 0;
+        left: 0;
+        top: 0;
+        padding: 0;
+      }
+
+      .ddoc a[name] {
+        display: block;
+        height: 0;
+        margin: -85px 0 0;
+        padding-top: 85px;
+        width: 0;
+      }
+
+      .ddoc .module {
+          border-color: transparent;
+          background-color: rgba(255, 255, 255, 1);
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-image: none;
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          box-shadow: 0 0 1px rgba(0, 0, 0, 0.07);
+          display: block;
+          margin-left: 0;
+          min-height: calc(100% - 173px);
+          overflow: auto;
+          padding-bottom: 100px;
+      }
+
+      .ddoc .content_wrapper {
+          background-color: rgba(242, 242, 242, 1);
+          margin: 0 auto;
+          max-width: 980px;
+      }
+
+      .ddoc .section {
+        padding: 15px 25px 30px;
+      }
+
+      .ddoc .section .section {
+        margin: 30px 0 0;
+        padding: 0;
+      }
+
+      .ddoc .para {
+        color: rgba(65, 65, 65, 1);
+        font-size: 1.4em;
+        line-height: 145%;
+        margin-bottom: 15px;
+      }
+
+      .ddoc .ddoc_examples .para {
+        margin-bottom: 0;
+      }
+
+      .ddoc .module_name {
+          color: rgba(0, 0, 0, 1);
+          display: block;
+          font-family: Helvetica;
+          font-size: 2.8em;
+          font-weight: 100;
+          margin-bottom: 0;
+          padding: 15px 0;
+      }
+
+      .ddoc .module a {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: none;
+      }
+
+      .ddoc .code {
+        color: rgba(128, 128, 128, 1);
+        font-family: Menlo,monospace;
+        font-size: 0.85em;
+        word-wrap: break-word;
+      }
+
+      .ddoc .code i {
+        font-style: normal;
+      }
+
+      .ddoc .code .code {
+        font-size: 1em;
+      }
+
+      .ddoc .code_sample {
+        background-clip: padding-box;
+        margin: 1px 0;
+        text-align: left;
+      }
+
+      .ddoc .code_sample {
+        display: block;
+        font-size: 1.4em;
+        margin-left: 21px;
+      }
+
+      .ddoc ol .code_sample {
+        font-size: 1em;
+      }
+
+      .ddoc .code_lines {
+        counter-reset: li;
+        line-height: 1.6em;
+        list-style: outside none none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .ddoc .code_listing .code_sample div {
+        margin-left: 13px;
+        width: 93%;
+      }
+
+      .ddoc .code_listing .code_sample div .code_lines li {
+        list-style-type: none;
+        margin: 0;
+        padding-right: 10px;
+      }
+
+      .ddoc .code_sample div .code_lines li::before {
+        margin-left: -33px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+10)::before {
+        margin-left: -39px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+100)::before {
+        margin-left: -46px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample .code_lines .code {
+        color: #000;
+      }
+
+      .ddoc div.dlang {
+        margin: 10px 0 21px;
+        padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+          margin: 10px 0 21px;
+          padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+        border-left: 5px solid rgba(0, 155, 51, 0.2);
+      }
+
+      .ddoc .code_lines li::before {
+        color: rgba(128, 128, 128, 1);
+        content: counter(li, decimal);
+        counter-increment: li;
+        font-family: Menlo,monospace;
+        font-size: 0.9em;
+        margin-right: 16px;
+      }
+
+      .ddoc .code_lines li {
+        padding-left: 0;
+        white-space: pre-wrap;
+      }
+
+      .ddoc .code_lines li:only-of-type::before {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:only-of-type {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:nth-child(n+10) {
+        text-indent: -17px;
+      }
+
+      .ddoc .code_lines li:nth-child(n+10)::before {
+        margin-right: 12px;
+      }
+
+      .ddoc .graybox {
+        border: 1px solid rgba(233, 233, 233, 1);
+        border-collapse: collapse;
+        border-spacing: 0;
+        empty-cells: hide;
+        margin: 20px 0 36px;
+        text-align: left;
+      }
+
+      .ddoc .graybox p {
+        margin: 0;
+        min-width: 50px;
+      }
+
+      .ddoc th {
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: bottom;
+      }
+
+      .ddoc td {
+        border: 1px solid rgba(233, 233, 233, 1);
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: middle;
+      }
+
+      .punctuation {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .comment {
+        color: rgba(0, 131, 18, 1);
+      }
+
+      .operator {
+        color: #000;
+      }
+
+      .keyword {
+        color: rgba(170, 13, 145, 1);
+      }
+
+      .keyword_type {
+        color: rgba(170, 51, 145, 1);
+      }
+
+      .string_literal {
+        color: rgba(196, 26, 22, 1);
+      }
+
+      .ddoc_psuper_symbol {
+        color: rgba(92, 38, 153, 1);
+      }
+
+      .param {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .psymbol {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .ddoc_member_header .ddoc_header_anchor .code {
+        font-size: 1em;
+      }
+    </style>
+  </head>
+  <body id="ddoc_main" class="ddoc dlang">
+    <div class="content_wrapper">
+      <article class="module">
+        <h1 class="module_name">if Statement</h1>
+        <section id="module_content"><br><br>
+<br><br>
+
+<br><br>
+<p>We've learned that the actual work in a program is performed by expressions. All of the expressions of all of the programs that we've seen so far have started with the  function and were executed until the end of .
+</p>
+<br><br>
+<p> <i>Statements</i>, on the other hand, are features that affect the execution of expressions. Statements don't produce values and don't have side effects themselves. They determine whether and in what order the expressions are executed. Statements sometimes use logical expressions when making such decisions.
+</p>
+<br><br>
+<p><i><b>Note:</b> Other programming languages may have different definitions for expression and statement, while some others may not have a distinction at all.
+</i>
+</p>
+<br><br>
+<h5>The  block and its scope</h5>
+<br><br>
+<p>The  statement determines whether one or more expressions would be executed. It makes this decision by evaluating a logical expression. It has the same meaning as the English word "if", as in the phrase "if there is coffee then I will drink coffee".
+</p>
+<br><br>
+<p> takes a logical expression in parentheses. If the value of that logical expression is , then it executes the expressions that are within the following curly brackets. Conversely, if the logical expression is , it does not execute the expressions within the curly brackets.
+</p>
+<br><br>
+<p>The area within the curly brackets is called a <i>scope</i> and all of the code that is in that scope is called a <i>block of code</i>.
+</p>
+<br><br>
+<p>Here is the syntax of the  statement:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">if</span> (a_logical_expression) {
+        <span class="comment">// ... expression(s) to execute if true
+</span>    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>For example, the program construct that represents "if there is coffee then drink coffee and wash the cup" can be written as in the following program:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">bool</span> existsCoffee = <span class="keyword">true</span>;
+
+    <span class="keyword">if</span> (existsCoffee) {
+        writeln(<span class="string_literal">"Drink coffee"</span>);
+        writeln(<span class="string_literal">"Wash the cup"</span>);
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>If the value of  is , then the expressions that are within the block would be skipped and the program would not print anything.
+</p>
+<br><br>
+<h5> The  block and its scope</h5>
+<br><br>
+<p>Sometimes there are operations to execute for when the logical expression of the  statement is . For example, there is always an operation to execute in a decision like "if there is coffee I will drink coffee, else I will drink tea".
+</p>
+<br><br>
+<p>The operations to execute in the  case are placed in a scope after the  keyword:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">if</span> (a_logical_expression) {
+        <span class="comment">// ... expression(s) to execute if true
+</span>
+    } <span class="keyword">else</span> {
+        <span class="comment">// ... expression(s) to execute if false
+</span>    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>For example, under the assumption that there is always tea:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">if</span> (existsCoffee) {
+        writeln(<span class="string_literal">"Drink coffee"</span>);
+
+    } <span class="keyword">else</span> {
+        writeln(<span class="string_literal">"Drink tea"</span>);
+    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>In that example, either the first or the second string would be printed depending on the value of .
+</p>
+<br><br>
+<p> itself is not a statement but an optional <i>clause</i> of the  statement; it cannot be used alone.
+</p>
+<br><br>
+<p>Note the placement of curly brackets of the  and  blocks above. Although it is <a href="http://dlang.org/dstyle.html">official D style</a> to place curly brackets on separate lines, this book uses a common style of inline curly brackets throughout.
+</p>
+<br><br>
+<h5>Always use the scope curly brackets</h5>
+<br><br>
+<p>It is not recommended but is actually possible to omit the curly brackets if there is only one statement within a scope. As both the  and the  scopes have just one statement above, that code can also be written as the following:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">if</span> (existsCoffee)
+        writeln(<span class="string_literal">"Drink coffee"</span>);
+
+    <span class="keyword">else</span>
+        writeln(<span class="string_literal">"Drink tea"</span>);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Most experienced programmers use curly brackets even for single statements. (One of the exercises of this chapter is about omitting them.) Having said that, I will now show the only case where omitting the curly brackets is actually better.
+</p>
+<br><br>
+<h5> The "if, else if, else" chain</h5>
+<br><br>
+<p>One of the powers of statements and expressions is the ability to use them in more complex ways. In addition to expressions, scopes can contain other statements. For example, an  scope can contain an  statement. Connecting statements and expressions in different ways allows us to make programs behave intelligently according to their purposes.
+</p>
+<br><br>
+<p>The following is a more complex example written under the agreement that riding to a good coffee shop is preferred over walking to a bad one:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">if</span> (existsCoffee) {
+        writeln(<span class="string_literal">"Drink coffee at home"</span>);
+
+    } <span class="keyword">else</span> {
+
+        <span class="keyword">if</span> (existsBicycle) {
+            writeln(<span class="string_literal">"Ride to the good place"</span>);
+
+        } <span class="keyword">else</span> {
+            writeln(<span class="string_literal">"Walk to the bad place"</span>);
+        }
+    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The code above represents the sentences "If there is coffee, drink at home. Else, if there is a bicycle, ride to the good place. Otherwise, walk to the bad place."
+</p>
+<br><br>
+<p>Let's complicate this decision process further: instead of having to walk to the bad place, let's first try the neighbor:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">if</span> (existsCoffee) {
+        writeln(<span class="string_literal">"Drink coffee at home"</span>);
+
+    } <span class="keyword">else</span> {
+
+        <span class="keyword">if</span> (existsBicycle) {
+            writeln(<span class="string_literal">"Ride to the good place"</span>);
+
+        } <span class="keyword">else</span> {
+
+            <span class="keyword">if</span> (neighborIsHome) {
+                writeln(<span class="string_literal">"Have coffee at neighbor's"</span>);
+
+            } <span class="keyword">else</span> {
+                writeln(<span class="string_literal">"Walk to the bad place"</span>);
+            }
+        }
+    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Such decisions like "if this case, else if that other case, else if that even other case, etc." are common in programs. Unfortunately, when the guideline of always using curly brackets is followed obstinately, the code ends up having too much horizontal and vertical space: ignoring the empty lines, the 3  statements and the 4  expressions above occupy a total of 13 lines.
+</p>
+<br><br>
+<p>In order to write such constructs in a more compact way, when an  scope contains only one  statement, then the curly brackets of that  scope are omitted as an exception to this guideline.
+</p>
+<br><br>
+<p>I am leaving the following code untidy as an intermediate step before showing the better form of it. No code should be written in such an untidy way.
+</p>
+<br><br>
+<p>The following is what the code looks like after removing the curly brackets of the two  scopes that contain just a single  statement:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">if</span> (existsCoffee) {
+        writeln(<span class="string_literal">"Drink coffee at home"</span>);
+
+    } <span class="keyword">else</span>
+
+        <span class="keyword">if</span> (existsBicycle) {
+            writeln(<span class="string_literal">"Ride to the good place"</span>);
+
+        } <span class="keyword">else</span>
+
+            <span class="keyword">if</span> (neighborIsHome) {
+                writeln(<span class="string_literal">"Have coffee at neighbor's"</span>);
+
+            } <span class="keyword">else</span> {
+                writeln(<span class="string_literal">"Walk to the bad place"</span>);
+            }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>If we now move those  statements up to the same lines as their enclosing  clauses and tidy up the code, we end up with the following more readable format:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">if</span> (existsCoffee) {
+        writeln(<span class="string_literal">"Drink coffee at home"</span>);
+
+    } <span class="keyword">else</span> <span class="keyword">if</span> (existsBicycle) {
+        writeln(<span class="string_literal">"Ride to the good place"</span>);
+
+    } <span class="keyword">else</span> <span class="keyword">if</span> (neighborIsHome) {
+        writeln(<span class="string_literal">"Have coffee at neighbor's"</span>);
+
+    } <span class="keyword">else</span> {
+        writeln(<span class="string_literal">"Walk to the bad place"</span>);
+    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Removing the curly brackets allows the code to be more compact and lines up all of the expressions for easier readability. The logical expressions, the order that they are evaluated, and the operations that are executed when they are true are now easier to see at a glance.
+</p>
+<br><br>
+<p>This common programming construct is called the "if, else if, else" chain.
+</p>
+<br><br>
+<br><br>
+
+
+</section>
+      </article>
+    </div>
+  </body>
+</html>

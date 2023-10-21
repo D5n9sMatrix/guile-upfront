@@ -1,0 +1,782 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>for Loop</title>
+    <style type="text/css" media="screen">
+      html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p,
+      blockquote, pre, a, abbr, address, cite, code, del, dfn, em, figure,
+      img, ins, kbd, q, s, samp, small, strong, sub, sup, var, b, u, i, dl,
+      dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption,
+      tbody, tfoot, thead, tr, th, td {
+        background: transparent none repeat scroll 0 0;
+        border: 0 none;
+        font-size: 100%;
+        margin: 0;
+        outline: 0 none;
+        padding: 0;
+        vertical-align: baseline;
+      }
+
+      h1 { font-size: 200%; }
+      h2 { font-size: 160%; }
+      h3 { font-size: 120%; }
+      h4 { font-size: 100%; }
+      h5 { font-size: 80%; }
+      h6 { font-size: 80%; font-weight: normal; }
+
+      ul, ol {
+        margin: 1.4em 0;
+      }
+      ul ul, ol ol, ul ol, ol ul {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      ul, ol {
+        margin-left: 2.8em;
+      }
+
+      ol {
+        list-style: decimal;
+      }
+      ol ol {
+        list-style: lower-alpha;
+      }
+      ol ol ol {
+        list-style: lower-roman;
+      }
+      ol ol ol ol {
+        list-style: decimal;
+      }
+
+      blockquote {
+        margin: 0.1em;
+        margin-left: 1em;
+        border-left: 2px solid #cccccc;
+        padding-left: 0.7em;
+      }
+
+      .color_red { color: #dc322f; }
+      .color_blue { color: #268bd2; }
+      .color_green { color: #859901; }
+      .color_yellow { color: #b58901; }
+      .color_black { color: black; }
+      .color_white { color: white; }
+
+      .font_big {
+        font-size: 1.2em;
+      }
+
+      .ddoc_section_h {
+        font-weight: bold;
+        font-size: 13px;
+        line-height: 19.5px;
+        margin-top: 11px;
+        display: block;
+      }
+
+      body.dlang .dlang {
+        display: inline-block;
+      }
+
+      body.dlang .declaration .dlang {
+          display: block;
+      }
+
+      body.dlang .ddoc_header_anchor a.dlang {
+        display: block;
+        color: rgba(0, 136, 204, 1);
+        text-decoration: none;
+      }
+
+      body.dlang .ddoc_header_anchor .code {
+        color: rgba(0, 136, 204, 1);
+      }
+
+      #ddoc_main .module {
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          overflow-x: hidden;
+          padding: 15px;
+      }
+
+      #ddoc_main .section .section {
+        margin-top: 0;
+      }
+
+      #ddoc_main .ddoc_module_members_section {
+          padding: 1px 0 0;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members section.intro {
+          background: #fff none repeat scroll 0 0;
+          list-style-type: none;
+          width: 100%;
+      }
+
+      #ddoc_main .ddoc_header_anchor {
+          font-size: 1.4em;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_header_anchor > .code {
+          display: inline-block;
+
+      }
+
+      #ddoc_main .ddoc_decl {
+        background-color: transparent;
+        height: 100%;
+        left: 0;
+        top: 0;
+        padding: 0;
+        padding-left: 15px;
+      }
+
+      #ddoc_main .ddoc_decl .section, #ddoc_main .section.ddoc_sections {
+        background: white none repeat scroll 0 0;
+        margin: 0;
+        padding: 5px;
+        position: relative;
+        border-radius: 5px;
+      }
+
+      #ddoc_main .ddoc_decl .section h4:first-of-type, #ddoc_main .section.ddoc_sections h4:first-of-type {
+        font-size: 13px;
+        line-height: 1.5;
+        margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration {
+          margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration .code {
+          color: rgba(0, 0, 0, 1);
+          margin-bottom: 15px;
+          padding-bottom: 6px;
+      }
+
+      #ddoc_main .declaration div .para {
+          margin-bottom: 0;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr td:first-of-type {
+        padding: 7px;
+        text-align: right;
+        vertical-align: top;
+        word-break: normal;
+        white-space: nowrap;
+      }
+
+      #ddoc_main .ddoc_params .graybox {
+        border: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox td {
+        border-color: rgba(214, 214, 214, 1);
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:first-child > td {
+        border-top: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:last-child > td {
+        border-bottom: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:first-child {
+        border-left: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:last-child {
+        border-right: 0 none;
+        width: 100%;
+      }
+
+      #ddoc_main em.term, #ddoc_main em.term .code {
+        color: rgba(65, 65, 65, 1);
+        font-size: 12px;
+        font-style: italic;
+        line-height: 1.5;
+      }
+
+      #ddoc_main .see-also {
+        cursor: pointer;
+        font-family: Menlo,monospace;
+      }
+
+      #ddoc_main .ddoc_decl .section > div:last-of-type {
+        margin-bottom: 15px;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members {
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .code_sample {
+        background: inherit;
+      }
+
+      #ddoc_main .declaration .code-line {
+          display: block;
+          font: 1em Menlo,monospace;
+      }
+
+      #ddoc_main a[name] {
+        margin: -112px 0 0;
+        padding-top: 112px;
+      }
+
+      #ddoc_main .ddoc_decl td {
+        max-width: inherit;
+      }
+
+      #ddoc_main .declaration a {
+        color: inherit;
+      }
+
+      #ddoc_main .declaration a:hover {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: underline;
+      }
+
+      body.ddoc {
+        background-color: transparent;
+        color: rgba(0, 0, 0, 1);
+        font-family: Helvetica,Arial,sans-serif;
+        font-size: 62.5%;
+        margin: 0;
+        border: 0;
+        left: 0;
+        top: 0;
+        padding: 0;
+      }
+
+      .ddoc a[name] {
+        display: block;
+        height: 0;
+        margin: -85px 0 0;
+        padding-top: 85px;
+        width: 0;
+      }
+
+      .ddoc .module {
+          border-color: transparent;
+          background-color: rgba(255, 255, 255, 1);
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-image: none;
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          box-shadow: 0 0 1px rgba(0, 0, 0, 0.07);
+          display: block;
+          margin-left: 0;
+          min-height: calc(100% - 173px);
+          overflow: auto;
+          padding-bottom: 100px;
+      }
+
+      .ddoc .content_wrapper {
+          background-color: rgba(242, 242, 242, 1);
+          margin: 0 auto;
+          max-width: 980px;
+      }
+
+      .ddoc .section {
+        padding: 15px 25px 30px;
+      }
+
+      .ddoc .section .section {
+        margin: 30px 0 0;
+        padding: 0;
+      }
+
+      .ddoc .para {
+        color: rgba(65, 65, 65, 1);
+        font-size: 1.4em;
+        line-height: 145%;
+        margin-bottom: 15px;
+      }
+
+      .ddoc .ddoc_examples .para {
+        margin-bottom: 0;
+      }
+
+      .ddoc .module_name {
+          color: rgba(0, 0, 0, 1);
+          display: block;
+          font-family: Helvetica;
+          font-size: 2.8em;
+          font-weight: 100;
+          margin-bottom: 0;
+          padding: 15px 0;
+      }
+
+      .ddoc .module a {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: none;
+      }
+
+      .ddoc .code {
+        color: rgba(128, 128, 128, 1);
+        font-family: Menlo,monospace;
+        font-size: 0.85em;
+        word-wrap: break-word;
+      }
+
+      .ddoc .code i {
+        font-style: normal;
+      }
+
+      .ddoc .code .code {
+        font-size: 1em;
+      }
+
+      .ddoc .code_sample {
+        background-clip: padding-box;
+        margin: 1px 0;
+        text-align: left;
+      }
+
+      .ddoc .code_sample {
+        display: block;
+        font-size: 1.4em;
+        margin-left: 21px;
+      }
+
+      .ddoc ol .code_sample {
+        font-size: 1em;
+      }
+
+      .ddoc .code_lines {
+        counter-reset: li;
+        line-height: 1.6em;
+        list-style: outside none none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .ddoc .code_listing .code_sample div {
+        margin-left: 13px;
+        width: 93%;
+      }
+
+      .ddoc .code_listing .code_sample div .code_lines li {
+        list-style-type: none;
+        margin: 0;
+        padding-right: 10px;
+      }
+
+      .ddoc .code_sample div .code_lines li::before {
+        margin-left: -33px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+10)::before {
+        margin-left: -39px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+100)::before {
+        margin-left: -46px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample .code_lines .code {
+        color: #000;
+      }
+
+      .ddoc div.dlang {
+        margin: 10px 0 21px;
+        padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+          margin: 10px 0 21px;
+          padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+        border-left: 5px solid rgba(0, 155, 51, 0.2);
+      }
+
+      .ddoc .code_lines li::before {
+        color: rgba(128, 128, 128, 1);
+        content: counter(li, decimal);
+        counter-increment: li;
+        font-family: Menlo,monospace;
+        font-size: 0.9em;
+        margin-right: 16px;
+      }
+
+      .ddoc .code_lines li {
+        padding-left: 0;
+        white-space: pre-wrap;
+      }
+
+      .ddoc .code_lines li:only-of-type::before {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:only-of-type {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:nth-child(n+10) {
+        text-indent: -17px;
+      }
+
+      .ddoc .code_lines li:nth-child(n+10)::before {
+        margin-right: 12px;
+      }
+
+      .ddoc .graybox {
+        border: 1px solid rgba(233, 233, 233, 1);
+        border-collapse: collapse;
+        border-spacing: 0;
+        empty-cells: hide;
+        margin: 20px 0 36px;
+        text-align: left;
+      }
+
+      .ddoc .graybox p {
+        margin: 0;
+        min-width: 50px;
+      }
+
+      .ddoc th {
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: bottom;
+      }
+
+      .ddoc td {
+        border: 1px solid rgba(233, 233, 233, 1);
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: middle;
+      }
+
+      .punctuation {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .comment {
+        color: rgba(0, 131, 18, 1);
+      }
+
+      .operator {
+        color: #000;
+      }
+
+      .keyword {
+        color: rgba(170, 13, 145, 1);
+      }
+
+      .keyword_type {
+        color: rgba(170, 51, 145, 1);
+      }
+
+      .string_literal {
+        color: rgba(196, 26, 22, 1);
+      }
+
+      .ddoc_psuper_symbol {
+        color: rgba(92, 38, 153, 1);
+      }
+
+      .param {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .psymbol {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .ddoc_member_header .ddoc_header_anchor .code {
+        font-size: 1em;
+      }
+    </style>
+  </head>
+  <body id="ddoc_main" class="ddoc dlang">
+    <div class="content_wrapper">
+      <article class="module">
+        <h1 class="module_name">for Loop</h1>
+        <section id="module_content"><br><br>
+<br><br>
+
+<br><br>
+<p>The  loop serves the same purpose as <a href="while.html">the  loop</a>.  makes it possible to put the definitions and expressions concerning the loop's iteration on the same line.
+</p>
+<br><br>
+<p>Although  is used much less than  in practice, it is important to understand the  loop first. We will see  in <a href="foreach.html">a later chapter</a>.
+</p>
+<br><br>
+<h5>The sections of the  loop</h5>
+<br><br>
+<p>The  loop evaluates the loop condition and continues executing the loop as long as that condition is . For example, a loop to print the numbers between 1 and 10 may check the condition <i>less than 11</i>:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">while</span> (number &lt; 11)
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p><i>Iterating</i> the loop can be achieved by incrementing  at the end of the loop:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">        ++number;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>To be compilable as D code,  must have been defined before its first use:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span> number = 1;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Finally, there is the actual work within the loop body:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">        writeln(number);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>These four sections can be combined into the desired loop as follows:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span> number = 1;         <span class="comment">// ← preparation
+</span>
+    <span class="keyword">while</span> (number &lt; 11) {   <span class="comment">// ← condition check
+</span>        writeln(number);    <span class="comment">// ← actual work
+</span>        ++number;           <span class="comment">// ← iteration
+</span>    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The sections of the  loop are executed in the following order during the iteration of the  loop:
+</p>
+<br><br>
+
+<br><br>
+<p>A  statement or a thrown exception can terminate the loop as well.
+</p>
+<br><br>
+<h5>The sections of the  loop</h5>
+<br><br>
+<p>The  loop brings three of these sections onto a single line. They are written within the parentheses of the  loop, separated by semicolons. The loop body contains only the actual work:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">for</span> (<span class="comment">/* preparation */</span>; <span class="comment">/* condition check */</span>; <span class="comment">/* iteration */</span>) {
+    <span class="comment">/* actual work */</span>
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Here is the same code written as a  loop:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">for</span> (<span class="keyword">int</span> number = 1; number &lt; 11; ++number) {
+        writeln(number);
+    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The benefits of the  loop are more obvious when the loop body has a large number of statements. The expression that increments the loop variable is visible on the  line instead of being mixed with the other statements of the loop. It is also more clear that the declared variable is used only as part of the loop, and not by any other surrounding code.
+</p>
+<br><br>
+<p>The sections of the  loop are executed in the same order as in the  loop. The  and  statements also work exactly the same way as they do in the  loop. The only difference between  and  loops is the name scope of the loop variable. This is explained below.
+</p>
+<br><br>
+<p>Although very common, the iteration variable need not be an integer, nor it is modified only by incrementing. For example, the following loop is used to print the halves of the previous floating point values:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">for</span> (<span class="keyword">double</span> value = 1; value &gt; 0.001; value /= 2) {
+        writeln(value);
+    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p><b>Note:</b> The information above is technically incorrect but better captures the spirit of how the  loop is used in practice. In reality, D's  loop does not have <i>three sections that are separated by semicolons</i>. It has two sections, the first of which consisting of the preparation and the loop condition.
+</p>
+<br><br>
+<p>Without getting into the details of this syntax, here is how to define two variables of different types in the preparation section:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">for</span> ( <span class="keyword">int</span> i = 0; <span class="keyword">double</span> d = 0.5;  i &lt; 10; ++i) {
+        writeln(<span class="string_literal">"i: "</span>, i, <span class="string_literal">", d: "</span>, d);
+        d /= 2;
+    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Note that the preparation section is the area within the highlighted curly brackets and that there is no semicolon between the preparation section and the condition section.
+</p>
+<br><br>
+<h5>The sections may be empty</h5>
+<br><br>
+<p>All three of the  loop sections may be left empty:
+</p>
+<br><br>
+<ul><li>Sometimes a special loop variable is not needed, possibly because an already-defined variable would be used.
+</li>
+<li>Sometimes the loop would be exited by a  statement, instead of by relying on the loop condition.
+</li>
+<li>Sometimes the iteration expressions depend on certain conditions that would be checked within the loop body.
+</li>
+</ul>
+<br><br>
+<p>When all of the sections are emtpy, the  loop means <i>forever</i>:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">for</span> ( ; ; ) {
+        <span class="comment">// ...
+</span>    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Such a loop may be designed to never end or end with a  statement.
+</p>
+<br><br>
+<h5>The name scope of the loop variable</h5>
+<br><br>
+<p>The only difference between the  and  loops is the name scope of the variable defined during loop preparation: The variable is accessible only within the  loop, not outside of it:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">for</span> (<span class="keyword">int</span> i = 0; i &lt; 5; ++i) {
+        <span class="comment">// ...
+</span>    }
+
+    writeln(i);   
+                  <span class="comment">//   i is not accessible here
+</span></code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<br><br>
+<p>In contrast, when using a  loop the variable is defined in the same name scope as that which contains the loop, and therefore the name is accessible even after the loop:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span> i = 0;
+
+    <span class="keyword">while</span> (i &lt; 5) {
+        <span class="comment">// ...
+</span>        ++i;
+    }
+
+    writeln(i);   <span class="comment">// ← 'i' is accessible here
+</span></code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>We have seen the guideline of <i>defining names closest to their first use</i> in the previous chapter. Similar to the rationale for that guideline, the smaller the name scope of a variable the better. In this regard, when the loop variable is not needed outside the loop, a  loop is better than a  loop.
+</p>
+<br><br>
+
+
+</section>
+      </article>
+    </div>
+  </body>
+</html>

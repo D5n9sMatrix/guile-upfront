@@ -1,0 +1,1189 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>tuples</title>
+    <style type="text/css" media="screen">
+      html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p,
+      blockquote, pre, a, abbr, address, cite, code, del, dfn, em, figure,
+      img, ins, kbd, q, s, samp, small, strong, sub, sup, var, b, u, i, dl,
+      dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption,
+      tbody, tfoot, thead, tr, th, td {
+        background: transparent none repeat scroll 0 0;
+        border: 0 none;
+        font-size: 100%;
+        margin: 0;
+        outline: 0 none;
+        padding: 0;
+        vertical-align: baseline;
+      }
+
+      h1 { font-size: 200%; }
+      h2 { font-size: 160%; }
+      h3 { font-size: 120%; }
+      h4 { font-size: 100%; }
+      h5 { font-size: 80%; }
+      h6 { font-size: 80%; font-weight: normal; }
+
+      ul, ol {
+        margin: 1.4em 0;
+      }
+      ul ul, ol ol, ul ol, ol ul {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      ul, ol {
+        margin-left: 2.8em;
+      }
+
+      ol {
+        list-style: decimal;
+      }
+      ol ol {
+        list-style: lower-alpha;
+      }
+      ol ol ol {
+        list-style: lower-roman;
+      }
+      ol ol ol ol {
+        list-style: decimal;
+      }
+
+      blockquote {
+        margin: 0.1em;
+        margin-left: 1em;
+        border-left: 2px solid #cccccc;
+        padding-left: 0.7em;
+      }
+
+      .color_red { color: #dc322f; }
+      .color_blue { color: #268bd2; }
+      .color_green { color: #859901; }
+      .color_yellow { color: #b58901; }
+      .color_black { color: black; }
+      .color_white { color: white; }
+
+      .font_big {
+        font-size: 1.2em;
+      }
+
+      .ddoc_section_h {
+        font-weight: bold;
+        font-size: 13px;
+        line-height: 19.5px;
+        margin-top: 11px;
+        display: block;
+      }
+
+      body.dlang .dlang {
+        display: inline-block;
+      }
+
+      body.dlang .declaration .dlang {
+          display: block;
+      }
+
+      body.dlang .ddoc_header_anchor a.dlang {
+        display: block;
+        color: rgba(0, 136, 204, 1);
+        text-decoration: none;
+      }
+
+      body.dlang .ddoc_header_anchor .code {
+        color: rgba(0, 136, 204, 1);
+      }
+
+      #ddoc_main .module {
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          overflow-x: hidden;
+          padding: 15px;
+      }
+
+      #ddoc_main .section .section {
+        margin-top: 0;
+      }
+
+      #ddoc_main .ddoc_module_members_section {
+          padding: 1px 0 0;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members section.intro {
+          background: #fff none repeat scroll 0 0;
+          list-style-type: none;
+          width: 100%;
+      }
+
+      #ddoc_main .ddoc_header_anchor {
+          font-size: 1.4em;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_header_anchor > .code {
+          display: inline-block;
+
+      }
+
+      #ddoc_main .ddoc_decl {
+        background-color: transparent;
+        height: 100%;
+        left: 0;
+        top: 0;
+        padding: 0;
+        padding-left: 15px;
+      }
+
+      #ddoc_main .ddoc_decl .section, #ddoc_main .section.ddoc_sections {
+        background: white none repeat scroll 0 0;
+        margin: 0;
+        padding: 5px;
+        position: relative;
+        border-radius: 5px;
+      }
+
+      #ddoc_main .ddoc_decl .section h4:first-of-type, #ddoc_main .section.ddoc_sections h4:first-of-type {
+        font-size: 13px;
+        line-height: 1.5;
+        margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration {
+          margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration .code {
+          color: rgba(0, 0, 0, 1);
+          margin-bottom: 15px;
+          padding-bottom: 6px;
+      }
+
+      #ddoc_main .declaration div .para {
+          margin-bottom: 0;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr td:first-of-type {
+        padding: 7px;
+        text-align: right;
+        vertical-align: top;
+        word-break: normal;
+        white-space: nowrap;
+      }
+
+      #ddoc_main .ddoc_params .graybox {
+        border: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox td {
+        border-color: rgba(214, 214, 214, 1);
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:first-child > td {
+        border-top: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:last-child > td {
+        border-bottom: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:first-child {
+        border-left: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:last-child {
+        border-right: 0 none;
+        width: 100%;
+      }
+
+      #ddoc_main em.term, #ddoc_main em.term .code {
+        color: rgba(65, 65, 65, 1);
+        font-size: 12px;
+        font-style: italic;
+        line-height: 1.5;
+      }
+
+      #ddoc_main .see-also {
+        cursor: pointer;
+        font-family: Menlo,monospace;
+      }
+
+      #ddoc_main .ddoc_decl .section > div:last-of-type {
+        margin-bottom: 15px;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members {
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .code_sample {
+        background: inherit;
+      }
+
+      #ddoc_main .declaration .code-line {
+          display: block;
+          font: 1em Menlo,monospace;
+      }
+
+      #ddoc_main a[name] {
+        margin: -112px 0 0;
+        padding-top: 112px;
+      }
+
+      #ddoc_main .ddoc_decl td {
+        max-width: inherit;
+      }
+
+      #ddoc_main .declaration a {
+        color: inherit;
+      }
+
+      #ddoc_main .declaration a:hover {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: underline;
+      }
+
+      body.ddoc {
+        background-color: transparent;
+        color: rgba(0, 0, 0, 1);
+        font-family: Helvetica,Arial,sans-serif;
+        font-size: 62.5%;
+        margin: 0;
+        border: 0;
+        left: 0;
+        top: 0;
+        padding: 0;
+      }
+
+      .ddoc a[name] {
+        display: block;
+        height: 0;
+        margin: -85px 0 0;
+        padding-top: 85px;
+        width: 0;
+      }
+
+      .ddoc .module {
+          border-color: transparent;
+          background-color: rgba(255, 255, 255, 1);
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-image: none;
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          box-shadow: 0 0 1px rgba(0, 0, 0, 0.07);
+          display: block;
+          margin-left: 0;
+          min-height: calc(100% - 173px);
+          overflow: auto;
+          padding-bottom: 100px;
+      }
+
+      .ddoc .content_wrapper {
+          background-color: rgba(242, 242, 242, 1);
+          margin: 0 auto;
+          max-width: 980px;
+      }
+
+      .ddoc .section {
+        padding: 15px 25px 30px;
+      }
+
+      .ddoc .section .section {
+        margin: 30px 0 0;
+        padding: 0;
+      }
+
+      .ddoc .para {
+        color: rgba(65, 65, 65, 1);
+        font-size: 1.4em;
+        line-height: 145%;
+        margin-bottom: 15px;
+      }
+
+      .ddoc .ddoc_examples .para {
+        margin-bottom: 0;
+      }
+
+      .ddoc .module_name {
+          color: rgba(0, 0, 0, 1);
+          display: block;
+          font-family: Helvetica;
+          font-size: 2.8em;
+          font-weight: 100;
+          margin-bottom: 0;
+          padding: 15px 0;
+      }
+
+      .ddoc .module a {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: none;
+      }
+
+      .ddoc .code {
+        color: rgba(128, 128, 128, 1);
+        font-family: Menlo,monospace;
+        font-size: 0.85em;
+        word-wrap: break-word;
+      }
+
+      .ddoc .code i {
+        font-style: normal;
+      }
+
+      .ddoc .code .code {
+        font-size: 1em;
+      }
+
+      .ddoc .code_sample {
+        background-clip: padding-box;
+        margin: 1px 0;
+        text-align: left;
+      }
+
+      .ddoc .code_sample {
+        display: block;
+        font-size: 1.4em;
+        margin-left: 21px;
+      }
+
+      .ddoc ol .code_sample {
+        font-size: 1em;
+      }
+
+      .ddoc .code_lines {
+        counter-reset: li;
+        line-height: 1.6em;
+        list-style: outside none none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .ddoc .code_listing .code_sample div {
+        margin-left: 13px;
+        width: 93%;
+      }
+
+      .ddoc .code_listing .code_sample div .code_lines li {
+        list-style-type: none;
+        margin: 0;
+        padding-right: 10px;
+      }
+
+      .ddoc .code_sample div .code_lines li::before {
+        margin-left: -33px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+10)::before {
+        margin-left: -39px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+100)::before {
+        margin-left: -46px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample .code_lines .code {
+        color: #000;
+      }
+
+      .ddoc div.dlang {
+        margin: 10px 0 21px;
+        padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+          margin: 10px 0 21px;
+          padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+        border-left: 5px solid rgba(0, 155, 51, 0.2);
+      }
+
+      .ddoc .code_lines li::before {
+        color: rgba(128, 128, 128, 1);
+        content: counter(li, decimal);
+        counter-increment: li;
+        font-family: Menlo,monospace;
+        font-size: 0.9em;
+        margin-right: 16px;
+      }
+
+      .ddoc .code_lines li {
+        padding-left: 0;
+        white-space: pre-wrap;
+      }
+
+      .ddoc .code_lines li:only-of-type::before {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:only-of-type {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:nth-child(n+10) {
+        text-indent: -17px;
+      }
+
+      .ddoc .code_lines li:nth-child(n+10)::before {
+        margin-right: 12px;
+      }
+
+      .ddoc .graybox {
+        border: 1px solid rgba(233, 233, 233, 1);
+        border-collapse: collapse;
+        border-spacing: 0;
+        empty-cells: hide;
+        margin: 20px 0 36px;
+        text-align: left;
+      }
+
+      .ddoc .graybox p {
+        margin: 0;
+        min-width: 50px;
+      }
+
+      .ddoc th {
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: bottom;
+      }
+
+      .ddoc td {
+        border: 1px solid rgba(233, 233, 233, 1);
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: middle;
+      }
+
+      .punctuation {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .comment {
+        color: rgba(0, 131, 18, 1);
+      }
+
+      .operator {
+        color: #000;
+      }
+
+      .keyword {
+        color: rgba(170, 13, 145, 1);
+      }
+
+      .keyword_type {
+        color: rgba(170, 51, 145, 1);
+      }
+
+      .string_literal {
+        color: rgba(196, 26, 22, 1);
+      }
+
+      .ddoc_psuper_symbol {
+        color: rgba(92, 38, 153, 1);
+      }
+
+      .param {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .psymbol {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .ddoc_member_header .ddoc_header_anchor .code {
+        font-size: 1em;
+      }
+    </style>
+  </head>
+  <body id="ddoc_main" class="ddoc dlang">
+    <div class="content_wrapper">
+      <article class="module">
+        <h1 class="module_name">tuples</h1>
+        <section id="module_content"><br><br>
+<br><br>
+
+<br><br>
+<p>Tuples are for combining multiple values to be used as a single object. They are implemented as a library feature by the  template from the  module.
+</p>
+<br><br>
+<p> makes use of  from the  module for some of its operations.
+</p>
+<br><br>
+<p>This chapter covers only the more common operations of tuples. For more information on tuples and templates see <a href="https://github.com/PhilippeSigaud/D-templates-tutorial">Philippe Sigaud's <i>D Templates: A Tutorial</i></a>.
+</p>
+<br><br>
+<h5> and </h5>
+<br><br>
+<p>Tuples are usually constructed by the convenience function :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+<span class="keyword">import</span> std.typecons;
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">auto</span> t = ;
+    writeln(t);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The  call above constructs an object that consists of the  value 42 and the  value . The output of the program includes the type of the tuple object and its members:
+</p>
+<br><br>
+
+<br><br>
+<p>The tuple type above is the equivalent of the following pseudo  definition and likely have been implemented in exactly the same way:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="comment">// The equivalent of Tuple!(int, string)
+</span><span class="keyword">struct</span> __Tuple_int_string {
+    <span class="keyword">int</span> __member_0;
+    string __member_1;
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The members of a tuple are normally accessed by their index values. That syntax suggests that tuples can be seen as arrays consisting of different types of elements:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    writeln(t);
+    writeln(t);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output:
+</p>
+<br><br>
+
+<br><br>
+<h6>Member properties</h6>
+<br><br>
+<p>It is possible to access the members by properties if the tuple is constructed directly by the  template instead of the  function. The type and the name of each member are specified as two consecutive template parameters:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> t = Tuple!(<span class="keyword">int</span>, <span class="string_literal">"number"</span>,
+                    string, <span class="string_literal">"message"</span>)(42, <span class="string_literal">"hello"</span>);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The definition above allows accessing the members by  and  properties as well:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    writeln(<span class="string_literal">"by index 0 : "</span>, t[0]);
+    writeln(<span class="string_literal">"by .number : "</span>, t);
+    writeln(<span class="string_literal">"by index 1 : "</span>, t[1]);
+    writeln(<span class="string_literal">"by .message: "</span>, t);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output:
+</p>
+<br><br>
+
+<br><br>
+<h6> Expanding the members as a list of values</h6>
+<br><br>
+<p>Tuple members can be expanded as a list of values that can be used e.g. as an argument list when calling a function. The members can be expanded either by the  property or by slicing:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+<span class="keyword">import</span> std.typecons;
+
+<span class="keyword">void</span> foo(<span class="keyword">int</span> i, string s, <span class="keyword">double</span> d, <span class="keyword">char</span> c) {
+    <span class="comment">// ...
+</span>}
+
+<span class="keyword">void</span> bar(<span class="keyword">int</span> i, <span class="keyword">double</span> d, <span class="keyword">char</span> c) {
+    <span class="comment">// ...
+</span>}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">auto</span> t = tuple(1, <span class="string_literal">"2"</span>, 3.3, '4');
+
+    <span class="comment">// Both of the following lines are equivalents of
+</span>    <span class="comment">// foo(1, "2", 3.3, '4'):
+</span>    foo(t);
+    foo(t);
+
+    <span class="comment">// The equivalent of bar(1, 3.3, '4'):
+</span>    bar(t, t);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The tuple above consists of four values of , , , and . Since those types match the parameter list of , an expansion of its members can be used as arguments to . When calling , a matching argument list is made up of the first member and the last two members of the tuple.
+</p>
+<br><br>
+<p>As long as the members are compatible to be elements of the same array, the expansion of a tuple can be used as the element values of an array literal as well:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+<span class="keyword">import</span> std.typecons;
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">auto</span> t = tuple(1, 2, 3);
+    <span class="keyword">auto</span> a = [ t.expand, t[] ];
+    writeln(a);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The array literal above is initialized by expanding the same tuple twice:
+</p>
+<br><br>
+
+<br><br>
+<h6>  Compile-time </h6>
+<br><br>
+<p>Because their values can be expanded, tuples can be used with the  statement as well:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> t = tuple(42, <span class="string_literal">"hello"</span>, 1.5);
+
+    <span class="keyword">foreach</span> (i, member; ) {
+        writefln(<span class="string_literal">"%s: %s"</span>, i, member);
+    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output:
+</p>
+<br><br>
+
+<br><br>
+<p>
+The  statement above may give a false impression: It may be thought of being a loop that gets executed at run time. That is not the case. Rather, a  statement that operates on the members of a tuple is an <i>unrolling</i> of the loop body for each member. The  statement above is the equivalent of the following code:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    {
+        <span class="keyword">enum</span> size_t i = 0;
+         member = t[i];
+        writefln(<span class="string_literal">"%s: %s"</span>, i, member);
+    }
+    {
+        <span class="keyword">enum</span> size_t i = 1;
+         member = t[i];
+        writefln(<span class="string_literal">"%s: %s"</span>, i, member);
+    }
+    {
+        <span class="keyword">enum</span> size_t i = 2;
+         member = t[i];
+        writefln(<span class="string_literal">"%s: %s"</span>, i, member);
+    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The reason for the unrolling is the fact that when the tuple members are of different types, the  body has to be compiled differently for each type.
+</p>
+<br><br>
+<p>We will see , a more powerful loop unrolling feature, in <a href="static_foreach.html">a later chapter</a>.
+</p>
+<br><br>
+<h6>Returning multiple values from functions</h6>
+<br><br>
+<p> Tuples can be a simple solution to the limitation of functions having to return a single value. An example of this is .  searches for a range inside another range and produces a result consisting of three pieces: the part before the found range, the found range, and the part after the found range:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.algorithm;
+
+<span class="comment">// ...
+</span>
+    <span class="keyword">auto</span> entireRange = <span class="string_literal">"hello"</span>;
+    <span class="keyword">auto</span> searched = <span class="string_literal">"ll"</span>;
+
+    <span class="keyword">auto</span> result = findSplit(entireRange, searched);
+
+    writeln(<span class="string_literal">"before: "</span>, result[0]);
+    writeln(<span class="string_literal">"found : "</span>, result[1]);
+    writeln(<span class="string_literal">"after : "</span>, result[2]);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output:
+</p>
+<br><br>
+
+<br><br>
+<p>Another option for returning multiple values from a function is to return a  object:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">struct</span> Result {
+    <span class="comment">// ...
+</span>}
+
+ foo() {
+    <span class="comment">// ...
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h5> </h5>
+<br><br>
+<p> is defined in the  module. It is used for representing a concept that is normally used by the compiler but otherwise not available to the programmer as an entity: A comma-separated list of values, types, and symbols (i.e.  template arguments). The following are three examples of such lists:
+</p>
+<br><br>
+<ul><li>Function argument list</li>
+<li>Template argument list</li>
+<li>Array literal element list</li>
+</ul>
+<br><br>
+<p>The following three lines of code are examples of those lists in the same order:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    foo();         <span class="comment">// function arguments
+</span>    <span class="keyword">auto</span> o = Bar!()();  <span class="comment">// template arguments
+</span>    <span class="keyword">auto</span> a = [  ];      <span class="comment">// array literal elements
+</span></code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p> takes advantage of  when expanding its members.
+</p>
+<br><br>
+<p> The name  comes from "alias sequence" and it can contain types, values, and symbols. ( and  used to be called  and , respectively.)
+</p>
+<br><br>
+<p>This chapter includes  examples that consist only of types or only of values. Examples of its use with both types and values will appear in the next chapter.  is especially useful with variadic templates, which we will see in the next chapter as well.
+</p>
+<br><br>
+<h6> consisting of values</h6>
+<br><br>
+<p>The values that an  represents are specified as its template arguments.
+</p>
+<br><br>
+<p>Let's imagine a function that takes three parameters:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> foo() {
+    writefln(<span class="string_literal">"foo is called with %s, %s, and %s."</span>, i, s, d);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>That function would normally be called with three arguments:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    foo(1, <span class="string_literal">"hello"</span>, 2.5);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p> can combine those arguments as a single entity and can automatically be expanded when calling functions:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.meta;
+
+<span class="comment">// ...
+</span>
+    <span class="keyword">alias</span> arguments = AliasSeq!(1, <span class="string_literal">"hello"</span>, 2.5);
+    foo();
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Although it looks like the function is now being called with a single argument, the  call above is the equivalent of the previous one. As a result, both calls produce the same output:
+</p>
+<br><br>
+
+<br><br>
+<p>Also note that  is not defined as a variable, e.g. with . Rather, it is an  of a specific  instance. Although it is possible to define variables of s as well, the examples in this chapter will use them only as aliases.
+</p>
+<br><br>
+<p>As we have seen above with , when the values are compatible to be elements of the same array, an  can be used to initialize an array literal as well:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">alias</span> elements = AliasSeq!(1, 2, 3, 4);
+    <span class="keyword">auto</span> arr = [  ];
+    <span class="keyword">assert</span>(arr == [ 1, 2, 3, 4 ]);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h6>Indexing and slicing</h6>
+<br><br>
+<p>Same with , the members of an  can be accessed by indexes and slices:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">alias</span> arguments = AliasSeq!(1, <span class="string_literal">"hello"</span>, 2.5);
+    <span class="keyword">assert</span>(arguments == 1);
+    <span class="keyword">assert</span>(arguments == <span class="string_literal">"hello"</span>);
+    <span class="keyword">assert</span>(arguments == 2.5);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Let's assume there is a function with parameters matching the last two members of the  above. That function can be called with a slice of just the last two members of the :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> bar(string s, <span class="keyword">double</span> d) {
+    <span class="comment">// ...
+</span>}
+
+<span class="comment">// ...
+</span>
+    bar(arguments);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h6> consisting of types</h6>
+<br><br>
+<p>Members of an  can consist of types. In other words, not a specific value of a specific type but a type like  itself. An  consisting of types can represent template arguments.
+</p>
+<br><br>
+<p>Let's use an  with a  template that has two parameters. The first parameter of this template determines the element type of a member array and the second parameter determines the return value of a member function:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.conv;
+
+<span class="keyword">struct</span> S() {
+    ElementT[] arr;
+
+    ResultT length() {
+        <span class="keyword">return</span> to!ResultT(arr.length);
+    }
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">auto</span> s = S!([ 1, 2, 3 ]);
+    <span class="keyword">auto</span> l = s.length();
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>In the code above, we see that the template is instantiated with . An  can represent the same argument list as well:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.meta;
+
+<span class="comment">// ...
+</span>
+    <span class="keyword">alias</span> Types = AliasSeq!(<span class="keyword">double</span>, <span class="keyword">int</span>);
+    <span class="keyword">auto</span> s = S!([ 1, 2, 3 ]);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Although it appears to be a single template argument,  gets expanded automatically and the template instantiation becomes  as before.
+</p>
+<br><br>
+<p> is especially useful in <i>variadic templates</i>. We will see examples of this in the next chapter.
+</p>
+<br><br>
+<h6> with </h6>
+<br><br>
+<p>Same with , the  statement operating on an  is not a run time loop. Rather, it is the unrolling of the loop body for each member.
+</p>
+<br><br>
+<p>Let's see an example of this with a unit test written for the  struct that was defined above. The following code tests  for element types , , and  ( is always  in this example):
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">unittest</span> {
+    <span class="keyword">alias</span> Types = AliasSeq!();
+
+    <span class="keyword">foreach</span> (Type; ) {
+        <span class="keyword">auto</span> s = S!(Type, size_t)([ Type.init, Type.init ]);
+        <span class="keyword">assert</span>(s.length() == 2);
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The  variable  corresponds to , , and , in that order. As a result, the  statement gets compiled as the equivalent of the code below:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    {
+        <span class="keyword">auto</span> s = S!(, size_t)([ .init, .init ]);
+        <span class="keyword">assert</span>(s.length() == 2);
+    }
+    {
+        <span class="keyword">auto</span> s = S!(, size_t)([ .init, .init ]);
+        <span class="keyword">assert</span>(s.length() == 2);
+    }
+    {
+        <span class="keyword">auto</span> s = S!(, size_t)([ .init, .init ]);
+        <span class="keyword">assert</span>(s.length() == 2);
+    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h5>  property</h5>
+<br><br>
+<p> represents the members of a type or an object. When applied to a user-defined type,  provides access to the definitions of the members of that type:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">struct</span> S {
+    <span class="keyword">int</span> number;
+    string message;
+    <span class="keyword">double</span> value;
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">foreach</span> (i, MemberType; <span class="keyword">typeof</span>()) {
+        writefln(<span class="string_literal">"Member %s:"</span>, i);
+        writefln(<span class="string_literal">"  type: %s"</span>, MemberType.stringof);
+
+        string name = [i].stringof;
+        writefln(<span class="string_literal">"  name: %s"</span>, name);
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p> appears in two places in the program. First, the types of the elements are obtained by applying  to  so that each type appears as the  variable. Second, the name of the member is obtained by .
+</p>
+<br><br>
+
+<br><br>
+<p> can be applied to an object as well. In that case, it produces a tuple consisting of the values of the members of the object:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> object = S(42, <span class="string_literal">"hello"</span>, 1.5);
+
+    <span class="keyword">foreach</span> (i, member; ) {
+        writefln(<span class="string_literal">"Member %s:"</span>, i);
+        writefln(<span class="string_literal">"  type : %s"</span>, <span class="keyword">typeof</span>(member).stringof);
+        writefln(<span class="string_literal">"  value: %s"</span>, member);
+    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The  variable  represents each member of the object:
+</p>
+<br><br>
+
+<br><br>
+<p>Here, an important point to make is that the tuple that  returns consists of the members of the object themselves, not their copies. In other words, the tuple members are references to the actual object members.
+</p>
+<br><br>
+<h5>Summary</h5>
+<br><br>
+<ul><br><br>
+<li> combines different types of values similar to a  object.</li>
+<br><br>
+<li>Explicit use of  allows accessing the members by properties.</li>
+<br><br>
+<li>The members can be expanded as a value list by  or by slicing.</li>
+<br><br>
+<li> with a tuple is not a run time loop; rather, it is a loop unrolling.</li>
+<br><br>
+<li> represents concepts like function argument list, template argument list, array literal element list, etc.</li>
+<br><br>
+<li> can consist of values and types.</li>
+<br><br>
+<li>Tuples support indexing and slicing.</li>
+<br><br>
+<li> provides information about the members of types and objects.</li>
+<br><br>
+</ul>
+<br><br>
+macros:
+        TITLE=Tuples
+<br><br>
+        DESCRIPTION=Combining values and types to be able to access them as members of the same object.
+<br><br>
+        KEYWORDS=d programming language tutorial book Tuple AliasSeq tuple
+</section>
+      </article>
+    </div>
+  </body>
+</html>

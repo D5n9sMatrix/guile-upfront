@@ -1,0 +1,927 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Contract Programming for Structs and Classes</title>
+    <style type="text/css" media="screen">
+      html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p,
+      blockquote, pre, a, abbr, address, cite, code, del, dfn, em, figure,
+      img, ins, kbd, q, s, samp, small, strong, sub, sup, var, b, u, i, dl,
+      dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption,
+      tbody, tfoot, thead, tr, th, td {
+        background: transparent none repeat scroll 0 0;
+        border: 0 none;
+        font-size: 100%;
+        margin: 0;
+        outline: 0 none;
+        padding: 0;
+        vertical-align: baseline;
+      }
+
+      h1 { font-size: 200%; }
+      h2 { font-size: 160%; }
+      h3 { font-size: 120%; }
+      h4 { font-size: 100%; }
+      h5 { font-size: 80%; }
+      h6 { font-size: 80%; font-weight: normal; }
+
+      ul, ol {
+        margin: 1.4em 0;
+      }
+      ul ul, ol ol, ul ol, ol ul {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      ul, ol {
+        margin-left: 2.8em;
+      }
+
+      ol {
+        list-style: decimal;
+      }
+      ol ol {
+        list-style: lower-alpha;
+      }
+      ol ol ol {
+        list-style: lower-roman;
+      }
+      ol ol ol ol {
+        list-style: decimal;
+      }
+
+      blockquote {
+        margin: 0.1em;
+        margin-left: 1em;
+        border-left: 2px solid #cccccc;
+        padding-left: 0.7em;
+      }
+
+      .color_red { color: #dc322f; }
+      .color_blue { color: #268bd2; }
+      .color_green { color: #859901; }
+      .color_yellow { color: #b58901; }
+      .color_black { color: black; }
+      .color_white { color: white; }
+
+      .font_big {
+        font-size: 1.2em;
+      }
+
+      .ddoc_section_h {
+        font-weight: bold;
+        font-size: 13px;
+        line-height: 19.5px;
+        margin-top: 11px;
+        display: block;
+      }
+
+      body.dlang .dlang {
+        display: inline-block;
+      }
+
+      body.dlang .declaration .dlang {
+          display: block;
+      }
+
+      body.dlang .ddoc_header_anchor a.dlang {
+        display: block;
+        color: rgba(0, 136, 204, 1);
+        text-decoration: none;
+      }
+
+      body.dlang .ddoc_header_anchor .code {
+        color: rgba(0, 136, 204, 1);
+      }
+
+      #ddoc_main .module {
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          overflow-x: hidden;
+          padding: 15px;
+      }
+
+      #ddoc_main .section .section {
+        margin-top: 0;
+      }
+
+      #ddoc_main .ddoc_module_members_section {
+          padding: 1px 0 0;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members section.intro {
+          background: #fff none repeat scroll 0 0;
+          list-style-type: none;
+          width: 100%;
+      }
+
+      #ddoc_main .ddoc_header_anchor {
+          font-size: 1.4em;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_header_anchor > .code {
+          display: inline-block;
+
+      }
+
+      #ddoc_main .ddoc_decl {
+        background-color: transparent;
+        height: 100%;
+        left: 0;
+        top: 0;
+        padding: 0;
+        padding-left: 15px;
+      }
+
+      #ddoc_main .ddoc_decl .section, #ddoc_main .section.ddoc_sections {
+        background: white none repeat scroll 0 0;
+        margin: 0;
+        padding: 5px;
+        position: relative;
+        border-radius: 5px;
+      }
+
+      #ddoc_main .ddoc_decl .section h4:first-of-type, #ddoc_main .section.ddoc_sections h4:first-of-type {
+        font-size: 13px;
+        line-height: 1.5;
+        margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration {
+          margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration .code {
+          color: rgba(0, 0, 0, 1);
+          margin-bottom: 15px;
+          padding-bottom: 6px;
+      }
+
+      #ddoc_main .declaration div .para {
+          margin-bottom: 0;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr td:first-of-type {
+        padding: 7px;
+        text-align: right;
+        vertical-align: top;
+        word-break: normal;
+        white-space: nowrap;
+      }
+
+      #ddoc_main .ddoc_params .graybox {
+        border: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox td {
+        border-color: rgba(214, 214, 214, 1);
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:first-child > td {
+        border-top: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:last-child > td {
+        border-bottom: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:first-child {
+        border-left: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:last-child {
+        border-right: 0 none;
+        width: 100%;
+      }
+
+      #ddoc_main em.term, #ddoc_main em.term .code {
+        color: rgba(65, 65, 65, 1);
+        font-size: 12px;
+        font-style: italic;
+        line-height: 1.5;
+      }
+
+      #ddoc_main .see-also {
+        cursor: pointer;
+        font-family: Menlo,monospace;
+      }
+
+      #ddoc_main .ddoc_decl .section > div:last-of-type {
+        margin-bottom: 15px;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members {
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .code_sample {
+        background: inherit;
+      }
+
+      #ddoc_main .declaration .code-line {
+          display: block;
+          font: 1em Menlo,monospace;
+      }
+
+      #ddoc_main a[name] {
+        margin: -112px 0 0;
+        padding-top: 112px;
+      }
+
+      #ddoc_main .ddoc_decl td {
+        max-width: inherit;
+      }
+
+      #ddoc_main .declaration a {
+        color: inherit;
+      }
+
+      #ddoc_main .declaration a:hover {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: underline;
+      }
+
+      body.ddoc {
+        background-color: transparent;
+        color: rgba(0, 0, 0, 1);
+        font-family: Helvetica,Arial,sans-serif;
+        font-size: 62.5%;
+        margin: 0;
+        border: 0;
+        left: 0;
+        top: 0;
+        padding: 0;
+      }
+
+      .ddoc a[name] {
+        display: block;
+        height: 0;
+        margin: -85px 0 0;
+        padding-top: 85px;
+        width: 0;
+      }
+
+      .ddoc .module {
+          border-color: transparent;
+          background-color: rgba(255, 255, 255, 1);
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-image: none;
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          box-shadow: 0 0 1px rgba(0, 0, 0, 0.07);
+          display: block;
+          margin-left: 0;
+          min-height: calc(100% - 173px);
+          overflow: auto;
+          padding-bottom: 100px;
+      }
+
+      .ddoc .content_wrapper {
+          background-color: rgba(242, 242, 242, 1);
+          margin: 0 auto;
+          max-width: 980px;
+      }
+
+      .ddoc .section {
+        padding: 15px 25px 30px;
+      }
+
+      .ddoc .section .section {
+        margin: 30px 0 0;
+        padding: 0;
+      }
+
+      .ddoc .para {
+        color: rgba(65, 65, 65, 1);
+        font-size: 1.4em;
+        line-height: 145%;
+        margin-bottom: 15px;
+      }
+
+      .ddoc .ddoc_examples .para {
+        margin-bottom: 0;
+      }
+
+      .ddoc .module_name {
+          color: rgba(0, 0, 0, 1);
+          display: block;
+          font-family: Helvetica;
+          font-size: 2.8em;
+          font-weight: 100;
+          margin-bottom: 0;
+          padding: 15px 0;
+      }
+
+      .ddoc .module a {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: none;
+      }
+
+      .ddoc .code {
+        color: rgba(128, 128, 128, 1);
+        font-family: Menlo,monospace;
+        font-size: 0.85em;
+        word-wrap: break-word;
+      }
+
+      .ddoc .code i {
+        font-style: normal;
+      }
+
+      .ddoc .code .code {
+        font-size: 1em;
+      }
+
+      .ddoc .code_sample {
+        background-clip: padding-box;
+        margin: 1px 0;
+        text-align: left;
+      }
+
+      .ddoc .code_sample {
+        display: block;
+        font-size: 1.4em;
+        margin-left: 21px;
+      }
+
+      .ddoc ol .code_sample {
+        font-size: 1em;
+      }
+
+      .ddoc .code_lines {
+        counter-reset: li;
+        line-height: 1.6em;
+        list-style: outside none none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .ddoc .code_listing .code_sample div {
+        margin-left: 13px;
+        width: 93%;
+      }
+
+      .ddoc .code_listing .code_sample div .code_lines li {
+        list-style-type: none;
+        margin: 0;
+        padding-right: 10px;
+      }
+
+      .ddoc .code_sample div .code_lines li::before {
+        margin-left: -33px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+10)::before {
+        margin-left: -39px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+100)::before {
+        margin-left: -46px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample .code_lines .code {
+        color: #000;
+      }
+
+      .ddoc div.dlang {
+        margin: 10px 0 21px;
+        padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+          margin: 10px 0 21px;
+          padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+        border-left: 5px solid rgba(0, 155, 51, 0.2);
+      }
+
+      .ddoc .code_lines li::before {
+        color: rgba(128, 128, 128, 1);
+        content: counter(li, decimal);
+        counter-increment: li;
+        font-family: Menlo,monospace;
+        font-size: 0.9em;
+        margin-right: 16px;
+      }
+
+      .ddoc .code_lines li {
+        padding-left: 0;
+        white-space: pre-wrap;
+      }
+
+      .ddoc .code_lines li:only-of-type::before {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:only-of-type {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:nth-child(n+10) {
+        text-indent: -17px;
+      }
+
+      .ddoc .code_lines li:nth-child(n+10)::before {
+        margin-right: 12px;
+      }
+
+      .ddoc .graybox {
+        border: 1px solid rgba(233, 233, 233, 1);
+        border-collapse: collapse;
+        border-spacing: 0;
+        empty-cells: hide;
+        margin: 20px 0 36px;
+        text-align: left;
+      }
+
+      .ddoc .graybox p {
+        margin: 0;
+        min-width: 50px;
+      }
+
+      .ddoc th {
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: bottom;
+      }
+
+      .ddoc td {
+        border: 1px solid rgba(233, 233, 233, 1);
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: middle;
+      }
+
+      .punctuation {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .comment {
+        color: rgba(0, 131, 18, 1);
+      }
+
+      .operator {
+        color: #000;
+      }
+
+      .keyword {
+        color: rgba(170, 13, 145, 1);
+      }
+
+      .keyword_type {
+        color: rgba(170, 51, 145, 1);
+      }
+
+      .string_literal {
+        color: rgba(196, 26, 22, 1);
+      }
+
+      .ddoc_psuper_symbol {
+        color: rgba(92, 38, 153, 1);
+      }
+
+      .param {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .psymbol {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .ddoc_member_header .ddoc_header_anchor .code {
+        font-size: 1em;
+      }
+    </style>
+  </head>
+  <body id="ddoc_main" class="ddoc dlang">
+    <div class="content_wrapper">
+      <article class="module">
+        <h1 class="module_name">Contract Programming for Structs and Classes</h1>
+        <section id="module_content"><br><br>
+<br><br>
+
+<br><br>
+<p>Contract programming is very effective in reducing coding errors. We have seen two of the contract programming features earlier in <a href="contracts.html">the Contract Programming chapter</a>: The  and  blocks ensure input and output contracts of functions.
+</p>
+<br><br>
+<p><i><b>Note:</b> It is very important that you consider the guidelines under the " blocks versus  checks" section of that chapter. The examples in this chapter are based on the assumption that problems with object and parameter consistencies are due to programmer errors. Otherwise, you should use  checks inside function bodies.</i>
+</p>
+<br><br>
+<p>As a reminder, let's write a function that calculates the area of a triangle by Heron's formula. We will soon move the  and  blocks of this function to the constructor of a struct.
+</p>
+<br><br>
+<p>For this calculation to work correctly, the length of every side of the triangle must be greater than zero. Additionally, since it is impossible to have a triangle where one of the sides is greater than the sum of the other two, that condition must also be checked.
+</p>
+<br><br>
+<p>Once these input conditions are satisfied, the area of the triangle would be greater than zero. The following function ensures that all of these requirements are satisfied:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">private</span> <span class="keyword">import</span> std.math;
+
+<span class="keyword">double</span> triangleArea(<span class="keyword">double</span> a, <span class="keyword">double</span> b, <span class="keyword">double</span> c)
+<span class="keyword">in</span> {
+    <span class="comment">// Every side must be greated than zero
+</span>    <span class="keyword">assert</span>(a &gt; 0);
+    <span class="keyword">assert</span>(b &gt; 0);
+    <span class="keyword">assert</span>(c &gt; 0);
+
+    <span class="comment">// Every side must be less than the sum of the other two
+</span>    <span class="keyword">assert</span>(a &lt; (b + c));
+    <span class="keyword">assert</span>(b &lt; (a + c));
+    <span class="keyword">assert</span>(c &lt; (a + b));
+
+} <span class="keyword">out</span> (result) {
+    <span class="keyword">assert</span>(result &gt; 0);
+
+} <span class="keyword">do</span> {
+    <span class="keyword">immutable</span> halfPerimeter = (a + b + c) / 2;
+
+    <span class="keyword">return</span> sqrt(halfPerimeter
+                * (halfPerimeter - a)
+                * (halfPerimeter - b)
+                * (halfPerimeter - c));
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h5>    Preconditions and postconditions for member functions</h5>
+<br><br>
+<p>The  and  blocks can be used with member functions as well.
+</p>
+<br><br>
+<p>Let's convert the function above to a member function of a  struct:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+<span class="keyword">import</span> std.math;
+
+<span class="keyword">struct</span> Triangle {
+<span class="keyword">private</span>:
+
+    <span class="keyword">double</span> a;
+    <span class="keyword">double</span> b;
+    <span class="keyword">double</span> c;
+
+<span class="keyword">public</span>:
+
+    <span class="keyword">double</span> area() <span class="keyword">const</span>
+     {
+        <span class="keyword">assert</span>(result &gt; 0);
+
+    } <span class="keyword">do</span> {
+        <span class="keyword">immutable</span> halfPerimeter = (a + b + c) / 2;
+
+        <span class="keyword">return</span> sqrt(halfPerimeter
+                    * (halfPerimeter - a)
+                    * (halfPerimeter - b)
+                    * (halfPerimeter - c));
+    }
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">auto</span> threeFourFive = Triangle(3, 4, 5);
+    writeln(threeFourFive.area);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>As the sides of the triangle are now member variables, the function does not take parameters anymore. That is why this function does not have an  block. Instead, it assumes that the members already have consistent values.
+</p>
+<br><br>
+<p>The consistency of objects can be ensured by the following features.
+</p>
+<br><br>
+<h5>Preconditions and postconditions for object consistency</h5>
+<br><br>
+<p>The member function above is written under the assumption that the members of the object already have consistent values. One way of ensuring that assumption is to define an  block for the constructor so that the objects are guaranteed to start their lives in consistent states:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">struct</span> Triangle {
+<span class="comment">// ...
+</span>
+    <span class="keyword">this</span>(<span class="keyword">double</span> a, <span class="keyword">double</span> b, <span class="keyword">double</span> c)
+     {
+        <span class="comment">// Every side must be greated than zero
+</span>        <span class="keyword">assert</span>(a &gt; 0);
+        <span class="keyword">assert</span>(b &gt; 0);
+        <span class="keyword">assert</span>(c &gt; 0);
+
+        <span class="comment">// Every side must be less than the sum of the other two
+</span>        <span class="keyword">assert</span>(a &lt; (b + c));
+        <span class="keyword">assert</span>(b &lt; (a + c));
+        <span class="keyword">assert</span>(c &lt; (a + b));
+
+    } <span class="keyword">do</span> {
+        <span class="keyword">this</span>.a = a;
+        <span class="keyword">this</span>.b = b;
+        <span class="keyword">this</span>.c = c;
+    }
+
+<span class="comment">// ...
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>This prevents creating invalid  objects at run time:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> negativeSide = Triangle(-1, 1, 1);
+    <span class="keyword">auto</span> sideTooLong = Triangle(1, 1, 10);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The  block of the constructor would prevent such invalid objects:
+</p>
+<br><br>
+
+<br><br>
+<p>Although an  block has not been defined for the constructor above, it is possible to define one to ensure the consistency of members right after construction.
+</p>
+<br><br>
+<h5>  blocks for object consistency</h5>
+<br><br>
+<p>The  and  blocks of constructors guarantee that the objects start their lives in consistent states and the  and  blocks of member functions guarantee that those functions themselves work correctly.
+</p>
+<br><br>
+<p>However, these checks are not suitable for guaranteeing that the objects are always in consistent states. Repeating the  blocks for every member function would be excessive and error-prone.
+</p>
+<br><br>
+<p>The conditions that define the consistency and validity of an object are called the <i>invariants</i> of that object. For example, if there is a one-to-one correspondence between the orders and the invoices of a customer class, then an invariant of that class would be that the lengths of the order and invoice arrays would be equal. When that condition is not satisfied for any object, then the object would be in an inconsistent state.
+</p>
+<br><br>
+<p>As an example of an invariant, let's consider the  class from <a href="encapsulation.html">the Encapsulation and Protection Attributes chapter</a>:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">class</span> School {
+<span class="keyword">private</span>:
+
+    Student[] students;
+    size_t femaleCount;
+    size_t maleCount;
+
+<span class="comment">// ...
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The objects of that class are consistent only if an invariant that involves its three members are satisfied. The length of the student array must be equal to the sum of the female and male students:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">assert</span>(students.length == (femaleCount + maleCount));
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>If that condition is ever false, then there must be a bug in the implementation of this class.
+</p>
+<br><br>
+<p> blocks are for guaranteeing the invariants of user-defined types.  blocks are defined inside the body of a  or a . They contain  checks similar to  and  blocks:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">class</span> School {
+<span class="keyword">private</span>:
+
+    Student[] students;
+    size_t femaleCount;
+    size_t maleCount;
+
+     {
+        <span class="keyword">assert</span>(students.length == (femaleCount + maleCount));
+    }
+
+<span class="comment">// ...
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>As needed, there can be more than one  block in a user-defined type.
+</p>
+<br><br>
+<p>The  blocks are executed automatically at the following times:
+</p>
+<br><br>
+<ul><br><br>
+<li>After the execution of the constructor: This guarantees that every object starts its life in a consistent state.</li>
+<br><br>
+<li>Before the execution of the destructor: This guarantees that the destructor will be executed on a consistent object.</li>
+<br><br>
+<li>Before and after the execution of a  member function: This guarantees that the member functions do not invalidate the consistency of objects.
+<br><br>
+<p> <i><b>Note:</b>  functions are the same as  functions in this regard. (Very briefly,  functions are functions that are exported on dynamic library interfaces.)</i>
+</p>
+<br><br>
+</li>
+<br><br>
+</ul>
+<br><br>
+<p>If an  check inside an  block fails, an  is thrown. This ensures that the program does not continue executing with invalid objects.
+</p>
+<br><br>
+<p> As with  and  blocks, the checks inside  blocks can be disabled by the  command line option:
+</p>
+<br><br>
+
+<br><br>
+<h5>      Contract inheritance</h5>
+<br><br>
+<p>Interface and class member functions can have  and  blocks as well. This allows an  or a  to define preconditions for its derived types to depend on, as well as to define postconditions for its users to depend on. Derived types can define further  and  blocks for the overrides of those member functions. Overridden  blocks can loosen preconditions and overridden  blocks can offer more guarantees.
+</p>
+<br><br>
+<p>User code is commonly <i>abstracted away</i> from the derived types, written in a way to satisfy the preconditions of the topmost type in a hierarchy. The user code does not even know about the derived types. Since user code would be written for the contracts of an interface, it would not be acceptable for a derived type to put stricter preconditions on an overridden member function. However, the preconditions of a derived type can be more permissive than the preconditions of its superclass.
+</p>
+<br><br>
+<p>Upon entering a function, the  blocks are executed automatically from the topmost type to the bottom-most type in the hierarchy . If <i>any</i>  block succeeds without any  failure, then the preconditions are considered to be fulfilled.
+</p>
+<br><br>
+<p>Similarly, derived types can define  blocks as well. Since postconditions are about guarantees that a function provides, the member functions of the derived type must observe the postconditions of its ancestors as well. On the other hand, it can provide additional guarantees.
+</p>
+<br><br>
+<p>Upon exiting a function, the  blocks are executed automatically from the topmost type to the bottom-most type. The function is considered to have fullfilled its postconditions only if <i>all</i> of the  blocks succeed.
+</p>
+<br><br>
+<p>The following artificial program demonstrates these features on an  and a . The  requires less from its callers while providing more guarantees:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">interface</span> Iface {
+    <span class="keyword">int</span>[] func(<span class="keyword">int</span>[] a, <span class="keyword">int</span>[] b)
+     {
+        writeln(<span class="string_literal">"Iface.func.in"</span>);
+
+        <span class="comment">/* This interface member function requires that the
+         * lengths of the two parameters are equal. */</span>
+        <span class="keyword">assert</span>(a.length == b.length);
+
+    }  (result) {
+        writeln(<span class="string_literal">"Iface.func.out"</span>);
+
+        <span class="comment">/* This interface member function guarantees that the
+         * result will have even number of elements.
+         * (Note that an empty slice is considered to have
+         * even number of elements.) */</span>
+        <span class="keyword">assert</span>((result.length % 2) == 0);
+    }
+}
+
+<span class="keyword">class</span> Class : Iface {
+    <span class="keyword">int</span>[] func(<span class="keyword">int</span>[] a, <span class="keyword">int</span>[] b)
+     {
+        writeln(<span class="string_literal">"Class.func.in"</span>);
+
+        <span class="comment">/* This class member function loosens the ancestor's
+         * preconditions by allowing parameters with unequal
+         * lengths as long as at least one of them is empty. */</span>
+        <span class="keyword">assert</span>((a.length == b.length) ||
+               (a.length == 0) ||
+               (b.length == 0));
+
+    }  (result) {
+        writeln(<span class="string_literal">"Class.func.out"</span>);
+
+        <span class="comment">/* This class member function provides additional
+         * guarantees: The result will not be empty and that
+         * the first and the last elements will be equal. */</span>
+        <span class="keyword">assert</span>((result.length != 0) &amp;&amp;
+               (result[0] == result[$ - 1]));
+
+    } <span class="keyword">do</span> {
+        writeln(<span class="string_literal">"Class.func.do"</span>);
+
+        <span class="comment">/* This is just an artificial implementation to
+         * demonstrate how the 'in' and 'out' blocks are
+         * executed. */</span>
+
+        <span class="keyword">int</span>[] result;
+
+        <span class="keyword">if</span> (a.length == 0) {
+            a = b;
+        }
+
+        <span class="keyword">if</span> (b.length == 0) {
+            b = a;
+        }
+
+        <span class="keyword">foreach</span> (i; 0 .. a.length) {
+            result ~= a[i];
+            result ~= b[i];
+        }
+
+        result[0] = result[$ - 1] = 42;
+
+        <span class="keyword">return</span> result;
+    }
+}
+
+<span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">auto</span> c = <span class="keyword">new</span> Class();
+
+    <span class="comment">/* Although the following call fails Iface's precondition,
+     * it is accepted because it fulfills Class' precondition. */</span>
+    writeln(c.func([1, 2, 3], ));
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The  block of  is executed only because the parameters fail to satisfy the preconditions of :
+</p>
+<br><br>
+
+<br><br>
+<h5>Summary</h5>
+<br><br>
+<ul><br><br>
+<li> and  blocks are useful in constructors as well. They ensure that objects are constructed in valid states.
+</li>
+<br><br>
+<li> blocks ensure that objects remain in valid states throughout their lifetimes.
+</li>
+<br><br>
+<li>Derived types can define  blocks for overridden member functions. Preconditions of a derived type should not be stricter than the preconditions of its superclasses. (<i>Note that not defining an  block means "no precondition at all", which may not be the intent of the programmer.</i>)
+</li>
+<br><br>
+<li>Derived types can define  blocks for overridden member functions. In addition to its own, a derived member function must observe the postconditions of its superclasses as well.
+</li>
+<br><br>
+</ul>
+
+</section>
+      </article>
+    </div>
+  </body>
+</html>

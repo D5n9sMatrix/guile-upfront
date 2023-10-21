@@ -1,0 +1,1850 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Templates</title>
+    <style type="text/css" media="screen">
+      html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p,
+      blockquote, pre, a, abbr, address, cite, code, del, dfn, em, figure,
+      img, ins, kbd, q, s, samp, small, strong, sub, sup, var, b, u, i, dl,
+      dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption,
+      tbody, tfoot, thead, tr, th, td {
+        background: transparent none repeat scroll 0 0;
+        border: 0 none;
+        font-size: 100%;
+        margin: 0;
+        outline: 0 none;
+        padding: 0;
+        vertical-align: baseline;
+      }
+
+      h1 { font-size: 200%; }
+      h2 { font-size: 160%; }
+      h3 { font-size: 120%; }
+      h4 { font-size: 100%; }
+      h5 { font-size: 80%; }
+      h6 { font-size: 80%; font-weight: normal; }
+
+      ul, ol {
+        margin: 1.4em 0;
+      }
+      ul ul, ol ol, ul ol, ol ul {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      ul, ol {
+        margin-left: 2.8em;
+      }
+
+      ol {
+        list-style: decimal;
+      }
+      ol ol {
+        list-style: lower-alpha;
+      }
+      ol ol ol {
+        list-style: lower-roman;
+      }
+      ol ol ol ol {
+        list-style: decimal;
+      }
+
+      blockquote {
+        margin: 0.1em;
+        margin-left: 1em;
+        border-left: 2px solid #cccccc;
+        padding-left: 0.7em;
+      }
+
+      .color_red { color: #dc322f; }
+      .color_blue { color: #268bd2; }
+      .color_green { color: #859901; }
+      .color_yellow { color: #b58901; }
+      .color_black { color: black; }
+      .color_white { color: white; }
+
+      .font_big {
+        font-size: 1.2em;
+      }
+
+      .ddoc_section_h {
+        font-weight: bold;
+        font-size: 13px;
+        line-height: 19.5px;
+        margin-top: 11px;
+        display: block;
+      }
+
+      body.dlang .dlang {
+        display: inline-block;
+      }
+
+      body.dlang .declaration .dlang {
+          display: block;
+      }
+
+      body.dlang .ddoc_header_anchor a.dlang {
+        display: block;
+        color: rgba(0, 136, 204, 1);
+        text-decoration: none;
+      }
+
+      body.dlang .ddoc_header_anchor .code {
+        color: rgba(0, 136, 204, 1);
+      }
+
+      #ddoc_main .module {
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          overflow-x: hidden;
+          padding: 15px;
+      }
+
+      #ddoc_main .section .section {
+        margin-top: 0;
+      }
+
+      #ddoc_main .ddoc_module_members_section {
+          padding: 1px 0 0;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members section.intro {
+          background: #fff none repeat scroll 0 0;
+          list-style-type: none;
+          width: 100%;
+      }
+
+      #ddoc_main .ddoc_header_anchor {
+          font-size: 1.4em;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_header_anchor > .code {
+          display: inline-block;
+
+      }
+
+      #ddoc_main .ddoc_decl {
+        background-color: transparent;
+        height: 100%;
+        left: 0;
+        top: 0;
+        padding: 0;
+        padding-left: 15px;
+      }
+
+      #ddoc_main .ddoc_decl .section, #ddoc_main .section.ddoc_sections {
+        background: white none repeat scroll 0 0;
+        margin: 0;
+        padding: 5px;
+        position: relative;
+        border-radius: 5px;
+      }
+
+      #ddoc_main .ddoc_decl .section h4:first-of-type, #ddoc_main .section.ddoc_sections h4:first-of-type {
+        font-size: 13px;
+        line-height: 1.5;
+        margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration {
+          margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration .code {
+          color: rgba(0, 0, 0, 1);
+          margin-bottom: 15px;
+          padding-bottom: 6px;
+      }
+
+      #ddoc_main .declaration div .para {
+          margin-bottom: 0;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr td:first-of-type {
+        padding: 7px;
+        text-align: right;
+        vertical-align: top;
+        word-break: normal;
+        white-space: nowrap;
+      }
+
+      #ddoc_main .ddoc_params .graybox {
+        border: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox td {
+        border-color: rgba(214, 214, 214, 1);
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:first-child > td {
+        border-top: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:last-child > td {
+        border-bottom: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:first-child {
+        border-left: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:last-child {
+        border-right: 0 none;
+        width: 100%;
+      }
+
+      #ddoc_main em.term, #ddoc_main em.term .code {
+        color: rgba(65, 65, 65, 1);
+        font-size: 12px;
+        font-style: italic;
+        line-height: 1.5;
+      }
+
+      #ddoc_main .see-also {
+        cursor: pointer;
+        font-family: Menlo,monospace;
+      }
+
+      #ddoc_main .ddoc_decl .section > div:last-of-type {
+        margin-bottom: 15px;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members {
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .code_sample {
+        background: inherit;
+      }
+
+      #ddoc_main .declaration .code-line {
+          display: block;
+          font: 1em Menlo,monospace;
+      }
+
+      #ddoc_main a[name] {
+        margin: -112px 0 0;
+        padding-top: 112px;
+      }
+
+      #ddoc_main .ddoc_decl td {
+        max-width: inherit;
+      }
+
+      #ddoc_main .declaration a {
+        color: inherit;
+      }
+
+      #ddoc_main .declaration a:hover {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: underline;
+      }
+
+      body.ddoc {
+        background-color: transparent;
+        color: rgba(0, 0, 0, 1);
+        font-family: Helvetica,Arial,sans-serif;
+        font-size: 62.5%;
+        margin: 0;
+        border: 0;
+        left: 0;
+        top: 0;
+        padding: 0;
+      }
+
+      .ddoc a[name] {
+        display: block;
+        height: 0;
+        margin: -85px 0 0;
+        padding-top: 85px;
+        width: 0;
+      }
+
+      .ddoc .module {
+          border-color: transparent;
+          background-color: rgba(255, 255, 255, 1);
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-image: none;
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          box-shadow: 0 0 1px rgba(0, 0, 0, 0.07);
+          display: block;
+          margin-left: 0;
+          min-height: calc(100% - 173px);
+          overflow: auto;
+          padding-bottom: 100px;
+      }
+
+      .ddoc .content_wrapper {
+          background-color: rgba(242, 242, 242, 1);
+          margin: 0 auto;
+          max-width: 980px;
+      }
+
+      .ddoc .section {
+        padding: 15px 25px 30px;
+      }
+
+      .ddoc .section .section {
+        margin: 30px 0 0;
+        padding: 0;
+      }
+
+      .ddoc .para {
+        color: rgba(65, 65, 65, 1);
+        font-size: 1.4em;
+        line-height: 145%;
+        margin-bottom: 15px;
+      }
+
+      .ddoc .ddoc_examples .para {
+        margin-bottom: 0;
+      }
+
+      .ddoc .module_name {
+          color: rgba(0, 0, 0, 1);
+          display: block;
+          font-family: Helvetica;
+          font-size: 2.8em;
+          font-weight: 100;
+          margin-bottom: 0;
+          padding: 15px 0;
+      }
+
+      .ddoc .module a {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: none;
+      }
+
+      .ddoc .code {
+        color: rgba(128, 128, 128, 1);
+        font-family: Menlo,monospace;
+        font-size: 0.85em;
+        word-wrap: break-word;
+      }
+
+      .ddoc .code i {
+        font-style: normal;
+      }
+
+      .ddoc .code .code {
+        font-size: 1em;
+      }
+
+      .ddoc .code_sample {
+        background-clip: padding-box;
+        margin: 1px 0;
+        text-align: left;
+      }
+
+      .ddoc .code_sample {
+        display: block;
+        font-size: 1.4em;
+        margin-left: 21px;
+      }
+
+      .ddoc ol .code_sample {
+        font-size: 1em;
+      }
+
+      .ddoc .code_lines {
+        counter-reset: li;
+        line-height: 1.6em;
+        list-style: outside none none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .ddoc .code_listing .code_sample div {
+        margin-left: 13px;
+        width: 93%;
+      }
+
+      .ddoc .code_listing .code_sample div .code_lines li {
+        list-style-type: none;
+        margin: 0;
+        padding-right: 10px;
+      }
+
+      .ddoc .code_sample div .code_lines li::before {
+        margin-left: -33px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+10)::before {
+        margin-left: -39px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+100)::before {
+        margin-left: -46px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample .code_lines .code {
+        color: #000;
+      }
+
+      .ddoc div.dlang {
+        margin: 10px 0 21px;
+        padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+          margin: 10px 0 21px;
+          padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+        border-left: 5px solid rgba(0, 155, 51, 0.2);
+      }
+
+      .ddoc .code_lines li::before {
+        color: rgba(128, 128, 128, 1);
+        content: counter(li, decimal);
+        counter-increment: li;
+        font-family: Menlo,monospace;
+        font-size: 0.9em;
+        margin-right: 16px;
+      }
+
+      .ddoc .code_lines li {
+        padding-left: 0;
+        white-space: pre-wrap;
+      }
+
+      .ddoc .code_lines li:only-of-type::before {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:only-of-type {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:nth-child(n+10) {
+        text-indent: -17px;
+      }
+
+      .ddoc .code_lines li:nth-child(n+10)::before {
+        margin-right: 12px;
+      }
+
+      .ddoc .graybox {
+        border: 1px solid rgba(233, 233, 233, 1);
+        border-collapse: collapse;
+        border-spacing: 0;
+        empty-cells: hide;
+        margin: 20px 0 36px;
+        text-align: left;
+      }
+
+      .ddoc .graybox p {
+        margin: 0;
+        min-width: 50px;
+      }
+
+      .ddoc th {
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: bottom;
+      }
+
+      .ddoc td {
+        border: 1px solid rgba(233, 233, 233, 1);
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: middle;
+      }
+
+      .punctuation {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .comment {
+        color: rgba(0, 131, 18, 1);
+      }
+
+      .operator {
+        color: #000;
+      }
+
+      .keyword {
+        color: rgba(170, 13, 145, 1);
+      }
+
+      .keyword_type {
+        color: rgba(170, 51, 145, 1);
+      }
+
+      .string_literal {
+        color: rgba(196, 26, 22, 1);
+      }
+
+      .ddoc_psuper_symbol {
+        color: rgba(92, 38, 153, 1);
+      }
+
+      .param {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .psymbol {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .ddoc_member_header .ddoc_header_anchor .code {
+        font-size: 1em;
+      }
+    </style>
+  </head>
+  <body id="ddoc_main" class="ddoc dlang">
+    <div class="content_wrapper">
+      <article class="module">
+        <h1 class="module_name">Templates</h1>
+        <section id="module_content"><br><br>
+<br><br>
+
+<br><br>
+<p>Templates are the feature that allows describing the code as a pattern, for the compiler to generate program code automatically. Parts of the source code may be left to the compiler to be filled in until that part is actually used in the program.
+</p>
+<br><br>
+<p>Templates are very useful especially in libraries because they enable writing generic algorithms and data structures, instead of tying them to specific types.
+</p>
+<br><br>
+<p>Compared to the template supports in other languages, D's templates are very powerful and extensive. I will not get into all of the details of templates in this chapter. I will cover only function, struct, and class templates and only <i>type</i> template parameters. We will see more about templates in <a href="templates_more.html">the More Templates chapter</a>. For a complete reference on D templates, see <a href="https://github.com/PhilippeSigaud/D-templates-tutorial">Philippe Sigaud's <i>D Templates: A Tutorial</i></a>.
+</p>
+<br><br>
+<p>To see the benefits of templates let's start with a function that prints values in parentheses:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> printInParens(<span class="keyword">int</span> value) {
+    writefln(<span class="string_literal">"(%s)"</span>, value);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Because the parameter is specified as , that function can only be used with values of type , or values that can automatically be converted to . For example, the compiler would not allow calling it with a floating point type.
+</p>
+<br><br>
+<p>Let's assume that the requirements of a program changes and that other types need to be printed in parentheses as well. One of the solutions for this would be to take advantage of function overloading and provide overloads of the function for all of the types that the function is used with:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="comment">// The function that already exists
+</span><span class="keyword">void</span> printInParens(<span class="keyword">int</span> value) {
+    writefln(<span class="string_literal">"(%s)"</span>, value);
+}
+
+<span class="comment">// Overloading the function for 'double'
+</span><span class="keyword">void</span> printInParens( value) {
+    writefln(<span class="string_literal">"(%s)"</span>, value);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>This solution does not scale well because this time the function cannot be used with e.g.  or any user-defined type. Although it is possible to overload the function for other types, the cost of doing this may be prohibitive.
+</p>
+<br><br>
+<p>An important observation here is that regardless of the type of the parameter, the contents of the overloads would all be <i>generically</i> the same: a single  expression.
+</p>
+<br><br>
+<p>Such genericity is common in algorithms and data structures. For example, the binary search algorithm is independent of the type of the elements: It is about the specific steps and operations of the search. Similarly, the linked list data structure is independent of the type of the elements: Linked list is merely about <i>how</i> the elements are stored in the container, regardless of their type.
+</p>
+<br><br>
+<p>Templates are useful in such situations: Once a piece of code is described as a template, the compiler generates overloads of the same code automatically according to the actual uses of that code in the program.
+</p>
+<br><br>
+<p>As I have mentioned above, in this chapter I will cover only function, struct, and class templates, and <i>type</i> template parameters.
+</p>
+<br><br>
+<h5> Function templates</h5>
+<br><br>
+<p> Defining a function as a template is leaving one or more of the types that it uses as unspecified, to be deduced later by the compiler.
+</p>
+<br><br>
+<p>The types that are being left unspecified are defined within the template parameter list, which comes between the name of the function and the function parameter list. For that reason, function templates have two parameter lists: the template parameter list and the function parameter list:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> printInParens(T value) {
+    writefln(<span class="string_literal">"(%s)"</span>, value);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The  within the template parameter list above means that  can be any type. Although  is an arbitrary name, it is an acronym for "type" and is very common in templates.
+</p>
+<br><br>
+<p>Since  represents any type, the templated definition of  above is sufficient to use it with almost every type, including the user-defined ones:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> printInParens(T)(T value) {
+    writefln(<span class="string_literal">"(%s)"</span>, value);
+}
+
+<span class="keyword">void</span> main() {
+    printInParens(42);           <span class="comment">// with int
+</span>    printInParens(1.2);          <span class="comment">// with double
+</span>
+    <span class="keyword">auto</span> myValue = MyStruct();
+    printInParens(myValue);      <span class="comment">// with MyStruct
+</span>}
+
+<span class="keyword">struct</span> MyStruct {
+    string toString() <span class="keyword">const</span> {
+        <span class="keyword">return</span> <span class="string_literal">"hello"</span>;
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The compiler considers all of the uses of  in the program and generates code to support all those uses. The program is then compiled as if the function has been overloaded explicitly for , , and :
+</p>
+<br><br>
+
+<br><br>
+<p>The output of the program is produced by those different <i>instantiations</i> of the function template:
+</p>
+<br><br>
+
+<br><br>
+<p>Each template parameter can determine more than one function parameter. For example, both the two function parameters and the return type of the following function template are determined by its single template parameter:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="comment">/* Returns a copy of 'slice' except the elements that are
+ * equal to 'value'. */</span>
+[] removed(T)(<span class="keyword">const</span>()[] slice,  value) {
+    T[] result;
+
+    <span class="keyword">foreach</span> (element; slice) {
+        <span class="keyword">if</span> (element != value) {
+            result ~= element;
+        }
+    }
+
+    <span class="keyword">return</span> result;
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h5>More than one template parameter</h5>
+<br><br>
+<p>Let's change the function template to take the parentheses characters as well:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> printInParens(T)(T value, <span class="keyword">char</span> opening, <span class="keyword">char</span> closing) {
+    writeln(opening, value, closing);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Now we can call the same function with different sets of parentheses:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    printInParens(42, '&lt;', '&gt;');
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Although being able to specify the parentheses makes the function more usable, specifying the type of the parentheses as  makes it less flexible because it is not possible to call the function with characters of type  or :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    printInParens(42, '→', '←');      
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<p>One solution would be to specify the type of the parentheses as  but this would still be insufficient as this time the function could not be called e.g. with  or user-defined types.
+</p>
+<br><br>
+<p> Another solution is to leave the type of the parentheses to the compiler as well. Defining an additional template parameter instead of the specific  is sufficient:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> printInParens(T)(T value,
+                                   opening,
+                                   closing) {
+    writeln(opening, value, closing);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The meaning of the new template parameter is similar to 's:  can be any type.
+</p>
+<br><br>
+<p>It is now possible to use many different types of parentheses. The following are with  and :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    printInParens(42, '→', '←');
+    printInParens(1.2, <span class="string_literal">"-="</span>, <span class="string_literal">"=-"</span>);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<p>The flexibility of  has been increased, as it now works correctly for any combination of  and  as long as those types are printable with .
+</p>
+<br><br>
+<h5>  Type deduction</h5>
+<br><br>
+<p>The compiler's deciding on what type to use for a template parameter is called <i>type deduction</i>.
+</p>
+<br><br>
+<p>Continuing from the last example above, the compiler decides on the following types according to the two uses of the function template:
+</p>
+<br><br>
+<ul><li> and  when 42 is printed</li>
+<li> and  when 1.2 is printed</li>
+</ul>
+<br><br>
+<p>The compiler can deduce types only from the types of the parameter values that are passed to function templates. Although the compiler can usually deduce the types without any ambiguity, there are times when the types must be specified explicitly by the programmer.
+</p>
+<br><br>
+<h5>Explicit type specification</h5>
+<br><br>
+<p>Sometimes it is not possible for the compiler to deduce the template parameters. A situation that this can happen is when the types do not appear in the function parameter list. When template parameters are not related to function parameters, the compiler cannot deduce the template parameter types.
+</p>
+<br><br>
+<p>To see an example of this, let's design a function that asks a question to the user, reads a value as a response, and returns that value. Additionally, let's make this a function template so that it can be used to read any type of response:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"> getResponse(string question) {
+    writef(<span class="string_literal">"%s (%s): "</span>, question, T.stringof);
+
+     response;
+    readf(<span class="string_literal">" %s"</span>, &amp;response);
+
+    <span class="keyword">return</span> response;
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>That function template would be very useful in programs to read different types of values from the input. For example, to read some user information, we can imagine calling it as in the following line:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    getResponse(<span class="string_literal">"What is your age?"</span>);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Unfortunately, that call does not give the compiler any clue as to what the template parameter  should be. What is known is that the question is passed to the function as a , but the type of the return value cannot be deduced:
+</p>
+<br><br>
+
+<br><br>
+<p> In such cases, the template parameters must be specified explicitly by the programmer. Template parameters are specified in parentheses after an exclamation mark:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    getResponse(<span class="string_literal">"What is your age?"</span>);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The code above can now be accepted by the compiler and the function template is compiled as  being an alias of  within the definition of the template.
+</p>
+<br><br>
+<p>When there is only one template parameter specified, the parentheses around it are optional:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    getResponse(<span class="string_literal">"What is your age?"</span>);    <span class="comment">// same as above
+</span></code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>You may recognize that syntax from , which we have been using in earlier programs.  is a function template, which takes the target type of the conversion as a template parameter. Since it has only one template parameter that needs to be specified, it is commonly written as  instead of .
+</p>
+<br><br>
+<h5> Template instantiation</h5>
+<br><br>
+<p>Automatic generation of code for a specific set of template parameter values is called an <i>instantiation</i> of that template for that specific set of parameter values. For example,  and  are two different instantiations of the  function template.
+</p>
+<br><br>
+<p>As I will mention again in a separate section below, distinct instantiations of templates produce distinct and incompatible types.
+</p>
+<br><br>
+<h5> Template specializations</h5>
+<br><br>
+<p>Although the  function template can in theory be used for any template type, the code that the compiler generates may not be suitable for every type. Let's assume that we have the following type that represents points on a two dimensional space:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">struct</span> Point {
+    <span class="keyword">int</span> x;
+    <span class="keyword">int</span> y;
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Although the instantiation of  for the  type itself would be fine, the generated  call for  cannot be compiled. This is because the standard library function  does not know how to read a  object. The two lines that actually read the response would look like the following in the  instantiation of the  function template:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    Point response;
+    readf(<span class="string_literal">" %s"</span>, &amp;response);    
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>One way of reading a  object would be to read the values of the  and  members separately and then to <i>construct</i> a  object from those values.
+</p>
+<br><br>
+<p>Providing a special definition of a template for a specific template parameter value is called a <i>template specialization</i>. The specialization is defined by the type name after a  character in the template parameter list. A  specialization of the  function template can be defined as in the following code:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="comment">// The general definition of the function template (same as before)
+</span>T getResponse(T)(string question) {
+    writef(<span class="string_literal">"%s (%s): "</span>, question, T.stringof);
+
+    T response;
+    readf(<span class="string_literal">" %s"</span>, &amp;response);
+
+    <span class="keyword">return</span> response;
+}
+
+<span class="comment">// The specialization of the function template for Point
+</span>T getResponse(T )(string question) {
+    writefln(<span class="string_literal">"%s (Point)"</span>, question);
+
+    <span class="keyword">auto</span> x = getResponse!<span class="keyword">int</span>(<span class="string_literal">"  x"</span>);
+    <span class="keyword">auto</span> y = getResponse!<span class="keyword">int</span>(<span class="string_literal">"  y"</span>);
+
+    <span class="keyword">return</span> Point(x, y);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Note that the specialization takes advantage of the general definition of  to read two  values to be used as the values of the  and  members.
+</p>
+<br><br>
+<p>Instead of instantiating the template itself, now the compiler uses the specialization above whenever  is called for the  type:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> center = getResponse!Point(<span class="string_literal">"Where is the center?"</span>);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Assuming that the user enters 11 and 22:
+</p>
+<br><br>
+
+<br><br>
+<p>The  calls are directed to the general definition of the template and the  calls are directed to the  specialization of it.
+</p>
+<br><br>
+<p>As another example, let's consider using the same template with . As you would remember from the <a href="strings.html">Strings chapter</a>,  would read all of the characters from the input as part of a single  until the end of the input. For that reason, the default definition of  would not be useful when reading  responses:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="comment">// Reads the entire input, not only the name!
+</span>    <span class="keyword">auto</span> name = getResponse!string(<span class="string_literal">"What is your name?"</span>);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>We can provide a template specialization for  as well. The following specialization reads just the <i>line</i> instead:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">T getResponse(T )(string question) {
+    writef(<span class="string_literal">"%s (string): "</span>, question);
+
+    <span class="comment">// Read and ignore whitespace characters which have
+</span>    <span class="comment">// presumably been left over from the previous user input
+</span>    string response;
+    <span class="keyword">do</span> {
+        response = strip(readln());
+    } <span class="keyword">while</span> (response.length == 0);
+
+    <span class="keyword">return</span> response;
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h5>  Struct and class templates</h5>
+<br><br>
+<p>The  struct may be seen as having a limitation: Because its two members are defined specifically as , it cannot represent fractional coordinate values. This limitation can be removed if the  struct is defined as a template.
+</p>
+<br><br>
+<p>Let's first add a member function that returns the distance to another  object:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.math;
+
+<span class="comment">// ...
+</span>
+<span class="keyword">struct</span> Point {
+    <span class="keyword">int</span> x;
+    <span class="keyword">int</span> y;
+
+    <span class="keyword">int</span> distanceTo(Point that) <span class="keyword">const</span> {
+        <span class="keyword">immutable</span> <span class="keyword">real</span> xDistance = x - that.x;
+        <span class="keyword">immutable</span> <span class="keyword">real</span> yDistance = y - that.y;
+
+        <span class="keyword">immutable</span> distance = sqrt((xDistance * xDistance) +
+                                  (yDistance * yDistance));
+
+        <span class="keyword">return</span> <span class="keyword">cast</span>(<span class="keyword">int</span>)distance;
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>That definition of  is suitable when the required precision is relatively low: It can calculate the distance between two points at kilometer precision, e.g. between the center and branch offices of an organization:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> center = getResponse!Point(<span class="string_literal">"Where is the center?"</span>);
+    <span class="keyword">auto</span> branch = getResponse!Point(<span class="string_literal">"Where is the branch?"</span>);
+
+    writeln(<span class="string_literal">"Distance: "</span>, center.distanceTo(branch));
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Unfortunately,  is inadequate at higher precisions than  can provide.
+</p>
+<br><br>
+<p>Structs and classes can be defined as templates as well, by specifying a template parameter list after their names. For example,  can be defined as a struct template by providing a template parameter and replacing the s by that parameter:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">struct</span> Point {
+     x;
+     y;
+
+     distanceTo(Point that) <span class="keyword">const</span> {
+        <span class="keyword">immutable</span> <span class="keyword">real</span> xDistance = x - that.x;
+        <span class="keyword">immutable</span> <span class="keyword">real</span> yDistance = y - that.y;
+
+        <span class="keyword">immutable</span> distance = sqrt((xDistance * xDistance) +
+                                  (yDistance * yDistance));
+
+        <span class="keyword">return</span> <span class="keyword">cast</span>()distance;
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Since structs and classes are not functions, they cannot be called with parameters. This makes it impossible for the compiler to deduce their template parameters. The template parameter list must always be specified for struct and class templates:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> center = Point(0, 0);
+    <span class="keyword">auto</span> branch = Point(100, 100);
+
+    writeln(<span class="string_literal">"Distance: "</span>, center.distanceTo(branch));
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The definitions above make the compiler generate code for the  instantiation of the  template, which is the equivalent of its earlier non-template definition. However, now it can be used with any type. For example, when more precision is needed, with :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> point1 = Point(1.2, 3.4);
+    <span class="keyword">auto</span> point2 = Point(5.6, 7.8);
+
+    writeln(point1.distanceTo(point2));
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Although the template itself has been defined independently of any specific type, its single definition makes it possible to represent points of various precisions.
+</p>
+<br><br>
+<p>Simply converting  to a template would cause compilation errors in code that has already been written according to its non-template definition. For example, now the  specialization of  cannot be compiled:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">T getResponse(T : Point)(string question) {  
+    writefln(<span class="string_literal">"%s (Point)"</span>, question);
+
+    <span class="keyword">auto</span> x = getResponse!<span class="keyword">int</span>(<span class="string_literal">"  x"</span>);
+    <span class="keyword">auto</span> y = getResponse!<span class="keyword">int</span>(<span class="string_literal">"  y"</span>);
+
+    <span class="keyword">return</span> Point(x, y);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The reason for the compilation error is that  itself is not a type anymore:  is now a <i>struct template</i>. Only instantiations of that template would be considered as types. The following changes are required to correctly specialize  for any instantiation of :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">Point!T getResponse(T : Point!T)(string question) {  <span class="comment">// 2, 1
+</span>    writefln(<span class="string_literal">"%s (Point!%s)"</span>, question, T.stringof); <span class="comment">// 5
+</span>
+    <span class="keyword">auto</span> x = getResponse!T(<span class="string_literal">"  x"</span>);                   <span class="comment">// 3a
+</span>    <span class="keyword">auto</span> y = getResponse!T(<span class="string_literal">"  y"</span>);                   <span class="comment">// 3b
+</span>
+    <span class="keyword">return</span> Point!T(x, y);                            <span class="comment">// 4
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<ol><br><br>
+<li>In order for this template specialization to support all instantiations of , the template parameter list must mention . This simply means that the  specialization is for , regardless of . This specialization would match , , etc.
+</li>
+<br><br>
+<li>Similarly, to return the correct type as the response, the return type must be specified as  as well.
+</li>
+<br><br>
+<li>Since the types of  and  members of  are now , as opposed to , the members must be read by calling , not , as the latter would be correct only for .
+</li>
+<br><br>
+<li>Similar to items 1 and 2, the type of the return value is .
+</li>
+<br><br>
+<li>To print the name of the type accurately for every type, as in , , etc.,  is used.
+</li>
+<br><br>
+</ol>
+<br><br>
+<h5> Default template parameters</h5>
+<br><br>
+<p>Sometimes it is cumbersome to provide template parameter types every time a template is used, especially when that type is almost always a particular type. For example,  may almost always be called for the  type in the program, and only in a few places for the  type.
+</p>
+<br><br>
+<p>It is possible to specify default types for template parameters, which are assumed when the types are not explicitly provided. Default parameter types are specified after the  character:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">T getResponse(T )(string question) {
+    <span class="comment">// ...
+</span>}
+
+<span class="comment">// ...
+</span>
+    <span class="keyword">auto</span> age = getResponse(<span class="string_literal">"What is your age?"</span>);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>As no type has been specified when calling  above,  becomes the default type  and the call ends up being the equivalent of .
+</p>
+<br><br>
+<p>Default template parameters can be specified for struct and class templates as well, but in their case the template parameter list must always be written even when empty:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">struct</span> Point(T = <span class="keyword">int</span>) {
+    <span class="comment">// ...
+</span>}
+
+<span class="comment">// ...
+</span>
+    Point! center;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<br><br>
+<p>Similar to default function parameter values as we have seen in the <a href="parameter_flexibility.html">Variable Number of Parameters chapter</a>, default template parameters can be specified for all of the template parameters or for the <i>last</i> ones:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> myTemplate(T0, T1 , T2 )() {
+    <span class="comment">// ...
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The last two template parameters of that function may be left unspecified but the first one is required:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    myTemplate!string();
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>In that usage, the second and third parameters are  and , respectively.
+</p>
+<br><br>
+<h5>Every template instantiation yields a distinct type</h5>
+<br><br>
+<p>Every instantiation of a template for a given set of types is considered to be a distinct type. For example,  and  are separate types:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">Point!<span class="keyword">int</span> point3 = Point!<span class="keyword">double</span>(0.25, 0.75); 
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Those different types cannot be used in the assignment operation above:
+</p>
+<br><br>
+
+<br><br>
+<h5>A compile-time feature</h5>
+<br><br>
+<p>Templates are entirely a compile-time feature. The instances of templates are generated by the compiler at compile time.
+</p>
+<br><br>
+<h5>Class template example: stack data structure</h5>
+<br><br>
+<p>Struct and class templates are commonly used in the implementations of data structures. Let's design a stack container that will be able to contain any type.
+</p>
+<br><br>
+<p>Stack is one of the simplest data structures. It represents a container where elements are placed conceptually on top of each other as would be in a stack of papers. New elements go on top, and only the topmost element is accessed. When an element is removed, it is always the topmost one.
+</p>
+<br><br>
+<p>If we also define a property that returns the total number of elements in the stack, all of the operations of this data structure would be the following:
+</p>
+<br><br>
+<ul><li>Add element ()</li>
+<li>Remove element ()</li>
+<li>Access the topmost element ()</li>
+<li>Report the number of elements ()</li>
+</ul>
+<br><br>
+<p>An array can be used to store the elements such that the last element of the array would be representing the topmost element of the stack. Finally, it can be defined as a class template to be able to contain elements of any type:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">class</span> Stack {
+<span class="keyword">private</span>:
+
+    [] elements;
+
+<span class="keyword">public</span>:
+
+    <span class="keyword">void</span> push( element) {
+        elements ~= element;
+    }
+
+    <span class="keyword">void</span> pop() {
+        --elements.length;
+    }
+
+     top() <span class="keyword">const</span> {
+        <span class="keyword">return</span> elements[$ - 1];
+    }
+
+    size_t length() <span class="keyword">const</span> {
+        <span class="keyword">return</span> elements.length;
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Here is a  block for this class that uses its  instantiation:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">unittest</span> {
+    <span class="keyword">auto</span> stack = <span class="keyword">new</span> Stack;
+
+    <span class="comment">// The newly added element must appear on top
+</span>    stack.push(42);
+    <span class="keyword">assert</span>(stack.top == 42);
+    <span class="keyword">assert</span>(stack.length == 1);
+
+    <span class="comment">// .top and .length should not affect the elements
+</span>    <span class="keyword">assert</span>(stack.top == 42);
+    <span class="keyword">assert</span>(stack.length == 1);
+
+    <span class="comment">// The newly added element must appear on top
+</span>    stack.push(100);
+    <span class="keyword">assert</span>(stack.top == 100);
+    <span class="keyword">assert</span>(stack.length == 2);
+
+    <span class="comment">// Removing the last element must expose the previous one
+</span>    stack.pop();
+    <span class="keyword">assert</span>(stack.top == 42);
+    <span class="keyword">assert</span>(stack.length == 1);
+
+    <span class="comment">// The stack must become empty when the last element is
+</span>    <span class="comment">// removed
+</span>    stack.pop();
+    <span class="keyword">assert</span>(stack.length == 0);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>To take advantage of this class template, let's try using it this time with a user-defined type. As an example, here is a modified version of :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">struct</span> Point(T) {
+    T x;
+    T y;
+
+    string toString() <span class="keyword">const</span> {
+        <span class="keyword">return</span> format(<span class="string_literal">"(%s,%s)"</span>, x, y);
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>A  that contains elements of type  can be defined as follows:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> points = <span class="keyword">new</span> Stack!(Point!<span class="keyword">double</span>);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Here is a test program that first adds ten elements to this stack and then removes them one by one:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.string;
+<span class="keyword">import</span> std.stdio;
+<span class="keyword">import</span> std.random;
+
+<span class="keyword">struct</span> Point(T) {
+    T x;
+    T y;
+
+    string toString() <span class="keyword">const</span> {
+        <span class="keyword">return</span> format(<span class="string_literal">"(%s,%s)"</span>, x, y);
+    }
+}
+
+<span class="comment">// Returns a random value between -0.50 and 0.50.
+</span><span class="keyword">double</span> random_double()
+<span class="keyword">out</span> (result) {
+    <span class="keyword">assert</span>((result &gt;= -0.50) &amp;&amp; (result &lt; 0.50));
+
+} <span class="keyword">do</span> {
+    <span class="keyword">return</span> (<span class="keyword">double</span>(uniform(0, 100)) - 50) / 100;
+}
+
+<span class="comment">// Returns a Stack that contains 'count' number of random
+</span><span class="comment">// Point!double elements.
+</span>Stack!(Point!<span class="keyword">double</span>) randomPoints(size_t count)
+<span class="keyword">out</span> (result) {
+    <span class="keyword">assert</span>(result.length == count);
+
+} <span class="keyword">do</span> {
+    <span class="keyword">auto</span> points = <span class="keyword">new</span> Stack!(Point!<span class="keyword">double</span>);
+
+    <span class="keyword">foreach</span> (i; 0 .. count) {
+        <span class="keyword">immutable</span> point = Point!<span class="keyword">double</span>(random_double(),
+                                       random_double());
+        writeln(<span class="string_literal">"adding  : "</span>, point);
+        points.push(point);
+    }
+
+    <span class="keyword">return</span> points;
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">auto</span> stackedPoints = randomPoints(10);
+
+    <span class="keyword">while</span> (stackedPoints.length) {
+        writeln(<span class="string_literal">"removing: "</span>, stackedPoints.top);
+        stackedPoints.pop();
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>As the output of the program shows, the elements are removed in the reverse order as they have been added:
+</p>
+<br><br>
+
+<br><br>
+<h5>Function template example: binary search algorithm</h5>
+<br><br>
+<p>Binary search is the fastest algorithm to search for an element among the elements of an already sorted array. It is a very simple algorithm: The element in the middle is considered; if that element is the one that has been sought, then the search is over. If not, then the algorithm is repeated on the elements that are either on the left-hand side or on the right-hand side of the middle element, depending on whether the sought element is greater or less than the middle element.
+</p>
+<br><br>
+<p>Algorithms that repeat themselves on a smaller range of the initial elements are recursive. Let's write the binary search algorithm recursively by calling itself.
+</p>
+<br><br>
+<p>Before converting it to a template, let's first write this function to support only arrays of . We can easily convert it to a template later, by adding a template parameter list and replacing appropriate s in its definition by s. Here is a binary search algorithm that works on arrays of :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="comment">/* This function returns the index of the value if it exists
+ * in the array, size_t.max otherwise. */</span>
+size_t binarySearch(<span class="keyword">const</span> <span class="keyword">int</span>[] values, <span class="keyword">int</span> value) {
+    <span class="comment">// The value is not in the array if the array is empty.
+</span>    <span class="keyword">if</span> (values.length == 0) {
+        <span class="keyword">return</span> size_t.max;
+    }
+
+    <span class="keyword">immutable</span> midPoint = values.length / 2;
+
+    <span class="keyword">if</span> (value == values[midPoint]) {
+        <span class="comment">// Found.
+</span>        <span class="keyword">return</span> midPoint;
+
+    } <span class="keyword">else</span> <span class="keyword">if</span> (value &lt; values[midPoint]) {
+        <span class="comment">// The value can only be in the left-hand side; let's
+</span>        <span class="comment">// search in a slice that represents that half.
+</span>        <span class="keyword">return</span> binarySearch(values[0 .. midPoint], value);
+
+    } <span class="keyword">else</span> {
+        <span class="comment">// The value can only be in the right-hand side; let's
+</span>        <span class="comment">// search in the right-hand side.
+</span>        <span class="keyword">auto</span> index =
+            binarySearch(values[midPoint + 1 .. $], value);
+
+        <span class="keyword">if</span> (index != size_t.max) {
+            <span class="comment">// Adjust the index; it is 0-based in the
+</span>            <span class="comment">// right-hand side slice.
+</span>            index += midPoint + 1;
+        }
+
+        <span class="keyword">return</span> index;
+    }
+
+    <span class="keyword">assert</span>(<span class="keyword">false</span>, <span class="string_literal">"We should have never gotten to this line"</span>);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The function above implements this simple algorithm in four steps:
+</p>
+<br><br>
+<ul><li>If the array is empty, return  to indicate that the value has not been found.</li>
+<li>If the element at the mid-point is equal to the sought value, then return the index of that element.</li>
+<li>If the value is less than the element at the mid-point, then repeat the same algorithm on the left-hand side.</li>
+<li>Else, repeat the same algorithm on the right-hand side.</li>
+</ul>
+<br><br>
+<p>Here is a unittest block that tests the function:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">unittest</span> {
+    <span class="keyword">auto</span> array = [ 1, 2, 3, 5 ];
+    <span class="keyword">assert</span>(binarySearch(array, 0) == size_t.max);
+    <span class="keyword">assert</span>(binarySearch(array, 1) == 0);
+    <span class="keyword">assert</span>(binarySearch(array, 4) == size_t.max);
+    <span class="keyword">assert</span>(binarySearch(array, 5) == 3);
+    <span class="keyword">assert</span>(binarySearch(array, 6) == size_t.max);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Now that the function has been implemented and tested for , we can convert it to a template.  appears only in two places in the definition of the template:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">size_t binarySearch(<span class="keyword">const</span> <span class="keyword">int</span>[] values, <span class="keyword">int</span> value) {
+    <span class="comment">// ... int does not appear here ...
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The s that appear in the parameter list are the types of the elements and the value. Specifying those as template parameters is sufficient to make this algorithm a template and to be usable with other types as well:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">size_t binarySearch(<span class="keyword">const</span> [] values,  value) {
+    <span class="comment">// ...
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>That function template can be used with any type that matches the operations that are applied to that type in the template. In , the elements are used only with comparison operators  and :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">if</span> (value  values[midPoint]) {
+        <span class="comment">// ...
+</span>
+    } <span class="keyword">else</span> <span class="keyword">if</span> (value  values[midPoint]) {
+
+        <span class="comment">// ...
+</span></code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>For that reason,  is not ready to be used with  yet:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.string;
+
+<span class="keyword">struct</span> Point(T) {
+    T x;
+    T y;
+
+    string toString() <span class="keyword">const</span> {
+        <span class="keyword">return</span> format(<span class="string_literal">"(%s,%s)"</span>, x, y);
+    }
+}
+
+<span class="keyword">void</span> main() {
+    Point!<span class="keyword">int</span>[] points;
+
+    <span class="keyword">foreach</span> (i; 0 .. 15) {
+        points ~= Point!<span class="keyword">int</span>(i, i);
+    }
+
+    <span class="keyword">assert</span>(binarySearch(points, Point!<span class="keyword">int</span>(10, 10)) == 10);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The program above would cause a compilation error:
+</p>
+<br><br>
+
+<br><br>
+<p>According to the error message,  needs to be defined for .  has been covered in <a href="operator_overloading.html">the Operator Overloading chapter</a>:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">struct</span> Point(T) {
+<span class="comment">// ...
+</span>
+    <span class="keyword">int</span> opCmp(<span class="keyword">const</span> <span class="keyword">ref</span> Point that) <span class="keyword">const</span> {
+        <span class="keyword">return</span> (x == that.x
+                ? y - that.y
+                : x - that.x);
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h5>Summary</h5>
+<br><br>
+<p>We will see other features of templates in <a href="templates_more.html">a later chapter</a>. The following are what we have covered in this chapter:
+</p>
+<br><br>
+<ul><br><br>
+<li>Templates define the code as a pattern, for the compiler to generate instances of it according to the actual uses in the program.</li>
+<br><br>
+<li>Templates are a compile-time feature.</li>
+<br><br>
+<li>Specifying template parameter lists is sufficient to make function, struct, and class definitions templates.
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> functionTemplate(T functionParameter) {
+    <span class="comment">// ...
+</span>}
+
+<span class="keyword">class</span> ClassTemplate {
+    <span class="comment">// ...
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+</li>
+<br><br>
+<li>Template arguments can be specified explicitly after an exclamation mark. The parentheses are not necessary when there is only one token inside the parentheses.
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> object1 = <span class="keyword">new</span> ClassTemplate!(<span class="keyword">double</span>);
+    <span class="keyword">auto</span> object2 = <span class="keyword">new</span> ClassTemplate!<span class="keyword">double</span>;    <span class="comment">// same thing
+</span></code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+</li>
+<br><br>
+<li>Every template instantiation yields a distinct type.
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">assert</span>(<span class="keyword">typeid</span>(ClassTemplate!) !=
+           <span class="keyword">typeid</span>(ClassTemplate!));
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+</li>
+<br><br>
+<li>Template arguments can only be deduced for function templates.
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    functionTemplate(42);  <span class="comment">// functionTemplate!int is deduced
+</span></code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+</li>
+<br><br>
+<li>Templates can be specialized for the type that is after the  character.
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">class</span> ClassTemplate(T ) {
+    <span class="comment">// ...
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+</li>
+<br><br>
+<li>Default template arguments are specified after the  character.
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> functionTemplate(T )(T functionParameter) {
+    <span class="comment">// ...
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+</li>
+<br><br>
+</ul>
+
+</section>
+      </article>
+    </div>
+  </body>
+</html>

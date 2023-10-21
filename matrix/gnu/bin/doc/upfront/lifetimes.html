@@ -1,0 +1,872 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Lifetimes and Fundamental Operations</title>
+    <style type="text/css" media="screen">
+      html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p,
+      blockquote, pre, a, abbr, address, cite, code, del, dfn, em, figure,
+      img, ins, kbd, q, s, samp, small, strong, sub, sup, var, b, u, i, dl,
+      dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption,
+      tbody, tfoot, thead, tr, th, td {
+        background: transparent none repeat scroll 0 0;
+        border: 0 none;
+        font-size: 100%;
+        margin: 0;
+        outline: 0 none;
+        padding: 0;
+        vertical-align: baseline;
+      }
+
+      h1 { font-size: 200%; }
+      h2 { font-size: 160%; }
+      h3 { font-size: 120%; }
+      h4 { font-size: 100%; }
+      h5 { font-size: 80%; }
+      h6 { font-size: 80%; font-weight: normal; }
+
+      ul, ol {
+        margin: 1.4em 0;
+      }
+      ul ul, ol ol, ul ol, ol ul {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      ul, ol {
+        margin-left: 2.8em;
+      }
+
+      ol {
+        list-style: decimal;
+      }
+      ol ol {
+        list-style: lower-alpha;
+      }
+      ol ol ol {
+        list-style: lower-roman;
+      }
+      ol ol ol ol {
+        list-style: decimal;
+      }
+
+      blockquote {
+        margin: 0.1em;
+        margin-left: 1em;
+        border-left: 2px solid #cccccc;
+        padding-left: 0.7em;
+      }
+
+      .color_red { color: #dc322f; }
+      .color_blue { color: #268bd2; }
+      .color_green { color: #859901; }
+      .color_yellow { color: #b58901; }
+      .color_black { color: black; }
+      .color_white { color: white; }
+
+      .font_big {
+        font-size: 1.2em;
+      }
+
+      .ddoc_section_h {
+        font-weight: bold;
+        font-size: 13px;
+        line-height: 19.5px;
+        margin-top: 11px;
+        display: block;
+      }
+
+      body.dlang .dlang {
+        display: inline-block;
+      }
+
+      body.dlang .declaration .dlang {
+          display: block;
+      }
+
+      body.dlang .ddoc_header_anchor a.dlang {
+        display: block;
+        color: rgba(0, 136, 204, 1);
+        text-decoration: none;
+      }
+
+      body.dlang .ddoc_header_anchor .code {
+        color: rgba(0, 136, 204, 1);
+      }
+
+      #ddoc_main .module {
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          overflow-x: hidden;
+          padding: 15px;
+      }
+
+      #ddoc_main .section .section {
+        margin-top: 0;
+      }
+
+      #ddoc_main .ddoc_module_members_section {
+          padding: 1px 0 0;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members section.intro {
+          background: #fff none repeat scroll 0 0;
+          list-style-type: none;
+          width: 100%;
+      }
+
+      #ddoc_main .ddoc_header_anchor {
+          font-size: 1.4em;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_header_anchor > .code {
+          display: inline-block;
+
+      }
+
+      #ddoc_main .ddoc_decl {
+        background-color: transparent;
+        height: 100%;
+        left: 0;
+        top: 0;
+        padding: 0;
+        padding-left: 15px;
+      }
+
+      #ddoc_main .ddoc_decl .section, #ddoc_main .section.ddoc_sections {
+        background: white none repeat scroll 0 0;
+        margin: 0;
+        padding: 5px;
+        position: relative;
+        border-radius: 5px;
+      }
+
+      #ddoc_main .ddoc_decl .section h4:first-of-type, #ddoc_main .section.ddoc_sections h4:first-of-type {
+        font-size: 13px;
+        line-height: 1.5;
+        margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration {
+          margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration .code {
+          color: rgba(0, 0, 0, 1);
+          margin-bottom: 15px;
+          padding-bottom: 6px;
+      }
+
+      #ddoc_main .declaration div .para {
+          margin-bottom: 0;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr td:first-of-type {
+        padding: 7px;
+        text-align: right;
+        vertical-align: top;
+        word-break: normal;
+        white-space: nowrap;
+      }
+
+      #ddoc_main .ddoc_params .graybox {
+        border: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox td {
+        border-color: rgba(214, 214, 214, 1);
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:first-child > td {
+        border-top: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:last-child > td {
+        border-bottom: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:first-child {
+        border-left: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:last-child {
+        border-right: 0 none;
+        width: 100%;
+      }
+
+      #ddoc_main em.term, #ddoc_main em.term .code {
+        color: rgba(65, 65, 65, 1);
+        font-size: 12px;
+        font-style: italic;
+        line-height: 1.5;
+      }
+
+      #ddoc_main .see-also {
+        cursor: pointer;
+        font-family: Menlo,monospace;
+      }
+
+      #ddoc_main .ddoc_decl .section > div:last-of-type {
+        margin-bottom: 15px;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members {
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .code_sample {
+        background: inherit;
+      }
+
+      #ddoc_main .declaration .code-line {
+          display: block;
+          font: 1em Menlo,monospace;
+      }
+
+      #ddoc_main a[name] {
+        margin: -112px 0 0;
+        padding-top: 112px;
+      }
+
+      #ddoc_main .ddoc_decl td {
+        max-width: inherit;
+      }
+
+      #ddoc_main .declaration a {
+        color: inherit;
+      }
+
+      #ddoc_main .declaration a:hover {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: underline;
+      }
+
+      body.ddoc {
+        background-color: transparent;
+        color: rgba(0, 0, 0, 1);
+        font-family: Helvetica,Arial,sans-serif;
+        font-size: 62.5%;
+        margin: 0;
+        border: 0;
+        left: 0;
+        top: 0;
+        padding: 0;
+      }
+
+      .ddoc a[name] {
+        display: block;
+        height: 0;
+        margin: -85px 0 0;
+        padding-top: 85px;
+        width: 0;
+      }
+
+      .ddoc .module {
+          border-color: transparent;
+          background-color: rgba(255, 255, 255, 1);
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-image: none;
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          box-shadow: 0 0 1px rgba(0, 0, 0, 0.07);
+          display: block;
+          margin-left: 0;
+          min-height: calc(100% - 173px);
+          overflow: auto;
+          padding-bottom: 100px;
+      }
+
+      .ddoc .content_wrapper {
+          background-color: rgba(242, 242, 242, 1);
+          margin: 0 auto;
+          max-width: 980px;
+      }
+
+      .ddoc .section {
+        padding: 15px 25px 30px;
+      }
+
+      .ddoc .section .section {
+        margin: 30px 0 0;
+        padding: 0;
+      }
+
+      .ddoc .para {
+        color: rgba(65, 65, 65, 1);
+        font-size: 1.4em;
+        line-height: 145%;
+        margin-bottom: 15px;
+      }
+
+      .ddoc .ddoc_examples .para {
+        margin-bottom: 0;
+      }
+
+      .ddoc .module_name {
+          color: rgba(0, 0, 0, 1);
+          display: block;
+          font-family: Helvetica;
+          font-size: 2.8em;
+          font-weight: 100;
+          margin-bottom: 0;
+          padding: 15px 0;
+      }
+
+      .ddoc .module a {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: none;
+      }
+
+      .ddoc .code {
+        color: rgba(128, 128, 128, 1);
+        font-family: Menlo,monospace;
+        font-size: 0.85em;
+        word-wrap: break-word;
+      }
+
+      .ddoc .code i {
+        font-style: normal;
+      }
+
+      .ddoc .code .code {
+        font-size: 1em;
+      }
+
+      .ddoc .code_sample {
+        background-clip: padding-box;
+        margin: 1px 0;
+        text-align: left;
+      }
+
+      .ddoc .code_sample {
+        display: block;
+        font-size: 1.4em;
+        margin-left: 21px;
+      }
+
+      .ddoc ol .code_sample {
+        font-size: 1em;
+      }
+
+      .ddoc .code_lines {
+        counter-reset: li;
+        line-height: 1.6em;
+        list-style: outside none none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .ddoc .code_listing .code_sample div {
+        margin-left: 13px;
+        width: 93%;
+      }
+
+      .ddoc .code_listing .code_sample div .code_lines li {
+        list-style-type: none;
+        margin: 0;
+        padding-right: 10px;
+      }
+
+      .ddoc .code_sample div .code_lines li::before {
+        margin-left: -33px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+10)::before {
+        margin-left: -39px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+100)::before {
+        margin-left: -46px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample .code_lines .code {
+        color: #000;
+      }
+
+      .ddoc div.dlang {
+        margin: 10px 0 21px;
+        padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+          margin: 10px 0 21px;
+          padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+        border-left: 5px solid rgba(0, 155, 51, 0.2);
+      }
+
+      .ddoc .code_lines li::before {
+        color: rgba(128, 128, 128, 1);
+        content: counter(li, decimal);
+        counter-increment: li;
+        font-family: Menlo,monospace;
+        font-size: 0.9em;
+        margin-right: 16px;
+      }
+
+      .ddoc .code_lines li {
+        padding-left: 0;
+        white-space: pre-wrap;
+      }
+
+      .ddoc .code_lines li:only-of-type::before {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:only-of-type {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:nth-child(n+10) {
+        text-indent: -17px;
+      }
+
+      .ddoc .code_lines li:nth-child(n+10)::before {
+        margin-right: 12px;
+      }
+
+      .ddoc .graybox {
+        border: 1px solid rgba(233, 233, 233, 1);
+        border-collapse: collapse;
+        border-spacing: 0;
+        empty-cells: hide;
+        margin: 20px 0 36px;
+        text-align: left;
+      }
+
+      .ddoc .graybox p {
+        margin: 0;
+        min-width: 50px;
+      }
+
+      .ddoc th {
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: bottom;
+      }
+
+      .ddoc td {
+        border: 1px solid rgba(233, 233, 233, 1);
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: middle;
+      }
+
+      .punctuation {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .comment {
+        color: rgba(0, 131, 18, 1);
+      }
+
+      .operator {
+        color: #000;
+      }
+
+      .keyword {
+        color: rgba(170, 13, 145, 1);
+      }
+
+      .keyword_type {
+        color: rgba(170, 51, 145, 1);
+      }
+
+      .string_literal {
+        color: rgba(196, 26, 22, 1);
+      }
+
+      .ddoc_psuper_symbol {
+        color: rgba(92, 38, 153, 1);
+      }
+
+      .param {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .psymbol {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .ddoc_member_header .ddoc_header_anchor .code {
+        font-size: 1em;
+      }
+    </style>
+  </head>
+  <body id="ddoc_main" class="ddoc dlang">
+    <div class="content_wrapper">
+      <article class="module">
+        <h1 class="module_name">Lifetimes and Fundamental Operations</h1>
+        <section id="module_content"><br><br>
+<br><br>
+
+<br><br>
+<p>We will soon cover structs, the basic feature that allows the programmer to define application-specific types. Structs are for combining fundamental types and other structs together to define higher-level types that behave according to special needs of programs. After structs, we will learn about classes, which are the basis of the object oriented programming features of D.
+</p>
+<br><br>
+<p>Before getting to structs and classes, it will be better to talk about some important concepts first. These concepts will help understand structs and classes and some of their differences.
+</p>
+<br><br>
+<p>We have been calling any piece of data that represented a concept in a program a <i>variable</i>. In a few places we have referred to struct and class variables specifically as <i>objects</i>. I will continue calling both of these concepts variables in this chapter.
+</p>
+<br><br>
+<p>Although this chapter includes only fundamental types, slices, and associative arrays; these concepts apply to user-defined types as well.
+</p>
+<br><br>
+<h5> Lifetime of a variable</h5>
+<br><br>
+<p>The time between when a variable is defined and when it is <i>finalized</i> is the lifetime of that variable. Although it is the case for many types, <i>becoming unavailable</i> and <i>being finalized</i> need not be at the same time.
+</p>
+<br><br>
+<p>You would remember from the <a href="name_space.html">Name Scope chapter</a> how variables become unavailable. In simple cases, exiting the scope where a variable was defined would render that variable unavailable.
+</p>
+<br><br>
+<p>Let's consider the following example as a reminder:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> speedTest() {
+    <span class="keyword">int</span> speed;               <span class="comment">// Single variable ...
+</span>
+    <span class="keyword">foreach</span> (i; 0 .. 10) {
+        speed = 100 + i;     <span class="comment">// ... takes 10 different values.
+</span>        <span class="comment">// ...
+</span>    }
+} <span class="comment">// ← 'speed' is unavailable beyond this point.
+</span></code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The lifetime of the  variable in that code ends upon exiting the  function. There is a single variable in the code above, which takes ten different values from 100 to 109.
+</p>
+<br><br>
+<p>When it comes to variable lifetimes, the following code is very different compared to the previous one:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> speedTest() {
+    <span class="keyword">foreach</span> (i; 0 .. 10) {
+        <span class="keyword">int</span> speed = 100 + i; <span class="comment">// Ten separate variables.
+</span>        <span class="comment">// ...
+</span>    } <span class="comment">// ← Lifetime of each variable ends here.
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>There are ten separate variables in that code, each taking a single value. Upon every iteration of the loop, a new variable starts its life, which eventually ends at the end of each iteration.
+</p>
+<br><br>
+<h5> Lifetime of a parameter</h5>
+<br><br>
+<p>The lifetime of a parameter depends on its qualifiers:
+</p>
+<br><br>
+<p> : The parameter is just an alias of the actual variable that is specified when calling the function.  parameters do not affect the lifetimes of actual variables.
+</p>
+<br><br>
+<p> : For <i>value types</i>, the lifetime of the parameter starts upon entering the function and ends upon exiting it. For <i>reference types</i>, the lifetime of the parameter is the same as with .
+</p>
+<br><br>
+<p> : Same with , the parameter is just an alias of the actual variable that is specified when calling the function. The only difference is that the variable is set to its  value automatically upon entering the function.
+</p>
+<br><br>
+<p> : The life of the parameter starts when the parameter is actually used and ends right then.
+</p>
+<br><br>
+<p>The following example uses these four types of parameters and explains their lifetimes in program comments:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> main() {
+    <span class="keyword">int</span> main_in;      <span class="comment">/* The value of main_in is copied to the
+                       * parameter. */</span>
+
+    <span class="keyword">int</span> main_ref;     <span class="comment">/* main_ref is passed to the function as
+                       * itself. */</span>
+
+    <span class="keyword">int</span> main_out;     <span class="comment">/* main_out is passed to the function as
+                       * itself. Its value is set to int.init
+                       * upon entering the function. */</span>
+
+    foo(main_in, main_ref, main_out, aCalculation());
+}
+
+<span class="keyword">void</span> foo(
+    <span class="keyword">in</span> <span class="keyword">int</span> p_in,       <span class="comment">/* The lifetime of p_in starts upon
+                        * entering the function and ends upon
+                        * exiting the function. */</span>
+
+    <span class="keyword">ref</span> <span class="keyword">int</span> p_ref,     <span class="comment">/* p_ref is an alias of main_ref. */</span>
+
+    <span class="keyword">out</span> <span class="keyword">int</span> p_out,     <span class="comment">/* p_out is an alias of main_out. Its
+                        * value is set to int.init upon
+                        * entering the function. */</span>
+
+    <span class="keyword">lazy</span> <span class="keyword">int</span> p_lazy) { <span class="comment">/* The lifetime of p_lazy starts when
+                        * it is used and ends when its use
+                        * ends. Its value is calculated by
+                        * calling aCalculation() every time
+                        * p_lazy is used in the function. */</span>
+    <span class="comment">// ...
+</span>}
+
+<span class="keyword">int</span> aCalculation() {
+    <span class="keyword">int</span> result;
+    <span class="comment">// ...
+</span>    <span class="keyword">return</span> result;
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h5>Fundamental operations</h5>
+<br><br>
+<p>Regardless of its type, there are three fundamental operations throughout the lifetime of a variable:
+</p>
+<br><br>
+<ul><li><b>Initialization</b>: The start of its life.</li>
+<li><b>Finalization</b>: The end of its life.</li>
+<li><b>Assignment</b>: Changing its value as a whole.</li>
+</ul>
+<br><br>
+<p>To be considered an object, it must first be initialized. There may be final operations for some types. The value of a variable may change during its lifetime.
+</p>
+<br><br>
+<h6> Initialization</h6>
+<br><br>
+<p>Every variable must be initialized before being used. Initialization involves two steps:
+</p>
+<br><br>
+<ol><br><br>
+<li><b>Reserving space for the variable</b>: This space is where the value of the variable is stored in memory.</li>
+<br><br>
+<li><b>Construction</b>: Setting the first value of the variable on that space (or the first values of the members of structs and classes).</li>
+<br><br>
+</ol>
+<br><br>
+<p>Every variable lives in a place in memory that is reserved for it. Some of the code that the compiler generates is about reserving space for each variable.
+</p>
+<br><br>
+<p>Let's consider the following variable:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span> speed = 123;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>As we have seen in <a href="value_vs_reference.html">the Value Types and Reference Types chapter</a>, we can imagine this variable living on some part of the memory:
+</p>
+<br><br>
+
+<br><br>
+<p>The memory location that a variable is placed at is called its address. In a sense, the variable lives at that address. When the value of a variable is changed, the new value is stored at the same place:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    ++speed;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The new value would be at the same place where the old value has been:
+</p>
+<br><br>
+
+<br><br>
+<p>Construction is necessary to prepare variables for use. Since a variable cannot be used reliably before being constructed, it is performed by the compiler automatically.
+</p>
+<br><br>
+<p>Variables can be constructed in three ways:
+</p>
+<br><br>
+<ul><li><b>By their default value</b>: when the programmer does not specify a value explicitly</li>
+<li><b>By copying</b>: when the variable is constructed as a copy of another variable of the same type</li>
+<li><b>By a specific value</b>: when the programmer specifies a value explicitly</li>
+</ul>
+<br><br>
+<p>When a value is not specified, the value of the variable would be the <i>default</i> value of its type, i.e. its  value.
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span> speed;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The value of  above is , which happens to be zero. Naturally, a variable that is constructed by its default value may have other values during its lifetime (unless it is ).
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    File file;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>With the definition above, the variable  is a  object that is not yet associated with an actual file on the file system. It is not usable until it is modified to be associated with a file.
+</p>
+<br><br>
+<p>Variables are sometimes constructed as a copy of another variable:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span> speed = otherSpeed;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p> above is constructed by the value of .
+</p>
+<br><br>
+<p>As we will see in later chapters, this operation has a different meaning for class variables:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> classVariable = otherClassVariable;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Although  starts its life as a copy of , there is a fundamental difference with classes: Although  and  are distinct values,  and  both provide access to the same value. This is the fundamental difference between value types and reference types.
+</p>
+<br><br>
+<p>Finally, variables can be constructed by the value of an expression of a compatible type:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">   <span class="keyword">int</span> speed = someCalculation();
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p> above would be constructed by the return value of .
+</p>
+<br><br>
+<h6>  Finalization</h6>
+<br><br>
+<p>Finalizing is the final operations that are executed for a variable and reclaiming its memory:
+</p>
+<br><br>
+<ol><li><b>Destruction</b>: The final operations that must be executed for the variable.</li>
+<li><b>Reclaiming the variable's memory</b>: Reclaiming the piece of memory that the variable has been living on.</li>
+</ol>
+<br><br>
+<p>For simple fundamental types, there are no final operations to execute. For example, the value of a variable of type  is not set back to zero. For such variables there is only reclaiming their memory, so that it will be used for other variables later.
+</p>
+<br><br>
+<p>On the other hand, some types of variables require special operations during finalization. For example, a  object would need to write the characters that are still in its output buffer to disk and notify the file system that it no longer uses the file. These operations are the destruction of a  object.
+</p>
+<br><br>
+<p>Final operations of arrays are at a little higher-level: Before finalizing the array, first its elements are destructed. If the elements are of a simple fundamental type like , then there are no special final operations for them. If the elements are of a struct or a class type that needs finalization, then those operations are executed for each element.
+</p>
+<br><br>
+<p>Associative arrays are similar to arrays. Additionally, the keys may also be finalized if they are of a type that needs destruction.
+</p>
+<br><br>
+<p><b>The garbage collector:</b> D is a <i>garbage-collected</i> language. In such languages finalizing an object need not be initiated explicitly by the programmer. When a variable's lifetime ends, its finalization is automatically handled by the garbage collector. We will cover the garbage collector and special memory management in <a href="memory.html">a later chapter</a>.
+</p>
+<br><br>
+<p>Variables can be finalized in two ways:
+</p>
+<br><br>
+<ul><li><b>When the lifetime ends</b>: Finalization happens at the end of the variable's life.</li>
+<li><b>Some time in the future</b>: Finalization happens at an indeterminate time in the future by the garbage collector.</li>
+</ul>
+<br><br>
+<p>Which of the two ways a variable will be finalized depends primarily on its type. Some types like arrays, associative arrays and classes are normally destructed by the garbage collector some time in the future.
+</p>
+<br><br>
+<h6> Assignment</h6>
+<br><br>
+<p>The other fundamental operation that a variable experiences during its lifetime is assignment.
+</p>
+<br><br>
+<p>For simple fundamental types assignment is merely changing the value of the variable. As we have seen above on the memory representation, an  variable would start having the value 124 instead of 123. However, more generally, assignment consists of two steps, which are not necessarily executed in the following order:
+</p>
+<br><br>
+<ul><li><b>Destructing the old value</b></li>
+<li><b>Constructing the new value</b></li>
+</ul>
+<br><br>
+<p>These two steps are not important for simple fundamental types that don't need destruction. For types that need destruction, it is important to remember that assignment is a combination of the two steps above.
+</p>
+
+</section>
+      </article>
+    </div>
+  </body>
+</html>

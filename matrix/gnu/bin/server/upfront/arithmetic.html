@@ -1,0 +1,1435 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Integers and Arithmetic Operations</title>
+    <style type="text/css" media="screen">
+      html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p,
+      blockquote, pre, a, abbr, address, cite, code, del, dfn, em, figure,
+      img, ins, kbd, q, s, samp, small, strong, sub, sup, var, b, u, i, dl,
+      dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption,
+      tbody, tfoot, thead, tr, th, td {
+        background: transparent none repeat scroll 0 0;
+        border: 0 none;
+        font-size: 100%;
+        margin: 0;
+        outline: 0 none;
+        padding: 0;
+        vertical-align: baseline;
+      }
+
+      h1 { font-size: 200%; }
+      h2 { font-size: 160%; }
+      h3 { font-size: 120%; }
+      h4 { font-size: 100%; }
+      h5 { font-size: 80%; }
+      h6 { font-size: 80%; font-weight: normal; }
+
+      ul, ol {
+        margin: 1.4em 0;
+      }
+      ul ul, ol ol, ul ol, ol ul {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      ul, ol {
+        margin-left: 2.8em;
+      }
+
+      ol {
+        list-style: decimal;
+      }
+      ol ol {
+        list-style: lower-alpha;
+      }
+      ol ol ol {
+        list-style: lower-roman;
+      }
+      ol ol ol ol {
+        list-style: decimal;
+      }
+
+      blockquote {
+        margin: 0.1em;
+        margin-left: 1em;
+        border-left: 2px solid #cccccc;
+        padding-left: 0.7em;
+      }
+
+      .color_red { color: #dc322f; }
+      .color_blue { color: #268bd2; }
+      .color_green { color: #859901; }
+      .color_yellow { color: #b58901; }
+      .color_black { color: black; }
+      .color_white { color: white; }
+
+      .font_big {
+        font-size: 1.2em;
+      }
+
+      .ddoc_section_h {
+        font-weight: bold;
+        font-size: 13px;
+        line-height: 19.5px;
+        margin-top: 11px;
+        display: block;
+      }
+
+      body.dlang .dlang {
+        display: inline-block;
+      }
+
+      body.dlang .declaration .dlang {
+          display: block;
+      }
+
+      body.dlang .ddoc_header_anchor a.dlang {
+        display: block;
+        color: rgba(0, 136, 204, 1);
+        text-decoration: none;
+      }
+
+      body.dlang .ddoc_header_anchor .code {
+        color: rgba(0, 136, 204, 1);
+      }
+
+      #ddoc_main .module {
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          overflow-x: hidden;
+          padding: 15px;
+      }
+
+      #ddoc_main .section .section {
+        margin-top: 0;
+      }
+
+      #ddoc_main .ddoc_module_members_section {
+          padding: 1px 0 0;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members section.intro {
+          background: #fff none repeat scroll 0 0;
+          list-style-type: none;
+          width: 100%;
+      }
+
+      #ddoc_main .ddoc_header_anchor {
+          font-size: 1.4em;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_header_anchor > .code {
+          display: inline-block;
+
+      }
+
+      #ddoc_main .ddoc_decl {
+        background-color: transparent;
+        height: 100%;
+        left: 0;
+        top: 0;
+        padding: 0;
+        padding-left: 15px;
+      }
+
+      #ddoc_main .ddoc_decl .section, #ddoc_main .section.ddoc_sections {
+        background: white none repeat scroll 0 0;
+        margin: 0;
+        padding: 5px;
+        position: relative;
+        border-radius: 5px;
+      }
+
+      #ddoc_main .ddoc_decl .section h4:first-of-type, #ddoc_main .section.ddoc_sections h4:first-of-type {
+        font-size: 13px;
+        line-height: 1.5;
+        margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration {
+          margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration .code {
+          color: rgba(0, 0, 0, 1);
+          margin-bottom: 15px;
+          padding-bottom: 6px;
+      }
+
+      #ddoc_main .declaration div .para {
+          margin-bottom: 0;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr td:first-of-type {
+        padding: 7px;
+        text-align: right;
+        vertical-align: top;
+        word-break: normal;
+        white-space: nowrap;
+      }
+
+      #ddoc_main .ddoc_params .graybox {
+        border: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox td {
+        border-color: rgba(214, 214, 214, 1);
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:first-child > td {
+        border-top: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:last-child > td {
+        border-bottom: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:first-child {
+        border-left: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:last-child {
+        border-right: 0 none;
+        width: 100%;
+      }
+
+      #ddoc_main em.term, #ddoc_main em.term .code {
+        color: rgba(65, 65, 65, 1);
+        font-size: 12px;
+        font-style: italic;
+        line-height: 1.5;
+      }
+
+      #ddoc_main .see-also {
+        cursor: pointer;
+        font-family: Menlo,monospace;
+      }
+
+      #ddoc_main .ddoc_decl .section > div:last-of-type {
+        margin-bottom: 15px;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members {
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .code_sample {
+        background: inherit;
+      }
+
+      #ddoc_main .declaration .code-line {
+          display: block;
+          font: 1em Menlo,monospace;
+      }
+
+      #ddoc_main a[name] {
+        margin: -112px 0 0;
+        padding-top: 112px;
+      }
+
+      #ddoc_main .ddoc_decl td {
+        max-width: inherit;
+      }
+
+      #ddoc_main .declaration a {
+        color: inherit;
+      }
+
+      #ddoc_main .declaration a:hover {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: underline;
+      }
+
+      body.ddoc {
+        background-color: transparent;
+        color: rgba(0, 0, 0, 1);
+        font-family: Helvetica,Arial,sans-serif;
+        font-size: 62.5%;
+        margin: 0;
+        border: 0;
+        left: 0;
+        top: 0;
+        padding: 0;
+      }
+
+      .ddoc a[name] {
+        display: block;
+        height: 0;
+        margin: -85px 0 0;
+        padding-top: 85px;
+        width: 0;
+      }
+
+      .ddoc .module {
+          border-color: transparent;
+          background-color: rgba(255, 255, 255, 1);
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-image: none;
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          box-shadow: 0 0 1px rgba(0, 0, 0, 0.07);
+          display: block;
+          margin-left: 0;
+          min-height: calc(100% - 173px);
+          overflow: auto;
+          padding-bottom: 100px;
+      }
+
+      .ddoc .content_wrapper {
+          background-color: rgba(242, 242, 242, 1);
+          margin: 0 auto;
+          max-width: 980px;
+      }
+
+      .ddoc .section {
+        padding: 15px 25px 30px;
+      }
+
+      .ddoc .section .section {
+        margin: 30px 0 0;
+        padding: 0;
+      }
+
+      .ddoc .para {
+        color: rgba(65, 65, 65, 1);
+        font-size: 1.4em;
+        line-height: 145%;
+        margin-bottom: 15px;
+      }
+
+      .ddoc .ddoc_examples .para {
+        margin-bottom: 0;
+      }
+
+      .ddoc .module_name {
+          color: rgba(0, 0, 0, 1);
+          display: block;
+          font-family: Helvetica;
+          font-size: 2.8em;
+          font-weight: 100;
+          margin-bottom: 0;
+          padding: 15px 0;
+      }
+
+      .ddoc .module a {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: none;
+      }
+
+      .ddoc .code {
+        color: rgba(128, 128, 128, 1);
+        font-family: Menlo,monospace;
+        font-size: 0.85em;
+        word-wrap: break-word;
+      }
+
+      .ddoc .code i {
+        font-style: normal;
+      }
+
+      .ddoc .code .code {
+        font-size: 1em;
+      }
+
+      .ddoc .code_sample {
+        background-clip: padding-box;
+        margin: 1px 0;
+        text-align: left;
+      }
+
+      .ddoc .code_sample {
+        display: block;
+        font-size: 1.4em;
+        margin-left: 21px;
+      }
+
+      .ddoc ol .code_sample {
+        font-size: 1em;
+      }
+
+      .ddoc .code_lines {
+        counter-reset: li;
+        line-height: 1.6em;
+        list-style: outside none none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .ddoc .code_listing .code_sample div {
+        margin-left: 13px;
+        width: 93%;
+      }
+
+      .ddoc .code_listing .code_sample div .code_lines li {
+        list-style-type: none;
+        margin: 0;
+        padding-right: 10px;
+      }
+
+      .ddoc .code_sample div .code_lines li::before {
+        margin-left: -33px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+10)::before {
+        margin-left: -39px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+100)::before {
+        margin-left: -46px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample .code_lines .code {
+        color: #000;
+      }
+
+      .ddoc div.dlang {
+        margin: 10px 0 21px;
+        padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+          margin: 10px 0 21px;
+          padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+        border-left: 5px solid rgba(0, 155, 51, 0.2);
+      }
+
+      .ddoc .code_lines li::before {
+        color: rgba(128, 128, 128, 1);
+        content: counter(li, decimal);
+        counter-increment: li;
+        font-family: Menlo,monospace;
+        font-size: 0.9em;
+        margin-right: 16px;
+      }
+
+      .ddoc .code_lines li {
+        padding-left: 0;
+        white-space: pre-wrap;
+      }
+
+      .ddoc .code_lines li:only-of-type::before {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:only-of-type {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:nth-child(n+10) {
+        text-indent: -17px;
+      }
+
+      .ddoc .code_lines li:nth-child(n+10)::before {
+        margin-right: 12px;
+      }
+
+      .ddoc .graybox {
+        border: 1px solid rgba(233, 233, 233, 1);
+        border-collapse: collapse;
+        border-spacing: 0;
+        empty-cells: hide;
+        margin: 20px 0 36px;
+        text-align: left;
+      }
+
+      .ddoc .graybox p {
+        margin: 0;
+        min-width: 50px;
+      }
+
+      .ddoc th {
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: bottom;
+      }
+
+      .ddoc td {
+        border: 1px solid rgba(233, 233, 233, 1);
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: middle;
+      }
+
+      .punctuation {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .comment {
+        color: rgba(0, 131, 18, 1);
+      }
+
+      .operator {
+        color: #000;
+      }
+
+      .keyword {
+        color: rgba(170, 13, 145, 1);
+      }
+
+      .keyword_type {
+        color: rgba(170, 51, 145, 1);
+      }
+
+      .string_literal {
+        color: rgba(196, 26, 22, 1);
+      }
+
+      .ddoc_psuper_symbol {
+        color: rgba(92, 38, 153, 1);
+      }
+
+      .param {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .psymbol {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .ddoc_member_header .ddoc_header_anchor .code {
+        font-size: 1em;
+      }
+    </style>
+  </head>
+  <body id="ddoc_main" class="ddoc dlang">
+    <div class="content_wrapper">
+      <article class="module">
+        <h1 class="module_name">Integers and Arithmetic Operations</h1>
+        <section id="module_content"><br><br>
+<br><br>
+
+<br><br>
+<p>We have seen that the  and  statements allow programs to make decisions by using the  type in the form of logical expressions. In this chapter, we will see arithmetic operations on the <i>integer</i> types of D. These features will allow us to write much more useful programs.
+</p>
+<br><br>
+<p>Although arithmetic operations are a part of our daily lives and are actually simple, there are very important concepts that a programmer must be aware of in order to produce correct programs: the <i>bit length of a type</i>, <i>overflow</i> (wrap), and <i>truncation</i>.
+</p>
+<br><br>
+<p>Before going further, I would like to summarize the arithmetic operations in the following table as a reference:
+</p>
+<br><br>
+<table class="wide" border="1" cellpadding="4" cellspacing="0">
+<tr><th scope="col">Operator</th> <th scope="col">Effect</th> <th scope="col">Sample</th>
+<br><br>
+</tr>
+<tr align="center"><td>++</td>
+    <td>increments by one</td>
+    <td>++variable</td>
+</tr>
+<tr align="center"><td>--</td>
+    <td>decrements by one</td>
+    <td>--variable</td>
+</tr>
+<tr align="center"><td>+</td>
+    <td>the result of adding two values</td>
+    <td>first&nbsp;+&nbsp;second</td>
+</tr>
+<tr align="center"><td>-</td>
+    <td>the result of subtracting 'second' from 'first'</td>
+    <td>first&nbsp;-&nbsp;second</td>
+</tr>
+<tr align="center"><td><em></td>
+    <td>the result of multiplying two values</td>
+    <td>first&nbsp;</em>&nbsp;second</td>
+</tr>
+<tr align="center"><td>/</td>
+    <td>the result of dividing 'first' by 'second'</td>
+    <td>first&nbsp;/&nbsp;second</td>
+</tr>
+<tr align="center"><td>%</td>
+    <td>the remainder of dividing 'first' by 'second'</td>
+    <td>first&nbsp;%&nbsp;second</td>
+</tr>
+<tr align="center"><td>^^</td>
+    <td>the result of raising 'first' to the power of 'second'<br>(multiplying 'first' by itself 'second' times)</td>
+    <td>first&nbsp;^^&nbsp;second</td>
+</tr>
+</table>
+<br><br>
+<p>      Most of those operators have counterparts that have an  sign attached: , , , , , and . The difference with these operators is that they assign the result to the left-hand side:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    variable += 10;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>That expression adds the value of  and 10 and assigns the result to . In the end, the value of  would be increased by 10. It is the equivalent of the following expression:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    variable = variable + 10;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>I would like also to summarize two important concepts here before elaborating on them below.
+</p>
+<br><br>
+<p> <b>Overflow:</b> Not all values can fit in a variable of a given type. If the value is too big for the variable we say that the variable <i>overflows</i>. For example, a variable of type  can have values only in the range of 0 to 255; so when assigned 260, the variable overflows, wraps around, and its value becomes 4. (<i><b>Note:</b> Unlike some other languages like C and C++, overflow for signed types is legal in D. It has the same wrap around behavior of unsigned types.</i>)
+</p>
+<br><br>
+<p>Similarly, a variable cannot have a value that is less than the minimum value of its type.
+</p>
+<br><br>
+<p><b>Truncation:</b> Integer types cannot have values with fractional parts. For example, the value of the  expression  is 1, not 1.5.
+</p>
+<br><br>
+<p>We encounter arithmetic operations daily without many surprises: if a bagel is &#36;1, two bagels are &#36;2; if four sandwiches are &#36;15, one sandwich is &#36;3.75, etc.
+</p>
+<br><br>
+<p>Unfortunately, things are not as simple with arithmetic operations in computers. If we don't understand how values are stored in a computer, we may be surprised to see that a company's debt is <i>reduced</i> to &#36;1.7 billion when it borrows &#36;3 billion more on top of its existing debt of &#36;3 billion! Or when a box of ice cream serves 4 kids, an arithmetic operation may claim that 2 boxes would be sufficient for 11 kids!
+</p>
+<br><br>
+<p>Programmers must understand how integers are stored in computers.</p>
+<br><br>
+<h6> Integer types</h6>
+<br><br>
+<p>Integer types are the types that can have only whole values like -2, 0, 10, etc. These types cannot have fractional parts, as in 2.5. All of the integer types that we saw in the <a href="types.html">Fundamental Types chapter</a> are the following:
+</p>
+<br><br>
+<table class="narrow" border="1" cellpadding="4" cellspacing="0">
+<tr><th scope="col"><br>Type</th> <th scope="col">Number of<br>Bits</th> <th scope="col">Initial<br>Value</th>
+<br><br>
+</tr>
+<tr align="right"><td>byte</td>
+    <td>8</td>
+    <td>0</td>
+<br><br>
+</tr>
+<tr align="right"> <td>ubyte</td>
+    <td>8</td>
+    <td>0</td>
+</tr>
+<tr align="right"> <td>short</td>
+<br><br>
+    <td>16</td>
+    <td>0</td>
+</tr>
+<tr align="right"> <td>ushort</td>
+    <td>16</td>
+    <td>0</td>
+<br><br>
+</tr>
+<tr align="right"> <td>int</td>
+    <td>32</td>
+    <td>0</td>
+</tr>
+<tr align="right"> <td>uint</td>
+<br><br>
+    <td>32</td>
+    <td>0</td>
+</tr>
+<tr align="right"> <td>long</td>
+    <td>64</td>
+    <td>0L</td>
+<br><br>
+</tr>
+<tr align="right"> <td>ulong</td>
+    <td>64</td>
+    <td>0LU</td>
+</tr>
+</table>
+<br><br>
+<p>The  at the beginning of the type names stands for "unsigned" and indicates that such types cannot have values less than zero.
+</p>
+<br><br>
+<p>Although they are equal to ;  and  are <i>manifest constants</i> typed as  and , respectively.
+</p>
+<br><br>
+<h6> Number of bits of a type</h6>
+<br><br>
+<p>In today's computer systems, the smallest unit of information is called a <i>bit</i>. At the physical level, a bit is represented by electrical signals around certain points in the circuitry of a computer. A bit can be in one of two states that correspond to different voltages in the area that defines that particular bit. These two states are arbitrarily defined to have the values 0 and 1. As a result, a bit can have one of these two values.
+</p>
+<br><br>
+<p>As there aren't many concepts that can be represented by just two states, a bit is not a very useful type. It can only be useful for concepts with two states like heads or tails or whether a light switch is on or off.
+</p>
+<br><br>
+<p>If we consider two bits together, the total amount of information that can be represented multiplies. Based on each bit having a value of 0 or 1 individually, there are a total of 4 possible states. Assuming that the left and right digits represent the first and second bit respectively, these states are 00, 01, 10, and 11. Let's add one more bit to see this effect better; three bits can be in 8 different states: 000, 001, 010, 011, 100, 101, 110, 111. As can be seen, each added bit doubles the total number of states that can be represented.
+</p>
+<br><br>
+<p>The values to which these eight states correspond are defined by conventions. The following table shows these values for the signed and unsigned representations of 3 bits:
+</p>
+<br><br>
+<table class="narrow" border="1" cellpadding="4" cellspacing="0">
+<tr align="right"><th scope="col">Bit State</th> <th scope="col">Unsigned Value</th>  <th scope="col">Signed Value</th></tr>
+<tr align="right"><td>000</td> <td>0</td> <td>0</td> </tr>
+<tr align="right"><td>001</td> <td>1</td> <td>1</td> </tr>
+<tr align="right"><td>010</td> <td>2</td> <td>2</td> </tr>
+<tr align="right"><td>011</td> <td>3</td> <td>3</td> </tr>
+<tr align="right"><td>100</td> <td>4</td> <td>-4</td> </tr>
+<tr align="right"><td>101</td> <td>5</td> <td>-3</td> </tr>
+<tr align="right"><td>110</td> <td>6</td> <td>-2</td> </tr>
+<tr align="right"><td>111</td> <td>7</td> <td>-1</td> </tr>
+</table>
+<br><br>
+<p>We can construct the following table by adding more bits:
+</p>
+<br><br>
+<table class="wide" style="font-size:.9em" border="1" cellpadding="4" cellspacing="0">
+<tr align="right"><th scope="col">Bits</th> <th scope="col">Number of Distinct Values</th><th scope="col">D Type</th><th scope="col">Minimum Value</th><th scope="col">Maximum Value</th>  </tr>
+<tr align="right"><td>1</td><td>2</td> <td></td><td></td><td></td></tr>
+<tr align="right"><td>2</td><td>4</td> <td></td><td></td><td></td></tr>
+<tr align="right"><td>3</td><td>8</td> <td></td><td></td><td></td></tr>
+<tr align="right"><td>4</td><td>16</td> <td></td><td></td><td></td></tr>
+<tr align="right"><td>5</td><td>32</td> <td></td><td></td><td></td></tr>
+<tr align="right"><td>6</td><td>64</td> <td></td><td></td><td></td></tr>
+<tr align="right"><td>7</td><td>128</td> <td></td><td></td><td></td></tr>
+<tr align="right"><td>8</td><td>256</td> <td>byte<br>ubyte</td><td>-128<br>0</td><td>127<br>255</td></tr>
+<tr align="right"><td>...</td><td>...</td> <td></td><td></td><td></td></tr>
+<tr align="right"><td>16</td><td>65536</td> <td>short<br>ushort</td><td>-32768<br>0</td><td>32767<br>65535</td></tr>
+<tr align="right"><td>...</td><td>...</td> <td></td><td></td><td></td></tr>
+<tr align="right"><td>32</td><td>4294967296</td> <td>int<br>uint</td><td>-2147483648<br>0</td><td>2147483647<br>4294967295</td></tr>
+<tr align="right"><td>...</td><td>...</td> <td></td><td></td><td></td></tr>
+<tr align="right"><td>64</td><td>18446744073709551616</td> <td>long<br>ulong</td><td>-9223372036854775808<br>0</td><td>9223372036854775807<br>18446744073709551615</td></tr>
+<tr align="right"><td>...</td><td>...</td> <td></td><td></td><td></td></tr>
+</table>
+<br><br>
+<p>I skipped many rows in the table and indicated the signed and unsigned versions of the D types that have the same number of bits on the same row (e.g.  and  are both on the 32-bit row).
+</p>
+<br><br>
+<h6>Choosing a type</h6>
+<br><br>
+<p>D has no 3-bit type. But such a hypothetical type could only have 8 distinct values. It could only represent concepts such as the value of a die, or the week's day number.
+</p>
+<br><br>
+<p>On the other hand, although  is a very large type, it cannot represent the concept of an ID number for each living person, as its maximum value is less than the world population of 7 billion.  and  would be more than enough to represent many concepts.
+</p>
+<br><br>
+<p>As a general rule, as long as there is no specific reason not to, you can use  for integer values.
+</p>
+<br><br>
+<h6> Overflow</h6>
+<br><br>
+<p>The fact that types can only hold values within a limited range may cause unexpected results. For example, although adding two  variables with values of 3 billion each should produce 6 billion, because that sum is greater than the maximum value that a  variable can hold (about 4 billion), this sum <i>overflows</i>. Without any warning, only the difference of 6 and 4 billion gets stored. (A little more accurately, 6 minus 4.3 billion.)
+</p>
+<br><br>
+<h6> Truncation</h6>
+<br><br>
+<p>Since integers cannot have values with fractional parts, they lose the part after the decimal point. For example, assuming that a box of ice cream serves 4 kids, although 11 kids would actually need 2.75 boxes, the fractional part of that value cannot be stored in an integer type, so the value becomes 2.
+</p>
+<br><br>
+<p>I will show limited techniques to help reduce the risk of overflow and truncation later in the chapter.
+</p>
+<br><br>
+<h6> and </h6>
+<br><br>
+<p>I will take advantage of the  and  properties below, which we have seen in the <a href="types.html">Fundamental Types chapter</a>. These properties provide the minimum and maximum values that an integer type can have.
+</p>
+<br><br>
+<h6>  Increment: </h6>
+<br><br>
+<p>This operator is used with a single variable (more generally, with a single expression) and is written before the name of that variable. It increments the value of that variable by 1:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">int</span> number = 10;
+    number;
+    writeln(<span class="string_literal">"New value: "</span>, number);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<p>The increment operator is the equivalent of using the <i>add-and-assign</i> operator with the value of 1:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    number += 1;      <span class="comment">// same as ++number
+</span></code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>If the result of the increment operation is greater than the maximum value of that type, the result <i>overflows</i> and becomes the minimum value. We can see this effect by incrementing a variable that initially has the value :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> main() {
+    writeln(<span class="string_literal">"minimum int value   : "</span>, <span class="keyword">int</span>.min);
+    writeln(<span class="string_literal">"maximum int value   : "</span>, <span class="keyword">int</span>.max);
+
+    <span class="keyword">int</span> number = <span class="keyword">int</span>.max;
+    writeln(<span class="string_literal">"before the increment: "</span>, number);
+    ++number;
+    writeln(<span class="string_literal">"after the increment : "</span>, number);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The value becomes  after the increment:
+</p>
+<br><br>
+
+<br><br>
+<p>This is a very important observation because the value changes from the maximum to the minimum as a result of <i>incrementing</i> and without any warning! This effect is called <i>overflow</i>. We will see similar effects with other operations.
+</p>
+<br><br>
+<h6>  Decrement: </h6>
+<br><br>
+<p>This operator is similar to the increment operator; the difference is that the value is decreased by 1:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    --number;   <span class="comment">// the value decreases by 1
+</span></code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The decrement operation is the equivalent of using the <i>subtract-and-assign</i> operator with the value of 1:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    number -= 1;      <span class="comment">// same as --number
+</span></code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<br><br>
+<p>Similar to the  operator, if the value is the minimum value to begin with, it becomes the maximum value. This effect is called <i>overflow</i> as well.
+</p>
+<br><br>
+<h6>  Addition: +</h6>
+<br><br>
+<p>This operator is used with two expressions and adds their values:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">int</span> number_1 = 12;
+    <span class="keyword">int</span> number_2 = 100;
+
+    writeln(<span class="string_literal">"Result: "</span>, number_1  number_2);
+    writeln(<span class="string_literal">"With a constant expression: "</span>, 1000  number_2);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<p>If the sum of the two expressions is greater than the maximum value of that type, it overflows and becomes a value that is less than both of the expressions:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> main() {
+    <span class="comment">// 3 billion each
+</span>    <span class="keyword">uint</span> number_1 = 3000000000;
+    <span class="keyword">uint</span> number_2 = 3000000000;
+
+    writeln(<span class="string_literal">"maximum value of uint: "</span>, <span class="keyword">uint</span>.max);
+    writeln(<span class="string_literal">"             number_1: "</span>, number_1);
+    writeln(<span class="string_literal">"             number_2: "</span>, number_2);
+    writeln(<span class="string_literal">"                  sum: "</span>, number_1 + number_2);
+    writeln(<span class="string_literal">"OVERFLOW! The result is not 6 billion!"</span>);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<h6>  Subtraction: </h6>
+<br><br>
+<p>This operator is used with two expressions and gives the difference between the first and the second:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">int</span> number_1 = 10;
+    <span class="keyword">int</span> number_2 = 20;
+
+    writeln(number_1  number_2);
+    writeln(number_2  number_1);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<p>It is again surprising if the actual result is less than zero and is stored in an unsigned type. Let's rewrite the program using the  type:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">uint</span> number_1 = 10;
+    <span class="keyword">uint</span> number_2 = 20;
+
+    writeln(<span class="string_literal">"PROBLEM! uint cannot have negative values:"</span>);
+    writeln(number_1 - number_2);
+    writeln(number_2 - number_1);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<p>It is a good guideline to use signed types to represent concepts that may ever be subtracted. As long as there is no specific reason not to, you can choose .
+</p>
+<br><br>
+<h6>  Multiplication: </h6>
+<br><br>
+<p>This operator multiplies the values of two expressions; the result is again subject to overflow:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">uint</span> number_1 = 6;
+    <span class="keyword">uint</span> number_2 = 7;
+
+    writeln(number_1  number_2);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<h6>  Division: </h6>
+<br><br>
+<p>This operator divides the first expression by the second expression. Since integer types cannot have fractional values, the fractional part of the value is discarded. This effect is called <i>truncation</i>. As a result, the following program prints 3, not 3.5:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> main() {
+    writeln(7  2);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<p>For calculations where fractional parts matter, <i>floating point types</i> must be used instead of integers. We will see floating point types in the next chapter.
+</p>
+<br><br>
+<h6>   Remainder (modulus): %</h6>
+<br><br>
+<p>This operator divides the first expression by the second expression and produces the remainder of the division:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> main() {
+    writeln(10  6);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<p>A common application of this operator is to determine whether a value is odd or even. Since the remainder of dividing an even number by 2 is always 0, comparing the result against 0 is sufficient to make that distinction:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">if</span> ((number % 2) == 0) {
+        writeln(<span class="string_literal">"even number"</span>);
+
+    } <span class="keyword">else</span> {
+        writeln(<span class="string_literal">"odd number"</span>);
+    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h6>  Power: ^^</h6>
+<br><br>
+<p>This operator raises the first expression to the power of the second expression. For example, raising 3 to the power of 4 is multiplying 3 by itself 4 times:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> main() {
+    writeln(3  4);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<h6> Arithmetic operations with assignment</h6>
+<br><br>
+<p>All of the operators that take two expressions have <i>assignment</i> counterparts. These operators assign the result back to the expression that is on the left-hand side:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">int</span> number = 10;
+
+    number += 20;  <span class="comment">// same as number = number + 20; now 30
+</span>    number -= 5;   <span class="comment">// same as number = number - 5;  now 25
+</span>    number *= 2;   <span class="comment">// same as number = number * 2;  now 50
+</span>    number /= 3;   <span class="comment">// same as number = number / 3;  now 16
+</span>    number %= 7;   <span class="comment">// same as number = number % 7;  now  2
+</span>    number ^^= 6;  <span class="comment">// same as number = number ^^ 6; now 64
+</span>
+    writeln(number);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<h6>  Negation: </h6>
+<br><br>
+<p>This operator converts the value of the expression from negative to positive or positive to negative:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">int</span> number_1 = 1;
+    <span class="keyword">int</span> number_2 = -2;
+
+    writeln(number_1);
+    writeln(number_2);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<p>The type of the result of this operation is the same as the type of the expression. Since unsigned types cannot have negative values, the result of using this operator with unsigned types can be surprising:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">     number = 1;
+    writeln(<span class="string_literal">"negation: "</span>, -number);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The type of  is  as well, which cannot have negative values:
+</p>
+<br><br>
+
+<br><br>
+<h6>  Plus sign: </h6>
+<br><br>
+<p>This operator has no effect and exists only for symmetry with the negation operator. Positive values stay positive and negative values stay negative:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">int</span> number_1 = 1;
+    <span class="keyword">int</span> number_2 = -2;
+
+    writeln(number_1);
+    writeln(number_2);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<h6>   Post-increment: </h6>
+<br><br>
+<p><i><b>Note:</b> Unless there is a strong reason not to, always use the regular increment operator (which is sometimes called the pre-increment operator).</i>
+</p>
+<br><br>
+<p>Contrary to the regular increment operator, it is written after the expression and still increments the value of the expression by 1. The difference is that the post-increment operation produces the old value of the expression. To see this difference, let's compare it with the regular increment operator:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">int</span> incremented_regularly = 1;
+    writeln(++incremented_regularly);      <span class="comment">// prints 2
+</span>    writeln(incremented_regularly);        <span class="comment">// prints 2
+</span>
+    <span class="keyword">int</span> post_incremented = 1;
+
+    <span class="comment">// Gets incremented, but its old value is used:
+</span>    writeln(post_incremented);           <span class="comment">// prints 1
+</span>    writeln(post_incremented);             <span class="comment">// prints 2
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<p>The  statement above is the equivalent of the following code:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span> old_value = post_incremented;
+    ++post_incremented;
+    writeln(old_value);                    <span class="comment">// prints 1
+</span></code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h6>   Post-decrement: </h6>
+<br><br>
+<p><i><b>Note:</b> Unless there is a strong reason not to, always use the regular decrement operator (which is sometimes called the pre-decrement operator).</i>
+</p>
+<br><br>
+<p>This operator behaves the same way as the post-increment operator except that it decrements.
+</p>
+<br><br>
+<h6>Operator precedence</h6>
+<br><br>
+<p>The operators we've discussed above have all been used in operations on their own with only one or two expressions. However, similar to logical expressions, it is common to combine these operators to form more complex arithmetic expressions:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span> value = 77;
+    <span class="keyword">int</span> result = (((value + 8) * 3) / (value - 1)) % 5;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>As with logical operators, arithmetic operators also obey operator precedence rules. For example, the  operator has precedence over the  operator. For that reason, when parentheses are not used (e.g. in the  expression), the  operator is evaluated before the  operator. As a result, that expression becomes the equivalent of , which is quite different from .
+</p>
+<br><br>
+<p>Using parentheses is useful both for ensuring correct results and for communicating the intent of the code to programmers who may work on it in the future.
+</p>
+<br><br>
+<p>The operator precedence table will be presented <a href="operator_precedence.html">later in the book</a>.
+</p>
+<br><br>
+<h6>Detecting overflow</h6>
+<br><br>
+<p>         Although it uses <a href="functions.html">functions</a> and <a href="function_parameters.html"> parameters</a>, which we have not covered yet, I would like to mention here that <a href="http://dlang.org/phobos/core_checkedint.html">the  module</a> contains arithmetic functions that detect overflow. Instead of operators like  and , this module uses functions:  and  for signed and unsigned addition,  and  for signed and unsigned multiplication,  and  for signed and unsigned subtraction, and  for negation.
+</p>
+<br><br>
+<p>For example, assuming that  and  are two  variables, the following code would detect whether adding them has caused an overflow:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> core.checkedint;
+
+<span class="keyword">void</span> main() {
+    <span class="comment">// Let's cause overflow for test purposes
+</span>    <span class="keyword">int</span> a = <span class="keyword">int</span>.max - 1;
+    <span class="keyword">int</span> b = 2;
+
+    <span class="comment">// This variable will become 'true' if the addition
+</span>    <span class="comment">// operation inside the 'adds' function overflows:
+</span>    <span class="keyword">bool</span> hasOverflowed = <span class="keyword">false</span>;
+    <span class="keyword">int</span> result = adds(a, b, );
+
+    <span class="keyword">if</span> (hasOverflowed) {
+        <span class="comment">// We must not use 'result' because it has overflowed
+</span>        <span class="comment">// ...
+</span>
+    } <span class="keyword">else</span> {
+        <span class="comment">// We can use 'result'
+</span>        <span class="comment">// ...
+</span>    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>  There is also <a href="https://dlang.org/phobos/std_experimental_checkedint.html">the std.experimental.checkedint</a> module that defines the  template but both its usage and its implementation are too advanced at this point in the book.
+</p>
+<br><br>
+<h6>Preventing overflow</h6>
+<br><br>
+<p>If the result of an operation cannot fit in the type of the result, then there is nothing that can be done. Sometimes, although the ultimate result would fit in a certain type, the intermediate calculations may overflow and cause incorrect results.
+</p>
+<br><br>
+<p>As an example, let's assume that we need to plant an apple tree per 1000 square meters of an area that is 40 by 60 kilometers. How many trees are needed?
+</p>
+<br><br>
+<p>When we solve this problem on paper, we see that the result is 40000 times 60000 divided by 1000, being equal to 2.4 million trees. Let's write a program that executes this calculation:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">int</span> width  = 40000;
+    <span class="keyword">int</span> length = 60000;
+    <span class="keyword">int</span> areaPerTree = 1000;
+
+    <span class="keyword">int</span> treesNeeded = width * length / areaPerTree;
+
+    writeln(<span class="string_literal">"Number of trees needed: "</span>, treesNeeded);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<p>Not to mention it is not even close, the result is also less than zero! In this case, the intermediate calculation  overflows and the subsequent calculation of  produces an incorrect result.
+</p>
+<br><br>
+<p>One way of avoiding the overflow in this example is to change the order of operations:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span> treesNeeded = width / areaPerTree * length ;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The result would now be correct:
+</p>
+<br><br>
+
+<br><br>
+<p>The reason this method works is the fact that all of the steps of the calculation now fit the  type.
+</p>
+<br><br>
+<p>Please note that this is not a complete solution because this time the intermediate value is prone to truncation, which may affect the result significantly in certain other calculations. Another solution might be to use a floating point type instead of an integer type: , , or .
+</p>
+<br><br>
+<h6>Preventing truncation</h6>
+<br><br>
+<p>Changing the order of operations may be a solution to truncation as well. An interesting example of truncation can be seen by dividing and multiplying a value with the same number. We would expect the result of 10/9*9 to be 10, but it comes out as 9:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> main() {
+    writeln(10 / 9 * 9);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<p>The result is correct when truncation is avoided by changing the order of operations:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    writeln(10 * 9 / 9);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<p>This too is not a complete solution: This time the intermediate calculation could be prone to overflow. Using a floating point type may be another solution to truncation in certain calculations.
+</p>
+<br><br>
+
+
+</section>
+      </article>
+    </div>
+  </body>
+</html>

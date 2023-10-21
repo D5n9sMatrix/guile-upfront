@@ -1,0 +1,359 @@
+Ddoc
+
+$(COMMENT
+    - Put your logo (svg or transparent png) to images/orgs-using-d
+    - SVGs are preferred (`org-name.svg`)
+    - If you have a better quality logo, please name it `<org-name>_hq.png`
+    - At the moment our setup requires manual resizing to 200x100, please save this file as `<org-name>.png`
+      (on Linux you can conveniently do this with `convert -resize 200x100 org_hg.png org.png`)
+    - Organizations are sorted alphabetically
+)
+
+
+$(D_S $(TITLE),
+
+$(DIVC orgs-using-d center,
+
+    $(DORG AdRoll, https://www.adroll.com, da_roll.png,
+         Marketing Platform,
+         $(HTTP tech.adroll.com/blog/data-science/2015/12/08/data-science_event_processing.html, Integral parts) of $(HTTP tech.adroll.com/blog/data-science/2015/08/25/factorization-machines.html,AdRoll's business) are built on D.
+        $(LINK_ROW
+            $(FA_TESTIMONIAL) $(I $(HTTP tech.adroll.com/blog/data/2014/11/17/d-is-for-data-science.html, D is for Data Science))
+         )
+    )
+    $(DORG Ahrefs, https://ahrefs.com/, ahrefs.svg,
+         SEO tools and a search engine,
+         $(FA_QUOTE
+            Ahrefs is processing petabytes of data to build a web search engine with D.
+        )
+        $(LINK_ROW
+            $(FA_HIRING ahrefs.com/jobs/d-c++-developer)
+         )
+    )
+    $(DORG ArabiaWeather, http://corporate.arabiaweather.com, arabiaweather.png,
+        Leading weather services provider in the Arab world,
+        $(FA_QUOTE
+            Only D drawback: it's so pleasant that coding in any other language becomes a nuisance.
+        )
+        $(LINK_ROW
+            $(FA_TALK youtube.com/watch?v=egKU2xOlgbw, D TechTalk (Arabic))
+        )
+    )
+    $(DORG AREX, https://arex.io/, arex.png,
+        Real-time exchange for B2B credit,
+        $(FA_QUOTE
+            D is a superb language for high volume, low latency order matching.
+        )
+        $(LINK_ROW
+            $(FA_GITHUB arexio) $(FA_SEPARATOR)
+            $(FA_HIRING arex.recruiterbox.com/jobs/fk0hjlh)
+         )
+    )
+    $(DORG Auburn Sounds, http://www.auburnsounds.com, auburn.png,
+        Audio processing,
+        $(FA_QUOTE
+            Nothing quite matches D's power.
+        )
+        $(LINK_ROW
+            $(FA_GITHUB AuburnSounds/dplug) $(FA_SEPARATOR)
+            $(FA_TESTIMONIAL) $(LINK2 http://www.auburnsounds.com/blog/2016-02-08_Making-a-Windows-VST-plugin-with-D.html, Testimonial)
+         )
+    )
+    $(DORG CERERIS, http://www.myriad-corp.com, cereris.png,
+        Hardware and Software development,
+        $(FA_QUOTE
+            We use D to develop MVC web framework for embedded systems.
+        )
+        $(LINK_ROW
+            $(FA_GITHUB LLC-CERERIS)
+        )
+    )
+    $(DORG Cut Through Recordings, http://www.modernmetalproduction.com, ctrecordings.png,
+        Digital Signal Processing,
+        $(FA_QUOTE
+            If you are looking for a powerful language that can support many programming styles, compiles natively, and is blazing fast, then D may be worth checking out.
+        )
+        $(LINK_ROW
+            $(FA_GITHUB ctrecordings/Ddsp) $(FA_SEPARATOR)
+            $(FA_TESTIMONIAL) $(LINK2 http://www.modernmetalproduction.com/dplug-developing-vst-plugins-for-linux/, Testimonial)
+         )
+    )
+    $(DORG eBay, https://ebay.com, ebay.jpg,
+            One of the world’s largest marketplaces,
+            Large scale data mining tools.
+            $(HTTPS dlang.org/blog/2017/05/24/faster-command-line-tools-in-d/, Command line tools in D)
+            $(LINK_ROW
+                $(FA_GITHUB eBay/tsv-utils)
+            )
+    )
+    $(DORG ecratum, http://www.ecratum.com, ecratum.png,
+            Supplier Management tool for SME,
+            Core applications (Public API, Support app) use D.
+            $(LINK_ROW
+                $(FA_HIRING www.ecratum.com/ecratum/jobs)
+            )
+    )
+    $(DORG Emsi, http://www.economicmodeling.com, emsi.png,
+        Data-driven modelling,
+        N-dimensional dataset processing$(COMMA)
+        in-memory data manipulation
+        $(LINK_ROW
+            $(FA_TALK dconf.org/2014/talks/crapuchettes.html, DConf talk) $(FA_SEPARATOR)
+            $(FA_GITHUB economicmodeling)
+        )
+    )
+    $(DORG Facebook, https://www.facebook.com, facebook.svg,
+        Online social networking service,
+        $(HTTPS github.com/facebookarchive/warp, C Preprocessor warp) and $(HTTP www.drdobbs.com/mobile/facebook-adopts-d-language/240162694, more infrastructure tools).
+        $(LINK_ROW
+            $(FA_TALK dconf.org/2014/talks/simpkins.html, DConf talk)
+        )
+    )
+    $(DORG Funatics, http://www.funatics.de, funatics.png,
+        MMO Game Developer,
+        $(FA_QUOTE
+            D, with its elegance, simplicity and performance,
+            turned out to be the perfect replacement for Node.js
+        )
+        $(LINK_ROW
+            $(FA_TALK dconf.org/2014/talks/dilly.html, DConf talk)
+        )
+    )
+    $(DORG Funkwerk AG, http://www.funkwerk.com/en/, funkwerk.png,
+        Passenger information systems,
+        $(FA_QUOTE
+            We use D to achieve perfect, well-readable code.
+        )
+        $(LINK_ROW
+            $(FA_TALK dconf.org/talks/rohe.html, DConf talk) $(FA_SEPARATOR)
+            $(FA_HIRING www.funkwerk.com/karriere/stellenangebote)
+        )
+    )
+    $(DORG Infognition, http://www.infognition.com, infognition.svg,
+        Video processing,
+        $(FA_QUOTE
+            D shines from low-level control to high-level abstractions.
+        )
+        $(LINK_ROW
+            $(FA_TESTIMONIAL) $(HTTP www.infognition.com/blog/2014/why_d.html, Testimonial)
+        )
+    )
+    $(DORG JumiaFood, https://food.jumia.com, jumiafood.png,
+        Instant delivery platform,
+        $(FA_QUOTE
+            D tremendously helps us to monitor our entire Kubernetes infrastructure.
+        )
+        $(LINK_ROW
+            $(FA_GITHUB JumiaFood)
+        )
+    )
+    $(DORG Magikcraft, http://www.magikcraft.io, magikcraft.jpg,
+        Interactive teaching platform,
+        $(FA_QUOTE
+            We use D language for microservices and other awesome things!
+        )
+        $(LINK_ROW
+            $(FA_GITHUB Magikcraft)
+        )
+    )
+    $(DORG Mercedes-Benz R&D NA, http://mbrdna.com, mbrdna.png,
+        Automotive Research,
+        $(FA_QUOTE D is used for software development tools.)
+        $(LINK_ROW
+             $(FA_HIRING mbrdna.com/careers/)
+        )
+    )
+    $(DORG Microline, http://www.microline.eu/?lang=en, microline.png,
+        Electrical appliances testing company,
+        $(FA_QUOTE
+            D is the preferred choice to develop web apps for our equipments!
+        )
+        $(LINK_ROW
+            $(FA_HIRING www.microline.eu/work-with-us/?lang=en)
+        )
+    )
+    $(DORG Netflix, https://www.netflix.com, netflix.jpg,
+        Entertainment company,
+        $(FA_QUOTE
+             A modern systems language with a very gentle learning curve.  multiple orders of magnitude of
+             performance gain ...  seasoned developers leverage an excellent templating engine, compile-time
+             functionalities and lower-level features.
+        )
+        $(LINK_ROW
+            $(FA_GITHUB netflix/vectorflow) $(FA_SEPARATOR)
+            $(FA_TESTIMONIAL) $(HTTPS medium.com/@NetflixTechBlog/introducing-vectorflow-fe10d7f126b8, Vectorflow)
+        )
+    )
+    $(DORG Putao, http://www.putao.com, putao.png,
+        Science and technology for kids,
+        Large scale use of D for distributed systems and cloud storage.
+        $(LINK_ROW
+            $(FA_GITHUB huntlabs) $(FA_SEPARATOR)
+            $(FA_HIRING job.oschina.net/position/792_118197_21895)
+        )
+    )
+    $(DORG Remedy Games, http://remedygames.com, remedy.png,
+        Triple-A game development,
+        First Triple-A game $(I $(HTTP quantumbreak.com, Quantum Break)) with D code.
+        $(LINK_ROW
+            $(FA_TALK dconf.org/2016/talks/watson.html, DConf talk).
+        )
+    )
+    $(DORG SARC, https://www.sarc.nl, sarc.svg,
+        Software and services for ship design$(COMMA) fairing and on-board loading calculations,
+        Translating ca. 500K LoC of ISO 10206 Extended Pascal to D.
+        $(LINK_ROW
+            $(FA_TALK www.youtube.com/watch?v=t5y9dVMdI7I, DConf talk) $(FA_SEPARATOR)
+            $(FA_TESTIMONIAL) $(HTTPS dlang.org/blog/2018/06/20/how-an-engineering-company-chose-to-migrate-to-d/, Testimonial)
+        )
+        $(LINK_ROW
+            $(FA_GITHUB veelo/Pascal2D)
+        )
+    )
+    $(DORG Symmetry Investments, http://symmetryinvestments.com/about-us/, symmetry.png,
+        Alternative Investment Management,
+        Analytics and investment tools.
+        $(LINK_ROW
+            $(FA_TALK www.youtube.com/watch?v=xJy6ifCekCE&index=34&list=PL3jwVPmk_PRxo23yyoc0Ip_cP3-rCm7eB, Excel-D) $(FA_SEPARATOR)
+            $(FA_GITHUB symmetryinvestments)
+        )
+        $(LINK_ROW
+            $(FA_TESTIMONIAL) $(HTTPS dlang.org/blog/symmetry-autumn-of-code, Testimonial)
+            $(FA_HIRING github.com/symmetryinvestments/overview/blob/master/hiring.md)
+        )
+    )
+    $(DORG Tamedia, https://www.tamedia.ch/en/group/dts, tamedia.png,
+        Largest Swiss media company,
+        $(FA_QUOTE
+            D is not only a highly productive language, but also a great hiring filter.
+        )
+        $(LINK_ROW
+            $(FA_GITHUB tamediadigital)
+        )
+    )
+    $(DORG ThatNeedle, http://thatneedle.com, thatneedle.png,
+        Natural Language Processing and information retrieval/search,
+        D is used for data processing, and rapid prototyping.
+    )
+    $(DORG Tripaneer.com, https://www.tripaneer.com, tripaneer.png,
+        Themed vacation websites,
+        $(FA_QUOTE
+            Very good ratio of performance to productivity.
+        )
+        $(LINK_ROW
+            $(FA_GITHUB ebookingservices) $(FA_SEPARATOR)
+            $(FA_HIRING www.tripaneer.com/news/work-with-us-software-developer-d-language-)
+        )
+    )
+    $(DORG ucora, https://www.ucora.com, ucora.svg,
+        Software development services,
+        $(FA_QUOTE
+            We have been using D for 6+ years to develop and sell our GamePlanPro platform.
+            Our company has been operating for 32 years and we are committed to using D as our preferred programming language.
+        )
+        $(LINK_ROW
+            $(HTTPS www.ucora.com, Website)
+        )
+    )
+    $(DORG Weka.IO, http://www.weka.io, weka.png,
+        Software defined storage,
+        Complete distributed storage solution (over 200K LoC).
+        $(LINK_ROW
+            $(FA_TALK dconf.org/2016/talks/zvibel.html, DConf talk) $(FA_SEPARATOR)
+            $(FA_HIRING www.weka.io)
+        )
+    )
+    $(DORG PELock, https://www.pelock.com/, pelock.png,
+        Software protection and licensing solution,
+        $(FA_QUOTE
+            The D programming language is a first-class citizen in our SDKs.
+        )
+        $(LINK_ROW
+            $(FA_GITHUB PELock/PELock-Software-Protection-and-Licensing-SDK)
+        )
+    )
+
+    $(COMMENT
+        Please see the header of this file for instructions on how to add
+        your organization.
+    )
+
+    $(COMMENT
+
+    More links or information is needed:
+
+    $(DORG SR Labs, http://www.srlabs.it, srlabs.png,
+        Eye tracking,
+    )
+
+    Permission pending:
+
+        $(DORG RandomStorm, https://www.randomstorm.com, randomstorm.png,
+            Network security products and services.
+        )
+
+    )
+
+)
+
+$(P
+    Is your organization missing from this page? Please
+    $(LINK2 https://issues.dlang.org/enter_bug.cgi?component=dlang.org&amp;short_desc=Add%20(insert%20your%20organization)%20to%20organizations%20using%20D, create an issue)
+    or $(LINK2 https://github.com/dlang/$(PROJECT)/edit/master/$(SRC_FILENAME), open a pull request).
+)
+)
+
+Macros:
+    TITLE=Organizations using the D Language
+    FA_HIRING=$(FA_ICON rocket) $(HTTP $1, Hiring)
+    FA_GITHUB=$(FA_ICON github) $(HTTPS github.com/$1, GitHub)
+    FA_TALK=$(FA_ICON youtube-play) $(HTTP $1, $2)
+    FA_SEPARATOR=&nbsp;
+    FA_TESTIMONIAL=$(FA_ICON heart)
+    FA_QUOTE=$(FA_ICON quote-left) $0 $(FA_ICON quote-right)
+    LINK_ROW=$(DIVC orgs-using-d-linkrow, $1)
+    DORGIMG=<a class="orgs-using-d-img-wrapper vcontainer-box" href="$1"><img class="vcontainer-element" src="$(ROOT_DIR)images/orgs-using-d/$2" /></a>
+    DORG=$(DIVC orgs-using-d-cell, $(DORGIMG $2, $3) <h3 class="dont-highlight-link">$(LINK2 $2, $1)</h3> $(P $(DIVC orgs-using-d-desc, $4 ) $(DIVC orgs-using-d-uses donthyphenate, $5)))
+
+    EXTRA_HEADERS=$(T style,
+        #content, #content h1 {
+            text-align: center;
+        }
+        .orgs-using-d-cell {
+            width: 280px;
+            display: inline-block;
+            vertical-align: top;
+            margin-bottom: 0.5em;
+            padding-left: 25px;
+            padding-right: 25px;
+            padding-bottom: 10px;
+        }
+        .orgs-using-d h3 {
+           margin: 0.4em;
+           margin-left: 0;
+           margin-right: 0;
+           text-align: center;
+        }
+        .orgs-using-d-img-wrapper {
+            width: 280px;
+            height: 100px;
+            padding-bottom: 10px;
+            text-align: center;
+        }
+        .orgs-using-d img {
+            max-width: 280px;
+            max-height: 100px;
+        }
+        .orgs-using-d-desc {
+            font-style: italic;
+            margin-left: -1px;
+            margin-right: -1px;
+        }
+        .orgs-using-d-uses {
+            padding-top: 10px;
+        }
+        .orgs-using-d-linkrow {
+            padding-top: 5px;
+        }
+    )
+    _=

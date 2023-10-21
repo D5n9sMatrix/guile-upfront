@@ -1,0 +1,1263 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Interfaces</title>
+    <style type="text/css" media="screen">
+      html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p,
+      blockquote, pre, a, abbr, address, cite, code, del, dfn, em, figure,
+      img, ins, kbd, q, s, samp, small, strong, sub, sup, var, b, u, i, dl,
+      dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption,
+      tbody, tfoot, thead, tr, th, td {
+        background: transparent none repeat scroll 0 0;
+        border: 0 none;
+        font-size: 100%;
+        margin: 0;
+        outline: 0 none;
+        padding: 0;
+        vertical-align: baseline;
+      }
+
+      h1 { font-size: 200%; }
+      h2 { font-size: 160%; }
+      h3 { font-size: 120%; }
+      h4 { font-size: 100%; }
+      h5 { font-size: 80%; }
+      h6 { font-size: 80%; font-weight: normal; }
+
+      ul, ol {
+        margin: 1.4em 0;
+      }
+      ul ul, ol ol, ul ol, ol ul {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      ul, ol {
+        margin-left: 2.8em;
+      }
+
+      ol {
+        list-style: decimal;
+      }
+      ol ol {
+        list-style: lower-alpha;
+      }
+      ol ol ol {
+        list-style: lower-roman;
+      }
+      ol ol ol ol {
+        list-style: decimal;
+      }
+
+      blockquote {
+        margin: 0.1em;
+        margin-left: 1em;
+        border-left: 2px solid #cccccc;
+        padding-left: 0.7em;
+      }
+
+      .color_red { color: #dc322f; }
+      .color_blue { color: #268bd2; }
+      .color_green { color: #859901; }
+      .color_yellow { color: #b58901; }
+      .color_black { color: black; }
+      .color_white { color: white; }
+
+      .font_big {
+        font-size: 1.2em;
+      }
+
+      .ddoc_section_h {
+        font-weight: bold;
+        font-size: 13px;
+        line-height: 19.5px;
+        margin-top: 11px;
+        display: block;
+      }
+
+      body.dlang .dlang {
+        display: inline-block;
+      }
+
+      body.dlang .declaration .dlang {
+          display: block;
+      }
+
+      body.dlang .ddoc_header_anchor a.dlang {
+        display: block;
+        color: rgba(0, 136, 204, 1);
+        text-decoration: none;
+      }
+
+      body.dlang .ddoc_header_anchor .code {
+        color: rgba(0, 136, 204, 1);
+      }
+
+      #ddoc_main .module {
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          overflow-x: hidden;
+          padding: 15px;
+      }
+
+      #ddoc_main .section .section {
+        margin-top: 0;
+      }
+
+      #ddoc_main .ddoc_module_members_section {
+          padding: 1px 0 0;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members section.intro {
+          background: #fff none repeat scroll 0 0;
+          list-style-type: none;
+          width: 100%;
+      }
+
+      #ddoc_main .ddoc_header_anchor {
+          font-size: 1.4em;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_header_anchor > .code {
+          display: inline-block;
+
+      }
+
+      #ddoc_main .ddoc_decl {
+        background-color: transparent;
+        height: 100%;
+        left: 0;
+        top: 0;
+        padding: 0;
+        padding-left: 15px;
+      }
+
+      #ddoc_main .ddoc_decl .section, #ddoc_main .section.ddoc_sections {
+        background: white none repeat scroll 0 0;
+        margin: 0;
+        padding: 5px;
+        position: relative;
+        border-radius: 5px;
+      }
+
+      #ddoc_main .ddoc_decl .section h4:first-of-type, #ddoc_main .section.ddoc_sections h4:first-of-type {
+        font-size: 13px;
+        line-height: 1.5;
+        margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration {
+          margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration .code {
+          color: rgba(0, 0, 0, 1);
+          margin-bottom: 15px;
+          padding-bottom: 6px;
+      }
+
+      #ddoc_main .declaration div .para {
+          margin-bottom: 0;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr td:first-of-type {
+        padding: 7px;
+        text-align: right;
+        vertical-align: top;
+        word-break: normal;
+        white-space: nowrap;
+      }
+
+      #ddoc_main .ddoc_params .graybox {
+        border: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox td {
+        border-color: rgba(214, 214, 214, 1);
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:first-child > td {
+        border-top: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:last-child > td {
+        border-bottom: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:first-child {
+        border-left: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:last-child {
+        border-right: 0 none;
+        width: 100%;
+      }
+
+      #ddoc_main em.term, #ddoc_main em.term .code {
+        color: rgba(65, 65, 65, 1);
+        font-size: 12px;
+        font-style: italic;
+        line-height: 1.5;
+      }
+
+      #ddoc_main .see-also {
+        cursor: pointer;
+        font-family: Menlo,monospace;
+      }
+
+      #ddoc_main .ddoc_decl .section > div:last-of-type {
+        margin-bottom: 15px;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members {
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .code_sample {
+        background: inherit;
+      }
+
+      #ddoc_main .declaration .code-line {
+          display: block;
+          font: 1em Menlo,monospace;
+      }
+
+      #ddoc_main a[name] {
+        margin: -112px 0 0;
+        padding-top: 112px;
+      }
+
+      #ddoc_main .ddoc_decl td {
+        max-width: inherit;
+      }
+
+      #ddoc_main .declaration a {
+        color: inherit;
+      }
+
+      #ddoc_main .declaration a:hover {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: underline;
+      }
+
+      body.ddoc {
+        background-color: transparent;
+        color: rgba(0, 0, 0, 1);
+        font-family: Helvetica,Arial,sans-serif;
+        font-size: 62.5%;
+        margin: 0;
+        border: 0;
+        left: 0;
+        top: 0;
+        padding: 0;
+      }
+
+      .ddoc a[name] {
+        display: block;
+        height: 0;
+        margin: -85px 0 0;
+        padding-top: 85px;
+        width: 0;
+      }
+
+      .ddoc .module {
+          border-color: transparent;
+          background-color: rgba(255, 255, 255, 1);
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-image: none;
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          box-shadow: 0 0 1px rgba(0, 0, 0, 0.07);
+          display: block;
+          margin-left: 0;
+          min-height: calc(100% - 173px);
+          overflow: auto;
+          padding-bottom: 100px;
+      }
+
+      .ddoc .content_wrapper {
+          background-color: rgba(242, 242, 242, 1);
+          margin: 0 auto;
+          max-width: 980px;
+      }
+
+      .ddoc .section {
+        padding: 15px 25px 30px;
+      }
+
+      .ddoc .section .section {
+        margin: 30px 0 0;
+        padding: 0;
+      }
+
+      .ddoc .para {
+        color: rgba(65, 65, 65, 1);
+        font-size: 1.4em;
+        line-height: 145%;
+        margin-bottom: 15px;
+      }
+
+      .ddoc .ddoc_examples .para {
+        margin-bottom: 0;
+      }
+
+      .ddoc .module_name {
+          color: rgba(0, 0, 0, 1);
+          display: block;
+          font-family: Helvetica;
+          font-size: 2.8em;
+          font-weight: 100;
+          margin-bottom: 0;
+          padding: 15px 0;
+      }
+
+      .ddoc .module a {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: none;
+      }
+
+      .ddoc .code {
+        color: rgba(128, 128, 128, 1);
+        font-family: Menlo,monospace;
+        font-size: 0.85em;
+        word-wrap: break-word;
+      }
+
+      .ddoc .code i {
+        font-style: normal;
+      }
+
+      .ddoc .code .code {
+        font-size: 1em;
+      }
+
+      .ddoc .code_sample {
+        background-clip: padding-box;
+        margin: 1px 0;
+        text-align: left;
+      }
+
+      .ddoc .code_sample {
+        display: block;
+        font-size: 1.4em;
+        margin-left: 21px;
+      }
+
+      .ddoc ol .code_sample {
+        font-size: 1em;
+      }
+
+      .ddoc .code_lines {
+        counter-reset: li;
+        line-height: 1.6em;
+        list-style: outside none none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .ddoc .code_listing .code_sample div {
+        margin-left: 13px;
+        width: 93%;
+      }
+
+      .ddoc .code_listing .code_sample div .code_lines li {
+        list-style-type: none;
+        margin: 0;
+        padding-right: 10px;
+      }
+
+      .ddoc .code_sample div .code_lines li::before {
+        margin-left: -33px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+10)::before {
+        margin-left: -39px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+100)::before {
+        margin-left: -46px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample .code_lines .code {
+        color: #000;
+      }
+
+      .ddoc div.dlang {
+        margin: 10px 0 21px;
+        padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+          margin: 10px 0 21px;
+          padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+        border-left: 5px solid rgba(0, 155, 51, 0.2);
+      }
+
+      .ddoc .code_lines li::before {
+        color: rgba(128, 128, 128, 1);
+        content: counter(li, decimal);
+        counter-increment: li;
+        font-family: Menlo,monospace;
+        font-size: 0.9em;
+        margin-right: 16px;
+      }
+
+      .ddoc .code_lines li {
+        padding-left: 0;
+        white-space: pre-wrap;
+      }
+
+      .ddoc .code_lines li:only-of-type::before {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:only-of-type {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:nth-child(n+10) {
+        text-indent: -17px;
+      }
+
+      .ddoc .code_lines li:nth-child(n+10)::before {
+        margin-right: 12px;
+      }
+
+      .ddoc .graybox {
+        border: 1px solid rgba(233, 233, 233, 1);
+        border-collapse: collapse;
+        border-spacing: 0;
+        empty-cells: hide;
+        margin: 20px 0 36px;
+        text-align: left;
+      }
+
+      .ddoc .graybox p {
+        margin: 0;
+        min-width: 50px;
+      }
+
+      .ddoc th {
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: bottom;
+      }
+
+      .ddoc td {
+        border: 1px solid rgba(233, 233, 233, 1);
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: middle;
+      }
+
+      .punctuation {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .comment {
+        color: rgba(0, 131, 18, 1);
+      }
+
+      .operator {
+        color: #000;
+      }
+
+      .keyword {
+        color: rgba(170, 13, 145, 1);
+      }
+
+      .keyword_type {
+        color: rgba(170, 51, 145, 1);
+      }
+
+      .string_literal {
+        color: rgba(196, 26, 22, 1);
+      }
+
+      .ddoc_psuper_symbol {
+        color: rgba(92, 38, 153, 1);
+      }
+
+      .param {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .psymbol {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .ddoc_member_header .ddoc_header_anchor .code {
+        font-size: 1em;
+      }
+    </style>
+  </head>
+  <body id="ddoc_main" class="ddoc dlang">
+    <div class="content_wrapper">
+      <article class="module">
+        <h1 class="module_name">Interfaces</h1>
+        <section id="module_content"><br><br>
+<br><br>
+
+<br><br>
+<p>The  keyword is for defining interfaces in class hierarchies.  is very similar to  with the following restrictions:
+</p>
+<br><br>
+<ul><br><br>
+<li>The member functions that it declares (but not implements) are abstract even without the  keyword.
+</li>
+<br><br>
+<li>The member functions that it implements must be  or . ( and  member functions are explained below.)
+</li>
+<br><br>
+<li>Its member variables must be .
+</li>
+<br><br>
+<li>Interfaces can inherit only interfaces.
+</li>
+<br><br>
+</ul>
+<br><br>
+<p>Despite these restrictions, there is no limit on the number of s that a class can inherit from. (In contrast, a class can inherit from up to one .)
+</p>
+<br><br>
+<h5>Definition</h5>
+<br><br>
+<p>Interfaces are defined by the  keyword, the same way as classes:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"> SoundEmitter {
+    <span class="comment">// ...
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>An  is for declaring member functions that are implicitly abstract:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">interface</span> SoundEmitter {
+    string emitSound();    <span class="comment">// Declared (not implemented)
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Classes that inherit from that interface would have to provide the implementations of the abstract functions of the interface.
+</p>
+<br><br>
+<p>Interface function declarations can have  and  contract blocks:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">interface</span> I {
+    <span class="keyword">int</span> func(<span class="keyword">int</span> i)
+     {
+        <span class="comment">/* Strictest requirements that the callers of this
+         * function must meet. (Derived interfaces and classes
+         * can loosen these requirements.) */</span>
+
+    }  {    <span class="comment">// (optionally with (result) parameter)
+</span>        <span class="comment">/* Exit guarantees that the implementations of this
+         * function must give. (Derived interfaces and classes
+         * can give additional guarantees.) */</span>
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>We will see examples of contract inheritance later in <a href="invariant.html">the Contract Programming for Structs and Classes chapter</a>.
+</p>
+<br><br>
+<h5>Inheriting from an </h5>
+<br><br>
+<p>The  inheritance syntax is the same as  inheritance:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">class</span> Violin :  {
+    string emitSound() {
+        <span class="keyword">return</span> <span class="string_literal">"♩♪♪"</span>;
+    }
+}
+
+<span class="keyword">class</span> Bell :  {
+    string emitSound() {
+        <span class="keyword">return</span> <span class="string_literal">"ding"</span>;
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Interfaces support polymorphism: Functions that take interface parameters can use those parameters without needing to know the actual types of objects. For example, the following function that takes a parameter of  calls  on that parameter without needing to know the actual type of the object:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> useSoundEmittingObject(SoundEmitter object) {
+    <span class="comment">// ... some operations ...
+</span>    writeln(object.emitSound());
+    <span class="comment">// ... more operations ...
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Just like with classes, that function can be called with any type of object that inherits from the  interface:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    useSoundEmittingObject(<span class="keyword">new</span> Violin);
+    useSoundEmittingObject(<span class="keyword">new</span> Bell);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The special  function for each object would get called and the outputs of  and  would be printed:
+</p>
+<br><br>
+
+<br><br>
+<h5>Inheriting from more than one </h5>
+<br><br>
+<p>A class can be inherited from up to one . There is no limit on the number of s to inherit from.
+</p>
+<br><br>
+<p>Let's consider the following interface that represents communication devices:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">interface</span> CommunicationDevice {
+    <span class="keyword">void</span> talk(string message);
+    string listen();
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>If a  class needs to be used both as a sound emitter and a communication device, it can inherit both of those interfaces:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">class</span> Phone :  {
+    <span class="comment">// ...
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>That definition represents both of these relationships: "phone is a sound emitter" and "phone is a communication device."
+</p>
+<br><br>
+<p>In order to construct objects of this class,  must implement the abstract functions of both of the interfaces:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">class</span> Phone : SoundEmitter, CommunicationDevice {
+    string emitSound() {           <span class="comment">// for SoundEmitter
+</span>        <span class="keyword">return</span> <span class="string_literal">"rrring"</span>;
+    }
+
+    <span class="keyword">void</span> talk(string message) {    <span class="comment">// for CommunicationDevice
+</span>        <span class="comment">// ... put the message on the line ...
+</span>    }
+
+    string listen() {              <span class="comment">// for CommunicationDevice
+</span>        string soundOnTheLine;
+        <span class="comment">// ... get the message from the line ...
+</span>        <span class="keyword">return</span> soundOnTheLine;
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>A class can inherit from any number of interfaces as it makes sense according to the design of the program.
+</p>
+<br><br>
+<h5>Inheriting from  and </h5>
+<br><br>
+<p>Classes can still inherit from up to one  as well:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"> Clock {
+    <span class="comment">// ... clock implementation ...
+</span>}
+
+<span class="keyword">class</span> AlarmClock : , SoundEmitter {
+    string emitSound() {
+        <span class="keyword">return</span> <span class="string_literal">"beep"</span>;
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p> inherits the members of . Additionally, it also provides the  function that the  interface requires.
+</p>
+<br><br>
+<h5>Inheriting  from </h5>
+<br><br>
+<p>An interface that is inherited from another interface effectively increases the number of functions that the subclasses must implement:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">interface</span> MusicalInstrument : SoundEmitter {
+    <span class="keyword">void</span> adjustTuning();
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>According to the definition above, in order to be a , both the  function that  requires and the  function that  requires must be implemented.
+</p>
+<br><br>
+<p>For example, if  inherits from  instead of , it must now also implement :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">class</span> Violin : MusicalInstrument {
+    string emitSound() {     <span class="comment">// for SoundEmitter
+</span>        <span class="keyword">return</span> <span class="string_literal">"♩♪♪"</span>;
+    }
+
+    <span class="keyword">void</span> adjustTuning() {    <span class="comment">// for MusicalInstrument
+</span>        <span class="comment">// ... special tuning of the violin ...
+</span>    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h5>  member functions</h5>
+<br><br>
+<p>I have delayed explaining  member functions until this chapter to keep the earlier chapters shorter.  member functions are available for structs, classes, and interfaces.
+</p>
+<br><br>
+<p>Regular member functions are always called on an object. The member variables that are referenced inside the member function are the members of a particular object:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">struct</span> Foo {
+    <span class="keyword">int</span> i;
+
+    <span class="keyword">void</span> modify(<span class="keyword">int</span> value) {
+         = value;
+    }
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">auto</span> object0 = Foo();
+    <span class="keyword">auto</span> object1 = Foo();
+
+    object0.modify(10);    <span class="comment">// object0.i changes
+</span>    object1.modify(10);    <span class="comment">// object1.i changes
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The members can also be referenced by :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">void</span> modify(<span class="keyword">int</span> value) {
+        <span class="keyword">this</span>.i = value;    <span class="comment">// equivalent of the previous one
+</span>    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>A  member function does not operate on an object; there is no object that the  keyword would refer to, so  is not valid inside a  function. For that reason, none of the regular member variables are available inside  member functions:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">struct</span> Foo {
+    <span class="keyword">int</span> i;
+
+     <span class="keyword">void</span> commonFunction(<span class="keyword">int</span> value) {
+        i = value;         
+        <span class="keyword">this</span>.i = value;    
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p> member functions can use only the  member variables.
+</p>
+<br><br>
+<p>Let's redesign the  struct that we have seen earlier in <a href="struct.html">the Structs chapter</a>, this time with a  member function. In the following code, every  object gets a unique id, which is determined by a  member function:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">struct</span> Point {
+    size_t id;    <span class="comment">// Object id
+</span>    <span class="keyword">int</span> line;
+    <span class="keyword">int</span> column;
+
+    <span class="comment">// The id to be used for the next object
+</span>     size_t nextId;
+
+    <span class="keyword">this</span>(<span class="keyword">int</span> line, <span class="keyword">int</span> column) {
+        <span class="keyword">this</span>.line = line;
+        <span class="keyword">this</span>.column = column;
+        <span class="keyword">this</span>.id = makeNewId();
+    }
+
+     size_t makeNewId() {
+        <span class="keyword">immutable</span> newId = nextId;
+        ++nextId;
+        <span class="keyword">return</span> newId;
+    }
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">auto</span> top = Point(7, 0);
+    <span class="keyword">auto</span> middle = Point(8, 0);
+    <span class="keyword">auto</span> bottom =  Point(9, 0);
+
+    writeln(top.id);
+    writeln(middle.id);
+    writeln(bottom.id);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The   function can use the common variable . As a result, every object gets a unique id:
+</p>
+<br><br>
+
+<br><br>
+<p>Although the example above contains a ,  member functions are available for classes and interfaces as well.
+</p>
+<br><br>
+<h5>  member functions</h5>
+<br><br>
+<p>I have delayed explaining  member functions until this chapter to keep the earlier chapters shorter.  member functions are relevant only for classes and interfaces because structs do not support inheritance.
+</p>
+<br><br>
+<p> specifies that a member function cannot be redefined by a subclass. In a sense, the implementation that this  or  provides is the <i>final</i> implementation of that function. An example of a case where this feature is useful is where the general steps of an algorithm are defined by an interface and the finer details are left to subclasses.
+</p>
+<br><br>
+<p>Let's see an example of this with a  interface. The general steps of playing a game is being determined by the  function of the following :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">interface</span> Game {
+     <span class="keyword">void</span> play() {
+        string name = gameName();
+        writefln(<span class="string_literal">"Starting %s"</span>, name);
+
+        introducePlayers();
+        prepare();
+        begin();
+        end();
+
+        writefln(<span class="string_literal">"Ending %s"</span>, name);
+    }
+
+    string gameName();
+    <span class="keyword">void</span> introducePlayers();
+    <span class="keyword">void</span> prepare();
+    <span class="keyword">void</span> begin();
+    <span class="keyword">void</span> end();
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>It is not possible for subclasses to modify the definition of the  member function. The subclasses can (and must) provide the definitions of the five abstract member functions that are declared by the interface. By doing so, the subclasses complete the missing steps of the algorithm:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+<span class="keyword">import</span> std.string;
+<span class="keyword">import</span> std.random;
+<span class="keyword">import</span> std.conv;
+
+<span class="keyword">class</span> DiceSummingGame : Game {
+    string player;
+    size_t count;
+    size_t sum;
+
+    string gameName() {
+        <span class="keyword">return</span> <span class="string_literal">"Dice Summing Game"</span>;
+    }
+
+    <span class="keyword">void</span> introducePlayers() {
+        write(<span class="string_literal">"What is your name? "</span>);
+        player = strip(readln());
+    }
+
+    <span class="keyword">void</span> prepare() {
+        write(<span class="string_literal">"How many times to throw the dice? "</span>);
+        readf(<span class="string_literal">" %s"</span>, &amp;count);
+        sum = 0;
+    }
+
+    <span class="keyword">void</span> begin() {
+        <span class="keyword">foreach</span> (i; 0 .. count) {
+            <span class="keyword">immutable</span> dice = uniform(1, 7);
+            writefln(<span class="string_literal">"%s: %s"</span>, i, dice);
+            sum += dice;
+        }
+    }
+
+    <span class="keyword">void</span> end() {
+        writefln(<span class="string_literal">"Player: %s, Dice sum: %s, Average: %s"</span>,
+                 player, sum, to!<span class="keyword">double</span>(sum) / count);
+    }
+}
+
+<span class="keyword">void</span> useGame(Game game) {
+    game.play();
+}
+
+<span class="keyword">void</span> main() {
+    useGame(<span class="keyword">new</span> DiceSummingGame());
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Although the example above contains an ,  member functions are available for classes as well.
+</p>
+<br><br>
+<h5>How to use</h5>
+<br><br>
+<p> is a commonly used feature. There is one or more  at the top of almost every class hierarchy. A kind of hierarchy that is commonly encountered in programs involves a single  and a number of classes that implement that interface:
+</p>
+<br><br>
+
+<br><br>
+<p>Although there are more complicated hierarchies in practice, the simple hierarchy above solves many problems.
+</p>
+<br><br>
+<p>It is also common to move common implementation details of class hierarchies to intermediate classes. The subclasses inherit from these intermediate classes. The  and  classes below can contain the common members of their respective subclasses:
+</p>
+<br><br>
+
+<br><br>
+<p>The subclasses would implement their respective special definitions of member functions.
+</p>
+<br><br>
+<h5> Abstraction</h5>
+<br><br>
+<p>Interfaces help make parts of programs independent from each other. This is called <i>abstraction</i>. For example, a program that deals with musical instruments can be written primarily by using the  interface, without ever specifying the actual types of the musical instruments.
+</p>
+<br><br>
+<p>A  class can contain a  without ever knowing the actual type of the instrument:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">class</span> Musician {
+    MusicalInstrument instrument;
+    <span class="comment">// ...
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Different types of musical instruments can be combined in a collection without regard to the actual types of these instruments:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    MusicalInstrument[] orchestraInstruments;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Most of the functions of the program can be written only by using this interface:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">bool</span> needsTuning(MusicalInstrument instrument) {
+    <span class="keyword">bool</span> result;
+    <span class="comment">// ...
+</span>    <span class="keyword">return</span> result;
+}
+
+<span class="keyword">void</span> playInTune(MusicalInstrument instrument) {
+    <span class="keyword">if</span> (needsTuning(instrument)) {
+        instrument.adjustTuning();
+    }
+
+    writeln(instrument.emitSound());
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p><i>Abstracting away</i> parts of a program from each other allows making changes in one part of the program without needing to modify the other parts. When implementations of certain parts of the program are <i>behind</i> a particular interface, the code that uses only that interface does not get affected.
+</p>
+<br><br>
+<h5>Example</h5>
+<br><br>
+<p>The following program defines the , , and  interfaces:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="comment">/* This interface requires emitSound(). */</span>
+<span class="keyword">interface</span> SoundEmitter {
+    string emitSound();
+}
+
+<span class="comment">/* This class needs to implement only emitSound(). */</span>
+<span class="keyword">class</span> Bell : SoundEmitter {
+    string emitSound() {
+        <span class="keyword">return</span> <span class="string_literal">"ding"</span>;
+    }
+}
+
+<span class="comment">/* This interface additionally requires adjustTuning(). */</span>
+<span class="keyword">interface</span> MusicalInstrument : SoundEmitter {
+    <span class="keyword">void</span> adjustTuning();
+}
+
+<span class="comment">/* This class needs to implement both emitSound() and
+ * adjustTuning(). */</span>
+<span class="keyword">class</span> Violin : MusicalInstrument {
+    string emitSound() {
+        <span class="keyword">return</span> <span class="string_literal">"♩♪♪"</span>;
+    }
+
+    <span class="keyword">void</span> adjustTuning() {
+        <span class="comment">// ... tuning of the violin ...
+</span>    }
+}
+
+<span class="comment">/* This interface requires talk() and listen(). */</span>
+<span class="keyword">interface</span> CommunicationDevice {
+    <span class="keyword">void</span> talk(string message);
+    string listen();
+}
+
+<span class="comment">/* This class needs to implement emitSound(), talk(), and
+ * listen(). */</span>
+<span class="keyword">class</span> Phone : SoundEmitter, CommunicationDevice {
+    string emitSound() {
+        <span class="keyword">return</span> <span class="string_literal">"rrring"</span>;
+    }
+
+    <span class="keyword">void</span> talk(string message) {
+        <span class="comment">// ... put the message on the line ...
+</span>    }
+
+    string listen() {
+        string soundOnTheLine;
+        <span class="comment">// ... get the message from the line ...
+</span>        <span class="keyword">return</span> soundOnTheLine;
+    }
+}
+
+<span class="keyword">class</span> Clock {
+    <span class="comment">// ... the implementation of Clock ...
+</span>}
+
+<span class="comment">/* This class needs to implement only emitSound(). */</span>
+<span class="keyword">class</span> AlarmClock : Clock, SoundEmitter {
+    string emitSound() {
+        <span class="keyword">return</span> <span class="string_literal">"beep"</span>;
+    }
+
+    <span class="comment">// ... the implementation of AlarmClock ...
+</span>}
+
+<span class="keyword">void</span> main() {
+    SoundEmitter[] devices;
+
+    devices ~= <span class="keyword">new</span> Bell;
+    devices ~= <span class="keyword">new</span> Violin;
+    devices ~= <span class="keyword">new</span> Phone;
+    devices ~= <span class="keyword">new</span> AlarmClock;
+
+    <span class="keyword">foreach</span> (device; devices) {
+        writeln(device.emitSound());
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Because  is a  slice, it can contain objects of any type that inherits from  (i.e. types that have an "is a" relationship with ). As a result, the output of the program consists of different sounds that are emitted by the different types of objects:
+</p>
+<br><br>
+
+<br><br>
+<h5>Summary</h5>
+<br><br>
+<ul><br><br>
+<li> is similar to a  that consists only of abstract functions.  can have  member variables and  or  member functions.
+</li>
+<br><br>
+<li>For a class to be constructible, it must have implementations for all member functions of all interfaces that it inherits from.
+</li>
+<br><br>
+<li>It is possible to inherit from unlimited number of s.
+</li>
+<br><br>
+<li>A common hierarchy consists of a single  and a number of subclasses that implement that interface.
+</li>
+<br><br>
+</ul>
+
+</section>
+      </article>
+    </div>
+  </body>
+</html>

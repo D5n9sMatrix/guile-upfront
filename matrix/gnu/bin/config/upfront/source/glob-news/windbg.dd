@@ -1,0 +1,59 @@
+Ddoc
+
+The D reference compiler DMD and the LLVM-based LDC compiler can both output symbolic
+debug information that can be used by most Windows debuggers. With the exception of
+generating OMF object files when using -m32 with dmd, the linker will generate a PDB file
+containing the debug information of the executable.
+
+$(P To prepare a program for symbolic debugging, compile
+with the $(B -gf) switch:
+)
+
+$(CONSOLE
+dmd -gf -m64 myprogram.d
+)
+
+$(P How to start debugging the program depends on debugger being used. For example debugging with Visual Studio
+can be invoked by opening the "Developer Command Prompt for VS" and executing:
+)
+
+$(CONSOLE
+devenv myprogram.exe
+)
+
+$(P If you want to pass arguments to the debuggee you have to use the /debugexe switch:
+)
+
+$(CONSOLE
+devenv /debugexe myprogram.exe args...
+)
+
+$(P where $(D args...) are the command line arguments to myprogram.exe.
+)
+
+$(P When the debugger comes up, load myprogram.d and set a breakpoint at the beginning of your $(D main()) function.
+Running the program will stop at your breakpoint in $(D main()).
+The debugger should then allow you to step through the program, show local variables and watch expressions.
+)
+
+$(P If you have $(LINK2 $(VISUALD), Visual D) installed as an extension to Visual Studio, the debugger understands D expressions
+in watch expressions and is able to inspect D-specific language constructs like dynamic and associative arrays.
+This functionality might also be available in other debuggers if they support it through
+$(LINK2 https://github.com/rainers/mago/tree/master/MagoMI/mago-mi, mago-mi).
+)
+
+$(P Debuggers without these extensions will interpret your code as C/C++. Most debug information maps naturally
+to C data structures, but the respective syntax has to be used, e.g. `->` must be used instead of `.` to display
+a class member in a watch expression.
+)
+
+$(P When compiling the program with dmd without specifying an architecture (i.e. using the default -m32), the
+Digital Mars linker optlink.exe is used to produce the executable. The debug information format used is an
+ancient version of CodeView that is only partially supported by more recent debuggers. You can use
+$(LINK2 https://github.com/rainers/cv2pdb, cv2pdb)
+to convert the debug information to the ubiquitous PDB format.
+)
+
+Macros:
+    TITLE=Debugging D on Windows
+    _=

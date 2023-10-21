@@ -1,0 +1,1286 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Functions</title>
+    <style type="text/css" media="screen">
+      html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p,
+      blockquote, pre, a, abbr, address, cite, code, del, dfn, em, figure,
+      img, ins, kbd, q, s, samp, small, strong, sub, sup, var, b, u, i, dl,
+      dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption,
+      tbody, tfoot, thead, tr, th, td {
+        background: transparent none repeat scroll 0 0;
+        border: 0 none;
+        font-size: 100%;
+        margin: 0;
+        outline: 0 none;
+        padding: 0;
+        vertical-align: baseline;
+      }
+
+      h1 { font-size: 200%; }
+      h2 { font-size: 160%; }
+      h3 { font-size: 120%; }
+      h4 { font-size: 100%; }
+      h5 { font-size: 80%; }
+      h6 { font-size: 80%; font-weight: normal; }
+
+      ul, ol {
+        margin: 1.4em 0;
+      }
+      ul ul, ol ol, ul ol, ol ul {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      ul, ol {
+        margin-left: 2.8em;
+      }
+
+      ol {
+        list-style: decimal;
+      }
+      ol ol {
+        list-style: lower-alpha;
+      }
+      ol ol ol {
+        list-style: lower-roman;
+      }
+      ol ol ol ol {
+        list-style: decimal;
+      }
+
+      blockquote {
+        margin: 0.1em;
+        margin-left: 1em;
+        border-left: 2px solid #cccccc;
+        padding-left: 0.7em;
+      }
+
+      .color_red { color: #dc322f; }
+      .color_blue { color: #268bd2; }
+      .color_green { color: #859901; }
+      .color_yellow { color: #b58901; }
+      .color_black { color: black; }
+      .color_white { color: white; }
+
+      .font_big {
+        font-size: 1.2em;
+      }
+
+      .ddoc_section_h {
+        font-weight: bold;
+        font-size: 13px;
+        line-height: 19.5px;
+        margin-top: 11px;
+        display: block;
+      }
+
+      body.dlang .dlang {
+        display: inline-block;
+      }
+
+      body.dlang .declaration .dlang {
+          display: block;
+      }
+
+      body.dlang .ddoc_header_anchor a.dlang {
+        display: block;
+        color: rgba(0, 136, 204, 1);
+        text-decoration: none;
+      }
+
+      body.dlang .ddoc_header_anchor .code {
+        color: rgba(0, 136, 204, 1);
+      }
+
+      #ddoc_main .module {
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          overflow-x: hidden;
+          padding: 15px;
+      }
+
+      #ddoc_main .section .section {
+        margin-top: 0;
+      }
+
+      #ddoc_main .ddoc_module_members_section {
+          padding: 1px 0 0;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members section.intro {
+          background: #fff none repeat scroll 0 0;
+          list-style-type: none;
+          width: 100%;
+      }
+
+      #ddoc_main .ddoc_header_anchor {
+          font-size: 1.4em;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_header_anchor > .code {
+          display: inline-block;
+
+      }
+
+      #ddoc_main .ddoc_decl {
+        background-color: transparent;
+        height: 100%;
+        left: 0;
+        top: 0;
+        padding: 0;
+        padding-left: 15px;
+      }
+
+      #ddoc_main .ddoc_decl .section, #ddoc_main .section.ddoc_sections {
+        background: white none repeat scroll 0 0;
+        margin: 0;
+        padding: 5px;
+        position: relative;
+        border-radius: 5px;
+      }
+
+      #ddoc_main .ddoc_decl .section h4:first-of-type, #ddoc_main .section.ddoc_sections h4:first-of-type {
+        font-size: 13px;
+        line-height: 1.5;
+        margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration {
+          margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration .code {
+          color: rgba(0, 0, 0, 1);
+          margin-bottom: 15px;
+          padding-bottom: 6px;
+      }
+
+      #ddoc_main .declaration div .para {
+          margin-bottom: 0;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr td:first-of-type {
+        padding: 7px;
+        text-align: right;
+        vertical-align: top;
+        word-break: normal;
+        white-space: nowrap;
+      }
+
+      #ddoc_main .ddoc_params .graybox {
+        border: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox td {
+        border-color: rgba(214, 214, 214, 1);
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:first-child > td {
+        border-top: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:last-child > td {
+        border-bottom: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:first-child {
+        border-left: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:last-child {
+        border-right: 0 none;
+        width: 100%;
+      }
+
+      #ddoc_main em.term, #ddoc_main em.term .code {
+        color: rgba(65, 65, 65, 1);
+        font-size: 12px;
+        font-style: italic;
+        line-height: 1.5;
+      }
+
+      #ddoc_main .see-also {
+        cursor: pointer;
+        font-family: Menlo,monospace;
+      }
+
+      #ddoc_main .ddoc_decl .section > div:last-of-type {
+        margin-bottom: 15px;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members {
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .code_sample {
+        background: inherit;
+      }
+
+      #ddoc_main .declaration .code-line {
+          display: block;
+          font: 1em Menlo,monospace;
+      }
+
+      #ddoc_main a[name] {
+        margin: -112px 0 0;
+        padding-top: 112px;
+      }
+
+      #ddoc_main .ddoc_decl td {
+        max-width: inherit;
+      }
+
+      #ddoc_main .declaration a {
+        color: inherit;
+      }
+
+      #ddoc_main .declaration a:hover {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: underline;
+      }
+
+      body.ddoc {
+        background-color: transparent;
+        color: rgba(0, 0, 0, 1);
+        font-family: Helvetica,Arial,sans-serif;
+        font-size: 62.5%;
+        margin: 0;
+        border: 0;
+        left: 0;
+        top: 0;
+        padding: 0;
+      }
+
+      .ddoc a[name] {
+        display: block;
+        height: 0;
+        margin: -85px 0 0;
+        padding-top: 85px;
+        width: 0;
+      }
+
+      .ddoc .module {
+          border-color: transparent;
+          background-color: rgba(255, 255, 255, 1);
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-image: none;
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          box-shadow: 0 0 1px rgba(0, 0, 0, 0.07);
+          display: block;
+          margin-left: 0;
+          min-height: calc(100% - 173px);
+          overflow: auto;
+          padding-bottom: 100px;
+      }
+
+      .ddoc .content_wrapper {
+          background-color: rgba(242, 242, 242, 1);
+          margin: 0 auto;
+          max-width: 980px;
+      }
+
+      .ddoc .section {
+        padding: 15px 25px 30px;
+      }
+
+      .ddoc .section .section {
+        margin: 30px 0 0;
+        padding: 0;
+      }
+
+      .ddoc .para {
+        color: rgba(65, 65, 65, 1);
+        font-size: 1.4em;
+        line-height: 145%;
+        margin-bottom: 15px;
+      }
+
+      .ddoc .ddoc_examples .para {
+        margin-bottom: 0;
+      }
+
+      .ddoc .module_name {
+          color: rgba(0, 0, 0, 1);
+          display: block;
+          font-family: Helvetica;
+          font-size: 2.8em;
+          font-weight: 100;
+          margin-bottom: 0;
+          padding: 15px 0;
+      }
+
+      .ddoc .module a {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: none;
+      }
+
+      .ddoc .code {
+        color: rgba(128, 128, 128, 1);
+        font-family: Menlo,monospace;
+        font-size: 0.85em;
+        word-wrap: break-word;
+      }
+
+      .ddoc .code i {
+        font-style: normal;
+      }
+
+      .ddoc .code .code {
+        font-size: 1em;
+      }
+
+      .ddoc .code_sample {
+        background-clip: padding-box;
+        margin: 1px 0;
+        text-align: left;
+      }
+
+      .ddoc .code_sample {
+        display: block;
+        font-size: 1.4em;
+        margin-left: 21px;
+      }
+
+      .ddoc ol .code_sample {
+        font-size: 1em;
+      }
+
+      .ddoc .code_lines {
+        counter-reset: li;
+        line-height: 1.6em;
+        list-style: outside none none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .ddoc .code_listing .code_sample div {
+        margin-left: 13px;
+        width: 93%;
+      }
+
+      .ddoc .code_listing .code_sample div .code_lines li {
+        list-style-type: none;
+        margin: 0;
+        padding-right: 10px;
+      }
+
+      .ddoc .code_sample div .code_lines li::before {
+        margin-left: -33px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+10)::before {
+        margin-left: -39px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+100)::before {
+        margin-left: -46px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample .code_lines .code {
+        color: #000;
+      }
+
+      .ddoc div.dlang {
+        margin: 10px 0 21px;
+        padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+          margin: 10px 0 21px;
+          padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+        border-left: 5px solid rgba(0, 155, 51, 0.2);
+      }
+
+      .ddoc .code_lines li::before {
+        color: rgba(128, 128, 128, 1);
+        content: counter(li, decimal);
+        counter-increment: li;
+        font-family: Menlo,monospace;
+        font-size: 0.9em;
+        margin-right: 16px;
+      }
+
+      .ddoc .code_lines li {
+        padding-left: 0;
+        white-space: pre-wrap;
+      }
+
+      .ddoc .code_lines li:only-of-type::before {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:only-of-type {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:nth-child(n+10) {
+        text-indent: -17px;
+      }
+
+      .ddoc .code_lines li:nth-child(n+10)::before {
+        margin-right: 12px;
+      }
+
+      .ddoc .graybox {
+        border: 1px solid rgba(233, 233, 233, 1);
+        border-collapse: collapse;
+        border-spacing: 0;
+        empty-cells: hide;
+        margin: 20px 0 36px;
+        text-align: left;
+      }
+
+      .ddoc .graybox p {
+        margin: 0;
+        min-width: 50px;
+      }
+
+      .ddoc th {
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: bottom;
+      }
+
+      .ddoc td {
+        border: 1px solid rgba(233, 233, 233, 1);
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: middle;
+      }
+
+      .punctuation {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .comment {
+        color: rgba(0, 131, 18, 1);
+      }
+
+      .operator {
+        color: #000;
+      }
+
+      .keyword {
+        color: rgba(170, 13, 145, 1);
+      }
+
+      .keyword_type {
+        color: rgba(170, 51, 145, 1);
+      }
+
+      .string_literal {
+        color: rgba(196, 26, 22, 1);
+      }
+
+      .ddoc_psuper_symbol {
+        color: rgba(92, 38, 153, 1);
+      }
+
+      .param {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .psymbol {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .ddoc_member_header .ddoc_header_anchor .code {
+        font-size: 1em;
+      }
+    </style>
+  </head>
+  <body id="ddoc_main" class="ddoc dlang">
+    <div class="content_wrapper">
+      <article class="module">
+        <h1 class="module_name">Functions</h1>
+        <section id="module_content"><br><br>
+<br><br>
+
+<br><br>
+<p>Similarly to how fundamental types are building blocks of program data, functions are building blocks of program behavior.
+</p>
+<br><br>
+<p>Functions are also closely related to the craft aspect of programming. The functions that are written by experienced programmers are succinct, simple, and clear. This goes both ways: The mere act of trying to identify and write smaller building blocks of a program makes for a better programmer.
+</p>
+<br><br>
+<p>We have covered basic statements and expressions in previous chapters. Although there will be many more that we will see in later chapters, what we have seen so far are commonly-used features of D. Still, they are not sufficient on their own to write large programs. The programs that we have written so far have all been very short, each demonstrating just a simple feature of the language. Trying to write a program with any level of complexity without functions would be very difficult and prone to bugs.
+</p>
+<br><br>
+<p>This chapter covers only the basic features of functions. We will see more about functions later in the following chapters:
+</p>
+<br><br>
+<ul><li><a href="function_parameters.html">Function Parameters</a></li>
+<li><a href="function_overloading.html">Function Overloading</a></li>
+<li><a href="lambda.html">Function Pointers, Delegates, and Lambdas</a></li>
+<li><a href="functions_more.html">More Functions</a></li>
+</ul>
+<br><br>
+<p>Functions are features that put statements and expressions together as units of program execution. Such statements and expressions altogether are given a name that describes what they collectively achieve. They can then be <i>called</i> (or <i>executed</i>) by using that name.
+</p>
+<br><br>
+<p>The concept of <i>giving names to a group of steps</i> is common in our daily lives. For example, the act of cooking an omelet can be described in some level of detail by the following steps:
+</p>
+<br><br>
+<ul><li>get a pan</li>
+<li>get butter</li>
+<li>get an egg</li>
+<li>turn on the stove</li>
+<li>put the pan on the fire</li>
+<li>put butter into the pan when it is hot</li>
+<li>put the egg into butter when it is melted</li>
+<li>remove the pan from the fire when the egg is cooked</li>
+<li>turn off the stove</li>
+</ul>
+<br><br>
+<p>Since that much detail is obviously excessive, steps that are related together would be combined under a single name:
+</p>
+<br><br>
+<ul><li> (get the pan, butter, and the egg)</li>
+<li>turn on the stove</li>
+<li> (put the pan on the fire, etc.)</li>
+<li>turn off the stove</li>
+</ul>
+<br><br>
+<p>Going further, there can be a single name for all of the steps:
+</p>
+<br><br>
+<ul><li> (all of the steps)</li>
+</ul>
+<br><br>
+<p>Functions are based on the same concept: steps that can collectively be named as a whole are put together to form a function. As an example, let's start with the following lines of code that achieve the task of printing a menu:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    writeln(<span class="string_literal">" 0 Exit"</span>);
+    writeln(<span class="string_literal">" 1 Add"</span>);
+    writeln(<span class="string_literal">" 2 Subtract"</span>);
+    writeln(<span class="string_literal">" 3 Multiply"</span>);
+    writeln(<span class="string_literal">" 4 Divide"</span>);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Since it would make sense to name those combined lines as , they can be put together to form a function by using the following syntax:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> printMenu() {
+    writeln(<span class="string_literal">" 0 Exit"</span>);
+    writeln(<span class="string_literal">" 1 Add"</span>);
+    writeln(<span class="string_literal">" 2 Subtract"</span>);
+    writeln(<span class="string_literal">" 3 Multiply"</span>);
+    writeln(<span class="string_literal">" 4 Divide"</span>);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The contents of that function can now be executed from within  simply by using its name:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> main() {
+    printMenu();
+
+    <span class="comment">// ...
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>It may be obvious from the similarities of the definitions of  and  that  is a function as well. The execution of a D program starts with the function named  and branches out to other functions from there.
+</p>
+<br><br>
+<h5> Parameters</h5>
+<br><br>
+<p>Some of the powers of functions come from the fact that their behaviors are adjustable through parameters.
+</p>
+<br><br>
+<p>Let's continue with the omelet example by modifying it to make an omelet of five eggs instead of always one. The steps would exactly be the same, the only difference being the number of eggs to use. We can change the more general description above accordingly:
+</p>
+<br><br>
+<ul><li>make preparations (get the pan, butter, and )</li>
+<li>turn on the stove</li>
+<li>cook  (put the pan on the fire, etc.)</li>
+<li>turn off the stove</li>
+</ul>
+<br><br>
+<p>Likewise, the most general single step would become the following:
+</p>
+<br><br>
+<ul><li>make a  omelet (all of the steps)</li>
+</ul>
+<br><br>
+<p>This time there is an additional information that concerns some of the steps: "get five eggs", "cook the eggs", and "make a five-egg omelet".
+</p>
+<br><br>
+<p> The behaviors of functions can be adjusted similarly to the omelet example. The information that functions use to adjust their behavior are called <i>parameters</i>. Parameters are specified in a comma separated <i>function parameter list</i>. The parameter list rests inside of the parentheses that comes after the name of the function.
+</p>
+<br><br>
+<p>The  function above was defined with an empty parameter list because that function always printed the same menu. Let's assume that sometimes the menu will need to be printed differently in different contexts. For example, it may make more sense to print the first entry as "Return" instead of "Exit" depending on the part of the program that is being executed at that time.
+</p>
+<br><br>
+<p>In such a case, the first entry of the menu can be <i>parameterized</i> by having been defined in the parameter list. The function then uses the value of that parameter instead of the literal :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> printMenu() {
+    writeln(<span class="string_literal">" 0 "</span>, firstEntry);
+    writeln(<span class="string_literal">" 1 Add"</span>);
+    writeln(<span class="string_literal">" 2 Subtract"</span>);
+    writeln(<span class="string_literal">" 3 Multiply"</span>);
+    writeln(<span class="string_literal">" 4 Divide"</span>);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Notice that since the information that the  parameter conveys is a piece of text, its type has been specified as  in the parameter list. This function can now be <i>called</i> with different parameter values to print menus having different first entries. All that needs to be done is to use the appropriate  values depending on where the function is being called from:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="comment">// At some place in the program:
+</span>    printMenu(<span class="string_literal">"Exit"</span>);
+    <span class="comment">// ...
+</span>    <span class="comment">// At some other place in the program:
+</span>    printMenu(<span class="string_literal">"Return"</span>);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p><b>Note:</b> When you write and use your own functions with parameters of type  you may encounter compilation errors. As written,  above cannot be called with parameter values of type . For example, the following code would cause a compilation error:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">char</span>[] anEntry;
+    anEntry ~= <span class="string_literal">"Take square root"</span>;
+    printMenu(anEntry);  
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>On the other hand, if  were defined to take its parameter as , then it could not be called with s like . This is related to the concept of immutability and the  keyword, both of which will be covered in the next chapter.
+</p>
+<br><br>
+<p>Let's continue with the menu function and assume that it is not appropriate to always start the menu selection numbers with zero. In that case the starting number can also be passed to the function as its second parameter. The parameters of the function must be separated by commas:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> printMenu(string firstEntry) {
+    writeln(' ', firstNumber + 0, ' ', firstEntry);
+    writeln(' ', firstNumber + 1, <span class="string_literal">" Add"</span>);
+    writeln(' ', firstNumber + 2, <span class="string_literal">" Subtract"</span>);
+    writeln(' ', firstNumber + 3, <span class="string_literal">" Multiply"</span>);
+    writeln(' ', firstNumber + 4, <span class="string_literal">" Divide"</span>);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>It is now possible to tell the function what number to start from:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    printMenu(<span class="string_literal">"Return"</span>);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h5>Calling a function</h5>
+<br><br>
+<p>Starting a function so that it achieves its task is called <i>calling a function</i>. The function call syntax is the following:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <i>function_name</i>(<i>parameter_values</i>)
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<br><br>
+<p> The actual parameter values that are passed to functions are called <i>function arguments</i>. Although the terms <i>parameter</i> and <i>argument</i> are sometimes used interchangeably in the literature, they signify different concepts.
+</p>
+<br><br>
+<p>The arguments are matched to the parameters one by one in the order that the parameters are defined. For example, the last call of  above uses the <i>arguments</i>  and , which correspond to the <i>parameters</i>  and , respectively.
+</p>
+<br><br>
+<p>The type of each argument must match the type of the corresponding parameter.
+</p>
+<br><br>
+<h5>Doing work</h5>
+<br><br>
+<p>In previous chapters, we have defined expressions as entities that do work. Function calls are expressions as well: they do some work. Doing work means producing a value or having a side effect:
+</p>
+<br><br>
+<ul><br><br>
+<li><b>Producing a value</b>: Some operations only produce values. For example, a function that adds numbers would be producing the result of that addition. As another example, a function that makes a  object by using the student's name and address would be producing a  object.
+</li>
+<br><br>
+<li>
+<b>Having side effects</b>: Side effects are any change in the state of the program or its environment. Some operations have only side effects. An example is how the  function above changes  by printing to it. As another example, a function that adds a  object to a student container would also have a side effect: it would be causing the container to grow.
+<br><br>
+<p>In summary, operations that cause a change in the state of the program have side effects.
+</p>
+<br><br>
+</li>
+<br><br>
+<li><b>Having side effects and producing a value:</b> Some operations do both. For example, a function that reads two values from  and returns their sum would be having side effects due to changing the state of  and also producing the sum of the two values.
+</li>
+<br><br>
+<li><b>No operation:</b> Although every function is designed as one of the three categories above, depending on certain conditions at compile time or at run time, some functions end up doing no work at all.
+</li>
+<br><br>
+</ul>
+<br><br>
+<h5> The return value</h5>
+<br><br>
+<p>The value that a function produces as a result of its work is called its <i>return value</i>. This term comes from the observation that once the program execution branches into a function, it eventually <i>returns</i> back to where the function has been called. Functions get <i>called</i> and they <i>return</i> values.
+</p>
+<br><br>
+<p>Just like any other value, return values have types. The type of the return value is specified right before the name of the function, at the point where the function is defined. For example, a function that adds two values of type  and returns their sum also as an  would be defined as follows:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"> add(<span class="keyword">int</span> first, <span class="keyword">int</span> second) {
+    <span class="comment">// ...  the actual work of the function ...
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The value that a function returns takes the place of the function call itself. For example, assuming that the function call  produces the value , then the following two lines would be equivalent:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    writeln(<span class="string_literal">"Result: "</span>, add(5, 7));
+    writeln(<span class="string_literal">"Result: "</span>, 12);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>In the first line above, the  function is called with the arguments  and  <i>before</i>  gets called. The value  that the function returns is in turn passed to  as its second argument.
+</p>
+<br><br>
+<p>This allows passing the return values of functions to other functions to form complex expressions:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    writeln(<span class="string_literal">"Result: "</span>, add(5, divide(100, studentCount())));
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>In the line above, the return value of  is passed to  as its second argument, the return value of  is passed to  as its second argument, and eventually the return value of  is passed to  as its second argument.
+</p>
+<br><br>
+<h5> The  statement</h5>
+<br><br>
+<p>The return value of a function is specified by the  keyword:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">int</span> add(<span class="keyword">int</span> first, <span class="keyword">int</span> second) {
+    <span class="keyword">int</span> result = first + second;
+     result;
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>A function produces its return value by taking advantage of statements, expressions, and potentially by calling other functions. The function would then return that value by the  keyword, at which point the execution of the function ends.
+</p>
+<br><br>
+<p>It is possible to have more than one  statement in a function. The value of the first  statement that gets executed determines the return value of the function for a particular call:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">int</span> complexCalculation(<span class="keyword">int</span> aParameter, <span class="keyword">int</span> anotherParameter) {
+    <span class="keyword">if</span> (aParameter == anotherParameter) {
+        <span class="keyword">return</span> 0;
+    }
+
+    <span class="keyword">return</span> aParameter * anotherParameter;
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The function above returns  when the two parameters are equal, and the product of their values when they are different.
+</p>
+<br><br>
+<h5>  functions</h5>
+<br><br>
+<p>The return types of functions that do not produce values are specified as . We have seen this many times with the  function so far, as well as the  function above. Since they do not return any value to the caller, their return types have been defined as . (<i><b>Note:</b>  can also be defined as returning . We will see this in <a href="main.html">a later chapter</a>.</i>)
+</p>
+<br><br>
+<h5>The name of the function</h5>
+<br><br>
+<p>The name of a function must be chosen to communicate the purpose of the function clearly. For example, the names  and  were appropriate because their purposes were to add two values, and to print a menu, respectively.
+</p>
+<br><br>
+<p>A common guideline for function names is that they contain a verb like <i>add</i> or <i>print</i>. According to this guideline names like  and  would be less than ideal.
+</p>
+<br><br>
+<p>However, it is acceptable to name functions simply as nouns if those functions do not have any side effects. For example, a function that returns the current temperature can be named as  instead of .
+</p>
+<br><br>
+<p>Coming up with names that are clear, short, and consistent is part of the subtle art of programming.
+</p>
+<br><br>
+<h5>Code quality through functions</h5>
+<br><br>
+<p>Functions can improve the quality of code. Smaller functions with fewer responsibilities lead to programs that are easier to maintain.
+</p>
+<br><br>
+<h6> Code duplication is harmful</h6>
+<br><br>
+<p>One of the aspects that is highly detrimental to program quality is code duplication. Code duplication occurs when there is more than one piece of code in the program that performs the same task.
+</p>
+<br><br>
+<p>Although this sometimes happens by copying lines of code around, it may also happen incidentally when writing separate pieces of code.
+</p>
+<br><br>
+<p>One of the problems with pieces of code that duplicate essentially the same functionality is that they present multiple chances for bugs to crop up. When such bugs do occur and we need to fix them, it can be hard to make sure that we have fixed all places where we introduced the problem, as they may be spread around. Conversely, when the code appears in only one place in the program, then we only need to fix it at that one place to get rid of the bug once and for all.
+</p>
+<br><br>
+<p>As I mentioned above, functions are closely related to the craft aspect of programming. Experienced programmers are always on the lookout for code duplication. They continually try to identify commonalities in code and move common pieces of code to separate functions (or to common structs, classes, templates, etc., as we will see in later chapters).
+</p>
+<br><br>
+<p> Let's start with a program that contains some code duplication. Let's see how that duplication can be removed by moving code into functions (i.e. by <i>refactoring</i> the code). The following program reads numbers from the input and prints them first in the order that they have arrived and then in numerical order:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+<span class="keyword">import</span> std.algorithm;
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">int</span>[] numbers;
+
+    <span class="keyword">int</span> count;
+    write(<span class="string_literal">"How many numbers are you going to enter? "</span>);
+    readf(<span class="string_literal">" %s"</span>, &amp;count);
+
+    <span class="comment">// Read the numbers
+</span>    <span class="keyword">foreach</span> (i; 0 .. count) {
+        <span class="keyword">int</span> number;
+        write(<span class="string_literal">"Number "</span>, i, <span class="string_literal">"? "</span>);
+        readf(<span class="string_literal">" %s"</span>, &amp;number);
+
+        numbers ~= number;
+    }
+
+    <span class="comment">// Print the numbers
+</span>    writeln(<span class="string_literal">"Before sorting:"</span>);
+    <span class="keyword">foreach</span> (i, number; numbers) {
+        writefln(<span class="string_literal">"%3d:%5d"</span>, i, number);
+    }
+
+    sort(numbers);
+
+    <span class="comment">// Print the numbers
+</span>    writeln(<span class="string_literal">"After sorting:"</span>);
+    <span class="keyword">foreach</span> (i, number; numbers) {
+        writefln(<span class="string_literal">"%3d:%5d"</span>, i, number);
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Some of the duplicated lines of code are obvious in that program. The last two  loops that are used for printing the numbers are exactly the same. Defining a function that might appropriately be named as  would remove that duplication. The function could take a slice as a parameter and print it:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> print(<span class="keyword">int</span>[] slice) {
+    <span class="keyword">foreach</span> (i, element; slice) {
+        writefln(<span class="string_literal">"%3s:%5s"</span>, i, element);
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Notice that the parameter is now referred to using the more general name  instead of original and more specific name . The reason for that is the fact that the function would not know what the elements of the slice would specifically represent. That can only be known at the place where the function has been called from. The elements may be student IDs, parts of a password, etc. Since that cannot be known in the  function, general names like  and  are used in its implementation.
+</p>
+<br><br>
+<p>The new function can be called from the two places where the slice needs to be printed:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+<span class="keyword">import</span> std.algorithm;
+
+<span class="keyword">void</span> print(<span class="keyword">int</span>[] slice) {
+    <span class="keyword">foreach</span> (i, element; slice) {
+        writefln(<span class="string_literal">"%3s:%5s"</span>, i, element);
+    }
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">int</span>[] numbers;
+
+    <span class="keyword">int</span> count;
+    write(<span class="string_literal">"How many numbers are you going to enter? "</span>);
+    readf(<span class="string_literal">" %s"</span>, &amp;count);
+
+    <span class="comment">// Read the numbers
+</span>    <span class="keyword">foreach</span> (i; 0 .. count) {
+        <span class="keyword">int</span> number;
+        write(<span class="string_literal">"Number "</span>, i, <span class="string_literal">"? "</span>);
+        readf(<span class="string_literal">" %s"</span>, &amp;number);
+
+        numbers ~= number;
+    }
+
+    <span class="comment">// Print the numbers
+</span>    writeln(<span class="string_literal">"Before sorting:"</span>);
+    ;
+
+    sort(numbers);
+
+    <span class="comment">// Print the numbers
+</span>    writeln(<span class="string_literal">"After sorting:"</span>);
+    ;
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>There is more to do. Notice that there is always a title line printed right before printing the elements of the slice. Although the title is different, the task is the same. If printing the title can be seen as a part of printing the slice, the title too can be passed as a parameter. Here are the new changes:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> print( <span class="keyword">int</span>[] slice) {
+    
+
+    <span class="keyword">foreach</span> (i, element; slice) {
+        writefln(<span class="string_literal">"%3s:%5s"</span>, i, element);
+    }
+}
+
+<span class="comment">// ...
+</span>
+    <span class="comment">// Print the numbers
+</span>    print(, numbers);
+
+<span class="comment">// ...
+</span>
+    <span class="comment">// Print the numbers
+</span>    print(, numbers);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>This step has the added benefit of obviating the comments that appear right before the two  calls. Since the name of the function already clearly communicates what it does, those comments are unnecessary:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    print(<span class="string_literal">"Before sorting"</span>, numbers);
+    sort(numbers);
+    print(<span class="string_literal">"After sorting"</span>, numbers);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Although subtle, there is more code duplication in this program: The values of  and  are read in exactly the same way. The only difference is the message that is printed to the user and the name of the variable:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span> count;
+    write(<span class="string_literal">"How many numbers are you going to enter? "</span>);
+    readf(<span class="string_literal">" %s"</span>, &amp;count);
+
+<span class="comment">// ...
+</span>
+        <span class="keyword">int</span> number;
+        write(<span class="string_literal">"Number "</span>, i, <span class="string_literal">"? "</span>);
+        readf(<span class="string_literal">" %s"</span>, &amp;number);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The code would become even better if it took advantage of a new function that might be named appropriately as . The new function can take the message as a parameter, print that message, read an  from the input, and return that :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">int</span> readInt(string message) {
+    <span class="keyword">int</span> result;
+    write(message, <span class="string_literal">"? "</span>);
+    readf(<span class="string_literal">" %s"</span>, &amp;result);
+    <span class="keyword">return</span> result;
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p> can now be initialized directly by the return value of a call to this new function:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span> count =
+        readInt(<span class="string_literal">"How many numbers are you going to enter"</span>);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p> cannot be initialized in as straightforward a way because the loop counter  happens to be a part of the message that is displayed when reading . This can be overcome by taking advantage of :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.string;
+<span class="comment">// ...
+</span>        <span class="keyword">int</span> number = readInt(format(<span class="string_literal">"Number %s"</span>, i));
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Further, since  is used in only one place in the  loop, its definition can be eliminated altogether and the return value of  can directly be used in its place:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">foreach</span> (i; 0 .. count) {
+        numbers ~= (format(<span class="string_literal">"Number %s"</span>, i));
+    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Let's make a final modification to this program by moving the lines that read the numbers to a separate function. This would also eliminate the need for the "Read the numbers" comment because the name of the new function would already carry that information.
+</p>
+<br><br>
+<p>The new  function does not need any parameter to complete its task. It reads some numbers and returns them as a slice. The following is the final version of the program:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+<span class="keyword">import</span> std.string;
+<span class="keyword">import</span> std.algorithm;
+
+<span class="keyword">void</span> print(string title, <span class="keyword">int</span>[] slice) {
+    writeln(title, <span class="string_literal">":"</span>);
+
+    <span class="keyword">foreach</span> (i, element; slice) {
+        writefln(<span class="string_literal">"%3s:%5s"</span>, i, element);
+    }
+}
+
+<span class="keyword">int</span> readInt(string message) {
+    <span class="keyword">int</span> result;
+    write(message, <span class="string_literal">"? "</span>);
+    readf(<span class="string_literal">" %s"</span>, &amp;result);
+    <span class="keyword">return</span> result;
+}
+
+<span class="keyword">int</span>[] () {
+    <span class="keyword">int</span>[] result;
+
+    <span class="keyword">int</span> count =
+        readInt(<span class="string_literal">"How many numbers are you going to enter"</span>);
+
+    <span class="keyword">foreach</span> (i; 0 .. count) {
+        result ~= readInt(format(<span class="string_literal">"Number %s"</span>, i));
+    }
+
+    <span class="keyword">return</span> result;
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">int</span>[] numbers = readNumbers();
+    print(<span class="string_literal">"Before sorting"</span>, numbers);
+    sort(numbers);
+    print(<span class="string_literal">"After sorting"</span>, numbers);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Compare this version of the program to the first one. The major steps of the program are very clear in the  function of the new program. In contrast, the  function of the first program had to be carefully examined to understand the purpose of that program.
+</p>
+<br><br>
+<p>Although the total numbers of nontrivial lines of the two versions of the program ended up being equal in this example, functions make programs shorter in general. This effect is not apparent in this simple program. For example, before the  function has been defined, reading an  from the input involved three lines of code. After the definition of , the same goal is achieved by a single line of code. Further, the definition of  allowed removing the definition of the variable  altogether.
+</p>
+<br><br>
+<h6>Commented lines of code as functions</h6>
+<br><br>
+<p>Sometimes the need to write a comment to describe the purpose of a group of lines of code is an indication that those lines could better be moved to a newly defined function. If the name of the function is descriptive enough then there will be no need for the comment either.
+</p>
+<br><br>
+<p>The three commented groups of lines of the first version of the program have been used for defining new functions that achieved the same tasks.
+</p>
+<br><br>
+<p>Another important benefit of removing comment lines is that comments tend to become outdated as the code gets modified over time. When updating code, programmers sometimes forget to update associated comments thus these comments become either useless or, even worse, misleading. For that reason, it is beneficial to try to write programs without the need for comments.
+</p>
+<br><br>
+
+
+</section>
+      </article>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,1602 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Function Parameters</title>
+    <style type="text/css" media="screen">
+      html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p,
+      blockquote, pre, a, abbr, address, cite, code, del, dfn, em, figure,
+      img, ins, kbd, q, s, samp, small, strong, sub, sup, var, b, u, i, dl,
+      dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption,
+      tbody, tfoot, thead, tr, th, td {
+        background: transparent none repeat scroll 0 0;
+        border: 0 none;
+        font-size: 100%;
+        margin: 0;
+        outline: 0 none;
+        padding: 0;
+        vertical-align: baseline;
+      }
+
+      h1 { font-size: 200%; }
+      h2 { font-size: 160%; }
+      h3 { font-size: 120%; }
+      h4 { font-size: 100%; }
+      h5 { font-size: 80%; }
+      h6 { font-size: 80%; font-weight: normal; }
+
+      ul, ol {
+        margin: 1.4em 0;
+      }
+      ul ul, ol ol, ul ol, ol ul {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      ul, ol {
+        margin-left: 2.8em;
+      }
+
+      ol {
+        list-style: decimal;
+      }
+      ol ol {
+        list-style: lower-alpha;
+      }
+      ol ol ol {
+        list-style: lower-roman;
+      }
+      ol ol ol ol {
+        list-style: decimal;
+      }
+
+      blockquote {
+        margin: 0.1em;
+        margin-left: 1em;
+        border-left: 2px solid #cccccc;
+        padding-left: 0.7em;
+      }
+
+      .color_red { color: #dc322f; }
+      .color_blue { color: #268bd2; }
+      .color_green { color: #859901; }
+      .color_yellow { color: #b58901; }
+      .color_black { color: black; }
+      .color_white { color: white; }
+
+      .font_big {
+        font-size: 1.2em;
+      }
+
+      .ddoc_section_h {
+        font-weight: bold;
+        font-size: 13px;
+        line-height: 19.5px;
+        margin-top: 11px;
+        display: block;
+      }
+
+      body.dlang .dlang {
+        display: inline-block;
+      }
+
+      body.dlang .declaration .dlang {
+          display: block;
+      }
+
+      body.dlang .ddoc_header_anchor a.dlang {
+        display: block;
+        color: rgba(0, 136, 204, 1);
+        text-decoration: none;
+      }
+
+      body.dlang .ddoc_header_anchor .code {
+        color: rgba(0, 136, 204, 1);
+      }
+
+      #ddoc_main .module {
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          overflow-x: hidden;
+          padding: 15px;
+      }
+
+      #ddoc_main .section .section {
+        margin-top: 0;
+      }
+
+      #ddoc_main .ddoc_module_members_section {
+          padding: 1px 0 0;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members section.intro {
+          background: #fff none repeat scroll 0 0;
+          list-style-type: none;
+          width: 100%;
+      }
+
+      #ddoc_main .ddoc_header_anchor {
+          font-size: 1.4em;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_header_anchor > .code {
+          display: inline-block;
+
+      }
+
+      #ddoc_main .ddoc_decl {
+        background-color: transparent;
+        height: 100%;
+        left: 0;
+        top: 0;
+        padding: 0;
+        padding-left: 15px;
+      }
+
+      #ddoc_main .ddoc_decl .section, #ddoc_main .section.ddoc_sections {
+        background: white none repeat scroll 0 0;
+        margin: 0;
+        padding: 5px;
+        position: relative;
+        border-radius: 5px;
+      }
+
+      #ddoc_main .ddoc_decl .section h4:first-of-type, #ddoc_main .section.ddoc_sections h4:first-of-type {
+        font-size: 13px;
+        line-height: 1.5;
+        margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration {
+          margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration .code {
+          color: rgba(0, 0, 0, 1);
+          margin-bottom: 15px;
+          padding-bottom: 6px;
+      }
+
+      #ddoc_main .declaration div .para {
+          margin-bottom: 0;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr td:first-of-type {
+        padding: 7px;
+        text-align: right;
+        vertical-align: top;
+        word-break: normal;
+        white-space: nowrap;
+      }
+
+      #ddoc_main .ddoc_params .graybox {
+        border: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox td {
+        border-color: rgba(214, 214, 214, 1);
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:first-child > td {
+        border-top: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:last-child > td {
+        border-bottom: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:first-child {
+        border-left: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:last-child {
+        border-right: 0 none;
+        width: 100%;
+      }
+
+      #ddoc_main em.term, #ddoc_main em.term .code {
+        color: rgba(65, 65, 65, 1);
+        font-size: 12px;
+        font-style: italic;
+        line-height: 1.5;
+      }
+
+      #ddoc_main .see-also {
+        cursor: pointer;
+        font-family: Menlo,monospace;
+      }
+
+      #ddoc_main .ddoc_decl .section > div:last-of-type {
+        margin-bottom: 15px;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members {
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .code_sample {
+        background: inherit;
+      }
+
+      #ddoc_main .declaration .code-line {
+          display: block;
+          font: 1em Menlo,monospace;
+      }
+
+      #ddoc_main a[name] {
+        margin: -112px 0 0;
+        padding-top: 112px;
+      }
+
+      #ddoc_main .ddoc_decl td {
+        max-width: inherit;
+      }
+
+      #ddoc_main .declaration a {
+        color: inherit;
+      }
+
+      #ddoc_main .declaration a:hover {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: underline;
+      }
+
+      body.ddoc {
+        background-color: transparent;
+        color: rgba(0, 0, 0, 1);
+        font-family: Helvetica,Arial,sans-serif;
+        font-size: 62.5%;
+        margin: 0;
+        border: 0;
+        left: 0;
+        top: 0;
+        padding: 0;
+      }
+
+      .ddoc a[name] {
+        display: block;
+        height: 0;
+        margin: -85px 0 0;
+        padding-top: 85px;
+        width: 0;
+      }
+
+      .ddoc .module {
+          border-color: transparent;
+          background-color: rgba(255, 255, 255, 1);
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-image: none;
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          box-shadow: 0 0 1px rgba(0, 0, 0, 0.07);
+          display: block;
+          margin-left: 0;
+          min-height: calc(100% - 173px);
+          overflow: auto;
+          padding-bottom: 100px;
+      }
+
+      .ddoc .content_wrapper {
+          background-color: rgba(242, 242, 242, 1);
+          margin: 0 auto;
+          max-width: 980px;
+      }
+
+      .ddoc .section {
+        padding: 15px 25px 30px;
+      }
+
+      .ddoc .section .section {
+        margin: 30px 0 0;
+        padding: 0;
+      }
+
+      .ddoc .para {
+        color: rgba(65, 65, 65, 1);
+        font-size: 1.4em;
+        line-height: 145%;
+        margin-bottom: 15px;
+      }
+
+      .ddoc .ddoc_examples .para {
+        margin-bottom: 0;
+      }
+
+      .ddoc .module_name {
+          color: rgba(0, 0, 0, 1);
+          display: block;
+          font-family: Helvetica;
+          font-size: 2.8em;
+          font-weight: 100;
+          margin-bottom: 0;
+          padding: 15px 0;
+      }
+
+      .ddoc .module a {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: none;
+      }
+
+      .ddoc .code {
+        color: rgba(128, 128, 128, 1);
+        font-family: Menlo,monospace;
+        font-size: 0.85em;
+        word-wrap: break-word;
+      }
+
+      .ddoc .code i {
+        font-style: normal;
+      }
+
+      .ddoc .code .code {
+        font-size: 1em;
+      }
+
+      .ddoc .code_sample {
+        background-clip: padding-box;
+        margin: 1px 0;
+        text-align: left;
+      }
+
+      .ddoc .code_sample {
+        display: block;
+        font-size: 1.4em;
+        margin-left: 21px;
+      }
+
+      .ddoc ol .code_sample {
+        font-size: 1em;
+      }
+
+      .ddoc .code_lines {
+        counter-reset: li;
+        line-height: 1.6em;
+        list-style: outside none none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .ddoc .code_listing .code_sample div {
+        margin-left: 13px;
+        width: 93%;
+      }
+
+      .ddoc .code_listing .code_sample div .code_lines li {
+        list-style-type: none;
+        margin: 0;
+        padding-right: 10px;
+      }
+
+      .ddoc .code_sample div .code_lines li::before {
+        margin-left: -33px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+10)::before {
+        margin-left: -39px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+100)::before {
+        margin-left: -46px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample .code_lines .code {
+        color: #000;
+      }
+
+      .ddoc div.dlang {
+        margin: 10px 0 21px;
+        padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+          margin: 10px 0 21px;
+          padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+        border-left: 5px solid rgba(0, 155, 51, 0.2);
+      }
+
+      .ddoc .code_lines li::before {
+        color: rgba(128, 128, 128, 1);
+        content: counter(li, decimal);
+        counter-increment: li;
+        font-family: Menlo,monospace;
+        font-size: 0.9em;
+        margin-right: 16px;
+      }
+
+      .ddoc .code_lines li {
+        padding-left: 0;
+        white-space: pre-wrap;
+      }
+
+      .ddoc .code_lines li:only-of-type::before {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:only-of-type {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:nth-child(n+10) {
+        text-indent: -17px;
+      }
+
+      .ddoc .code_lines li:nth-child(n+10)::before {
+        margin-right: 12px;
+      }
+
+      .ddoc .graybox {
+        border: 1px solid rgba(233, 233, 233, 1);
+        border-collapse: collapse;
+        border-spacing: 0;
+        empty-cells: hide;
+        margin: 20px 0 36px;
+        text-align: left;
+      }
+
+      .ddoc .graybox p {
+        margin: 0;
+        min-width: 50px;
+      }
+
+      .ddoc th {
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: bottom;
+      }
+
+      .ddoc td {
+        border: 1px solid rgba(233, 233, 233, 1);
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: middle;
+      }
+
+      .punctuation {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .comment {
+        color: rgba(0, 131, 18, 1);
+      }
+
+      .operator {
+        color: #000;
+      }
+
+      .keyword {
+        color: rgba(170, 13, 145, 1);
+      }
+
+      .keyword_type {
+        color: rgba(170, 51, 145, 1);
+      }
+
+      .string_literal {
+        color: rgba(196, 26, 22, 1);
+      }
+
+      .ddoc_psuper_symbol {
+        color: rgba(92, 38, 153, 1);
+      }
+
+      .param {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .psymbol {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .ddoc_member_header .ddoc_header_anchor .code {
+        font-size: 1em;
+      }
+    </style>
+  </head>
+  <body id="ddoc_main" class="ddoc dlang">
+    <div class="content_wrapper">
+      <article class="module">
+        <h1 class="module_name">Function Parameters</h1>
+        <section id="module_content"><br><br>
+<br><br>
+
+<br><br>
+<p>This chapter covers various kinds of function parameters.
+</p>
+<br><br>
+<p>Some of the concepts of this chapter have already appeared earlier in the book. For example, the  keyword that we saw in the <a href="foreach.html"> Loop chapter</a> was making <i>actual elements</i> available in  loops as opposed to <i>copies</i> of those elements.
+</p>
+<br><br>
+<p>Additionally, we covered the  and  keywords and the differences between value types and reference types in previous chapters.
+</p>
+<br><br>
+<p>We have written functions that produced results by making use of their parameters. For example, the following function uses its parameters in a calculation:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">double</span> weightedAverage(<span class="keyword">double</span> quizGrade, <span class="keyword">double</span> finalGrade) {
+    <span class="keyword">return</span> quizGrade * 0.4 + finalGrade * 0.6;
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>That function calculates the average grade by taking 40% of the quiz grade and 60% of the final grade. Here is how it may be used:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span> quizGrade = 76;
+    <span class="keyword">int</span> finalGrade = 80;
+
+    writefln(<span class="string_literal">"Weighted average: %2.0f"</span>,
+             weightedAverage(quizGrade, finalGrade));
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h5>  Parameters are always copied</h5>
+<br><br>
+<p>In the code above, the two variables are passed as arguments to . The function <i>uses</i> its parameters. This fact may give the false impression that the function uses the actual variables that have been passed as arguments. In reality, what the function uses are <i>copies</i> of those variables.
+</p>
+<br><br>
+<p>This distinction is important because modifying a parameter changes only the copy. This can be seen in the following function that is trying to modify its parameter (i.e. making a side effect). Let's assume that the following function is written for reducing the energy of a game character:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> reduceEnergy(<span class="keyword">double</span> energy) {
+    energy /= 4;
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Here is a program that tests :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> reduceEnergy(<span class="keyword">double</span> energy) {
+    energy /= 4;
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">double</span> energy = 100;
+
+    reduceEnergy(energy);
+    writeln(<span class="string_literal">"New energy: "</span>, energy);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output:
+</p>
+<br><br>
+
+<br><br>
+<p>Although  drops the value of its parameter to a quarter of its original value, the variable  in  does not change. The reason for this is that the  variable in  and the  parameter of  are separate; the parameter is a copy of the variable in .
+</p>
+<br><br>
+<p>To observe this more closely, let's insert some  expressions:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> reduceEnergy(<span class="keyword">double</span> energy) {
+    writeln(<span class="string_literal">"Entered the function      : "</span>, energy);
+    energy /= 4;
+    writeln(<span class="string_literal">"Leaving the function      : "</span>, energy);
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">double</span> energy = 100;
+
+    writeln(<span class="string_literal">"Calling the function      : "</span>, energy);
+    reduceEnergy(energy);
+    writeln(<span class="string_literal">"Returned from the function: "</span>, energy);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output:
+</p>
+<br><br>
+
+<br><br>
+<h5> Referenced variables are not copied</h5>
+<br><br>
+<p>Even parameters of reference types like slices, associative arrays, and class variables are copied to functions. However, the original variables that are referenced (i.e. elements of slices and associative arrays, and class objects) are not copied. Effectively, such variables are passed to functions as <i>references</i>: the parameter becomes another reference to the original object. It means that a modification made through the reference modifies the original object as well.
+</p>
+<br><br>
+<p>Being slices of characters, this applies to strings as well:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> makeFirstLetterDot(<span class="keyword">dchar</span>[] str) {
+    str[0] = '.';
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">dchar</span>[] str = <span class="string_literal">"abc"d</span>.dup;
+    makeFirstLetterDot(str);
+    writeln(str);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The change made to the first element of the parameter affects the actual element in :
+</p>
+<br><br>
+
+<br><br>
+<p>However, the original slice and associative array variables are still passed by copy. This may have surprising and seemingly unpredictable results unless the parameters are qualified as  themselves.
+</p>
+<br><br>
+<h6>Surprising reference semantics of slices</h6>
+<br><br>
+<p>As we saw in the <a href="slices.html">Slices and Other Array Features chapter</a>, adding elements to a slice <i>may</i> terminate element sharing. Obviously, once sharing ends, a slice parameter like  above would not be a reference to the elements of the passed-in original variable anymore.
+</p>
+<br><br>
+<p>For example, the element that is appended by the following function will not be seen by the caller:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> appendZero(<span class="keyword">int</span>[] arr) {
+    arr ;
+    writefln(<span class="string_literal">"Inside appendZero()       : %s"</span>, arr);
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">auto</span> arr = [ 1, 2 ];
+    appendZero(arr);
+    writefln(<span class="string_literal">"After appendZero() returns: %s"</span>, arr);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The element is appended only to the function parameter, not to the original slice:
+</p>
+<br><br>
+
+<br><br>
+<p>If the new elements need to be appended to the original slice, then the slice must be passed as :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> appendZero( <span class="keyword">int</span>[] arr) {
+    <span class="comment">// ...
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The  qualifier will be explained below.
+</p>
+<br><br>
+<h6>Surprising reference semantics of associative arrays</h6>
+<br><br>
+<p>Associative arrays that are passed as function parameters may cause surprises as well because associative arrays start their lives as , not empty.
+</p>
+<br><br>
+<p>In this context,  means an uninitialized associative array. Associative arrays are initialized automatically when their first key-value pair is added. As a consequence, if a function adds an element to a  associative array, then that element cannot be seen in the original variable because although the parameter is initialized, the original variable remains :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> appendElement(<span class="keyword">int</span>[string] aa) {
+    aa;
+    writefln(<span class="string_literal">"Inside appendElement()       : %s"</span>, aa);
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">int</span>[string] aa;    <span class="comment">// ← null to begin with
+</span>    appendElement(aa);
+    writefln(<span class="string_literal">"After appendElement() returns: %s"</span>, aa);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The original variable does not have the added element:
+</p>
+<br><br>
+
+<br><br>
+<p>On the other hand, if the associative array were not  to begin with, then the added element would be seen by the caller as well:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span>[string] aa;
+    aa[<span class="string_literal">"blue"</span>] = 10;  <span class="comment">// ← Not null before the call
+</span>    appendElement(aa);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>This time the added element is seen by the caller:
+</p>
+<br><br>
+
+<br><br>
+<p>For that reason, it may be better to pass the associative array as a  parameter, which will be explained below.
+</p>
+<br><br>
+<h5>Parameter qualifiers</h5>
+<br><br>
+<p>Parameters are passed to functions according to the general rules described above:
+</p>
+<br><br>
+<ul><br><br>
+<li>Value types are copied, after which the original variable and the copy are independent.</li>
+<br><br>
+<li>Reference types are copied as well but both the original reference and the parameter provide access to the same variable.</li>
+<br><br>
+</ul>
+<br><br>
+<p>Those are the default rules that are applied when parameter definitions have no qualifiers. The following qualifiers change the way parameters are passed and what operations are allowed on them.
+</p>
+<br><br>
+<h6> </h6>
+<br><br>
+<p>We have seen that functions can produce values and can have side effects. The  keyword specifies that the parameter is going be used only as input:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">double</span> weightedTotal( <span class="keyword">double</span> currentTotal,
+                      <span class="keyword">double</span> weight,
+                      <span class="keyword">double</span> addend) {
+    <span class="keyword">return</span> currentTotal + (weight * addend);
+}
+
+<span class="keyword">void</span> main() {
+    writeln(weightedTotal(1.23, 4.56, 7.89));
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Like ,  parameters cannot be modified:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> foo(<span class="keyword">in</span> <span class="keyword">int</span> value) {
+    value = 1;    
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h6> </h6>
+<br><br>
+<p>We know that functions return what they produce as their return values. The fact that there is only one return value is sometimes limiting as some functions may need to produce more than one result. (<i><b>Note:</b> It is possible to return more than one result by defining the return type as a  or a . We will see these features in later chapters.</i>)
+</p>
+<br><br>
+<p>The  keyword makes it possible for functions to return results through their parameters. When  parameters are modified within the function, those modifications affect the original variable that has been passed to the function. In a sense, the assigned value goes <i>out</i> of the function through the  parameter.
+</p>
+<br><br>
+<p>Let's have a look at a function that divides two numbers and produces both the quotient and the remainder. The return value is used for the quotient and the remainder is <i>returned</i> through the  parameter:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">int</span> divide(<span class="keyword">int</span> dividend, <span class="keyword">int</span> divisor,  <span class="keyword">int</span> remainder) {
+    ;
+    <span class="keyword">return</span> dividend / divisor;
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">int</span> remainder;
+    <span class="keyword">int</span> result = divide(7, 3, remainder);
+
+    writeln(<span class="string_literal">"result: "</span>, result, <span class="string_literal">", remainder: "</span>, remainder);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Modifying the  parameter of the function modifies the  variable in  (their names need not be the same):
+</p>
+<br><br>
+
+<br><br>
+<p>Regardless of their values at the call site,  parameters are first assigned to the  value of their types automatically:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> foo(<span class="keyword">out</span> <span class="keyword">int</span> parameter) {
+    writeln(<span class="string_literal">"After entering the function      : "</span>, parameter);
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">int</span> variable = 100;
+
+    writeln(<span class="string_literal">"Before calling the function      : "</span>, variable);
+    foo(variable);
+    writeln(<span class="string_literal">"After returning from the function: "</span>, variable);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Even though there is no explicit assignment to the parameter in the function, the value of the parameter automatically becomes the initial value of , affecting the variable in :
+</p>
+<br><br>
+
+<br><br>
+<p>As this demonstrates,  parameters cannot pass values into functions; they are strictly for passing values out of functions.
+</p>
+<br><br>
+<p>We will see in later chapters that returning  or  types are better alternatives to  parameters.
+</p>
+<br><br>
+<h6> </h6>
+<br><br>
+<p>As we saw earlier,  guarantees that the parameter will not be modified inside the function. It is helpful for the programmers to know that certain variables will not be changed by a function.  also makes functions more useful by allowing , , and <i>mutable</i> variables to be passed through that parameter:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">dchar</span> lastLetter( <span class="keyword">dchar</span>[] str) {
+    <span class="keyword">return</span> str[$ - 1];
+}
+
+<span class="keyword">void</span> main() {
+    writeln(lastLetter(<span class="string_literal">"constant"</span>));
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h6> </h6>
+<br><br>
+<p>As we saw earlier,  makes functions require that certain variables must be immutable. Because of such a requirement, the following function can only be called with strings with  elements (e.g. string literals):
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">dchar</span>[] mix( <span class="keyword">dchar</span>[] first,
+             <span class="keyword">dchar</span>[] second) {
+    <span class="keyword">dchar</span>[] result;
+    <span class="keyword">int</span> i;
+
+    <span class="keyword">for</span> (i = 0; (i &lt; first.length) &amp;&amp; (i &lt; second.length); ++i) {
+        result ~= first[i];
+        result ~= second[i];
+    }
+
+    result ~= first[i..$];
+    result ~= second[i..$];
+
+    <span class="keyword">return</span> result;
+}
+
+<span class="keyword">void</span> main() {
+    writeln(mix(<span class="string_literal">"HELLO"</span>, <span class="string_literal">"world"</span>));
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Since it forces a requirement on the parameter,  parameters should be used only when immutability is required. Otherwise, in general  is more useful because it accepts , , and <i>mutable</i> variables.
+</p>
+<br><br>
+<h6> </h6>
+<br><br>
+<p>This keyword allows passing a variable by reference even though it would normally be passed as a copy (i.e. by value).
+</p>
+<br><br>
+<p>For the  function that we saw earlier to modify the original variable, it must take its parameter as :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> reduceEnergy( <span class="keyword">double</span> energy) {
+    energy /= 4;
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">double</span> energy = 100;
+
+    reduceEnergy(energy);
+    writeln(<span class="string_literal">"New energy: "</span>, energy);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>This time, the modification that is made to the parameter changes the original variable in :
+</p>
+<br><br>
+
+<br><br>
+<p>As can be seen,  parameters can be used both as input and output.  parameters can also be thought of as aliases of the original variables. The function parameter  above is an alias of the variable  in .
+</p>
+<br><br>
+<p>Similar to  parameters,  parameters allow functions to have side effects as well. In fact,  does not return a value; it only causes a side effect through its single parameter.
+</p>
+<br><br>
+<p>The programming style called <i>functional programming</i> favors return values over side effects, so much so that some functional programming languages do not allow side effects at all. This is because functions that produce results <i>purely</i> through their return values are easier to understand, implement, and maintain.
+</p>
+<br><br>
+<p>The same function can be written in a functional programming style by returning the result, instead of causing a side effect. The parts of the program that changed are highlighted:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+(<span class="keyword">double</span> energy) {
+    ;
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">double</span> energy = 100;
+
+    ;
+    writeln(<span class="string_literal">"New energy: "</span>, energy);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Note the change in the name of the function as well. Now it is a noun as opposed to a verb.
+</p>
+<br><br>
+<h6></h6>
+<br><br>
+<p>This qualifier can only be used with <a href="templates.html">templates</a>. As we will see in the next chapter, an  parameter takes <i>lvalues</i> by reference and <i>rvalues</i> by copy.
+</p>
+<br><br>
+<h6> </h6>
+<br><br>
+<p>Despite its name consisting of  and , this keyword does not mean <i>input and output</i>; we have already seen that input and output is achieved by the  keyword.
+</p>
+<br><br>
+<p> carries the <i>mutability</i> of the parameter to the return type. If the parameter is , , or <i>mutable</i>; then the return value is also , , or <i>mutable</i>; respectively.
+</p>
+<br><br>
+<p>To see how  helps in programs, let's look at a function that returns a slice to the <i>inner</i> elements of its parameter:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">int</span>[] inner(<span class="keyword">int</span>[] slice) {
+    <span class="keyword">if</span> (slice.length) {
+        --slice.length;               <span class="comment">// trim from the end
+</span>
+        <span class="keyword">if</span> (slice.length) {
+            slice = slice[1 .. $];    <span class="comment">// trim from the beginning
+</span>        }
+    }
+
+    <span class="keyword">return</span> slice;
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">int</span>[] numbers = [ 5, 6, 7, 8, 9 ];
+    writeln(inner(numbers));
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output:
+</p>
+<br><br>
+
+<br><br>
+<p>According to what we have established so far in the book, in order for the function to be more useful, its parameter should be  because the elements are not being modified inside the function. (Note that there is no harm in modifying the parameter slice itself, as it is a copy of the original variable.)
+</p>
+<br><br>
+<p>However, defining the function that way would cause a compilation error:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">int</span>[] inner( slice) {
+    <span class="comment">// ...
+</span>    <span class="keyword">return</span> slice;    
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The compilation error indicates that a slice of  cannot be returned as a slice of <i>mutable</i> :
+</p>
+<br><br>
+
+<br><br>
+<p>One may think that specifying the return type as  would be the solution:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"> inner(<span class="keyword">const</span>(<span class="keyword">int</span>)[] slice) {
+    <span class="comment">// ...
+</span>    <span class="keyword">return</span> slice;    <span class="comment">// now compiles
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Although the code now compiles, it brings a limitation: even when the function is called with a slice of <i>mutable</i> elements, this time the returned slice ends up consisting of  elements. To see how limiting this would be, let's look at the following code, which tries to modify the inner elements of a slice:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span>[] numbers = [ 5, 6, 7, 8, 9 ];
+    <span class="keyword">int</span>[] middle = inner(numbers);    
+    middle[] *= 10;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The returned slice of type  cannot be assigned to a slice of type , resulting in an error:
+</p>
+<br><br>
+
+<br><br>
+<p>However, since we started with a slice of mutable elements, this limitation is artificial and unfortunate.  solves this mutability problem between parameters and return values. It is specified on both the parameter and the return type and carries the mutability of the former to the latter:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">(<span class="keyword">int</span>)[] inner((<span class="keyword">int</span>)[] slice) {
+    <span class="comment">// ...
+</span>    <span class="keyword">return</span> slice;
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>With that change, the same function can now be called with , , and <i>mutable</i> slices:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    {
+         numbers = [ 5, 6, 7, 8, 9 ];
+        <span class="comment">// The return type is a slice of mutable elements
+</span>         middle = inner(numbers);
+        middle[] *= 10;
+        writeln(middle);
+    }
+    {
+         numbers = [ 10, 11, 12 ];
+        <span class="comment">// The return type is a slice of immutable elements
+</span>         middle = inner(numbers);
+        writeln(middle);
+    }
+    {
+         numbers = [ 13, 14, 15, 16 ];
+        <span class="comment">// The return type is a slice of const elements
+</span>         middle = inner(numbers);
+        writeln(middle);
+    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h6> </h6>
+<br><br>
+<p>It is natural to expect that arguments are evaluated <i>before</i> entering functions that use those arguments. For example, the function  below is called with the return values of two other functions:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    result = add(anAmount(), anotherAmount());
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>In order for  to be called, first  and  must be called. Otherwise, the values that  needs would not be available.
+</p>
+<br><br>
+<p>Evaluating arguments before calling a function is called <i>eager evaluation</i>.
+</p>
+<br><br>
+<p>However, depending on certain conditions, some parameters may not get a chance to be used in the function at all. In such cases, evaluating the arguments eagerly would be wasteful.
+</p>
+<br><br>
+<p>A classic example of this situation is a <i>logging</i> function that outputs a message only if the importance of the message is above a certain configuration setting:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">enum</span> Level { low, medium, high }
+
+<span class="keyword">void</span> log(Level level, string message) {
+    <span class="keyword">if</span> (level &gt;= interestedLevel) {
+        writeln(message);
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>For example, if the user is interested only in the messages that are , a message with  would not be printed. However, the argument would still be evaluated before calling the function. For example, the entire  expression below including the  call that it makes would be wasted if the message is never printed:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">if</span> (failedToConnect) {
+        log(Level.medium,
+            format(<span class="string_literal">"Failure. The connection state is '%s'."</span>,
+                   getConnectionState()));
+    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The  keyword specifies that an expression that is passed as a parameter will be evaluated only if and when needed:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> log(Level level,  string message) {
+   <span class="comment">// ... the body of the function is the same as before ...
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>This time, the expression would be evaluated only if the  parameter is used.
+</p>
+<br><br>
+<p>One thing to be careful about is that a  parameter is evaluated <i>every time</i> that parameter is used in the function.
+</p>
+<br><br>
+<p>For example, because the  parameter of the following function is used three times in the function, the expression that provides its value is evaluated three times:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">int</span> valueOfArgument() {
+    writeln(<span class="string_literal">"Calculating..."</span>);
+    <span class="keyword">return</span> 1;
+}
+
+<span class="keyword">void</span> functionWithLazyParameter(<span class="keyword">lazy</span> <span class="keyword">int</span> value) {
+    <span class="keyword">int</span> result = ;
+    writeln(result);
+}
+
+<span class="keyword">void</span> main() {
+    functionWithLazyParameter(valueOfArgument());
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output:
+</p>
+<br><br>
+
+<br><br>
+<h6> </h6>
+<br><br>
+<p>  This keyword specifies that a parameter will not be used beyond the scope of the function. As of this writing,  is effective only if the function is defined as <a href="functions_more.html"></a> and if  compiler switch is used. DIP is short for <i>D Improvement Proposal</i>. DIP 1000 is experimental as of this writing; so it may not work as expected in all cases.
+</p>
+<br><br>
+
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">int</span>[] globalSlice;
+
+ <span class="keyword">int</span>[] foo( <span class="keyword">int</span>[] parameter) {
+    globalSlice = parameter;    
+    <span class="keyword">return</span> parameter;           
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">int</span>[] slice = [ 10, 20 ];
+    <span class="keyword">int</span>[] result = foo(slice);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The function above violates the promise of  in two places: It assigns the parameter to a global variable, and it returns it. Both those actions would make it possible for the parameter to be accessed after the function finishes.
+</p>
+<br><br>
+<h6> </h6>
+<br><br>
+<p>This keyword requires that the parameter is shareable between threads of execution:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> foo( <span class="keyword">int</span>[] i) {
+    <span class="comment">// ...
+</span>}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">int</span>[] numbers = [ 10, 20 ];
+    foo(numbers);    
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The program above cannot be compiled because the argument is not . The following is the necessary change to make it compile:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">     <span class="keyword">int</span>[] numbers = [ 10, 20 ];
+    foo(numbers);    <span class="comment">// now compiles
+</span></code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>We will see the  keyword later in the <a href="concurrency_shared.html">Data Sharing Concurrency chapter</a>.
+</p>
+<br><br>
+<h6> </h6>
+<br><br>
+<p>Sometimes it is useful for a function to return one of its  parameters directly. For example, the following  function picks and returns one of its parameters randomly so that the caller can mutate the lucky one directly:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+<span class="keyword">import</span> std.random;
+
+ <span class="keyword">int</span> pick( <span class="keyword">int</span> lhs,  <span class="keyword">int</span> rhs) {
+    <span class="keyword">return</span> uniform(0, 2) ? lhs : rhs;    
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">int</span> a;
+    <span class="keyword">int</span> b;
+
+    pick(a, b) ;
+
+    writefln(<span class="string_literal">"a: %s, b: %s"</span>, a, b);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>As a result, either  or  inside  is assigned the value :
+</p>
+<br><br>
+
+<br><br>
+
+<br><br>
+<p>Unfortunately, one of the arguments of  may have a shorter lifetime than the returned reference. For example, the following  function calls  with two local variables, effectively itself returning a reference to one of them:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.random;
+
+<span class="keyword">ref</span> <span class="keyword">int</span> pick(<span class="keyword">ref</span> <span class="keyword">int</span> lhs, <span class="keyword">ref</span> <span class="keyword">int</span> rhs) {
+    <span class="keyword">return</span> uniform(0, 2) ? lhs : rhs;    
+}
+
+<span class="keyword">ref</span> <span class="keyword">int</span> foo() {
+    <span class="keyword">int</span> a;
+    <span class="keyword">int</span> b;
+
+    <span class="keyword">return</span> pick(a, b);    
+}
+
+<span class="keyword">void</span> main() {
+    foo() = 42;           
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Since the lifetimes of both  and  end upon leaving , the assignment in  cannot be made to a valid variable. This results in <i>undefined behavior</i>.
+</p>
+<br><br>
+<p> The term <i>undefined behavior</i> describes situations where the behavior of the program is not defined by the programming language specification. Nothing can be said about the behavior of a program that contains undefined behavior. (In practice though, for the program above, the value  would most likely be written to a memory location that used to be occupied by either  or , potentially currently a part of an unrelated variable, effectively corrupting the value of that unrelated variable.)
+</p>
+<br><br>
+<p>The  keyword can be applied to a parameter to prevent such bugs. It specifies that a parameter must be a reference to a variable with a longer lifetime than the returned reference:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.random;
+
+<span class="keyword">ref</span> <span class="keyword">int</span> pick( <span class="keyword">ref</span> <span class="keyword">int</span> lhs,  <span class="keyword">ref</span> <span class="keyword">int</span> rhs) {
+    <span class="keyword">return</span> uniform(0, 2) ? lhs : rhs;
+}
+
+<span class="keyword">ref</span> <span class="keyword">int</span> foo() {
+    <span class="keyword">int</span> a;
+    <span class="keyword">int</span> b;
+
+    <span class="keyword">return</span> pick(a, b);    
+}
+
+<span class="keyword">void</span> main() {
+    foo() = 42;
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>This time the compiler sees that the arguments to  have a shorter lifetime than the reference that  is attempting to return:
+</p>
+<br><br>
+
+<br><br>
+<p>  This feature is called <i>sealed references</i>.
+</p>
+<br><br>
+<p><i><b>Note:</b> Although it is conceivable that the compiler could inspect  and detect the bug even without the  keyword, it cannot do so in general because the bodies of some functions may not be available to the compiler during every compilation.</i>
+</p>
+<br><br>
+<h5>Summary</h5>
+<br><br>
+<ul><br><br>
+<li>A <i>parameter</i> is what the function takes from its caller to accomplish its task.</li>
+<br><br>
+<li>An <i>argument</i> is an expression (e.g. a variable) that is passed to a function as a parameter.</li>
+<br><br>
+<li>Every argument is passed by copy. However, for reference types, it is the reference that is copied, not the original variable.
+</li>
+<br><br>
+<li> specifies that the parameter is used only for data input.</li>
+<br><br>
+<li> specifies that the parameter is used only for data output.</li>
+<br><br>
+<li> specifies that the parameter is used for data input and data output.</li>
+<br><br>
+<li> is used in templates only. It specifies that if the argument is an lvalue, then a reference to it is passed; if the argument is an rvalue, then it is passed by copy.</li>
+<br><br>
+<li> guarantees that the parameter is not modified inside the function. (Remember that  is transitive: any data reached through a  variable is  as well.)</li>
+<br><br>
+<li> requires the argument to be .</li>
+<br><br>
+<li> appears both at the parameter and the return type, and transfers the <i>mutability</i> of the parameter to the return type.</li>
+<br><br>
+<li> is used to make a parameter be evaluated when (and every time) it is actually used.</li>
+<br><br>
+<li> guarantees that no reference to the parameter will be leaked from the function.</li>
+<br><br>
+<li> requires the parameter to be .</li>
+<br><br>
+<li> on a parameter requires the parameter to live longer than the returned reference.</li>
+<br><br>
+</ul>
+<br><br>
+
+
+</section>
+      </article>
+    </div>
+  </body>
+</html>

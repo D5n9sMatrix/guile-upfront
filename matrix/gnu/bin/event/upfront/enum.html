@@ -1,0 +1,941 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>enum</title>
+    <style type="text/css" media="screen">
+      html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p,
+      blockquote, pre, a, abbr, address, cite, code, del, dfn, em, figure,
+      img, ins, kbd, q, s, samp, small, strong, sub, sup, var, b, u, i, dl,
+      dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption,
+      tbody, tfoot, thead, tr, th, td {
+        background: transparent none repeat scroll 0 0;
+        border: 0 none;
+        font-size: 100%;
+        margin: 0;
+        outline: 0 none;
+        padding: 0;
+        vertical-align: baseline;
+      }
+
+      h1 { font-size: 200%; }
+      h2 { font-size: 160%; }
+      h3 { font-size: 120%; }
+      h4 { font-size: 100%; }
+      h5 { font-size: 80%; }
+      h6 { font-size: 80%; font-weight: normal; }
+
+      ul, ol {
+        margin: 1.4em 0;
+      }
+      ul ul, ol ol, ul ol, ol ul {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      ul, ol {
+        margin-left: 2.8em;
+      }
+
+      ol {
+        list-style: decimal;
+      }
+      ol ol {
+        list-style: lower-alpha;
+      }
+      ol ol ol {
+        list-style: lower-roman;
+      }
+      ol ol ol ol {
+        list-style: decimal;
+      }
+
+      blockquote {
+        margin: 0.1em;
+        margin-left: 1em;
+        border-left: 2px solid #cccccc;
+        padding-left: 0.7em;
+      }
+
+      .color_red { color: #dc322f; }
+      .color_blue { color: #268bd2; }
+      .color_green { color: #859901; }
+      .color_yellow { color: #b58901; }
+      .color_black { color: black; }
+      .color_white { color: white; }
+
+      .font_big {
+        font-size: 1.2em;
+      }
+
+      .ddoc_section_h {
+        font-weight: bold;
+        font-size: 13px;
+        line-height: 19.5px;
+        margin-top: 11px;
+        display: block;
+      }
+
+      body.dlang .dlang {
+        display: inline-block;
+      }
+
+      body.dlang .declaration .dlang {
+          display: block;
+      }
+
+      body.dlang .ddoc_header_anchor a.dlang {
+        display: block;
+        color: rgba(0, 136, 204, 1);
+        text-decoration: none;
+      }
+
+      body.dlang .ddoc_header_anchor .code {
+        color: rgba(0, 136, 204, 1);
+      }
+
+      #ddoc_main .module {
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          overflow-x: hidden;
+          padding: 15px;
+      }
+
+      #ddoc_main .section .section {
+        margin-top: 0;
+      }
+
+      #ddoc_main .ddoc_module_members_section {
+          padding: 1px 0 0;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members section.intro {
+          background: #fff none repeat scroll 0 0;
+          list-style-type: none;
+          width: 100%;
+      }
+
+      #ddoc_main .ddoc_header_anchor {
+          font-size: 1.4em;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_header_anchor > .code {
+          display: inline-block;
+
+      }
+
+      #ddoc_main .ddoc_decl {
+        background-color: transparent;
+        height: 100%;
+        left: 0;
+        top: 0;
+        padding: 0;
+        padding-left: 15px;
+      }
+
+      #ddoc_main .ddoc_decl .section, #ddoc_main .section.ddoc_sections {
+        background: white none repeat scroll 0 0;
+        margin: 0;
+        padding: 5px;
+        position: relative;
+        border-radius: 5px;
+      }
+
+      #ddoc_main .ddoc_decl .section h4:first-of-type, #ddoc_main .section.ddoc_sections h4:first-of-type {
+        font-size: 13px;
+        line-height: 1.5;
+        margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration {
+          margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration .code {
+          color: rgba(0, 0, 0, 1);
+          margin-bottom: 15px;
+          padding-bottom: 6px;
+      }
+
+      #ddoc_main .declaration div .para {
+          margin-bottom: 0;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr td:first-of-type {
+        padding: 7px;
+        text-align: right;
+        vertical-align: top;
+        word-break: normal;
+        white-space: nowrap;
+      }
+
+      #ddoc_main .ddoc_params .graybox {
+        border: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox td {
+        border-color: rgba(214, 214, 214, 1);
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:first-child > td {
+        border-top: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:last-child > td {
+        border-bottom: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:first-child {
+        border-left: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:last-child {
+        border-right: 0 none;
+        width: 100%;
+      }
+
+      #ddoc_main em.term, #ddoc_main em.term .code {
+        color: rgba(65, 65, 65, 1);
+        font-size: 12px;
+        font-style: italic;
+        line-height: 1.5;
+      }
+
+      #ddoc_main .see-also {
+        cursor: pointer;
+        font-family: Menlo,monospace;
+      }
+
+      #ddoc_main .ddoc_decl .section > div:last-of-type {
+        margin-bottom: 15px;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members {
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .code_sample {
+        background: inherit;
+      }
+
+      #ddoc_main .declaration .code-line {
+          display: block;
+          font: 1em Menlo,monospace;
+      }
+
+      #ddoc_main a[name] {
+        margin: -112px 0 0;
+        padding-top: 112px;
+      }
+
+      #ddoc_main .ddoc_decl td {
+        max-width: inherit;
+      }
+
+      #ddoc_main .declaration a {
+        color: inherit;
+      }
+
+      #ddoc_main .declaration a:hover {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: underline;
+      }
+
+      body.ddoc {
+        background-color: transparent;
+        color: rgba(0, 0, 0, 1);
+        font-family: Helvetica,Arial,sans-serif;
+        font-size: 62.5%;
+        margin: 0;
+        border: 0;
+        left: 0;
+        top: 0;
+        padding: 0;
+      }
+
+      .ddoc a[name] {
+        display: block;
+        height: 0;
+        margin: -85px 0 0;
+        padding-top: 85px;
+        width: 0;
+      }
+
+      .ddoc .module {
+          border-color: transparent;
+          background-color: rgba(255, 255, 255, 1);
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-image: none;
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          box-shadow: 0 0 1px rgba(0, 0, 0, 0.07);
+          display: block;
+          margin-left: 0;
+          min-height: calc(100% - 173px);
+          overflow: auto;
+          padding-bottom: 100px;
+      }
+
+      .ddoc .content_wrapper {
+          background-color: rgba(242, 242, 242, 1);
+          margin: 0 auto;
+          max-width: 980px;
+      }
+
+      .ddoc .section {
+        padding: 15px 25px 30px;
+      }
+
+      .ddoc .section .section {
+        margin: 30px 0 0;
+        padding: 0;
+      }
+
+      .ddoc .para {
+        color: rgba(65, 65, 65, 1);
+        font-size: 1.4em;
+        line-height: 145%;
+        margin-bottom: 15px;
+      }
+
+      .ddoc .ddoc_examples .para {
+        margin-bottom: 0;
+      }
+
+      .ddoc .module_name {
+          color: rgba(0, 0, 0, 1);
+          display: block;
+          font-family: Helvetica;
+          font-size: 2.8em;
+          font-weight: 100;
+          margin-bottom: 0;
+          padding: 15px 0;
+      }
+
+      .ddoc .module a {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: none;
+      }
+
+      .ddoc .code {
+        color: rgba(128, 128, 128, 1);
+        font-family: Menlo,monospace;
+        font-size: 0.85em;
+        word-wrap: break-word;
+      }
+
+      .ddoc .code i {
+        font-style: normal;
+      }
+
+      .ddoc .code .code {
+        font-size: 1em;
+      }
+
+      .ddoc .code_sample {
+        background-clip: padding-box;
+        margin: 1px 0;
+        text-align: left;
+      }
+
+      .ddoc .code_sample {
+        display: block;
+        font-size: 1.4em;
+        margin-left: 21px;
+      }
+
+      .ddoc ol .code_sample {
+        font-size: 1em;
+      }
+
+      .ddoc .code_lines {
+        counter-reset: li;
+        line-height: 1.6em;
+        list-style: outside none none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .ddoc .code_listing .code_sample div {
+        margin-left: 13px;
+        width: 93%;
+      }
+
+      .ddoc .code_listing .code_sample div .code_lines li {
+        list-style-type: none;
+        margin: 0;
+        padding-right: 10px;
+      }
+
+      .ddoc .code_sample div .code_lines li::before {
+        margin-left: -33px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+10)::before {
+        margin-left: -39px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+100)::before {
+        margin-left: -46px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample .code_lines .code {
+        color: #000;
+      }
+
+      .ddoc div.dlang {
+        margin: 10px 0 21px;
+        padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+          margin: 10px 0 21px;
+          padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+        border-left: 5px solid rgba(0, 155, 51, 0.2);
+      }
+
+      .ddoc .code_lines li::before {
+        color: rgba(128, 128, 128, 1);
+        content: counter(li, decimal);
+        counter-increment: li;
+        font-family: Menlo,monospace;
+        font-size: 0.9em;
+        margin-right: 16px;
+      }
+
+      .ddoc .code_lines li {
+        padding-left: 0;
+        white-space: pre-wrap;
+      }
+
+      .ddoc .code_lines li:only-of-type::before {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:only-of-type {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:nth-child(n+10) {
+        text-indent: -17px;
+      }
+
+      .ddoc .code_lines li:nth-child(n+10)::before {
+        margin-right: 12px;
+      }
+
+      .ddoc .graybox {
+        border: 1px solid rgba(233, 233, 233, 1);
+        border-collapse: collapse;
+        border-spacing: 0;
+        empty-cells: hide;
+        margin: 20px 0 36px;
+        text-align: left;
+      }
+
+      .ddoc .graybox p {
+        margin: 0;
+        min-width: 50px;
+      }
+
+      .ddoc th {
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: bottom;
+      }
+
+      .ddoc td {
+        border: 1px solid rgba(233, 233, 233, 1);
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: middle;
+      }
+
+      .punctuation {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .comment {
+        color: rgba(0, 131, 18, 1);
+      }
+
+      .operator {
+        color: #000;
+      }
+
+      .keyword {
+        color: rgba(170, 13, 145, 1);
+      }
+
+      .keyword_type {
+        color: rgba(170, 51, 145, 1);
+      }
+
+      .string_literal {
+        color: rgba(196, 26, 22, 1);
+      }
+
+      .ddoc_psuper_symbol {
+        color: rgba(92, 38, 153, 1);
+      }
+
+      .param {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .psymbol {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .ddoc_member_header .ddoc_header_anchor .code {
+        font-size: 1em;
+      }
+    </style>
+  </head>
+  <body id="ddoc_main" class="ddoc dlang">
+    <div class="content_wrapper">
+      <article class="module">
+        <h1 class="module_name">enum</h1>
+        <section id="module_content"><br><br>
+<br><br>
+
+<br><br>
+<p> is the feature that enables defining named constant values.
+</p>
+<br><br>
+<h5> Effects of magic constants on code quality</h5>
+<br><br>
+<p>The following code appeared in the <a href="arithmetic.cozum.html">exercise solutions</a> of the Integers and Arithmetic Operations chapter:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">        <span class="keyword">if</span> (operation == 1) {
+            result = first + second;
+
+        } <span class="keyword">else</span> <span class="keyword">if</span> (operation == 2) {
+            result = first - second;
+
+        } <span class="keyword">else</span> <span class="keyword">if</span> (operation == 3) {
+            result = first * second;
+
+        } <span class="keyword">else</span> <span class="keyword">if</span> (operation == 4) {
+            result = first / second;
+        }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The integer literals , , , and  in that piece of code are called <i>magic constants</i>. It is not easy to determine what each of those literals means in the program. One must examine the code in each scope to determine that  means <i>addition</i>,  means <i>subtraction</i>, etc. This task is relatively easy for the code above because all of the scopes contain just a single line. It would be considerably more difficult to decipher the meanings of magic constants in most other programs.
+</p>
+<br><br>
+<p>Magic constants must be avoided because they impair two important qualities of source code: readability and maintainability.
+</p>
+<br><br>
+<p> enables giving names to such constants and, as a consequence, making the code more readable and maintainable. Each condition would be readily understandable if the following  constants were used:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">        <span class="keyword">if</span> (operation == Operation.add) {
+            result = first + second;
+
+        } <span class="keyword">else</span> <span class="keyword">if</span> (operation == Operation.subtract) {
+            result = first - second;
+
+        } <span class="keyword">else</span> <span class="keyword">if</span> (operation == Operation.multiply) {
+            result = first * second;
+
+        } <span class="keyword">else</span> <span class="keyword">if</span> (operation == Operation.divide) {
+            result = first / second;
+        }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The  type  above that obviates the need for magic constants , , , and  can be defined like this:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">enum</span> Operation { add = 1, subtract, multiply, divide }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h5>The  syntax</h5>
+<br><br>
+<p>The common definition of an  is the following:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">enum</span> <i>TypeName</i> { <i>ValueName_1</i>, <i>ValueName_2</i>, <span class="comment">/* etc. */</span> }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Sometimes it is necessary to specify the actual type (the <i>base type</i>) of the values as well:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">enum</span> <i>TypeName</i>  { <i>ValueName_1</i>, <i>ValueName_2</i>, <span class="comment">/* etc. */</span> }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>We will see how this is used in the next section.
+</p>
+<br><br>
+<p><i>TypeName</i> defines what the constants collectively mean. All of the member constants of an  <i>type</i> are listed within curly brackets. Here are some examples:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">enum</span> HeadsOrTails { heads, tails }
+    <span class="keyword">enum</span> Suit { spades, hearts, diamonds, clubs }
+    <span class="keyword">enum</span> Fare { regular, child, student, senior }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Each set of constants becomes part of a separate type. For example,  and  become members of the type . The new type can be used like other fundamental types when defining variables:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    HeadsOrTails result;           <span class="comment">// default initialized
+</span>    <span class="keyword">auto</span> ht = HeadsOrTails.heads;  <span class="comment">// inferred type
+</span></code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>As has been seen in the pieces of code above, the members of  types are always specified by the name of their  type:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">if</span> (result == heads) {
+        <span class="comment">// ...
+</span>    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h5>Actual values and base types</h5>
+<br><br>
+<p>The member constants of  types are by default implemented as  values. In other words, although on the surface they appear as just names such as  and , they also have numerical values. (<i><b>Note:</b> It is possible to choose a type other than  when needed.</i>).
+</p>
+<br><br>
+<p>Unless explicitly specified by the programmer, the numerical values of  members start at  and are incremented by one for each member. For example, the two members of the   have the numerical values 0 and 1:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    writeln(<span class="string_literal">"heads is 0: "</span>, (HeadsOrTails.heads == 0));
+    writeln(<span class="string_literal">"tails is 1: "</span>, (HeadsOrTails.tails == 1));
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output:
+</p>
+<br><br>
+
+<br><br>
+<p>It is possible to manually (re)set the values at any point in the . That was the case when we specified the value of  as 1 above. The following example manually sets a new count twice:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">enum</span> Test { a, b, c, ç , d, e, f , g, ğ }
+    writefln(<span class="string_literal">"%d %d %d"</span>, Test.b, Test.ç, Test.ğ);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output:
+</p>
+<br><br>
+
+<br><br>
+<p>If  is not suitable as the base type of the  values, the base type can be specified explicitly after the name of the :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">enum</span> NaturalConstant  { pi = 3.14, e = 2.72 }
+    <span class="keyword">enum</span> TemperatureUnit  { C = <span class="string_literal">"Celsius"</span>, F = <span class="string_literal">"Fahrenheit"</span> }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h5> values that are not of an  type</h5>
+<br><br>
+<p>We have discussed that it is important to avoid magic constants and instead to take advantage of the  feature.
+</p>
+<br><br>
+<p>However, sometimes it may not be natural to come up with  type names just to use named constants. Let's assume that a named constant is needed to represent the number of seconds per day. It should not be necessary to also define an  <i>type</i> to contain this constant value. All that is needed is a constant value that can be referred to by its name. In such cases, the type name of the  and the curly brackets are omitted:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">enum</span> secondsPerDay = 60 * 60 * 24;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The type of the constant can be specified explicitly, which would be required if the type cannot be inferred from the right hand side:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">enum</span>  secondsPerDay = 60 * 60 * 24;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Since there is no  type to refer to, such named constants can be used in code simply by their names:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    totalSeconds = totalDays * ;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p> can be used for defining named constants of other types as well. For example, the type of the following constant would be :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">enum</span> fileName = <span class="string_literal">"list.txt"</span>;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>  Such constants are <a href="lvalue_rvalue.html"><i>rvalues</i></a> and they are called <i>manifest constants</i>.
+</p>
+<br><br>
+<p>It is possible to create manifest constants of arrays and associative arrays as well. However, as we will see later in <a href="const_and_immutable.html">the Immutability chapter</a>,  arrays and associative arrays may have hidden costs.
+</p>
+<br><br>
+<h5>Properties</h5>
+<br><br>
+<p>The  and  properties are the minimum and maximum values of an  type. When the values of the  type are consecutive, they can be iterated over in a  loop within these limits:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">enum</span> Suit { spades, hearts, diamonds, clubs }
+
+    <span class="keyword">for</span> (<span class="keyword">auto</span> suit = Suit; suit &lt;= Suit; ++suit) {
+        writefln(<span class="string_literal">"%s: %d"</span>, suit, suit);
+    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Format specifiers  and  produce different outputs:
+</p>
+<br><br>
+
+<br><br>
+<p>Note that a  loop over that range would leave the  value out of the iteration:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">foreach</span> (suit; Suit.min .. Suit.max) {
+        writefln(<span class="string_literal">"%s: %d"</span>, suit, suit);
+    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output:
+</p>
+<br><br>
+
+<br><br>
+<p> For that reason, a correct way of iterating over all values of an  is using the  template from the  module:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.traits;
+<span class="comment">// ...
+</span>    <span class="keyword">foreach</span> (suit; ) {
+        writefln(<span class="string_literal">"%s: %d"</span>, suit, suit);
+    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p><i><b>Note:</b> The  character above is for template instantiations, which will be covered in <a href="templates.html">a later chapter</a>.</i>
+</p>
+<br><br>
+
+<br><br>
+<h5>Converting from the base type</h5>
+<br><br>
+<p>As we saw in the formatted outputs above, an  value can automatically be converted to its base type (e.g. to ). The reverse conversion is not automatic:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    Suit suit = 1;       
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>One reason for this is to avoid ending up with invalid  values:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    suit = 100;          <span class="comment">// ← would be an invalid enum value
+</span></code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The values that are known to correspond to valid  values of a particular  type can still be converted to that type by an explicit <i>type cast</i>:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    suit = <span class="keyword">cast</span>(Suit)1;  <span class="comment">// now hearts
+</span></code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>It would be the programmer's responsibility to ensure the validity of the values when an explicit cast is used. We will see type casting in <a href="cast.html">a later chapter</a>.
+</p>
+<br><br>
+
+
+</section>
+      </article>
+    </div>
+  </body>
+</html>

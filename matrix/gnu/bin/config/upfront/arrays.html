@@ -1,0 +1,1188 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Arrays</title>
+    <style type="text/css" media="screen">
+      html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p,
+      blockquote, pre, a, abbr, address, cite, code, del, dfn, em, figure,
+      img, ins, kbd, q, s, samp, small, strong, sub, sup, var, b, u, i, dl,
+      dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption,
+      tbody, tfoot, thead, tr, th, td {
+        background: transparent none repeat scroll 0 0;
+        border: 0 none;
+        font-size: 100%;
+        margin: 0;
+        outline: 0 none;
+        padding: 0;
+        vertical-align: baseline;
+      }
+
+      h1 { font-size: 200%; }
+      h2 { font-size: 160%; }
+      h3 { font-size: 120%; }
+      h4 { font-size: 100%; }
+      h5 { font-size: 80%; }
+      h6 { font-size: 80%; font-weight: normal; }
+
+      ul, ol {
+        margin: 1.4em 0;
+      }
+      ul ul, ol ol, ul ol, ol ul {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      ul, ol {
+        margin-left: 2.8em;
+      }
+
+      ol {
+        list-style: decimal;
+      }
+      ol ol {
+        list-style: lower-alpha;
+      }
+      ol ol ol {
+        list-style: lower-roman;
+      }
+      ol ol ol ol {
+        list-style: decimal;
+      }
+
+      blockquote {
+        margin: 0.1em;
+        margin-left: 1em;
+        border-left: 2px solid #cccccc;
+        padding-left: 0.7em;
+      }
+
+      .color_red { color: #dc322f; }
+      .color_blue { color: #268bd2; }
+      .color_green { color: #859901; }
+      .color_yellow { color: #b58901; }
+      .color_black { color: black; }
+      .color_white { color: white; }
+
+      .font_big {
+        font-size: 1.2em;
+      }
+
+      .ddoc_section_h {
+        font-weight: bold;
+        font-size: 13px;
+        line-height: 19.5px;
+        margin-top: 11px;
+        display: block;
+      }
+
+      body.dlang .dlang {
+        display: inline-block;
+      }
+
+      body.dlang .declaration .dlang {
+          display: block;
+      }
+
+      body.dlang .ddoc_header_anchor a.dlang {
+        display: block;
+        color: rgba(0, 136, 204, 1);
+        text-decoration: none;
+      }
+
+      body.dlang .ddoc_header_anchor .code {
+        color: rgba(0, 136, 204, 1);
+      }
+
+      #ddoc_main .module {
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          overflow-x: hidden;
+          padding: 15px;
+      }
+
+      #ddoc_main .section .section {
+        margin-top: 0;
+      }
+
+      #ddoc_main .ddoc_module_members_section {
+          padding: 1px 0 0;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members section.intro {
+          background: #fff none repeat scroll 0 0;
+          list-style-type: none;
+          width: 100%;
+      }
+
+      #ddoc_main .ddoc_header_anchor {
+          font-size: 1.4em;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_header_anchor > .code {
+          display: inline-block;
+
+      }
+
+      #ddoc_main .ddoc_decl {
+        background-color: transparent;
+        height: 100%;
+        left: 0;
+        top: 0;
+        padding: 0;
+        padding-left: 15px;
+      }
+
+      #ddoc_main .ddoc_decl .section, #ddoc_main .section.ddoc_sections {
+        background: white none repeat scroll 0 0;
+        margin: 0;
+        padding: 5px;
+        position: relative;
+        border-radius: 5px;
+      }
+
+      #ddoc_main .ddoc_decl .section h4:first-of-type, #ddoc_main .section.ddoc_sections h4:first-of-type {
+        font-size: 13px;
+        line-height: 1.5;
+        margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration {
+          margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration .code {
+          color: rgba(0, 0, 0, 1);
+          margin-bottom: 15px;
+          padding-bottom: 6px;
+      }
+
+      #ddoc_main .declaration div .para {
+          margin-bottom: 0;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr td:first-of-type {
+        padding: 7px;
+        text-align: right;
+        vertical-align: top;
+        word-break: normal;
+        white-space: nowrap;
+      }
+
+      #ddoc_main .ddoc_params .graybox {
+        border: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox td {
+        border-color: rgba(214, 214, 214, 1);
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:first-child > td {
+        border-top: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:last-child > td {
+        border-bottom: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:first-child {
+        border-left: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:last-child {
+        border-right: 0 none;
+        width: 100%;
+      }
+
+      #ddoc_main em.term, #ddoc_main em.term .code {
+        color: rgba(65, 65, 65, 1);
+        font-size: 12px;
+        font-style: italic;
+        line-height: 1.5;
+      }
+
+      #ddoc_main .see-also {
+        cursor: pointer;
+        font-family: Menlo,monospace;
+      }
+
+      #ddoc_main .ddoc_decl .section > div:last-of-type {
+        margin-bottom: 15px;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members {
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .code_sample {
+        background: inherit;
+      }
+
+      #ddoc_main .declaration .code-line {
+          display: block;
+          font: 1em Menlo,monospace;
+      }
+
+      #ddoc_main a[name] {
+        margin: -112px 0 0;
+        padding-top: 112px;
+      }
+
+      #ddoc_main .ddoc_decl td {
+        max-width: inherit;
+      }
+
+      #ddoc_main .declaration a {
+        color: inherit;
+      }
+
+      #ddoc_main .declaration a:hover {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: underline;
+      }
+
+      body.ddoc {
+        background-color: transparent;
+        color: rgba(0, 0, 0, 1);
+        font-family: Helvetica,Arial,sans-serif;
+        font-size: 62.5%;
+        margin: 0;
+        border: 0;
+        left: 0;
+        top: 0;
+        padding: 0;
+      }
+
+      .ddoc a[name] {
+        display: block;
+        height: 0;
+        margin: -85px 0 0;
+        padding-top: 85px;
+        width: 0;
+      }
+
+      .ddoc .module {
+          border-color: transparent;
+          background-color: rgba(255, 255, 255, 1);
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-image: none;
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          box-shadow: 0 0 1px rgba(0, 0, 0, 0.07);
+          display: block;
+          margin-left: 0;
+          min-height: calc(100% - 173px);
+          overflow: auto;
+          padding-bottom: 100px;
+      }
+
+      .ddoc .content_wrapper {
+          background-color: rgba(242, 242, 242, 1);
+          margin: 0 auto;
+          max-width: 980px;
+      }
+
+      .ddoc .section {
+        padding: 15px 25px 30px;
+      }
+
+      .ddoc .section .section {
+        margin: 30px 0 0;
+        padding: 0;
+      }
+
+      .ddoc .para {
+        color: rgba(65, 65, 65, 1);
+        font-size: 1.4em;
+        line-height: 145%;
+        margin-bottom: 15px;
+      }
+
+      .ddoc .ddoc_examples .para {
+        margin-bottom: 0;
+      }
+
+      .ddoc .module_name {
+          color: rgba(0, 0, 0, 1);
+          display: block;
+          font-family: Helvetica;
+          font-size: 2.8em;
+          font-weight: 100;
+          margin-bottom: 0;
+          padding: 15px 0;
+      }
+
+      .ddoc .module a {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: none;
+      }
+
+      .ddoc .code {
+        color: rgba(128, 128, 128, 1);
+        font-family: Menlo,monospace;
+        font-size: 0.85em;
+        word-wrap: break-word;
+      }
+
+      .ddoc .code i {
+        font-style: normal;
+      }
+
+      .ddoc .code .code {
+        font-size: 1em;
+      }
+
+      .ddoc .code_sample {
+        background-clip: padding-box;
+        margin: 1px 0;
+        text-align: left;
+      }
+
+      .ddoc .code_sample {
+        display: block;
+        font-size: 1.4em;
+        margin-left: 21px;
+      }
+
+      .ddoc ol .code_sample {
+        font-size: 1em;
+      }
+
+      .ddoc .code_lines {
+        counter-reset: li;
+        line-height: 1.6em;
+        list-style: outside none none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .ddoc .code_listing .code_sample div {
+        margin-left: 13px;
+        width: 93%;
+      }
+
+      .ddoc .code_listing .code_sample div .code_lines li {
+        list-style-type: none;
+        margin: 0;
+        padding-right: 10px;
+      }
+
+      .ddoc .code_sample div .code_lines li::before {
+        margin-left: -33px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+10)::before {
+        margin-left: -39px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+100)::before {
+        margin-left: -46px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample .code_lines .code {
+        color: #000;
+      }
+
+      .ddoc div.dlang {
+        margin: 10px 0 21px;
+        padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+          margin: 10px 0 21px;
+          padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+        border-left: 5px solid rgba(0, 155, 51, 0.2);
+      }
+
+      .ddoc .code_lines li::before {
+        color: rgba(128, 128, 128, 1);
+        content: counter(li, decimal);
+        counter-increment: li;
+        font-family: Menlo,monospace;
+        font-size: 0.9em;
+        margin-right: 16px;
+      }
+
+      .ddoc .code_lines li {
+        padding-left: 0;
+        white-space: pre-wrap;
+      }
+
+      .ddoc .code_lines li:only-of-type::before {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:only-of-type {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:nth-child(n+10) {
+        text-indent: -17px;
+      }
+
+      .ddoc .code_lines li:nth-child(n+10)::before {
+        margin-right: 12px;
+      }
+
+      .ddoc .graybox {
+        border: 1px solid rgba(233, 233, 233, 1);
+        border-collapse: collapse;
+        border-spacing: 0;
+        empty-cells: hide;
+        margin: 20px 0 36px;
+        text-align: left;
+      }
+
+      .ddoc .graybox p {
+        margin: 0;
+        min-width: 50px;
+      }
+
+      .ddoc th {
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: bottom;
+      }
+
+      .ddoc td {
+        border: 1px solid rgba(233, 233, 233, 1);
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: middle;
+      }
+
+      .punctuation {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .comment {
+        color: rgba(0, 131, 18, 1);
+      }
+
+      .operator {
+        color: #000;
+      }
+
+      .keyword {
+        color: rgba(170, 13, 145, 1);
+      }
+
+      .keyword_type {
+        color: rgba(170, 51, 145, 1);
+      }
+
+      .string_literal {
+        color: rgba(196, 26, 22, 1);
+      }
+
+      .ddoc_psuper_symbol {
+        color: rgba(92, 38, 153, 1);
+      }
+
+      .param {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .psymbol {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .ddoc_member_header .ddoc_header_anchor .code {
+        font-size: 1em;
+      }
+    </style>
+  </head>
+  <body id="ddoc_main" class="ddoc dlang">
+    <div class="content_wrapper">
+      <article class="module">
+        <h1 class="module_name">Arrays</h1>
+        <section id="module_content"><br><br>
+<br><br>
+
+<br><br>
+<p>We have defined five variables in one of the exercises of the last chapter, and used them in certain calculations. The definitions of those variables were the following:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">double</span> value_1;
+    <span class="keyword">double</span> value_2;
+    <span class="keyword">double</span> value_3;
+    <span class="keyword">double</span> value_4;
+    <span class="keyword">double</span> value_5;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>This method of defining variables individually does not scale to cases where even more variables are needed. Imagine needing a thousand values; it is almost impossible to define a thousand variables from  to .
+</p>
+<br><br>
+<p>Arrays are useful in such cases: the array feature allows us to define a single variable that stores multiple values together. Although simple, arrays are the most common data structure used to store a collection of values.
+</p>
+<br><br>
+<p>This chapter covers only some of the features of arrays. More features will be introduced later in <a href="slices.html">the Slices and Other Array Features chapter</a>.
+</p>
+<br><br>
+<h5>Definition</h5>
+<br><br>
+<p>The definition of array variables is very similar to the definition of normal variables. The only difference is that the number of values associated with the variable is specified in square brackets. We can contrast the two definitions as follows:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span>     singleValue;
+    <span class="keyword">int</span>[10] arrayOfTenValues;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The first line above is the definition of a variable which stores a single value, just like the variables that we have defined so far. The second line is the definition of a variable which stores ten consecutive values. In other words, it stores an array of ten integer values. You can also think of it as defining ten variables of the same type, or as defining an array, for short.
+</p>
+<br><br>
+<p>Accordingly, the equivalent of the five separate variables above can be defined as an array of five values using the following syntax:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">double</span>[5] values;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p> That definition can be read as <i>5 double values</i>. Note that I have chosen the name of the array variable as plural to avoid confusing it with a single-valued variable. Variables which only store a single value are called scalar variables.
+</p>
+<br><br>
+<p>In summary, the definition of an array variable consists of the type of the values, the number of values, and the name of the variable that refers to the array of values:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <i>type_name</i>[<i>value_count</i>] <i>variable_name</i>;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The type of the values can also be a user-defined type. (We will see user-defined types later.) For example:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="comment">// An array that holds the weather information of all
+</span>    <span class="comment">// cities. Here, the bool values may mean
+</span>    <span class="comment">//   false: overcast
+</span>    <span class="comment">//   true : sunny
+</span>    <span class="keyword">bool</span>[cityCount] weatherConditions;
+
+    <span class="comment">// An array that holds the weights of a hundred boxes
+</span>    <span class="keyword">double</span>[100] boxWeights;
+
+    <span class="comment">// Information about the students of a school
+</span>    StudentInformation[studentCount] studentInformation;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h5>  Containers and elements</h5>
+<br><br>
+<p>Data structures that bring elements of a certain type together are called <i>containers</i>. According to this definition, arrays are containers. For example, an array that holds the air temperatures of the days in July can bring 31  values together and form <i>a container of elements of type </i>.
+</p>
+<br><br>
+<p>The variables of a container are called <i>elements</i>. The number of elements of an array is called the <i>length</i> of the array.
+</p>
+<br><br>
+<h5> Accessing the elements</h5>
+<br><br>
+<p>In order to differentiate the variables in the exercise of the previous chapter, we appended an underscore and a number to their names as in . This is not possible nor necessary when a single array stores all the values under a single name. Instead, the elements are accessed by specifying the <i>element number</i> within square brackets:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    values[0]
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>That expression can be read as <i>the element with the number 0 of the array named values</i>. In other words, instead of typing  one must type  with arrays.
+</p>
+<br><br>
+<p>There are two important points worth stressing here:
+</p>
+<br><br>
+<ul><br><br>
+<li><b>The numbers start with zero:</b> Although humans assign numbers to items starting with 1, the numbers in arrays start at 0. The values that we have numbered as 1, 2, 3, 4, and 5 before are numbered as 0, 1, 2, 3, and 4 in the array. This variation can confuse new programmers.
+</li>
+<br><br>
+<li><b>Two different uses of the  characters:</b> Don't confuse the two separate uses of the  characters. When defining arrays, the  characters are written after the type of the elements and specify the number of elements. When accessing elements, the  characters are written after the name of the array and specify the number of the element that is being accessed:
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="comment">// This is a definition. It defines an array that consists
+</span>    <span class="comment">// of 12 elements. This array is used to hold the number
+</span>    <span class="comment">// of days in each month.
+</span>    <span class="keyword">int</span>[12] monthDays;
+
+    <span class="comment">// This is an access. It accesses the element that
+</span>    <span class="comment">// corresponds to December and sets its value to 31.
+</span>    monthDays[11] = 31;
+
+    <span class="comment">// This is another access. It accesses the element that
+</span>    <span class="comment">// corresponds to January, the value of which is passed to
+</span>    <span class="comment">// writeln.
+</span>    writeln(<span class="string_literal">"January has "</span>, monthDays[0], <span class="string_literal">" days."</span>);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p><b>Reminder:</b> The element numbers of January and December are 0 and 11 respectively; not 1 and 12.
+</p>
+<br><br>
+</li>
+<br><br>
+</ul>
+<br><br>
+<h5> Index</h5>
+<br><br>
+<p>The number of an element is called its <i>index</i> and the act of accessing an element is called <i>indexing</i>.
+</p>
+<br><br>
+<p>An index need not be a constant value; the value of a variable can also be used as an index, making arrays even more useful. For example, the month can be determined by the value of the  variable below:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    writeln(<span class="string_literal">"This month has "</span>, monthDays[monthIndex], <span class="string_literal">" days."</span>);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>When the value of  is 2, the expression above would print the value of , the number of days in March.
+</p>
+<br><br>
+<p>Only the index values between zero and one less than the length of the array are valid. For example, the valid indexes of a three-element array are 0, 1, and 2. Accessing an array with an invalid index causes the program to be terminated with an error.
+</p>
+<br><br>
+<p>Arrays are containers where the elements are placed side by side in the computer's memory. For example, the elements of the array holding the number of days in each month can be shown as follows (assuming a year when February has 28 days):
+</p>
+<br><br>
+
+<br><br>
+<p><i><b>Note:</b> The indexes above are for demonstration purposes only; they are not stored in the computer's memory.</i>
+</p>
+<br><br>
+<p>The element at index 0 has the value 31 (number of days in January); the element at index 1 has the value of 28 (number of days in February), etc.
+</p>
+<br><br>
+<h5>   Fixed-length arrays vs. dynamic arrays</h5>
+<br><br>
+<p>When the length of an array is specified when the program is written, that array is a <i>fixed-length array</i>. When the length can change during the execution of the program, that array is a <i>dynamic array</i>.
+</p>
+<br><br>
+<p>Both of the arrays that we have defined above are fixed-length arrays because their element counts are specified as 5 and 12 at the time when the program is written. The lengths of those arrays cannot be changed during the execution of the program. To change their lengths, the source code must be modified and the program must be recompiled.
+</p>
+<br><br>
+<p>Defining dynamic arrays is simpler than defining fixed-length arrays because omitting the length makes a dynamic array:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span>[] dynamicArray;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The length of such an array can increase or decrease during the execution of the program.
+</p>
+<br><br>
+<p>Fixed-length arrays are also known as static arrays.
+</p>
+<br><br>
+<h5> Using  to get or set the number of elements</h5>
+<br><br>
+<p>Arrays have properties as well, of which we will see only  here.  returns the number of elements of the array:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    writeln(<span class="string_literal">"The array has "</span>, array.length, <span class="string_literal">" elements."</span>);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Additionally, the length of dynamic arrays can be changed by assigning a value to this property:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span>[] array;            <span class="comment">// initially empty
+</span>    array.length = 5;       <span class="comment">// now has 5 elements
+</span></code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h5>An array example</h5>
+<br><br>
+<p>Let's now revisit the exercise with the five values and write it again by using an array:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> main() {
+    <span class="comment">// This variable is used as a loop counter
+</span>    <span class="keyword">int</span> counter;
+
+    <span class="comment">// The definition of a fixed-length array of five
+</span>    <span class="comment">// elements of type double
+</span>    <span class="keyword">double</span>[5] values;
+
+    <span class="comment">// Reading the values in a loop
+</span>    <span class="keyword">while</span> (counter &lt; values.length) {
+        write(<span class="string_literal">"Value "</span>, counter + 1, <span class="string_literal">": "</span>);
+        readf(<span class="string_literal">" %s"</span>, &amp;values[counter]);
+        ++counter;
+    }
+
+    writeln(<span class="string_literal">"Twice the values:"</span>);
+    counter = 0;
+    <span class="keyword">while</span> (counter &lt; values.length) {
+        writeln(values[counter] * 2);
+        ++counter;
+    }
+
+    <span class="comment">// The loop that calculates the fifths of the values would
+</span>    <span class="comment">// be written similarly
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p><b>Observations:</b> The value of  determines how many times the loops are repeated (iterated). Iterating the loop while its value is less than  ensures that the loops are executed once per element. As the value of that variable is incremented at the end of each iteration, the  expression refers to the elements of the array one by one: , , etc.
+</p>
+<br><br>
+<p>To see how this program is better than the previous one, imagine needing to read 20 values. The program above would require a single change: replacing 5 with 20. On the other hand, a program that did not use an array would have to have 20 variable definitions. Furthermore, since you would be unable to use a loop to iterate the 20 values, you would also have to repeat several lines 20 times, one time for each single-valued variable.
+</p>
+<br><br>
+<h5> Initializing the elements</h5>
+<br><br>
+<p>Like every variable in D, the elements of arrays are automatically initialized. The initial value of the elements depends on the type of the elements: 0 for ,  for , etc.
+</p>
+<br><br>
+<p>All of the elements of the  array above are initialized to :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">double</span>[5] values;     <span class="comment">// elements are all double.nan
+</span></code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Obviously, the values of the elements can be changed later during the execution of the program. We have already seen this above when assigning to an element of an array:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    monthDays[11] = 31;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>That also happened when reading a value from the input:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    readf(<span class="string_literal">" %s"</span>, &amp;values[counter]);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Sometimes the desired values of the elements are known at the time when the array is defined. In such cases, the initial values of the elements can be specified on the right-hand side of the assignment operator, within square brackets. Let's see this in a program that reads the number of the month from the user, and prints the number of days in that month:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> main() {
+    <span class="comment">// Assuming that February has 28 days
+</span>    <span class="keyword">int</span>[12] monthDays =
+        [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
+
+    write(<span class="string_literal">"Please enter the number of the month: "</span>);
+    <span class="keyword">int</span> monthNumber;
+    readf(<span class="string_literal">" %s"</span>, &amp;monthNumber);
+
+    <span class="keyword">int</span> index = monthNumber - 1;
+    writeln(<span class="string_literal">"Month "</span>, monthNumber, <span class="string_literal">" has "</span>,
+            monthDays[index], <span class="string_literal">" days."</span>);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>As you can see, the  array is defined and initialized at the same time. Also note that the number of the month, which is in the range <span style="white-space: nowrap">1-12</span>, is converted to a valid array index in the range <span style="white-space: nowrap">0-11</span>. Any value that is entered outside of the <span style="white-space: nowrap">1-12</span> range would cause the program to be terminated with an error.
+</p>
+<br><br>
+<p>When initializing arrays, it is possible to use a single value on the right-hand side. In that case all of the elements of the array are initialized to that value:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span>[10] allOnes = 1;    <span class="comment">// All of the elements are set to 1
+</span></code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h5>Basic array operations</h5>
+<br><br>
+<p>Arrays provide convenience operations that apply to all of their elements.
+</p>
+<br><br>
+<h6> Copying fixed-length arrays</h6>
+<br><br>
+<p>The assignment operator copies all of the elements from the right-hand side to the left-hand side:
+</p>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span>[5] source = [ 10, 20, 30, 40, 50 ];
+    <span class="keyword">int</span>[5] destination;
+
+    destination  source;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p><i><b>Note:</b> The meaning of the assignment operation is completely different for dynamic arrays. We will see this in a later chapter.</i>
+</p>
+<br><br>
+<h6>   Adding elements to dynamic arrays</h6>
+<br><br>
+<p>The  operator adds new elements to the end of a dynamic array:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span>[] array;                <span class="comment">// empty
+</span>    array ~= 7;                 <span class="comment">// array is now equal to [7]
+</span>    array ~= 360;               <span class="comment">// array is now equal to [7, 360]
+</span>    array ~= [ 30, 40 ];        <span class="comment">// array is now equal to [7, 360, 30, 40]
+</span></code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>It is not possible to add elements to fixed-length arrays:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span>[] array;
+    array ~= 7;                 
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h6> Removing elements from dynamic arrays</h6>
+<br><br>
+<p>Array elements can be removed with the  function from the  module. Because there may be more than one <i>slice</i> to the same elements,  cannot actually change the number of element of the array. Rather, it has to move some of the elements of the array one or more positions to the left. For that reason, the result of the remove operation must be assigned back to the same array variable.
+</p>
+<br><br>
+<p>There are two different ways of using :
+</p>
+<br><br>
+<ol><li>Providing the index of the element to remove. For example, the following code removes the element at index 1.
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+<span class="keyword">import</span> std.algorithm;
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">int</span>[] array = [ 10, 20, 30, 40 ];
+     array.remove();                <span class="comment">// Assigned back to array
+</span>    writeln(array);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+</li>
+<br><br>
+<li>Specifying the elements to remove with a <i>lambda function</i>, which we will cover in <a href="lambda.html">a later chapter</a>. For example, the following code removes the elements of the array that are equal to 42.
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+<span class="keyword">import</span> std.algorithm;
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">int</span>[] array = [ 10, 42, 20, 30, 42, 40 ];
+     array.remove!(a =&gt; );    <span class="comment">// Assigned back to array
+</span>    writeln(array);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+</li>
+<br><br>
+</ol>
+<br><br>
+<h6>  Combining arrays</h6>
+<br><br>
+<p>The  operator creates a new array by combining two arrays. Its  counterpart combines the two arrays and assigns the result back to the left-hand side array:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">int</span>[10] first = 1;
+    <span class="keyword">int</span>[10] second = 2;
+    <span class="keyword">int</span>[] result;
+
+    result = first ~ second;
+    writeln(result.length);     <span class="comment">// prints 20
+</span>
+    result ~= first;
+    writeln(result.length);     <span class="comment">// prints 30
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The  operator cannot be used when the left-hand side array is a fixed-length array:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span>[20] result;
+    <span class="comment">// ...
+</span>    result  first;          
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>If the array sizes are not equal, the program is terminated with an error during assignment:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span>[10] first = 1;
+    <span class="keyword">int</span>[10] second = 2;
+    <span class="keyword">int</span>[] result;
+
+    result = first ~ second;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<h6> Sorting the elements</h6>
+<br><br>
+<p> can sort the elements of many types of collections. In the case of integers, the elements get sorted from the smallest value to the greatest value. In order to use the  function, one must import the  module first. (We will see functions in a later chapter.)
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+<span class="keyword">import</span> std.algorithm;
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">int</span>[] array = [ 4, 3, 1, 5, 2 ];
+    (array);
+    writeln(array);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output:
+</p>
+<br><br>
+
+<br><br>
+<h6> Reversing the elements</h6>
+<br><br>
+<p> reverses the elements in place (the first element becomes the last element, etc.):
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+<span class="keyword">import</span> std.algorithm;
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">int</span>[] array = [ 4, 3, 1, 5, 2 ];
+    (array);
+    writeln(array);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output:
+</p>
+<br><br>
+
+<br><br>
+
+
+</section>
+      </article>
+    </div>
+  </body>
+</html>

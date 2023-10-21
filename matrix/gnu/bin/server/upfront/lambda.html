@@ -1,0 +1,1994 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Function Pointers, Delegates, and Lambdas</title>
+    <style type="text/css" media="screen">
+      html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p,
+      blockquote, pre, a, abbr, address, cite, code, del, dfn, em, figure,
+      img, ins, kbd, q, s, samp, small, strong, sub, sup, var, b, u, i, dl,
+      dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption,
+      tbody, tfoot, thead, tr, th, td {
+        background: transparent none repeat scroll 0 0;
+        border: 0 none;
+        font-size: 100%;
+        margin: 0;
+        outline: 0 none;
+        padding: 0;
+        vertical-align: baseline;
+      }
+
+      h1 { font-size: 200%; }
+      h2 { font-size: 160%; }
+      h3 { font-size: 120%; }
+      h4 { font-size: 100%; }
+      h5 { font-size: 80%; }
+      h6 { font-size: 80%; font-weight: normal; }
+
+      ul, ol {
+        margin: 1.4em 0;
+      }
+      ul ul, ol ol, ul ol, ol ul {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      ul, ol {
+        margin-left: 2.8em;
+      }
+
+      ol {
+        list-style: decimal;
+      }
+      ol ol {
+        list-style: lower-alpha;
+      }
+      ol ol ol {
+        list-style: lower-roman;
+      }
+      ol ol ol ol {
+        list-style: decimal;
+      }
+
+      blockquote {
+        margin: 0.1em;
+        margin-left: 1em;
+        border-left: 2px solid #cccccc;
+        padding-left: 0.7em;
+      }
+
+      .color_red { color: #dc322f; }
+      .color_blue { color: #268bd2; }
+      .color_green { color: #859901; }
+      .color_yellow { color: #b58901; }
+      .color_black { color: black; }
+      .color_white { color: white; }
+
+      .font_big {
+        font-size: 1.2em;
+      }
+
+      .ddoc_section_h {
+        font-weight: bold;
+        font-size: 13px;
+        line-height: 19.5px;
+        margin-top: 11px;
+        display: block;
+      }
+
+      body.dlang .dlang {
+        display: inline-block;
+      }
+
+      body.dlang .declaration .dlang {
+          display: block;
+      }
+
+      body.dlang .ddoc_header_anchor a.dlang {
+        display: block;
+        color: rgba(0, 136, 204, 1);
+        text-decoration: none;
+      }
+
+      body.dlang .ddoc_header_anchor .code {
+        color: rgba(0, 136, 204, 1);
+      }
+
+      #ddoc_main .module {
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          overflow-x: hidden;
+          padding: 15px;
+      }
+
+      #ddoc_main .section .section {
+        margin-top: 0;
+      }
+
+      #ddoc_main .ddoc_module_members_section {
+          padding: 1px 0 0;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members section.intro {
+          background: #fff none repeat scroll 0 0;
+          list-style-type: none;
+          width: 100%;
+      }
+
+      #ddoc_main .ddoc_header_anchor {
+          font-size: 1.4em;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_header_anchor > .code {
+          display: inline-block;
+
+      }
+
+      #ddoc_main .ddoc_decl {
+        background-color: transparent;
+        height: 100%;
+        left: 0;
+        top: 0;
+        padding: 0;
+        padding-left: 15px;
+      }
+
+      #ddoc_main .ddoc_decl .section, #ddoc_main .section.ddoc_sections {
+        background: white none repeat scroll 0 0;
+        margin: 0;
+        padding: 5px;
+        position: relative;
+        border-radius: 5px;
+      }
+
+      #ddoc_main .ddoc_decl .section h4:first-of-type, #ddoc_main .section.ddoc_sections h4:first-of-type {
+        font-size: 13px;
+        line-height: 1.5;
+        margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration {
+          margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration .code {
+          color: rgba(0, 0, 0, 1);
+          margin-bottom: 15px;
+          padding-bottom: 6px;
+      }
+
+      #ddoc_main .declaration div .para {
+          margin-bottom: 0;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr td:first-of-type {
+        padding: 7px;
+        text-align: right;
+        vertical-align: top;
+        word-break: normal;
+        white-space: nowrap;
+      }
+
+      #ddoc_main .ddoc_params .graybox {
+        border: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox td {
+        border-color: rgba(214, 214, 214, 1);
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:first-child > td {
+        border-top: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:last-child > td {
+        border-bottom: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:first-child {
+        border-left: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:last-child {
+        border-right: 0 none;
+        width: 100%;
+      }
+
+      #ddoc_main em.term, #ddoc_main em.term .code {
+        color: rgba(65, 65, 65, 1);
+        font-size: 12px;
+        font-style: italic;
+        line-height: 1.5;
+      }
+
+      #ddoc_main .see-also {
+        cursor: pointer;
+        font-family: Menlo,monospace;
+      }
+
+      #ddoc_main .ddoc_decl .section > div:last-of-type {
+        margin-bottom: 15px;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members {
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .code_sample {
+        background: inherit;
+      }
+
+      #ddoc_main .declaration .code-line {
+          display: block;
+          font: 1em Menlo,monospace;
+      }
+
+      #ddoc_main a[name] {
+        margin: -112px 0 0;
+        padding-top: 112px;
+      }
+
+      #ddoc_main .ddoc_decl td {
+        max-width: inherit;
+      }
+
+      #ddoc_main .declaration a {
+        color: inherit;
+      }
+
+      #ddoc_main .declaration a:hover {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: underline;
+      }
+
+      body.ddoc {
+        background-color: transparent;
+        color: rgba(0, 0, 0, 1);
+        font-family: Helvetica,Arial,sans-serif;
+        font-size: 62.5%;
+        margin: 0;
+        border: 0;
+        left: 0;
+        top: 0;
+        padding: 0;
+      }
+
+      .ddoc a[name] {
+        display: block;
+        height: 0;
+        margin: -85px 0 0;
+        padding-top: 85px;
+        width: 0;
+      }
+
+      .ddoc .module {
+          border-color: transparent;
+          background-color: rgba(255, 255, 255, 1);
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-image: none;
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          box-shadow: 0 0 1px rgba(0, 0, 0, 0.07);
+          display: block;
+          margin-left: 0;
+          min-height: calc(100% - 173px);
+          overflow: auto;
+          padding-bottom: 100px;
+      }
+
+      .ddoc .content_wrapper {
+          background-color: rgba(242, 242, 242, 1);
+          margin: 0 auto;
+          max-width: 980px;
+      }
+
+      .ddoc .section {
+        padding: 15px 25px 30px;
+      }
+
+      .ddoc .section .section {
+        margin: 30px 0 0;
+        padding: 0;
+      }
+
+      .ddoc .para {
+        color: rgba(65, 65, 65, 1);
+        font-size: 1.4em;
+        line-height: 145%;
+        margin-bottom: 15px;
+      }
+
+      .ddoc .ddoc_examples .para {
+        margin-bottom: 0;
+      }
+
+      .ddoc .module_name {
+          color: rgba(0, 0, 0, 1);
+          display: block;
+          font-family: Helvetica;
+          font-size: 2.8em;
+          font-weight: 100;
+          margin-bottom: 0;
+          padding: 15px 0;
+      }
+
+      .ddoc .module a {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: none;
+      }
+
+      .ddoc .code {
+        color: rgba(128, 128, 128, 1);
+        font-family: Menlo,monospace;
+        font-size: 0.85em;
+        word-wrap: break-word;
+      }
+
+      .ddoc .code i {
+        font-style: normal;
+      }
+
+      .ddoc .code .code {
+        font-size: 1em;
+      }
+
+      .ddoc .code_sample {
+        background-clip: padding-box;
+        margin: 1px 0;
+        text-align: left;
+      }
+
+      .ddoc .code_sample {
+        display: block;
+        font-size: 1.4em;
+        margin-left: 21px;
+      }
+
+      .ddoc ol .code_sample {
+        font-size: 1em;
+      }
+
+      .ddoc .code_lines {
+        counter-reset: li;
+        line-height: 1.6em;
+        list-style: outside none none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .ddoc .code_listing .code_sample div {
+        margin-left: 13px;
+        width: 93%;
+      }
+
+      .ddoc .code_listing .code_sample div .code_lines li {
+        list-style-type: none;
+        margin: 0;
+        padding-right: 10px;
+      }
+
+      .ddoc .code_sample div .code_lines li::before {
+        margin-left: -33px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+10)::before {
+        margin-left: -39px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+100)::before {
+        margin-left: -46px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample .code_lines .code {
+        color: #000;
+      }
+
+      .ddoc div.dlang {
+        margin: 10px 0 21px;
+        padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+          margin: 10px 0 21px;
+          padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+        border-left: 5px solid rgba(0, 155, 51, 0.2);
+      }
+
+      .ddoc .code_lines li::before {
+        color: rgba(128, 128, 128, 1);
+        content: counter(li, decimal);
+        counter-increment: li;
+        font-family: Menlo,monospace;
+        font-size: 0.9em;
+        margin-right: 16px;
+      }
+
+      .ddoc .code_lines li {
+        padding-left: 0;
+        white-space: pre-wrap;
+      }
+
+      .ddoc .code_lines li:only-of-type::before {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:only-of-type {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:nth-child(n+10) {
+        text-indent: -17px;
+      }
+
+      .ddoc .code_lines li:nth-child(n+10)::before {
+        margin-right: 12px;
+      }
+
+      .ddoc .graybox {
+        border: 1px solid rgba(233, 233, 233, 1);
+        border-collapse: collapse;
+        border-spacing: 0;
+        empty-cells: hide;
+        margin: 20px 0 36px;
+        text-align: left;
+      }
+
+      .ddoc .graybox p {
+        margin: 0;
+        min-width: 50px;
+      }
+
+      .ddoc th {
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: bottom;
+      }
+
+      .ddoc td {
+        border: 1px solid rgba(233, 233, 233, 1);
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: middle;
+      }
+
+      .punctuation {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .comment {
+        color: rgba(0, 131, 18, 1);
+      }
+
+      .operator {
+        color: #000;
+      }
+
+      .keyword {
+        color: rgba(170, 13, 145, 1);
+      }
+
+      .keyword_type {
+        color: rgba(170, 51, 145, 1);
+      }
+
+      .string_literal {
+        color: rgba(196, 26, 22, 1);
+      }
+
+      .ddoc_psuper_symbol {
+        color: rgba(92, 38, 153, 1);
+      }
+
+      .param {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .psymbol {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .ddoc_member_header .ddoc_header_anchor .code {
+        font-size: 1em;
+      }
+    </style>
+  </head>
+  <body id="ddoc_main" class="ddoc dlang">
+    <div class="content_wrapper">
+      <article class="module">
+        <h1 class="module_name">Function Pointers, Delegates, and Lambdas</h1>
+        <section id="module_content"><br><br>
+<br><br>
+
+<br><br>
+<p>Function pointers are for storing addresses of functions in order to execute those functions at a later time. Function pointers are similar to their counterparts in the C programming language.
+</p>
+<br><br>
+<p>Delegates store both a function pointer and the context to execute that function pointer in. The stored context can either be the scope that the function execution will take place or a  or  object.
+</p>
+<br><br>
+<p>Delegates enable <i>closures</i> as well, a concept that is supported by most functional programming languages.
+</p>
+<br><br>
+<h5>  Function pointers</h5>
+<br><br>
+<p> We have seen in the previous chapter that it is possible to take addresses of functions with the  operator. In one of those examples, we passed such an address to a function template.
+</p>
+<br><br>
+<p>Taking advantage of the fact that template type parameters can match any type, let's pass a function pointer to a template to observe its type by printing its  property:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">int</span> myFunction(<span class="keyword">char</span> c, <span class="keyword">double</span> d) {
+    <span class="keyword">return</span> 42;
+}
+
+<span class="keyword">void</span> main() {
+    myTemplate();    <span class="comment">// Taking the function's address and
+</span>                                <span class="comment">// passing it as a parameter
+</span>}
+
+<span class="keyword">void</span> myTemplate(T)(T parameter) {
+    writeln(<span class="string_literal">"type : "</span>, T.stringof);
+    writeln(<span class="string_literal">"value: "</span>, parameter);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output of the program reveals the type and the address of :
+</p>
+<br><br>
+
+<br><br>
+<h6>  Member function pointers</h6>
+<br><br>
+<p>The address of a member function can be taken either on a type or on an object of a type, with different results:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">struct</span> MyStruct {
+    <span class="keyword">void</span> func() {
+    }
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">auto</span> o = MyStruct();
+
+    <span class="keyword">auto</span> f = &amp;.func;    <span class="comment">// on a type
+</span>    <span class="keyword">auto</span> d = &amp;.func;           <span class="comment">// on an object
+</span>
+    <span class="keyword">static</span> <span class="keyword">assert</span>(<span class="keyword">is</span> (<span class="keyword">typeof</span>() == <span class="keyword">void</span> ()));
+    <span class="keyword">static</span> <span class="keyword">assert</span>(<span class="keyword">is</span> (<span class="keyword">typeof</span>() == <span class="keyword">void</span> ()));
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>As the two  lines above indicate,  is a  and  is a . We will see later below that  can be called directly but  needs an object to be called on.
+</p>
+<br><br>
+<h6>Definition</h6>
+<br><br>
+<p> Similar to regular pointers, each function pointer type can point exactly to a particular type of function; the parameter list and the return type of the function pointer and the function must match. Function pointers are defined by the  keyword between the return type and the parameter list of that particular type:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">   <i>return_type</i> <span class="keyword">function</span>(<i>parameters</i>) ptr;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The names of the parameters ( and  in the output above) are optional. Because  takes a  and a  and returns an , the type of a function pointer that can point at  must be defined accordingly:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span> <span class="keyword">function</span>(<span class="keyword">char</span>, <span class="keyword">double</span>) ptr = &amp;myFunction;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The line above defines  as a function pointer taking two parameters ( and ) and returning . Its value is the address of .
+</p>
+<br><br>
+<p>Function pointer syntax is relatively harder to read; it is common to make code more readable by an :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">alias</span> CalculationFunc = <span class="keyword">int</span> <span class="keyword">function</span>(<span class="keyword">char</span>, <span class="keyword">double</span>);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>That alias makes the code easier to read:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    CalculationFunc ptr = &amp;myFunction;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>As with any type,  can be used as well:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> ptr = &amp;myFunction;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h6>Calling a function pointer</h6>
+<br><br>
+<p>Function pointers can be called exactly like functions:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span> result = ('a', 5.67);
+    <span class="keyword">assert</span>(result == 42);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The call  above is the equivalent of calling the actual function by .
+</p>
+<br><br>
+<h6>When to use</h6>
+<br><br>
+<p>Because function pointers store what function to call and they are called exactly like the functions that they point at, function pointers effectively store the behavior of the program for later.
+</p>
+<br><br>
+<p>There are many other features of D that are about program behavior. For example, the appropriate function to call to calculate the wages of an  can be determined by the value of an  member:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">final</span> <span class="keyword">switch</span> (employee.type) {
+
+    <span class="keyword">case</span> EmployeeType.fullTime:
+        fullTimeEmployeeWages();
+        <span class="keyword">break</span>;
+
+    <span class="keyword">case</span> EmployeeType.hourly:
+        hourlyEmployeeWages();
+        <span class="keyword">break</span>;
+    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Unfortunately, that method is relatively harder to maintain because it obviously has to support all known employee types. If a new type of employee is added to the program, then all such  statements must be located so that a new  clause is added for the new employee type.
+</p>
+<br><br>
+<p>A more common alternative of implementing behavior differences is polymorphism. An  interface can be defined and different wage calculations can be handled by different implementations of that interface:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">interface</span> Employee {
+    <span class="keyword">double</span> wages();
+}
+
+<span class="keyword">class</span> FullTimeEmployee : Employee {
+    <span class="keyword">double</span> wages() {
+        <span class="keyword">double</span> result;
+        <span class="comment">// ...
+</span>        <span class="keyword">return</span> result;
+    }
+}
+
+<span class="keyword">class</span> HourlyEmployee : Employee {
+    <span class="keyword">double</span> wages() {
+        <span class="keyword">double</span> result;
+        <span class="comment">// ...
+</span>        <span class="keyword">return</span> result;
+    }
+}
+
+<span class="comment">// ...
+</span>
+    <span class="keyword">double</span> result = employee.wages();
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Function pointers are yet another alternative for implementing different behavior. They are more common in programming languages that do not support object oriented programming.
+</p>
+<br><br>
+<h6>Function pointer as a parameter</h6>
+<br><br>
+<p>Let's design a function that takes an array and returns another array. This function will filter out elements with values less than or equal to zero, and multiply the others by ten:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">int</span>[] filterAndConvert(<span class="keyword">const</span> <span class="keyword">int</span>[] numbers) {
+    <span class="keyword">int</span>[] result;
+
+    <span class="keyword">foreach</span> (e; numbers) {
+        <span class="keyword">if</span> (e &gt; 0) {                       <span class="comment">// filtering,
+</span>            <span class="keyword">immutable</span> newNumber = e * 10;  <span class="comment">// and conversion
+</span>            result ~= newNumber;
+        }
+    }
+
+    <span class="keyword">return</span> result;
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The following program demonstrates its behavior with randomly generated values:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+<span class="keyword">import</span> std.random;
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">int</span>[] numbers;
+
+    <span class="comment">// Random numbers
+</span>    <span class="keyword">foreach</span> (i; 0 .. 10) {
+        numbers ~= uniform(0, 10) - 5;
+    }
+
+    writeln(<span class="string_literal">"input : "</span>, numbers);
+    writeln(<span class="string_literal">"output: "</span>, filterAndConvert(numbers));
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output contains numbers that are ten times the original numbers, which were greater than zero to begin with. The original numbers that have been selected are highlighted:
+</p>
+<br><br>
+
+<br><br>
+<p> is for a very specific task: It always selects numbers that are greater than zero and always multiplies them by ten. It could be more useful if the behaviors of filtering and conversion were parameterized.
+</p>
+<br><br>
+<p>Noting that filtering is a form of conversion as well (from  to ),  performs two conversions:
+</p>
+<br><br>
+<ul><li>, which produces  by considering an  value.</li>
+<li>, which produces  from an  value.</li>
+</ul>
+<br><br>
+<p>Let's define convenient aliases for function pointers that would match the two conversions above:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">alias</span> Predicate = <span class="keyword">bool</span> <span class="keyword">function</span>(<span class="keyword">int</span>);    <span class="comment">// makes bool from int
+</span><span class="keyword">alias</span> Convertor = <span class="keyword">int</span> <span class="keyword">function</span>(<span class="keyword">int</span>);     <span class="comment">// makes int from int
+</span></code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p> is the type of functions that take  and return , and  is the type of functions that take  and return .
+</p>
+<br><br>
+<p>If we provide such function pointers as parameters, we can have  use those function pointers during its work:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">int</span>[] filterAndConvert(<span class="keyword">const</span> <span class="keyword">int</span>[] numbers,
+                       ,
+                       ) {
+    <span class="keyword">int</span>[] result;
+
+    <span class="keyword">foreach</span> (number; numbers) {
+        <span class="keyword">if</span> () {
+            <span class="keyword">immutable</span> newNumber = ;
+            result ~= newNumber;
+        }
+    }
+
+    <span class="keyword">return</span> result;
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p> is now an algorithm that is independent of the actual filtering and conversion operations. When desired, its earlier behavior can be achieved by the following two simple functions:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">bool</span> isGreaterThanZero(<span class="keyword">int</span> number) {
+    <span class="keyword">return</span> number &gt; 0;
+}
+
+<span class="keyword">int</span> tenTimes(<span class="keyword">int</span> number) {
+    <span class="keyword">return</span> number * 10;
+}
+
+<span class="comment">// ...
+</span>
+    writeln(<span class="string_literal">"output: "</span>, filterAndConvert(numbers,
+                                         ,
+                                         ));
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>This design allows calling  with any filtering and conversion behaviors. For example, the following two functions would make  produce <i>the negatives of the even numbers</i>:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">bool</span> isEven(<span class="keyword">int</span> number) {
+    <span class="keyword">return</span> (number % 2) == 0;
+}
+
+<span class="keyword">int</span> negativeOf(<span class="keyword">int</span> number) {
+    <span class="keyword">return</span> -number;
+}
+
+<span class="comment">// ...
+</span>
+    writeln(<span class="string_literal">"output: "</span>, filterAndConvert(numbers,
+                                         &amp;isEven,
+                                         &amp;negativeOf));
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output:
+</p>
+<br><br>
+
+<br><br>
+<p>As seen in these examples, sometimes such functions are so trivial that defining them as proper functions with name, return type, parameter list, and curly brackets is unnecessarily wordy.
+</p>
+<br><br>
+<p>As we will see below, the  syntax of anonymous functions makes the code more concise and more readable. The following line has anonymous functions that are the equivalents of  and , without proper function definitions:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    writeln(<span class="string_literal">"output: "</span>, filterAndConvert(numbers,
+                                         number =&gt; (number % 2) == 0,
+                                         number =&gt; -number));
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h6>Function pointer as a member</h6>
+<br><br>
+<p>Function pointers can be stored as members of structs and classes as well. To see this, let's design a  that takes the predicate and convertor as constructor parameters in order to use them later on:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">class</span> NumberHandler {
+    ;
+    ;
+
+    <span class="keyword">this</span>(Predicate predicate, Convertor convertor) {
+        <span class="keyword">this</span>.predicate = predicate;
+        <span class="keyword">this</span>.convertor = convertor;
+    }
+
+    <span class="keyword">int</span>[] handle(<span class="keyword">const</span> <span class="keyword">int</span>[] numbers) {
+        <span class="keyword">int</span>[] result;
+
+        <span class="keyword">foreach</span> (number; numbers) {
+            <span class="keyword">if</span> (predicate(number)) {
+                <span class="keyword">immutable</span> newNumber = convertor(number);
+                result ~= newNumber;
+            }
+        }
+
+        <span class="keyword">return</span> result;
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>An object of that type can be used similarly to :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> handler = <span class="keyword">new</span> NumberHandler(, );
+    writeln(<span class="string_literal">"result: "</span>, handler.handle(numbers));
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h5>      Anonymous functions</h5>
+<br><br>
+<p>The code can be more readable and concise when short functions are defined without proper function definitions.
+</p>
+<br><br>
+<p>Anonymous functions, which are also knows as <i>function literals</i> or <i>lambdas</i>, allow defining functions inside of expressions. Anonymous functions can be used at any point where a function pointer can be used.
+</p>
+<br><br>
+<p>We will get to their shorter  syntax later below. Let's first see their full syntax, which is usually too wordy especially when it appears inside of other expressions:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">function</span> <i>return_type</i>(<i>parameters</i>) { <span class="comment">/* operations */</span> }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>For example, an object of  that produces <i>7 times the numbers that are greater than 2</i> can be constructed by anonymous functions as in the following code:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">new</span> NumberHandler(<span class="keyword">function</span> <span class="keyword">bool</span>(<span class="keyword">int</span> number) { <span class="keyword">return</span> number &gt; 2; },
+                      <span class="keyword">function</span> <span class="keyword">int</span>(<span class="keyword">int</span> number) { <span class="keyword">return</span> number * 7; });
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Two advantages of the code above is that the functions are not defined as proper functions and that their implementations are visible right where the  object is constructed.
+</p>
+<br><br>
+<p>Note that the anonymous function syntax is very similar to regular function syntax. Although this consistency has benefits, the full syntax of anonymous functions makes code too wordy.
+</p>
+<br><br>
+<p>For that reason, there are various shorter ways of defining anonymous functions.
+</p>
+<br><br>
+<h6>Shorter syntax</h6>
+<br><br>
+<p>When the return type can be deduced from the  statement inside the anonymous function, then the return type need not be specified (The place where the return type would normally appear is highlighted by code comments.):
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">new</span> NumberHandler(<span class="keyword">function</span> <span class="comment">/**/</span>(<span class="keyword">int</span> number) { <span class="keyword">return</span> number &gt; 2; },
+                      <span class="keyword">function</span> <span class="comment">/**/</span>(<span class="keyword">int</span> number) { <span class="keyword">return</span> number * 7; });
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Further, when the anonymous function does not take parameters, its parameter list need not be provided. Let's consider a function that takes a function pointer that takes <i>nothing</i> and returns :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> foo(<span class="keyword">double</span> <span class="keyword">function</span> func) {
+    <span class="comment">// ...
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Anonymous functions that are passed to that function need not have the empty parameter list. Therefore, all three of the following anonymous function syntaxes are equivalent:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    foo(<span class="keyword">function</span> <span class="keyword">double</span>() { <span class="keyword">return</span> 42.42; });
+    foo(<span class="keyword">function</span> () { <span class="keyword">return</span> 42.42; });
+    foo(<span class="keyword">function</span> { <span class="keyword">return</span> 42.42; });
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The first one is written in the full syntax. The second one omits the return type, taking advantage of the return type deduction. The third one omits the unnecessary parameter list.
+</p>
+<br><br>
+<p>Even further, the keyword  need not be provided either. In that case it is left to the compiler to determine whether it is an anonymous function or an anonymous delegate. Unless it uses a variable from one of the enclosing scopes, it is a function:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    foo({ <span class="keyword">return</span> 42.42; });
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Most anonymous functions can be defined even shorter by the <i>lambda syntax</i>.
+</p>
+<br><br>
+<h6> Lambda syntax instead of a single  statement</h6>
+<br><br>
+<p>In most cases even the shortest syntax above is unnecessarily cluttered. The curly brackets that are just inside the function parameter list make the code harder to read and a  statement as well as its semicolon inside a function argument looks out of place.
+</p>
+<br><br>
+<p>Let's start with the full syntax of an anonymous function that has a single  statement:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">function</span> <i>return_type</i>(<i>parameters</i>) { <span class="keyword">return</span> <i>expression</i>; }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>We have already seen that the  keyword is not necessary and the return type can be deduced:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    (<i>parameters</i>) { <span class="keyword">return</span> <i>expression</i>; }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The equivalent of that definition is the following  syntax, where the  characters replace the curly brackets, the  keyword, and the semicolon:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    (<i>parameters</i>) =&gt; <i>expression</i>
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The meaning of that syntax can be spelled out as "given those parameters, produce this expression (value)".
+</p>
+<br><br>
+<p>Further, when there is a single parameter, the parentheses around the parameter list can be omitted as well:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <i>single_parameter</i> =&gt; <i>expression</i>
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>On the other hand, to avoid grammar ambiguities, the parameter list must still be written as empty parentheses when there is no parameter at all:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    () =&gt; <i>expression</i>
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Programmers who know lambdas from other languages may make a mistake of using curly brackets after the  characters, which can be valid D syntax with a different meaning:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="comment">// A lambda that returns 'a + 1'
+</span>    <span class="keyword">auto</span> l0 = (<span class="keyword">int</span> a) =&gt; a + 1
+
+    <span class="comment">// A lambda that returns a parameter-less lambda that
+</span>    <span class="comment">// returns 'a + 1'
+</span>    <span class="keyword">auto</span> l1 = (<span class="keyword">int</span> a) =&gt;  <span class="keyword">return</span> a + 1; 
+
+    <span class="keyword">assert</span>(l0(42) == 43);
+    <span class="keyword">assert</span>(l1(42) == 43);    <span class="comment">// Executing what l1 returns
+</span></code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p> Let's use the lambda syntax in a predicate passed to .  takes a predicate as its template parameter and a range as its function parameter. It applies the predicate to each element of the range and returns the ones that satisfy the predicate. One of several ways of specifying the predicate is the lambda syntax.
+</p>
+<br><br>
+<p>(<i>Note: We will see ranges in a later chapter. At this point, it should be sufficient to know that D slices are ranges.</i>)
+</p>
+<br><br>
+<p>The following lambda is a predicate that matches elements that are greater than 10:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+<span class="keyword">import</span> std.algorithm;
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">int</span>[] numbers = [ 20, 1, 10, 300, -2 ];
+    writeln(numbers.filter!());
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output contains only the elements that satisfy the predicate:
+</p>
+<br><br>
+
+<br><br>
+<p>For comparison, let's write the same lambda in the longest syntax. The curly brackets that define the body of the anonymous function are highlighted:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    writeln(numbers.filter!(<span class="keyword">function</span> <span class="keyword">bool</span>(<span class="keyword">int</span> number) 
+                                <span class="keyword">return</span> number &gt; 10;
+                            ));
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>As another example, this time let's define an anonymous function that takes two parameters. The following algorithm takes two slices and passes their corresponding elements one by one to a  that itself takes two parameters. It then collects and returns the results as another slice:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.exception;
+
+<span class="keyword">int</span>[] binaryAlgorithm(<span class="keyword">int</span> <span class="keyword">function</span> func,
+                      <span class="keyword">const</span> <span class="keyword">int</span>[] slice1,
+                      <span class="keyword">const</span> <span class="keyword">int</span>[] slice2) {
+    enforce(slice1.length == slice2.length);
+
+    <span class="keyword">int</span>[] results;
+
+    <span class="keyword">foreach</span> (i; 0 .. slice1.length) {
+        results ~= func(slice1[i], slice2[i]);
+    }
+
+    <span class="keyword">return</span> results;
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Since the  parameter above takes two parameters, lambdas that can be passed to  must take two parameters as well:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> main() {
+    writeln(binaryAlgorithm( =&gt; (a * 10) + b,
+                            [ 1, 2, 3 ],
+                            [ 4, 5, 6 ]));
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output contains ten times the elements of the first array plus the elements of the second array (e.g. 14 is 10 * 1 + 4):
+</p>
+<br><br>
+
+<br><br>
+<h5> Delegates</h5>
+<br><br>
+<p>  A delegate is a combination of a function pointer and the context that it should be executed in. Delegates also support <i>closures</i> in D. Closures are a feature supported by many functional programming languages.
+</p>
+<br><br>
+<p>As we have seen in <a href="lifetimes.html">the Lifetimes and Fundamental Operations chapter</a>, the lifetime of a variable ends upon leaving the scope that it is defined in:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">{
+    <span class="keyword">int</span> increment = 10;
+    <span class="comment">// ...
+</span>} <span class="comment">// ← the life of 'increment' ends here
+</span></code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>That is why the address of such a local variable cannot be returned from a function.
+</p>
+<br><br>
+<p>Let's imagine that  is a local variable of a function that itself returns a . Let's make it so that the returned lambda happens to use that local variable:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">alias</span> Calculator = <span class="keyword">int</span> <span class="keyword">function</span>(<span class="keyword">int</span>);
+
+Calculator makeCalculator() {
+    <span class="keyword">int</span> increment = 10;
+    <span class="keyword">return</span> value =&gt;  + value;    
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>That code is in error because the returned lambda makes use of a local variable that is about to go out of scope. If the code were allowed to compile, the lambda would be trying to access , whose life has already ended.
+</p>
+<br><br>
+<p>For that code to be compiled and work correctly, the lifetime of  must at least be as long as the lifetime of the lambda that uses it. Delegates extend the lifetime of the context of a lambda so that the local state that the function uses remains valid.
+</p>
+<br><br>
+<p> syntax is similar to  syntax, the only difference being the keyword. That change is sufficient to make the previous code compile:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">alias</span> Calculator = <span class="keyword">int</span> (<span class="keyword">int</span>);
+
+Calculator makeCalculator() {
+    <span class="keyword">int</span> increment = 10;
+    <span class="keyword">return</span> value =&gt; increment + value;
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Having been used by a delegate, the local variable  will now live as long as that delegate lives. The variable is available to the delegate just as any other variable would be, mutable as needed. We will see examples of this in the next chapter when using delegates with  member functions.
+</p>
+<br><br>
+<p>The following is a test of the delegate above:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> calculator = makeCalculator();
+    writeln(<span class="string_literal">"The result of the calculation: "</span>, calculator(3));
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Note that  returns an anonymous delegate. The code above assigns that delegate to the variable  and then calls it by . Since the delegate is implemented to return the sum of its parameter and the variable , the code outputs the sum of 3 and 10:
+</p>
+<br><br>
+
+<br><br>
+<h6>Shorter syntax</h6>
+<br><br>
+<p>As we have already used in the previous example, delegates can take advantage of the shorter syntaxes as well. When neither  nor  is specified, the type of the lambda is decided by the compiler, depending on whether the lambda accesses local state. If so, then it is a .
+</p>
+<br><br>
+<p>The following example has a delegate that does not take any parameters:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">int</span>[] delimitedNumbers(<span class="keyword">int</span> count, <span class="keyword">int</span> <span class="keyword">delegate</span> numberGenerator) {
+    <span class="keyword">int</span>[] result = [ -1 ];
+    result.reserve(count + 2);
+
+    <span class="keyword">foreach</span> (i; 0 .. count) {
+        result ~= numberGenerator();
+    }
+
+    result ~= -1;
+
+    <span class="keyword">return</span> result;
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The function  generates a slice where the first and last elements are -1. It takes two parameters that specify the other elements that come between those first and last elements.
+</p>
+<br><br>
+<p>Let's call that function with a trivial delegate that always returns the same value. Remember that when there is no parameter, the parameter list of a lambda must be specified as empty:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    writeln(delimitedNumbers(3, ));
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output:
+</p>
+<br><br>
+
+<br><br>
+<p>Let's call  this time with a delegate that makes use of a local variable:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span> lastNumber;
+    writeln(delimitedNumbers(
+                15, ));
+
+    writeln(<span class="string_literal">"Last number: "</span>, lastNumber);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Although that delegate produces a random value, since the value is added to the last one, none of the generated values is less than its predecessor:
+</p>
+<br><br>
+
+<br><br>
+<h6>    An object and a member function as a delegate</h6>
+<br><br>
+<p>We have seen that a delegate is nothing but a function pointer and the context that it is to be executed in. Instead of those two, a delegate can also be composed of a member function and an existing object that that member function is to be called on.
+</p>
+<br><br>
+<p>The syntax that defines such a delegate from an object is the following:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    &amp;<i>object</i>.<i>member_function</i>
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Let's first observe that such a syntax indeed defines a  by printing its  representation:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">struct</span> Location {
+    <span class="keyword">long</span> x;
+    <span class="keyword">long</span> y;
+
+    <span class="keyword">void</span> moveHorizontally(<span class="keyword">long</span> step) { x += step; }
+    <span class="keyword">void</span> moveVertically(<span class="keyword">long</span> step)   { y += step; }
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">auto</span> location = Location();
+    writeln(<span class="keyword">typeof</span>().stringof);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>According to the output, the type of  called on  is indeed a :
+</p>
+<br><br>
+
+<br><br>
+<p>Note that the  syntax is only for constructing the delegate. The delegate will be called later by the function call syntax:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="comment">// The definition of the delegate variable:
+</span>    <span class="keyword">auto</span> directionFunction = &amp;location.moveHorizontally;
+
+    <span class="comment">// Calling the delegate by the function call syntax:
+</span>    directionFunction;
+
+    writeln(location);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Since the  combines the  object and the  member function, calling the delegate is the equivalent of calling  on . The output indicates that the object has indeed moved 3 steps horizontally:
+</p>
+<br><br>
+
+<br><br>
+<p>Function pointers, lambdas, and delegates are expressions. They can be used in places where a value of their type is expected. For example, a slice of  objects is initialized below from delegates constructed from an object and its various member functions. The  elements of the slice are later called just like functions:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> location = Location();
+
+    <span class="keyword">void</span> <span class="keyword">delegate</span>(<span class="keyword">long</span>)[] movements =
+        [ &amp;location.moveHorizontally,
+          &amp;location.moveVertically,
+          &amp;location.moveHorizontally ];
+
+    <span class="keyword">foreach</span> (movement; movements) {
+        movement;
+    }
+
+    writeln(location);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>According to the elements of the slice, the location has been changed twice horizontally and once vertically:
+</p>
+<br><br>
+
+<br><br>
+<h6>    Delegate properties</h6>
+<br><br>
+<p>The function and context pointers of a delegate can be accessed through its  and  properties, respectively:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">struct</span> MyStruct {
+    <span class="keyword">void</span> func() {
+    }
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">auto</span> o = MyStruct();
+
+    <span class="keyword">auto</span> d = &amp;o.func;
+
+    <span class="keyword">assert</span>(d == &amp;MyStruct.func);
+    <span class="keyword">assert</span>(d == &amp;o);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>It is possible to make a  from scratch by setting those properties explicitly:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">struct</span> MyStruct {
+    <span class="keyword">int</span> i;
+
+    <span class="keyword">void</span> func() {
+        <span class="keyword">import</span> std.stdio;
+        writeln(i);
+    }
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">auto</span> o = MyStruct(42);
+
+    <span class="keyword">void</span> <span class="keyword">delegate</span>() d;
+    <span class="keyword">assert</span>(d <span class="keyword">is</span> <span class="keyword">null</span>);    <span class="comment">// null to begin with
+</span>
+    d = &amp;MyStruct.func;
+    d = &amp;o;
+
+    ;
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Calling the delegate above as  is the equivalent of the expression  (i.e. calling  on ):
+</p>
+<br><br>
+
+<br><br>
+<h6> Lazy parameters are delegates</h6>
+<br><br>
+<p>We saw the  keyword in <a href="function_parameters.html">the Function Parameters chapter</a>:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> log(Level level,  string message) {
+    <span class="keyword">if</span> (level &gt;= interestedLevel) {
+        writeln(message);
+    }
+}
+
+<span class="comment">// ...
+</span>
+    <span class="keyword">if</span> (failedToConnect) {
+        log(Level.medium,
+            (<span class="string_literal">"Failure. The connection state is '%s'."</span>,
+                   getConnectionState()));
+    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Because  is a  parameter above, the entire  expression (including the  call that it makes) would be evaluated if and when that parameter is used inside .
+</p>
+<br><br>
+<p>Behind the scenes, lazy parameters are in fact delegates and the arguments that are passed to lazy parameters are delegate objects that are created automatically by the compiler. The code below is the equivalent of the one above:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> log(Level level, string () lazyMessage) {  <span class="comment">// (1)
+</span>    <span class="keyword">if</span> (level &gt;= interestedLevel) {
+        writefln(<span class="string_literal">"%s"</span>, );                  <span class="comment">// (2)
+</span>    }
+}
+
+<span class="comment">// ...
+</span>
+    <span class="keyword">if</span> (failedToConnect) {
+        log(Level.medium,
+            <span class="keyword">delegate</span> string()                          <span class="comment">// (3)
+</span>                <span class="keyword">return</span> format(
+                    <span class="string_literal">"Failure. The connection state is '%s'."</span>,
+                    getConnectionState());
+            );
+    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<ol><br><br>
+<li>The  parameter is not a  but a delegate that returns a .</li>
+<br><br>
+<li>The delegate is called to get its return value.</li>
+<br><br>
+<li>The entire expression is wrapped inside a delegate and returned from it.</li>
+<br><br>
+</ol>
+<br><br>
+<h6>  Lazy variadic functions</h6>
+<br><br>
+<p>When a function needs a variable number of lazy parameters, it is necessarily impossible to specify those <i>unknown number of</i> parameters as .
+</p>
+<br><br>
+<p>The solution is to use variadic  parameters. Such parameters can receive any number of expressions that are the same as the <i>return type</i> of those delegates. The delegates cannot take parameters:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> foo(<span class="keyword">double</span> <span class="keyword">delegate</span>() args) {
+    <span class="keyword">foreach</span> (arg; args) {
+        writeln();     <span class="comment">// Calling each delegate
+</span>    }
+}
+
+<span class="keyword">void</span> main() {
+    foo(, () =&gt; 2.5);    <span class="comment">// 'double' passed as delegate
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Note how both a  expression and a lambda are matched to the variadic parameter. The  expression is automatically wrapped inside a delegate and the function prints the values of all its <i>effectively-lazy</i> parameters:
+</p>
+<br><br>
+
+<br><br>
+<p>A limitation of this method is that all parameters must be the same type ( above). We will see later in the <a href="templates_more.html">More Templates chapter</a> how to take advantage of <i>tuple template parameters</i> to remove that limitation.
+</p>
+<br><br>
+<h5>   with a  parameter</h5>
+<br><br>
+<p>We have defined many  functions up to this point in the book to represent objects as strings. Those  definitions all returned a  without taking any parameters. As noted by the comment lines below, structs and classes took advantage of  functions of their respective members by simply passing those members to :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+<span class="keyword">import</span> std.string;
+
+<span class="keyword">struct</span> Point {
+    <span class="keyword">int</span> x;
+    <span class="keyword">int</span> y;
+
+    string toString() <span class="keyword">const</span> {
+        <span class="keyword">return</span> format(<span class="string_literal">"(%s,%s)"</span>, x, y);
+    }
+}
+
+<span class="keyword">struct</span> Color {
+    <span class="keyword">ubyte</span> r;
+    <span class="keyword">ubyte</span> g;
+    <span class="keyword">ubyte</span> b;
+
+    string toString() <span class="keyword">const</span> {
+        <span class="keyword">return</span> format(<span class="string_literal">"RGB:%s,%s,%s"</span>, r, g, b);
+    }
+}
+
+<span class="keyword">struct</span> ColoredPoint {
+    Color color;
+    Point point;
+
+    string toString() <span class="keyword">const</span> {
+        <span class="comment">/* Taking advantage of Color.toString and
+         * Point.toString: */</span>
+        <span class="keyword">return</span> format(<span class="string_literal">"{%s;%s}"</span>, color, point);
+    }
+}
+
+<span class="keyword">struct</span> Polygon {
+    ColoredPoint[] points;
+
+    string toString() <span class="keyword">const</span> {
+        <span class="comment">/* Taking advantage of ColoredPoint.toString: */</span>
+        <span class="keyword">return</span> format(<span class="string_literal">"%s"</span>, points);
+    }
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">auto</span> polygon = Polygon(
+        [ ColoredPoint(Color(10, 10, 10), Point(1, 1)),
+          ColoredPoint(Color(20, 20, 20), Point(2, 2)),
+          ColoredPoint(Color(30, 30, 30), Point(3, 3)) ]);
+
+    writeln(polygon);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>In order for  to be sent to the output as a  on the last line of the program, all of the  functions of , , , and  are called indirectly, creating a total of 10 strings in the process. Note that the strings that are constructed and returned by the lower-level functions are used only once by the respective higher-level function that called them.
+</p>
+<br><br>
+<p>However, although a total of 10 strings get constructed, only the very last one is printed to the output:
+</p>
+<br><br>
+
+<br><br>
+<p>However practical, this method may degrade the performance of the program because of the many  objects that are constructed and promptly thrown away.
+</p>
+<br><br>
+<p>An overload of  avoids this performance issue by taking a  parameter:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">void</span> toString(<span class="keyword">void</span> <span class="keyword">delegate</span>(<span class="keyword">const</span>(<span class="keyword">char</span>)[]) sink) <span class="keyword">const</span>;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>As seen in its declaration, this overload of  does not return a . Instead, the characters that are going to be printed are passed to its  parameter. It is the responsibility of the  to append those characters to the single  that is going to be printed to the output.
+</p>
+<br><br>
+<p> All the programmer needs to do differently is to call  instead of  and pass the  parameter as its first parameter (in UFCS below). Also note that the following calls are providing the format strings as template arguments to take advantage of 's compile-time format string checks.
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+
+<span class="keyword">struct</span> Point {
+    <span class="keyword">int</span> x;
+    <span class="keyword">int</span> y;
+
+    <span class="keyword">void</span> toString(<span class="keyword">void</span> <span class="keyword">delegate</span>(<span class="keyword">const</span>(<span class="keyword">char</span>)[]) sink) <span class="keyword">const</span> {
+        sink.!<span class="string_literal">"(%s,%s)"</span>(x, y);
+    }
+}
+
+<span class="keyword">struct</span> Color {
+    <span class="keyword">ubyte</span> r;
+    <span class="keyword">ubyte</span> g;
+    <span class="keyword">ubyte</span> b;
+
+    <span class="keyword">void</span> toString(<span class="keyword">void</span> <span class="keyword">delegate</span>(<span class="keyword">const</span>(<span class="keyword">char</span>)[]) sink) <span class="keyword">const</span> {
+        sink.!<span class="string_literal">"RGB:%s,%s,%s"</span>(r, g, b);
+    }
+}
+
+<span class="keyword">struct</span> ColoredPoint {
+    Color color;
+    Point point;
+
+    <span class="keyword">void</span> toString(<span class="keyword">void</span> <span class="keyword">delegate</span>(<span class="keyword">const</span>(<span class="keyword">char</span>)[]) sink) <span class="keyword">const</span> {
+        sink.!<span class="string_literal">"{%s;%s}"</span>(color, point);
+    }
+}
+
+<span class="keyword">struct</span> Polygon {
+    ColoredPoint[] points;
+
+    <span class="keyword">void</span> toString(<span class="keyword">void</span> <span class="keyword">delegate</span>(<span class="keyword">const</span>(<span class="keyword">char</span>)[]) sink) <span class="keyword">const</span> {
+        sink.!<span class="string_literal">"%s"</span>(points);
+    }
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">auto</span> polygon = Polygon(
+        [ ColoredPoint(Color(10, 10, 10), Point(1, 1)),
+          ColoredPoint(Color(20, 20, 20), Point(2, 2)),
+          ColoredPoint(Color(30, 30, 30), Point(3, 3)) ]);
+
+    writeln(polygon);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The advantage of this program is that, even though there are still a total of 10 calls made to various  functions, those calls collectively produce a single , not 10.
+</p>
+<br><br>
+<h5>Summary</h5>
+<br><br>
+<ul><li>The  keyword is for defining function pointers to be called later just like a function.</li>
+<br><br>
+<li>The  keyword is for defining delegates. A delegate is the pair of a function pointer and the context that that function pointer to be executed in.</li>
+<br><br>
+<li>A  can be created from an object and a member function by the syntax .</li>
+<br><br>
+<li>A delegate can be constructed explicitly by setting its  and  properties.</li>
+<br><br>
+<li>Anonymous functions and anonymous delegates (lambdas) can be used in places of function pointers and delegates in expressions.</li>
+<br><br>
+<li>There are several syntaxes for lambdas, the shortest of which is for when the equivalent consists only of a single  statement: .</li>
+<br><br>
+<li>A more efficient overload of  takes a .</li>
+<br><br>
+</ul>
+
+</section>
+      </article>
+    </div>
+  </body>
+</html>

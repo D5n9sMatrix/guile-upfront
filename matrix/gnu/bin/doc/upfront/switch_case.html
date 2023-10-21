@@ -1,0 +1,878 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>switch and case</title>
+    <style type="text/css" media="screen">
+      html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p,
+      blockquote, pre, a, abbr, address, cite, code, del, dfn, em, figure,
+      img, ins, kbd, q, s, samp, small, strong, sub, sup, var, b, u, i, dl,
+      dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption,
+      tbody, tfoot, thead, tr, th, td {
+        background: transparent none repeat scroll 0 0;
+        border: 0 none;
+        font-size: 100%;
+        margin: 0;
+        outline: 0 none;
+        padding: 0;
+        vertical-align: baseline;
+      }
+
+      h1 { font-size: 200%; }
+      h2 { font-size: 160%; }
+      h3 { font-size: 120%; }
+      h4 { font-size: 100%; }
+      h5 { font-size: 80%; }
+      h6 { font-size: 80%; font-weight: normal; }
+
+      ul, ol {
+        margin: 1.4em 0;
+      }
+      ul ul, ol ol, ul ol, ol ul {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      ul, ol {
+        margin-left: 2.8em;
+      }
+
+      ol {
+        list-style: decimal;
+      }
+      ol ol {
+        list-style: lower-alpha;
+      }
+      ol ol ol {
+        list-style: lower-roman;
+      }
+      ol ol ol ol {
+        list-style: decimal;
+      }
+
+      blockquote {
+        margin: 0.1em;
+        margin-left: 1em;
+        border-left: 2px solid #cccccc;
+        padding-left: 0.7em;
+      }
+
+      .color_red { color: #dc322f; }
+      .color_blue { color: #268bd2; }
+      .color_green { color: #859901; }
+      .color_yellow { color: #b58901; }
+      .color_black { color: black; }
+      .color_white { color: white; }
+
+      .font_big {
+        font-size: 1.2em;
+      }
+
+      .ddoc_section_h {
+        font-weight: bold;
+        font-size: 13px;
+        line-height: 19.5px;
+        margin-top: 11px;
+        display: block;
+      }
+
+      body.dlang .dlang {
+        display: inline-block;
+      }
+
+      body.dlang .declaration .dlang {
+          display: block;
+      }
+
+      body.dlang .ddoc_header_anchor a.dlang {
+        display: block;
+        color: rgba(0, 136, 204, 1);
+        text-decoration: none;
+      }
+
+      body.dlang .ddoc_header_anchor .code {
+        color: rgba(0, 136, 204, 1);
+      }
+
+      #ddoc_main .module {
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          overflow-x: hidden;
+          padding: 15px;
+      }
+
+      #ddoc_main .section .section {
+        margin-top: 0;
+      }
+
+      #ddoc_main .ddoc_module_members_section {
+          padding: 1px 0 0;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members section.intro {
+          background: #fff none repeat scroll 0 0;
+          list-style-type: none;
+          width: 100%;
+      }
+
+      #ddoc_main .ddoc_header_anchor {
+          font-size: 1.4em;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_header_anchor > .code {
+          display: inline-block;
+
+      }
+
+      #ddoc_main .ddoc_decl {
+        background-color: transparent;
+        height: 100%;
+        left: 0;
+        top: 0;
+        padding: 0;
+        padding-left: 15px;
+      }
+
+      #ddoc_main .ddoc_decl .section, #ddoc_main .section.ddoc_sections {
+        background: white none repeat scroll 0 0;
+        margin: 0;
+        padding: 5px;
+        position: relative;
+        border-radius: 5px;
+      }
+
+      #ddoc_main .ddoc_decl .section h4:first-of-type, #ddoc_main .section.ddoc_sections h4:first-of-type {
+        font-size: 13px;
+        line-height: 1.5;
+        margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration {
+          margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration .code {
+          color: rgba(0, 0, 0, 1);
+          margin-bottom: 15px;
+          padding-bottom: 6px;
+      }
+
+      #ddoc_main .declaration div .para {
+          margin-bottom: 0;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr td:first-of-type {
+        padding: 7px;
+        text-align: right;
+        vertical-align: top;
+        word-break: normal;
+        white-space: nowrap;
+      }
+
+      #ddoc_main .ddoc_params .graybox {
+        border: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox td {
+        border-color: rgba(214, 214, 214, 1);
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:first-child > td {
+        border-top: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:last-child > td {
+        border-bottom: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:first-child {
+        border-left: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:last-child {
+        border-right: 0 none;
+        width: 100%;
+      }
+
+      #ddoc_main em.term, #ddoc_main em.term .code {
+        color: rgba(65, 65, 65, 1);
+        font-size: 12px;
+        font-style: italic;
+        line-height: 1.5;
+      }
+
+      #ddoc_main .see-also {
+        cursor: pointer;
+        font-family: Menlo,monospace;
+      }
+
+      #ddoc_main .ddoc_decl .section > div:last-of-type {
+        margin-bottom: 15px;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members {
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .code_sample {
+        background: inherit;
+      }
+
+      #ddoc_main .declaration .code-line {
+          display: block;
+          font: 1em Menlo,monospace;
+      }
+
+      #ddoc_main a[name] {
+        margin: -112px 0 0;
+        padding-top: 112px;
+      }
+
+      #ddoc_main .ddoc_decl td {
+        max-width: inherit;
+      }
+
+      #ddoc_main .declaration a {
+        color: inherit;
+      }
+
+      #ddoc_main .declaration a:hover {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: underline;
+      }
+
+      body.ddoc {
+        background-color: transparent;
+        color: rgba(0, 0, 0, 1);
+        font-family: Helvetica,Arial,sans-serif;
+        font-size: 62.5%;
+        margin: 0;
+        border: 0;
+        left: 0;
+        top: 0;
+        padding: 0;
+      }
+
+      .ddoc a[name] {
+        display: block;
+        height: 0;
+        margin: -85px 0 0;
+        padding-top: 85px;
+        width: 0;
+      }
+
+      .ddoc .module {
+          border-color: transparent;
+          background-color: rgba(255, 255, 255, 1);
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-image: none;
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          box-shadow: 0 0 1px rgba(0, 0, 0, 0.07);
+          display: block;
+          margin-left: 0;
+          min-height: calc(100% - 173px);
+          overflow: auto;
+          padding-bottom: 100px;
+      }
+
+      .ddoc .content_wrapper {
+          background-color: rgba(242, 242, 242, 1);
+          margin: 0 auto;
+          max-width: 980px;
+      }
+
+      .ddoc .section {
+        padding: 15px 25px 30px;
+      }
+
+      .ddoc .section .section {
+        margin: 30px 0 0;
+        padding: 0;
+      }
+
+      .ddoc .para {
+        color: rgba(65, 65, 65, 1);
+        font-size: 1.4em;
+        line-height: 145%;
+        margin-bottom: 15px;
+      }
+
+      .ddoc .ddoc_examples .para {
+        margin-bottom: 0;
+      }
+
+      .ddoc .module_name {
+          color: rgba(0, 0, 0, 1);
+          display: block;
+          font-family: Helvetica;
+          font-size: 2.8em;
+          font-weight: 100;
+          margin-bottom: 0;
+          padding: 15px 0;
+      }
+
+      .ddoc .module a {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: none;
+      }
+
+      .ddoc .code {
+        color: rgba(128, 128, 128, 1);
+        font-family: Menlo,monospace;
+        font-size: 0.85em;
+        word-wrap: break-word;
+      }
+
+      .ddoc .code i {
+        font-style: normal;
+      }
+
+      .ddoc .code .code {
+        font-size: 1em;
+      }
+
+      .ddoc .code_sample {
+        background-clip: padding-box;
+        margin: 1px 0;
+        text-align: left;
+      }
+
+      .ddoc .code_sample {
+        display: block;
+        font-size: 1.4em;
+        margin-left: 21px;
+      }
+
+      .ddoc ol .code_sample {
+        font-size: 1em;
+      }
+
+      .ddoc .code_lines {
+        counter-reset: li;
+        line-height: 1.6em;
+        list-style: outside none none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .ddoc .code_listing .code_sample div {
+        margin-left: 13px;
+        width: 93%;
+      }
+
+      .ddoc .code_listing .code_sample div .code_lines li {
+        list-style-type: none;
+        margin: 0;
+        padding-right: 10px;
+      }
+
+      .ddoc .code_sample div .code_lines li::before {
+        margin-left: -33px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+10)::before {
+        margin-left: -39px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+100)::before {
+        margin-left: -46px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample .code_lines .code {
+        color: #000;
+      }
+
+      .ddoc div.dlang {
+        margin: 10px 0 21px;
+        padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+          margin: 10px 0 21px;
+          padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+        border-left: 5px solid rgba(0, 155, 51, 0.2);
+      }
+
+      .ddoc .code_lines li::before {
+        color: rgba(128, 128, 128, 1);
+        content: counter(li, decimal);
+        counter-increment: li;
+        font-family: Menlo,monospace;
+        font-size: 0.9em;
+        margin-right: 16px;
+      }
+
+      .ddoc .code_lines li {
+        padding-left: 0;
+        white-space: pre-wrap;
+      }
+
+      .ddoc .code_lines li:only-of-type::before {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:only-of-type {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:nth-child(n+10) {
+        text-indent: -17px;
+      }
+
+      .ddoc .code_lines li:nth-child(n+10)::before {
+        margin-right: 12px;
+      }
+
+      .ddoc .graybox {
+        border: 1px solid rgba(233, 233, 233, 1);
+        border-collapse: collapse;
+        border-spacing: 0;
+        empty-cells: hide;
+        margin: 20px 0 36px;
+        text-align: left;
+      }
+
+      .ddoc .graybox p {
+        margin: 0;
+        min-width: 50px;
+      }
+
+      .ddoc th {
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: bottom;
+      }
+
+      .ddoc td {
+        border: 1px solid rgba(233, 233, 233, 1);
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: middle;
+      }
+
+      .punctuation {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .comment {
+        color: rgba(0, 131, 18, 1);
+      }
+
+      .operator {
+        color: #000;
+      }
+
+      .keyword {
+        color: rgba(170, 13, 145, 1);
+      }
+
+      .keyword_type {
+        color: rgba(170, 51, 145, 1);
+      }
+
+      .string_literal {
+        color: rgba(196, 26, 22, 1);
+      }
+
+      .ddoc_psuper_symbol {
+        color: rgba(92, 38, 153, 1);
+      }
+
+      .param {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .psymbol {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .ddoc_member_header .ddoc_header_anchor .code {
+        font-size: 1em;
+      }
+    </style>
+  </head>
+  <body id="ddoc_main" class="ddoc dlang">
+    <div class="content_wrapper">
+      <article class="module">
+        <h1 class="module_name">switch and case</h1>
+        <section id="module_content"><br><br>
+<br><br>
+
+<br><br>
+<p> is a statement that allows comparing the value of an expression against multiple values. It is similar to but not the same as an "if, else if, else" chain.  is used for specifying the values that are to be compared with 's expression.  is a part of the  statement, not a statement itself.
+</p>
+<br><br>
+<p> takes an expression within parentheses, compares the value of that expression to the  values, and executes the operations of the  that is equal to the value of the expression. Its syntax consists of a  block that contains one or more  sections and a  section:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">switch</span> (<i>expression</i>) {
+
+    <span class="keyword">case</span> <i>value_1</i>:
+        <span class="comment">// operations to execute if the expression is equal to value_1
+</span>        <span class="comment">// ...
+</span>        <span class="keyword">break</span>;
+
+    <span class="keyword">case</span> <i>value_2</i>:
+        <span class="comment">// operations to execute if the expression is equal to value_2
+</span>        <span class="comment">// ...
+</span>        <span class="keyword">break</span>;
+
+    <span class="comment">// ... other cases ...
+</span>
+    <span class="keyword">default</span>:
+        <span class="comment">// operations to execute if the expression is not equal to any case
+</span>        <span class="comment">// ...
+</span>        <span class="keyword">break</span>;
+    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The expression that  takes is not used directly as a logical expression. It is not evaluated as "if this condition is true", as it would be in an  statement. The <i>value</i> of the  expression is used in equality comparisons with the  values. It is similar to an "if, else if, else" chain that has only equality comparisons:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> value = <i>expression</i>;
+
+    <span class="keyword">if</span> (value == <i>value_1</i>) {
+        <span class="comment">// operations for value_1
+</span>        <span class="comment">// ...
+</span>
+    } <span class="keyword">else</span> <span class="keyword">if</span> (value == <i>value_2</i>) {
+        <span class="comment">// operations for value_2
+</span>        <span class="comment">// ...
+</span>    }
+
+    <span class="comment">// ... other 'else if's ...
+</span>
+    } <span class="keyword">else</span> {
+        <span class="comment">// operations for other values
+</span>        <span class="comment">// ...
+</span>    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>However, the "if, else if, else" above is not an exact equivalent of the  statement. The reasons why will be explained in the following sections.
+</p>
+<br><br>
+<p>If a  value matches the value of the  expression, then the operations that are under the  are executed. If no value matches, then the operations that are under the  are executed.
+</p>
+<br><br>
+<h5>  The  statement</h5>
+<br><br>
+<p>The use of  is generally advised against in most programming languages. However,  is useful in  statements in some situations, without being as problematic as in other uses. The  statement will be covered in more detail in <a href="goto.html">a later chapter</a>.
+</p>
+<br><br>
+<p> does not introduce a <i>scope</i> as the  statement does. Once the operations within an  or  scope are finished the evaluation of the entire  statement is also finished. That does not happen with the  sections; once a matching  is found, the execution of the program jumps to that  and executes the operations under it. When needed in rare situations,  makes the program execution jump to the next :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">switch</span> (value) {
+
+    <span class="keyword">case</span> 5:
+        writeln(<span class="string_literal">"five"</span>);
+        ;    <span class="comment">// continues to the next case
+</span>
+    <span class="keyword">case</span> 4:
+        writeln(<span class="string_literal">"four"</span>);
+        <span class="keyword">break</span>;
+
+    <span class="keyword">default</span>:
+        writeln(<span class="string_literal">"unknown"</span>);
+        <span class="keyword">break</span>;
+    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>If  is 5, the execution continues under the  line and the program prints "five". Then the  statement causes the execution to continue to the next , and as a result "four" is also printed:
+</p>
+<br><br>
+
+<br><br>
+<p> can appear in three ways under  sections:
+</p>
+<br><br>
+<ul><br><br>
+<li>  causes the execution to continue (fallthrough) to the next .</li>
+<br><br>
+<li> causes the execution to continue to the  section.</li>
+<br><br>
+<li> causes the execution to continue to the  that matches that expression.</li>
+<br><br>
+</ul>
+<br><br>
+<p>The following program demonstrates these three uses by taking advantage of a  loop:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">foreach</span> (value; [ 1, 2, 3, 10, 20 ]) {
+        writefln(<span class="string_literal">"--- value: %s ---"</span>, value);
+
+        <span class="keyword">switch</span> (value) {
+
+        <span class="keyword">case</span> 1:
+            writeln(<span class="string_literal">"case 1"</span>);
+            ;
+
+        <span class="keyword">case</span> 2:
+            writeln(<span class="string_literal">"case 2"</span>);
+            ;
+
+        <span class="keyword">case</span> 3:
+            writeln(<span class="string_literal">"case 3"</span>);
+            ;
+
+        <span class="keyword">case</span> 10:
+            writeln(<span class="string_literal">"case 10"</span>);
+            <span class="keyword">break</span>;
+
+        <span class="keyword">default</span>:
+            writeln(<span class="string_literal">"default"</span>);
+            <span class="keyword">break</span>;
+        }
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output:
+</p>
+<br><br>
+$(SHELL
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code language-value:">case 1
+case 2
+case 10
+--- value: 2 ---
+case 2
+case 10
+--- value: 3 ---
+case 3
+default
+--- value: 10 ---
+case 10
+--- value: 20 ---
+default
+)
+
+<h5>The expression must be an integer, string, or  type</h5>
+
+<p>Any type can be used in equality comparisons in  statements. On the other hand, the type of the  expression is limited to all integer types, all string types, and .
+</p>
+
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+    string op = /* ... */;
+    // ...
+    switch (op) {
+<br><br>
+    case "add":
+        result = first + second;
+        break;
+<br><br>
+    case "subtract":
+        result = first - second;
+        break;
+<br><br>
+    case "multiply":
+        result = first * second;
+        break;
+<br><br>
+    case "divide":
+        result = first / second;
+        break;
+<br><br>
+    default:
+        throw new Exception(format("Unknown operation: %s", op));
+    }
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">
+<p><i><b>Note:</b> The code above throws an exception when the operation <span class="keyword">is</span> not recognized by the program. We will see exceptions <span class="keyword">in</span> <a href="exceptions.html">a later chapter</a>.</i>
+</p>
+
+<p>Although it <span class="keyword">is</span> possible to use  expressions as well, because  has only two values it may be more suitable to use an  statement or the ternary operator () <span class="keyword">with</span> that type.
+</p>
+
+<h5>  Value ranges</h5>
+
+<p>Ranges of values can be specified by  between s:
+</p>
+
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+    switch (dieValue) {
+<br><br>
+    case 1:
+        writeln("You won");
+        break;
+<br><br>
+    case 2:  case 5:
+        writeln("It's a draw");
+        break;
+<br><br>
+    case 6:
+        writeln("I won");
+        break;
+<br><br>
+    default:
+        /* The program should never get here because the cases
+<ul><li>above cover the entire range of valid die values.</li>
+<li>(See 'final switch' below.) */</li>
+</ul>
+        break;
+    }
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">
+<p>The code above determines that the game ends <span class="keyword">in</span> a draw when the die value <span class="keyword">is</span> 2, 3, 4, or 5.
+</p>
+
+<h5>Distinct values</h5>
+
+<p> Let's assume that it is a draw for the values 2 and 4, rather than for the values that are in the range [2, 5]. Distinct values of a  are separated by commas:
+</p>
+
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+    case 2 4:
+        writeln("It's a draw");
+        break;
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">
+<h5> The  statement</h5>
+
+<p>The  statement works similarly to the regular  statement, <span class="keyword">with</span> the following differences:
+</p>
+
+<ul><li>It cannot have a  section. Note that <span class="keyword">this</span> section <span class="keyword">is</span> meaningless when the  sections cover the entire range of values anyway, as has been <span class="keyword">with</span> the six values of the die above.
+</li>
+
+<li>Value ranges cannot be used <span class="keyword">with</span> s (distinct values can be).
+</li>
+
+<li>If the expression <span class="keyword">is</span> of an  type, all of the values of the type must be covered by the s (we will see  types <span class="keyword">in</span> the next chapter).
+</li>
+
+</ul>
+
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+    int dieValue = 1;
+<br><br>
+    final switch (dieValue) {
+<br><br>
+    case 1:
+        writeln("You won");
+        break;
+<br><br>
+    case 2, 3, 4, 5:
+        writeln("It's a draw");
+        break;
+<br><br>
+    case 6:
+        writeln("I won");
+        break;
+    }
+$(D_CODE 
+<h5>When to use</h5>
+
+<p> is suitable for comparing the value of an expression against a set of values that are known at compile time.
+</p>
+
+<p>When there are only two values to compare, an  statement may make more sense. For example, to check whether it is heads or tails:
+</p>
+
+```d
+    if (headsTailsResult == heads) {
+        // ...
+
+    } else {
+        // ...
+    }
+```
+
+<p>As a general rule,  is more suitable when there are three or more values to compare.
+</p>
+
+<p>When all of the values need to be handled, then prefer . This is especially the case for  types.
+</p>
+
+
+
+</section>
+      </article>
+    </div>
+  </body>
+</html>

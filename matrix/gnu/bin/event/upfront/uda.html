@@ -1,0 +1,988 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>uda</title>
+    <style type="text/css" media="screen">
+      html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p,
+      blockquote, pre, a, abbr, address, cite, code, del, dfn, em, figure,
+      img, ins, kbd, q, s, samp, small, strong, sub, sup, var, b, u, i, dl,
+      dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption,
+      tbody, tfoot, thead, tr, th, td {
+        background: transparent none repeat scroll 0 0;
+        border: 0 none;
+        font-size: 100%;
+        margin: 0;
+        outline: 0 none;
+        padding: 0;
+        vertical-align: baseline;
+      }
+
+      h1 { font-size: 200%; }
+      h2 { font-size: 160%; }
+      h3 { font-size: 120%; }
+      h4 { font-size: 100%; }
+      h5 { font-size: 80%; }
+      h6 { font-size: 80%; font-weight: normal; }
+
+      ul, ol {
+        margin: 1.4em 0;
+      }
+      ul ul, ol ol, ul ol, ol ul {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      ul, ol {
+        margin-left: 2.8em;
+      }
+
+      ol {
+        list-style: decimal;
+      }
+      ol ol {
+        list-style: lower-alpha;
+      }
+      ol ol ol {
+        list-style: lower-roman;
+      }
+      ol ol ol ol {
+        list-style: decimal;
+      }
+
+      blockquote {
+        margin: 0.1em;
+        margin-left: 1em;
+        border-left: 2px solid #cccccc;
+        padding-left: 0.7em;
+      }
+
+      .color_red { color: #dc322f; }
+      .color_blue { color: #268bd2; }
+      .color_green { color: #859901; }
+      .color_yellow { color: #b58901; }
+      .color_black { color: black; }
+      .color_white { color: white; }
+
+      .font_big {
+        font-size: 1.2em;
+      }
+
+      .ddoc_section_h {
+        font-weight: bold;
+        font-size: 13px;
+        line-height: 19.5px;
+        margin-top: 11px;
+        display: block;
+      }
+
+      body.dlang .dlang {
+        display: inline-block;
+      }
+
+      body.dlang .declaration .dlang {
+          display: block;
+      }
+
+      body.dlang .ddoc_header_anchor a.dlang {
+        display: block;
+        color: rgba(0, 136, 204, 1);
+        text-decoration: none;
+      }
+
+      body.dlang .ddoc_header_anchor .code {
+        color: rgba(0, 136, 204, 1);
+      }
+
+      #ddoc_main .module {
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          overflow-x: hidden;
+          padding: 15px;
+      }
+
+      #ddoc_main .section .section {
+        margin-top: 0;
+      }
+
+      #ddoc_main .ddoc_module_members_section {
+          padding: 1px 0 0;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members section.intro {
+          background: #fff none repeat scroll 0 0;
+          list-style-type: none;
+          width: 100%;
+      }
+
+      #ddoc_main .ddoc_header_anchor {
+          font-size: 1.4em;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_header_anchor > .code {
+          display: inline-block;
+
+      }
+
+      #ddoc_main .ddoc_decl {
+        background-color: transparent;
+        height: 100%;
+        left: 0;
+        top: 0;
+        padding: 0;
+        padding-left: 15px;
+      }
+
+      #ddoc_main .ddoc_decl .section, #ddoc_main .section.ddoc_sections {
+        background: white none repeat scroll 0 0;
+        margin: 0;
+        padding: 5px;
+        position: relative;
+        border-radius: 5px;
+      }
+
+      #ddoc_main .ddoc_decl .section h4:first-of-type, #ddoc_main .section.ddoc_sections h4:first-of-type {
+        font-size: 13px;
+        line-height: 1.5;
+        margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration {
+          margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration .code {
+          color: rgba(0, 0, 0, 1);
+          margin-bottom: 15px;
+          padding-bottom: 6px;
+      }
+
+      #ddoc_main .declaration div .para {
+          margin-bottom: 0;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr td:first-of-type {
+        padding: 7px;
+        text-align: right;
+        vertical-align: top;
+        word-break: normal;
+        white-space: nowrap;
+      }
+
+      #ddoc_main .ddoc_params .graybox {
+        border: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox td {
+        border-color: rgba(214, 214, 214, 1);
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:first-child > td {
+        border-top: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:last-child > td {
+        border-bottom: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:first-child {
+        border-left: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:last-child {
+        border-right: 0 none;
+        width: 100%;
+      }
+
+      #ddoc_main em.term, #ddoc_main em.term .code {
+        color: rgba(65, 65, 65, 1);
+        font-size: 12px;
+        font-style: italic;
+        line-height: 1.5;
+      }
+
+      #ddoc_main .see-also {
+        cursor: pointer;
+        font-family: Menlo,monospace;
+      }
+
+      #ddoc_main .ddoc_decl .section > div:last-of-type {
+        margin-bottom: 15px;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members {
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .code_sample {
+        background: inherit;
+      }
+
+      #ddoc_main .declaration .code-line {
+          display: block;
+          font: 1em Menlo,monospace;
+      }
+
+      #ddoc_main a[name] {
+        margin: -112px 0 0;
+        padding-top: 112px;
+      }
+
+      #ddoc_main .ddoc_decl td {
+        max-width: inherit;
+      }
+
+      #ddoc_main .declaration a {
+        color: inherit;
+      }
+
+      #ddoc_main .declaration a:hover {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: underline;
+      }
+
+      body.ddoc {
+        background-color: transparent;
+        color: rgba(0, 0, 0, 1);
+        font-family: Helvetica,Arial,sans-serif;
+        font-size: 62.5%;
+        margin: 0;
+        border: 0;
+        left: 0;
+        top: 0;
+        padding: 0;
+      }
+
+      .ddoc a[name] {
+        display: block;
+        height: 0;
+        margin: -85px 0 0;
+        padding-top: 85px;
+        width: 0;
+      }
+
+      .ddoc .module {
+          border-color: transparent;
+          background-color: rgba(255, 255, 255, 1);
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-image: none;
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          box-shadow: 0 0 1px rgba(0, 0, 0, 0.07);
+          display: block;
+          margin-left: 0;
+          min-height: calc(100% - 173px);
+          overflow: auto;
+          padding-bottom: 100px;
+      }
+
+      .ddoc .content_wrapper {
+          background-color: rgba(242, 242, 242, 1);
+          margin: 0 auto;
+          max-width: 980px;
+      }
+
+      .ddoc .section {
+        padding: 15px 25px 30px;
+      }
+
+      .ddoc .section .section {
+        margin: 30px 0 0;
+        padding: 0;
+      }
+
+      .ddoc .para {
+        color: rgba(65, 65, 65, 1);
+        font-size: 1.4em;
+        line-height: 145%;
+        margin-bottom: 15px;
+      }
+
+      .ddoc .ddoc_examples .para {
+        margin-bottom: 0;
+      }
+
+      .ddoc .module_name {
+          color: rgba(0, 0, 0, 1);
+          display: block;
+          font-family: Helvetica;
+          font-size: 2.8em;
+          font-weight: 100;
+          margin-bottom: 0;
+          padding: 15px 0;
+      }
+
+      .ddoc .module a {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: none;
+      }
+
+      .ddoc .code {
+        color: rgba(128, 128, 128, 1);
+        font-family: Menlo,monospace;
+        font-size: 0.85em;
+        word-wrap: break-word;
+      }
+
+      .ddoc .code i {
+        font-style: normal;
+      }
+
+      .ddoc .code .code {
+        font-size: 1em;
+      }
+
+      .ddoc .code_sample {
+        background-clip: padding-box;
+        margin: 1px 0;
+        text-align: left;
+      }
+
+      .ddoc .code_sample {
+        display: block;
+        font-size: 1.4em;
+        margin-left: 21px;
+      }
+
+      .ddoc ol .code_sample {
+        font-size: 1em;
+      }
+
+      .ddoc .code_lines {
+        counter-reset: li;
+        line-height: 1.6em;
+        list-style: outside none none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .ddoc .code_listing .code_sample div {
+        margin-left: 13px;
+        width: 93%;
+      }
+
+      .ddoc .code_listing .code_sample div .code_lines li {
+        list-style-type: none;
+        margin: 0;
+        padding-right: 10px;
+      }
+
+      .ddoc .code_sample div .code_lines li::before {
+        margin-left: -33px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+10)::before {
+        margin-left: -39px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+100)::before {
+        margin-left: -46px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample .code_lines .code {
+        color: #000;
+      }
+
+      .ddoc div.dlang {
+        margin: 10px 0 21px;
+        padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+          margin: 10px 0 21px;
+          padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+        border-left: 5px solid rgba(0, 155, 51, 0.2);
+      }
+
+      .ddoc .code_lines li::before {
+        color: rgba(128, 128, 128, 1);
+        content: counter(li, decimal);
+        counter-increment: li;
+        font-family: Menlo,monospace;
+        font-size: 0.9em;
+        margin-right: 16px;
+      }
+
+      .ddoc .code_lines li {
+        padding-left: 0;
+        white-space: pre-wrap;
+      }
+
+      .ddoc .code_lines li:only-of-type::before {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:only-of-type {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:nth-child(n+10) {
+        text-indent: -17px;
+      }
+
+      .ddoc .code_lines li:nth-child(n+10)::before {
+        margin-right: 12px;
+      }
+
+      .ddoc .graybox {
+        border: 1px solid rgba(233, 233, 233, 1);
+        border-collapse: collapse;
+        border-spacing: 0;
+        empty-cells: hide;
+        margin: 20px 0 36px;
+        text-align: left;
+      }
+
+      .ddoc .graybox p {
+        margin: 0;
+        min-width: 50px;
+      }
+
+      .ddoc th {
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: bottom;
+      }
+
+      .ddoc td {
+        border: 1px solid rgba(233, 233, 233, 1);
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: middle;
+      }
+
+      .punctuation {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .comment {
+        color: rgba(0, 131, 18, 1);
+      }
+
+      .operator {
+        color: #000;
+      }
+
+      .keyword {
+        color: rgba(170, 13, 145, 1);
+      }
+
+      .keyword_type {
+        color: rgba(170, 51, 145, 1);
+      }
+
+      .string_literal {
+        color: rgba(196, 26, 22, 1);
+      }
+
+      .ddoc_psuper_symbol {
+        color: rgba(92, 38, 153, 1);
+      }
+
+      .param {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .psymbol {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .ddoc_member_header .ddoc_header_anchor .code {
+        font-size: 1em;
+      }
+    </style>
+  </head>
+  <body id="ddoc_main" class="ddoc dlang">
+    <div class="content_wrapper">
+      <article class="module">
+        <h1 class="module_name">uda</h1>
+        <section id="module_content"><br><br>
+<br><br>
+
+<br><br>
+<p>Any declaration (e.g. struct type, class type, variable, etc.) can be assigned attributes, which can then be accessed at compile time to alter the way the code is compiled. User defined attributes is purely a compile-time feature.
+</p>
+<br><br>
+<p> The user defined attribute syntax consists of the  sign followed by the attribute and appear before the declaration that it is being assigned to. For example, the following code assigns the  attribute to the declaration of :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">     string name;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Multiple attributes can be specified separately or as a parenthesized list of attributes. For example, both of the following variables have the same attributes:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    @Encrypted @Colored string lastName;     
+    @Encrypted, Colored string address;    
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>An attribute can be a type name as well as a value of a user defined or a fundamental type. However, because their meanings may not be clear, attributes consisting of literal values like  are discouraged:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">struct</span> Encrypted {
+}
+
+<span class="keyword">enum</span> Color { black, blue, red }
+
+<span class="keyword">struct</span> Colored {
+    Color color;
+}
+
+<span class="keyword">void</span> main() {
+    @Encrypted           <span class="keyword">int</span> a;    
+    @Encrypted()         <span class="keyword">int</span> b;    
+    @Colored(Color.blue) <span class="keyword">int</span> c;    
+    @(42)                <span class="keyword">int</span> d;    
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The attributes of  and  above are of different kinds: The attribute of  is the type  itself, while the attribute of  is an <i>object</i> of type . This is an important difference that affects the way attributes are used at compile time. We will see an example of this difference below.
+</p>
+<br><br>
+<p>  The meaning of attributes is solely determined by the programmer for the needs of the program. The attributes are determined by  at compile time and the code is compiled according to those attributes.
+</p>
+<br><br>
+<p>The following code shows how the attributes of a specific  member (e.g. ) can be accessed by :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="comment">// ...
+</span>
+<span class="keyword">struct</span> Person {
+    @Encrypted @Colored(Color.blue) string name;
+    string lastName;
+    @Colored(Color.red) string address;
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">foreach</span> (attr; <span class="keyword">__traits</span>(, Person.name)) {
+        writeln(attr.stringof);
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output of the program lists the attributes of :
+</p>
+<br><br>
+
+<br><br>
+<p>Two other  expressions are useful when dealing with user defined attributes:
+</p>
+<br><br>
+<ul><br><br>
+<li>  produces the members of a type (or a module) as strings.</li>
+<br><br>
+<li>  produces a <i>symbol</i> useful when accessing a member. Its first argument is a symbol (e.g. a type or a variable name) and its second argument is a string. It produces a symbol by combining its first argument, a dot, and its second argument. For example,  produces the symbol .
+</li>
+<br><br>
+</ul>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.string;
+
+<span class="comment">// ...
+</span>
+<span class="keyword">void</span> main() {
+    <span class="keyword">foreach</span> (memberName; <span class="keyword">__traits</span>(, Person)) {
+        writef(<span class="string_literal">"The attributes of %-8s:"</span>, memberName);
+
+        <span class="keyword">foreach</span> (attr; <span class="keyword">__traits</span>(getAttributes,
+                                <span class="keyword">__traits</span>(,
+                                         Person, memberName))) {
+            writef(<span class="string_literal">" %s"</span>, attr.stringof);
+        }
+
+        writeln();
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output of the program lists all attributes of all members of :
+</p>
+<br><br>
+
+<br><br>
+<p> Another useful tool is , which determines whether a symbol has a specific attribute. The following  passes because  has  attribute:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.traits;
+
+<span class="comment">// ...
+</span>
+<span class="keyword">static</span> <span class="keyword">assert</span>(hasUDA!(Person.name, Encrypted));
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p> can be used with an attribute type as well as a specific value of that type. The following  checks both pass because  has  attribute:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">static</span> <span class="keyword">assert</span>(hasUDA!(Person.name, ));
+<span class="keyword">static</span> <span class="keyword">assert</span>(hasUDA!(Person.name, ));
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h5>Example</h5>
+<br><br>
+<p>Let's design a function template that prints the values of all members of a  object in XML format. The following function considers the  and  attributes of each member when producing the output:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> printAsXML(T)(T object) {
+<span class="comment">// ...
+</span>
+    <span class="keyword">foreach</span> (member; <span class="keyword">__traits</span>(, T)) {             <span class="comment">// (1)
+</span>        string value =
+            <span class="keyword">__traits</span>(, object, member).to!string;  <span class="comment">// (2)
+</span>
+        <span class="keyword">static</span> <span class="keyword">if</span> (!(<span class="keyword">__traits</span>(getMember, T, member),  <span class="comment">// (3)
+</span>                           Encrypted)) {
+            value = value.encrypted.to!string;
+        }
+
+        writefln(<span class="string_literal">`  &lt;%1$s color="%2$s"&gt;%3$s&lt;/%1$s&gt;`</span>, member,
+                 !(T, member), value);      <span class="comment">// (4)
+</span>    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The highlighted parts of the code are explained below:
+</p>
+<br><br>
+<ol><br><br>
+<li>The members of the type are determined by .</li>
+<br><br>
+<li>The value of each member is converted to  to be used later when printing to the output. For example, when the member is , the right-hand side expression becomes .</li>
+<br><br>
+<li>Each member is tested with  to determine whether it has the  attribute. The value of the member is encrypted if it has that attribute. (Because  requires <i>symbols</i> to work with, note how  is used to get the member as a symbol (e.g. ).)</li>
+<br><br>
+<li>The color attribute of each member is determined with , which we will see below.</li>
+<br><br>
+</ol>
+<br><br>
+<p>The  function template can be implemented as in the following code:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">Color colorAttributeOf(T, string memberName)() {
+    <span class="keyword">foreach</span> (attr; <span class="keyword">__traits</span>(getAttributes,
+                            <span class="keyword">__traits</span>(getMember, T, memberName))) {
+        <span class="keyword">static</span> <span class="keyword">if</span> (<span class="keyword">is</span> ( == Colored)) {
+            <span class="keyword">return</span> attr.color;
+        }
+    }
+
+    <span class="keyword">return</span> Color.black;
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>When the compile-time evaluations are completed, the  function template would be instantiated for the  type as the equivalent of the following function:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="comment">/* The equivalent of the printAsXML!Person instance. */</span>
+<span class="keyword">void</span> printAsXML_Person(Person object) {
+<span class="comment">// ...
+</span>
+    {
+        string value = object..to!string;
+        
+        writefln(<span class="string_literal">`  &lt;%1$s color="%2$s"&gt;%3$s&lt;/%1$s&gt;`</span>,
+                 <span class="string_literal">"name"</span>, Color.blue, value);
+    }
+    {
+        string value = object..to!string;
+        writefln(<span class="string_literal">`  &lt;%1$s color="%2$s"&gt;%3$s&lt;/%1$s&gt;`</span>,
+                 <span class="string_literal">"lastName"</span>, Color.black, value);
+    }
+    {
+        string value = object..to!string;
+        writefln(<span class="string_literal">`  &lt;%1$s color="%2$s"&gt;%3$s&lt;/%1$s&gt;`</span>,
+                 <span class="string_literal">"address"</span>, Color.red, value);
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The complete program has more explanations:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+<span class="keyword">import</span> std.string;
+<span class="keyword">import</span> std.algorithm;
+<span class="keyword">import</span> std.conv;
+<span class="keyword">import</span> std.traits;
+
+<span class="comment">/* Specifies that the symbol that it is assigned to should be
+ * encrypted. */</span>
+<span class="keyword">struct</span> Encrypted {
+}
+
+<span class="keyword">enum</span> Color { black, blue, red }
+
+<span class="comment">/* Specifies the color of the symbol that it is assigned to.
+ * The default color is Color.black. */</span>
+<span class="keyword">struct</span> Colored {
+    Color color;
+}
+
+<span class="keyword">struct</span> Person {
+    <span class="comment">/* This member is specified to be encrypted and printed in
+     * blue. */</span>
+    @Encrypted @Colored(Color.blue) string name;
+
+    <span class="comment">/* This member does not have any user defined
+     * attributes. */</span>
+    string lastName;
+
+    <span class="comment">/* This member is specified to be printed in red. */</span>
+    @Colored(Color.red) string address;
+}
+
+<span class="comment">/* Returns the value of the Colored attribute if the specified
+ * member has that attribute, Color.black otherwise. */</span>
+Color colorAttributeOf(T, string memberName)() {
+    <span class="keyword">auto</span> result = Color.black;
+
+    <span class="keyword">foreach</span> (attr;
+             <span class="keyword">__traits</span>(getAttributes,
+                      <span class="keyword">__traits</span>(getMember, T, memberName))) {
+        <span class="keyword">static</span> <span class="keyword">if</span> (<span class="keyword">is</span> (<span class="keyword">typeof</span>(attr) == Colored)) {
+            result = attr.color;
+        }
+    }
+
+    <span class="keyword">return</span> result;
+}
+
+<span class="comment">/* Returns the Caesar-encrypted version of the specified
+ * string. (Warning: Caesar cipher is a very weak encryption
+ * method.) */</span>
+<span class="keyword">auto</span> encrypted(string value) {
+    <span class="keyword">return</span> value.map!(a =&gt; <span class="keyword">dchar</span>(a + 1));
+}
+
+<span class="keyword">unittest</span> {
+    <span class="keyword">assert</span>(<span class="string_literal">"abcdefghij"</span>.encrypted.equal(<span class="string_literal">"bcdefghijk"</span>));
+}
+
+<span class="comment">/* Prints the specified object in XML format according to the
+ * attributes of its members. */</span>
+<span class="keyword">void</span> printAsXML(T)(T object) {
+    writefln(<span class="string_literal">"&lt;%s&gt;"</span>, T.stringof);
+    <span class="keyword">scope</span>(exit) writefln(<span class="string_literal">"&lt;/%s&gt;"</span>, T.stringof);
+
+    <span class="keyword">foreach</span> (member; <span class="keyword">__traits</span>(allMembers, T)) {
+        string value =
+            <span class="keyword">__traits</span>(getMember, object, member).to!string;
+
+        <span class="keyword">static</span> <span class="keyword">if</span> (hasUDA!(<span class="keyword">__traits</span>(getMember, T, member),
+                           Encrypted)) {
+            value = value.encrypted.to!string;
+        }
+
+        writefln(<span class="string_literal">`  &lt;%1$s color="%2$s"&gt;%3$s&lt;/%1$s&gt;`</span>,
+                 member, colorAttributeOf!(T, member), value);
+    }
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">auto</span> people = [ Person(<span class="string_literal">"Alice"</span>, <span class="string_literal">"Davignon"</span>, <span class="string_literal">"Avignon"</span>),
+                    Person(<span class="string_literal">"Ben"</span>, <span class="string_literal">"de Bordeaux"</span>, <span class="string_literal">"Bordeaux"</span>) ];
+
+    <span class="keyword">foreach</span> (person; people) {
+        printAsXML(person);
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output of the program shows that the members have the correct color and that the  member is encrypted:
+</p>
+<br><br>
+
+<br><br>
+<h5>The benefit of user defined attributes</h5>
+<br><br>
+<p>The benefit of user defined attributes is being able to change the attributes of declarations without needing to change any other part of the program. For example, all of the members of  can become encrypted in the XML output by the trivial change below:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">struct</span> Person {
+     {
+        string name;
+        string lastName;
+        string address;
+    }
+}
+
+<span class="comment">// ...
+</span>
+    printAsXML(Person(<span class="string_literal">"Cindy"</span>, <span class="string_literal">"de Cannes"</span>, <span class="string_literal">"Cannes"</span>));
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output:
+</p>
+<br><br>
+
+<br><br>
+<p>Further,  and the attributes that it considers can be used with other types as well:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">struct</span> Data {
+     string message;
+}
+
+<span class="comment">// ...
+</span>
+    printAsXML(Data(<span class="string_literal">"hello world"</span>));
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output:
+</p>
+<br><br>
+
+<br><br>
+<h5>Summary</h5>
+<br><br>
+<ul><br><br>
+<li>User defined attributes can be assigned to any declaration.</li>
+<br><br>
+<li>User defined attributes can be type names as well as values.</li>
+<br><br>
+<li>User defined attributes can be accessed at compile time by  and  to alter the way the program is compiled.</li>
+<br><br>
+</ul>
+<br><br>
+macros:
+        TITLE=User Defined Attributes (UDA)
+<br><br>
+        DESCRIPTION=Assigning user defined attributes to declarations, determining the attributes at compile time, and compiling the code according to those attributes.
+<br><br>
+        KEYWORDS=d programming language tutorial book user defined attributes UDA
+</section>
+      </article>
+    </div>
+  </body>
+</html>

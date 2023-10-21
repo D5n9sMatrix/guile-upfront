@@ -1,0 +1,81 @@
+ROOT=..
+ROOT_DIR=../
+BODYCLASS=changelog
+
+CHANGELOG_NAV=$(DIVC changelog-nav, previous version: $(A $1.html, $1)
+$(NDASH) next version: $(A $2.html, $2))
+CHANGELOG_NAV_FIRST=$(DIVC changelog-nav, next version: $(A $1.html, $1))
+CHANGELOG_NAV_LAST=$(DIVC changelog-nav, previous version: $(A $1.html, $1))
+
+SUBNAV=$(SUBNAV_TEMPLATE
+    $(SUBNAV_HEADS Change Log,
+        $(LINK2 $(ROOT_DIR)changelog/index.html, List of all versions)
+        $(BR)
+        $(LINK2 $(ROOT_DIR)changelog/release-schedule.html, Release schedule)
+    )
+    $(UL $(CHANGELOG_VERSIONS))
+)
+
+SEARCH_OPTIONS_EXTRA=<option value="dlang.org/changelog" selected>Change
+Log</option>
+
+VERSION=
+$(DIVC version,
+$(P
+$(B $(LARGE $(LINK2 https://downloads.dlang.org/releases/2.x/$(VER), Download D $(VER))))$(BR)
+$(SMALL released $1, $2)
+)
+$4
+)
+
+_= The following CHANGELOG_SEP_ macros are emitted by the ../tools/changed.d script
+CHANGELOG_SEP_HEADER_TEXT_NONEMPTY=$(BR)$(BIG $(RELATIVE_LINK2 bugfix-list, List of all bug fixes and enhancements in D $(VER).))
+CHANGELOG_SEP_HEADER_TEXT=$(HR)
+CHANGELOG_SEP_TEXT_BUGZILLA=$(BR)$(BIG $(LNAME2 bugfix-list, List of all bug fixes and enhancements in D $(VER):))
+CHANGELOG_SEP_NO_TEXT_BUGZILLA=$(BR)$(BIG List of all bug fixes and enhancements in D $(VER).)
+CHANGELOG_HEADER_STATISTICS=$(DIVC changelog-header-stats, $0)
+CHANGELOG_SOURCE_FILE=
+
+BUGSTITLE_TEXT_HEADER=$(BUGSTITLE $1, $+)
+BUGSTITLE_TEXT_BODY=$(BUGSTITLE $1, $+)
+BUGSTITLE_BUGZILLA=$(BUGSTITLE $1, $+)
+
+_= The following D_CONTRIBUTOR macros are emitted by the ../tools/changed.d script
+D_CONTRIBUTORS_HEADER=$(H3 $(LNAME2 contributors, Contributors to this release ($1)))
+$(P A huge thanks goes to all the awesome people who made this release possible.)
+D_CONTRIBUTORS=$(UL $1)
+D_CONTRIBUTOR=$(LI $1)
+D_CONTRIBUTORS_FOOTER=
+
+
+BUGZILLA = <a href="https://issues.dlang.org/show_bug.cgi?id=$0">Bugzilla $0</a>
+CPPBUGZILLA = <a href="http://bugzilla.digitalmars.com/issues/show_bug.cgi?id=$0">Bugzilla $0</a>
+DSTRESS = dstress $0
+BUGSFIXED = <div class="bugsfixed">$(H4 Bugs Fixed) $(UL $0 )</div>
+DMDBUGSFIXED = <div class="bugsfixed">$(H4 DMD Bugs Fixed) $(UL $0 )</div>
+LIBBUGSFIXED = <div class="bugsfixed">$(H4 Library Bugs Fixed) $(UL $0 )</div>
+RUNTIMEBUGSFIXED = <div class="bugsfixed">$(H4 Druntime Bugs Fixed) $(UL $0 )</div>
+BUGSTITLE = <div class="bugsfixed">$(H4 $1) $(OL $2 )</div>
+
+UPCOMING = <div id="upcoming">$(H4 Under Construction) $(OL $0 )</div>
+WHATSNEW = <div id="whatsnew">$(H4 New/Changed Features) $(UL $0 )</div>
+NEWPHOBOS = <div id="whatsnew">$(H4 New/Changed Phobos) $(UL $0 )</div>
+LARGE=<font size="4">$0</font>
+TRENAME=$(TR $(TD $(CODE $1)) $(TD $(CODE $2)))
+LII= $(LI $(D $1) $(UL $+ ))
+
+PULL_REQUEST = $(LINK2 https://github.com/dlang/$1/pull/$2, $1#$2)
+DMDPR = $(PULL_REQUEST dmd,$1)
+DRUNTIMEPR = $(PULL_REQUEST druntime,$1)
+PHOBOSPR = $(PULL_REQUEST phobos,$1)
+_=
+
+CHANGELOG_VERSION = $(LI <a id="$1" href="$1.html">$1</a><span class="hide-from-nav"> ($2, $3)</span>)
+CHANGELOG_VERSION_PRE = $(LI <a id="$1" href="$1.html" style="display: inline-block">$1</a> (preview) <span class="hide-from-nav"> - scheduled for $+</span>)
+CHANGELOG_VERSION_NIGHTLY = $(LI <a id="pending" href="pending.html">Nightly</a> <span class="hide-from-nav"> (preview) - upcoming changes from $(D master)</span>)
+
+SUBNAV_HEADS=
+    $(DIVC head,
+        $(H2 $1)
+        $(P $+)
+    )

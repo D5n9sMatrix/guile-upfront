@@ -1,0 +1,1077 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>alias</title>
+    <style type="text/css" media="screen">
+      html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p,
+      blockquote, pre, a, abbr, address, cite, code, del, dfn, em, figure,
+      img, ins, kbd, q, s, samp, small, strong, sub, sup, var, b, u, i, dl,
+      dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption,
+      tbody, tfoot, thead, tr, th, td {
+        background: transparent none repeat scroll 0 0;
+        border: 0 none;
+        font-size: 100%;
+        margin: 0;
+        outline: 0 none;
+        padding: 0;
+        vertical-align: baseline;
+      }
+
+      h1 { font-size: 200%; }
+      h2 { font-size: 160%; }
+      h3 { font-size: 120%; }
+      h4 { font-size: 100%; }
+      h5 { font-size: 80%; }
+      h6 { font-size: 80%; font-weight: normal; }
+
+      ul, ol {
+        margin: 1.4em 0;
+      }
+      ul ul, ol ol, ul ol, ol ul {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      ul, ol {
+        margin-left: 2.8em;
+      }
+
+      ol {
+        list-style: decimal;
+      }
+      ol ol {
+        list-style: lower-alpha;
+      }
+      ol ol ol {
+        list-style: lower-roman;
+      }
+      ol ol ol ol {
+        list-style: decimal;
+      }
+
+      blockquote {
+        margin: 0.1em;
+        margin-left: 1em;
+        border-left: 2px solid #cccccc;
+        padding-left: 0.7em;
+      }
+
+      .color_red { color: #dc322f; }
+      .color_blue { color: #268bd2; }
+      .color_green { color: #859901; }
+      .color_yellow { color: #b58901; }
+      .color_black { color: black; }
+      .color_white { color: white; }
+
+      .font_big {
+        font-size: 1.2em;
+      }
+
+      .ddoc_section_h {
+        font-weight: bold;
+        font-size: 13px;
+        line-height: 19.5px;
+        margin-top: 11px;
+        display: block;
+      }
+
+      body.dlang .dlang {
+        display: inline-block;
+      }
+
+      body.dlang .declaration .dlang {
+          display: block;
+      }
+
+      body.dlang .ddoc_header_anchor a.dlang {
+        display: block;
+        color: rgba(0, 136, 204, 1);
+        text-decoration: none;
+      }
+
+      body.dlang .ddoc_header_anchor .code {
+        color: rgba(0, 136, 204, 1);
+      }
+
+      #ddoc_main .module {
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          overflow-x: hidden;
+          padding: 15px;
+      }
+
+      #ddoc_main .section .section {
+        margin-top: 0;
+      }
+
+      #ddoc_main .ddoc_module_members_section {
+          padding: 1px 0 0;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members section.intro {
+          background: #fff none repeat scroll 0 0;
+          list-style-type: none;
+          width: 100%;
+      }
+
+      #ddoc_main .ddoc_header_anchor {
+          font-size: 1.4em;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_header_anchor > .code {
+          display: inline-block;
+
+      }
+
+      #ddoc_main .ddoc_decl {
+        background-color: transparent;
+        height: 100%;
+        left: 0;
+        top: 0;
+        padding: 0;
+        padding-left: 15px;
+      }
+
+      #ddoc_main .ddoc_decl .section, #ddoc_main .section.ddoc_sections {
+        background: white none repeat scroll 0 0;
+        margin: 0;
+        padding: 5px;
+        position: relative;
+        border-radius: 5px;
+      }
+
+      #ddoc_main .ddoc_decl .section h4:first-of-type, #ddoc_main .section.ddoc_sections h4:first-of-type {
+        font-size: 13px;
+        line-height: 1.5;
+        margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration {
+          margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration .code {
+          color: rgba(0, 0, 0, 1);
+          margin-bottom: 15px;
+          padding-bottom: 6px;
+      }
+
+      #ddoc_main .declaration div .para {
+          margin-bottom: 0;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr td:first-of-type {
+        padding: 7px;
+        text-align: right;
+        vertical-align: top;
+        word-break: normal;
+        white-space: nowrap;
+      }
+
+      #ddoc_main .ddoc_params .graybox {
+        border: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox td {
+        border-color: rgba(214, 214, 214, 1);
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:first-child > td {
+        border-top: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:last-child > td {
+        border-bottom: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:first-child {
+        border-left: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:last-child {
+        border-right: 0 none;
+        width: 100%;
+      }
+
+      #ddoc_main em.term, #ddoc_main em.term .code {
+        color: rgba(65, 65, 65, 1);
+        font-size: 12px;
+        font-style: italic;
+        line-height: 1.5;
+      }
+
+      #ddoc_main .see-also {
+        cursor: pointer;
+        font-family: Menlo,monospace;
+      }
+
+      #ddoc_main .ddoc_decl .section > div:last-of-type {
+        margin-bottom: 15px;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members {
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .code_sample {
+        background: inherit;
+      }
+
+      #ddoc_main .declaration .code-line {
+          display: block;
+          font: 1em Menlo,monospace;
+      }
+
+      #ddoc_main a[name] {
+        margin: -112px 0 0;
+        padding-top: 112px;
+      }
+
+      #ddoc_main .ddoc_decl td {
+        max-width: inherit;
+      }
+
+      #ddoc_main .declaration a {
+        color: inherit;
+      }
+
+      #ddoc_main .declaration a:hover {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: underline;
+      }
+
+      body.ddoc {
+        background-color: transparent;
+        color: rgba(0, 0, 0, 1);
+        font-family: Helvetica,Arial,sans-serif;
+        font-size: 62.5%;
+        margin: 0;
+        border: 0;
+        left: 0;
+        top: 0;
+        padding: 0;
+      }
+
+      .ddoc a[name] {
+        display: block;
+        height: 0;
+        margin: -85px 0 0;
+        padding-top: 85px;
+        width: 0;
+      }
+
+      .ddoc .module {
+          border-color: transparent;
+          background-color: rgba(255, 255, 255, 1);
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-image: none;
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          box-shadow: 0 0 1px rgba(0, 0, 0, 0.07);
+          display: block;
+          margin-left: 0;
+          min-height: calc(100% - 173px);
+          overflow: auto;
+          padding-bottom: 100px;
+      }
+
+      .ddoc .content_wrapper {
+          background-color: rgba(242, 242, 242, 1);
+          margin: 0 auto;
+          max-width: 980px;
+      }
+
+      .ddoc .section {
+        padding: 15px 25px 30px;
+      }
+
+      .ddoc .section .section {
+        margin: 30px 0 0;
+        padding: 0;
+      }
+
+      .ddoc .para {
+        color: rgba(65, 65, 65, 1);
+        font-size: 1.4em;
+        line-height: 145%;
+        margin-bottom: 15px;
+      }
+
+      .ddoc .ddoc_examples .para {
+        margin-bottom: 0;
+      }
+
+      .ddoc .module_name {
+          color: rgba(0, 0, 0, 1);
+          display: block;
+          font-family: Helvetica;
+          font-size: 2.8em;
+          font-weight: 100;
+          margin-bottom: 0;
+          padding: 15px 0;
+      }
+
+      .ddoc .module a {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: none;
+      }
+
+      .ddoc .code {
+        color: rgba(128, 128, 128, 1);
+        font-family: Menlo,monospace;
+        font-size: 0.85em;
+        word-wrap: break-word;
+      }
+
+      .ddoc .code i {
+        font-style: normal;
+      }
+
+      .ddoc .code .code {
+        font-size: 1em;
+      }
+
+      .ddoc .code_sample {
+        background-clip: padding-box;
+        margin: 1px 0;
+        text-align: left;
+      }
+
+      .ddoc .code_sample {
+        display: block;
+        font-size: 1.4em;
+        margin-left: 21px;
+      }
+
+      .ddoc ol .code_sample {
+        font-size: 1em;
+      }
+
+      .ddoc .code_lines {
+        counter-reset: li;
+        line-height: 1.6em;
+        list-style: outside none none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .ddoc .code_listing .code_sample div {
+        margin-left: 13px;
+        width: 93%;
+      }
+
+      .ddoc .code_listing .code_sample div .code_lines li {
+        list-style-type: none;
+        margin: 0;
+        padding-right: 10px;
+      }
+
+      .ddoc .code_sample div .code_lines li::before {
+        margin-left: -33px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+10)::before {
+        margin-left: -39px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+100)::before {
+        margin-left: -46px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample .code_lines .code {
+        color: #000;
+      }
+
+      .ddoc div.dlang {
+        margin: 10px 0 21px;
+        padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+          margin: 10px 0 21px;
+          padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+        border-left: 5px solid rgba(0, 155, 51, 0.2);
+      }
+
+      .ddoc .code_lines li::before {
+        color: rgba(128, 128, 128, 1);
+        content: counter(li, decimal);
+        counter-increment: li;
+        font-family: Menlo,monospace;
+        font-size: 0.9em;
+        margin-right: 16px;
+      }
+
+      .ddoc .code_lines li {
+        padding-left: 0;
+        white-space: pre-wrap;
+      }
+
+      .ddoc .code_lines li:only-of-type::before {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:only-of-type {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:nth-child(n+10) {
+        text-indent: -17px;
+      }
+
+      .ddoc .code_lines li:nth-child(n+10)::before {
+        margin-right: 12px;
+      }
+
+      .ddoc .graybox {
+        border: 1px solid rgba(233, 233, 233, 1);
+        border-collapse: collapse;
+        border-spacing: 0;
+        empty-cells: hide;
+        margin: 20px 0 36px;
+        text-align: left;
+      }
+
+      .ddoc .graybox p {
+        margin: 0;
+        min-width: 50px;
+      }
+
+      .ddoc th {
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: bottom;
+      }
+
+      .ddoc td {
+        border: 1px solid rgba(233, 233, 233, 1);
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: middle;
+      }
+
+      .punctuation {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .comment {
+        color: rgba(0, 131, 18, 1);
+      }
+
+      .operator {
+        color: #000;
+      }
+
+      .keyword {
+        color: rgba(170, 13, 145, 1);
+      }
+
+      .keyword_type {
+        color: rgba(170, 51, 145, 1);
+      }
+
+      .string_literal {
+        color: rgba(196, 26, 22, 1);
+      }
+
+      .ddoc_psuper_symbol {
+        color: rgba(92, 38, 153, 1);
+      }
+
+      .param {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .psymbol {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .ddoc_member_header .ddoc_header_anchor .code {
+        font-size: 1em;
+      }
+    </style>
+  </head>
+  <body id="ddoc_main" class="ddoc dlang">
+    <div class="content_wrapper">
+      <article class="module">
+        <h1 class="module_name">alias</h1>
+        <section id="module_content"><br><br>
+<br><br>
+
+<br><br>
+<h5></h5>
+<br><br>
+<p>The  keyword assigns aliases to existing names.  is different from and unrelated to .
+</p>
+<br><br>
+<h6>Shortening a long name</h6>
+<br><br>
+<p>As we have encountered in the previous chapter, some names may become too long to be convenient. Let's consider the following function from that chapter:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">Stack!(Point!<span class="keyword">double</span>) randomPoints(size_t count) {
+    <span class="keyword">auto</span> points = <span class="keyword">new</span> Stack!(Point!<span class="keyword">double</span>);
+    <span class="comment">// ...
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Having to type  explicitly in multiple places in the program has a number of drawbacks:
+</p>
+<br><br>
+<ul><li>Longer names can make the code harder to read.
+</li>
+<br><br>
+<li>It is unnecessary to be reminded at every point that the type is the  data structure that contains objects of the  instantiations of the  struct template.
+</li>
+<br><br>
+<li>If the requirements of the program change and e.g.  needs to be changed to , this change must be carried out in multiple places.
+</li>
+<br><br>
+</ul>
+<br><br>
+<p>These drawbacks can be eliminated by giving a new name to :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">alias</span>  = Stack!(Point!<span class="keyword">double</span>);
+
+<span class="comment">// ...
+</span>
+ randomPoints(size_t count) {
+    <span class="keyword">auto</span> points = <span class="keyword">new</span> ;
+    <span class="comment">// ...
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>It may make sense to go further and define two aliases, one taking advantage of the other:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">alias</span> PrecisePoint = Point!<span class="keyword">double</span>;
+<span class="keyword">alias</span> Points = Stack!PrecisePoint;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The syntax of  is the following:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">alias</span> <i>new_name</i> = <i>existing_name</i>;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>After that definition, the new name and the existing name become synonymous: They mean the same thing in the program.
+</p>
+<br><br>
+<p>You may encounter the older syntax of this feature in some programs:
+</p>
+<br><br>
+
+<br><br>
+<p> is also useful when shortening names which otherwise need to be spelled out along with their module names. Let's assume that the name  appears in two separate modules:  and . When both modules are imported, typing merely  would cause a compilation error:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> chess;
+<span class="keyword">import</span> palace;
+
+<span class="comment">// ...
+</span>
+    Queen person;             
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The compiler cannot decide which  has been meant:
+</p>
+<br><br>
+
+<br><br>
+<p>A convenient way of resolving this conflict is to assign aliases to one or more of the names:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> palace;
+
+<span class="keyword">alias</span>  = palace.Queen;
+
+<span class="keyword">void</span> main() {
+     person;
+    <span class="comment">// ...
+</span>     anotherPerson;
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p> works with other names as well. The following code gives a new name to a variable:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span> variableWithALongName = 42;
+
+    <span class="keyword">alias</span> var = variableWithALongName;
+    var = 43;
+
+    <span class="keyword">assert</span>(variableWithALongName == 43);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h6>Design flexibility</h6>
+<br><br>
+<p>For flexibility, even fundamental types like  can have aliases:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">alias</span> CustomerNumber = <span class="keyword">int</span>;
+<span class="keyword">alias</span> CompanyName = string;
+<span class="comment">// ...
+</span>
+<span class="keyword">struct</span> Customer {
+    CustomerNumber number;
+    CompanyName company;
+    <span class="comment">// ...
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>If the users of this struct always type  and  instead of  and , then the design can be changed in the future to some extent, without affecting user code.
+</p>
+<br><br>
+<p>This helps with the readability of code as well. Having the type of a variable as  conveys more information about the meaning of that variable than .
+</p>
+<br><br>
+<p>Sometimes such type aliases are defined inside structs and classes and become parts of the interfaces of those types. The following class has a  property:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">class</span> Box {
+<span class="keyword">private</span>:
+
+    <span class="keyword">double</span> weight_;
+
+<span class="keyword">public</span>:
+
+    <span class="keyword">double</span> weight() <span class="keyword">const</span> {
+        <span class="keyword">return</span> weight_;
+    }
+    <span class="comment">// ...
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Because the member variable and the property of that class is defined as , the users would have to use  as well:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">     totalWeight = 0;
+
+    <span class="keyword">foreach</span> (box; boxes) {
+        totalWeight += box.weight;
+    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Let's compare it to another design where the type of  is defined as an :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">class</span> Box {
+<span class="keyword">private</span>:
+
+     weight_;
+
+<span class="keyword">public</span>:
+
+    <span class="keyword">alias</span>  = <span class="keyword">double</span>;
+
+     weight() <span class="keyword">const</span> {
+        <span class="keyword">return</span> weight_;
+    }
+    <span class="comment">// ...
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Now the user code would normally use  as well:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">     totalWeight = 0;
+
+    <span class="keyword">foreach</span> (box; boxes) {
+        totalWeight += box.weight;
+    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>With this design, changing the actual type of  in the future would not affect user code. (That is, if the new type supports the  operator as well.)
+</p>
+<br><br>
+<h6>  Revealing hidden names of superclasses</h6>
+<br><br>
+<p>When the same name appears both in the superclass and in the subclass, the matching names that are in the superclass are hidden. Even a single name in the subclass is sufficient to hide all of the names of the superclass that match that name:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">class</span> Super {
+    <span class="keyword">void</span> foo(<span class="keyword">int</span> x) {
+        <span class="comment">// ...
+</span>    }
+}
+
+<span class="keyword">class</span> Sub : Super {
+    <span class="keyword">void</span> foo() {
+        <span class="comment">// ...
+</span>    }
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">auto</span> object = <span class="keyword">new</span> Sub;
+    object.foo(42);            
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Since the argument is 42, an  value, one might expect that the  function that takes an  would be called for that use. However, even though their parameter lists are different,  <i>hides</i>  and causes a compilation error. The compiler disregards  altogether and reports that  cannot be called by an :
+</p>
+<br><br>
+
+<br><br>
+<p> Note that this is not the same as overriding a function of the superclass. For that, the function signatures would be the same and the function would be overridden by the  keyword. (The  keyword has been explained in <a href="inheritance.html">the Inheritance chapter</a>.)
+</p>
+<br><br>
+<p>Here, not overriding, but a language feature called <i>name hiding</i> is in effect. If there were not name hiding, functions that happen to have the same name  that are added to or removed from these classes might silently change the function that would get called. Name hiding prevents such surprises. It is a feature of other OOP languages as well.
+</p>
+<br><br>
+<p> can reveal the hidden names when desired:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">class</span> Super {
+    <span class="keyword">void</span> foo(<span class="keyword">int</span> x) {
+        <span class="comment">// ...
+</span>    }
+}
+
+<span class="keyword">class</span> Sub : Super {
+    <span class="keyword">void</span> foo() {
+        <span class="comment">// ...
+</span>    }
+
+    <span class="keyword">alias</span>  = Super.foo;
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The  above brings the  names from the superclass into the subclass interface. As a result, the code now compiles and  gets called.
+</p>
+<br><br>
+<p>When it is more appropriate, it is possible to bring the names under a different name as well:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">class</span> Super {
+    <span class="keyword">void</span> foo(<span class="keyword">int</span> x) {
+        <span class="comment">// ...
+</span>    }
+}
+
+<span class="keyword">class</span> Sub : Super {
+    <span class="keyword">void</span> foo() {
+        <span class="comment">// ...
+</span>    }
+
+    <span class="keyword">alias</span>  = Super.foo;
+}
+
+<span class="comment">// ...
+</span>
+<span class="keyword">void</span> main() {
+    <span class="keyword">auto</span> object = <span class="keyword">new</span> Sub;
+    object.(42);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Name hiding affects member variables as well.  can bring those names to the subclass interface as well:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">class</span> Super {
+    <span class="keyword">int</span> city;
+}
+
+<span class="keyword">class</span> Sub : Super {
+    string city() <span class="keyword">const</span> {
+        <span class="keyword">return</span> <span class="string_literal">"Kayseri"</span>;
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Regardless of one being a member variable and the other a member function, the name  of the subclass hides the name  of the superclass:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> main() {
+    <span class="keyword">auto</span> object = <span class="keyword">new</span> Sub;
+    object.city = 42;        
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Similarly, the names of the member variables of the superclass can be brought to the subclass interface by , possibly under a different name:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">class</span> Super {
+    <span class="keyword">int</span> city;
+}
+
+<span class="keyword">class</span> Sub : Super {
+    string city() <span class="keyword">const</span> {
+        <span class="keyword">return</span> <span class="string_literal">"Kayseri"</span>;
+    }
+
+    <span class="keyword">alias</span>  = Super.city;
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">auto</span> object = <span class="keyword">new</span> Sub;
+    object. = 42;
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h5> </h5>
+<br><br>
+<p> is for removing repeated references to an object or symbol. It takes an expression or a symbol in parentheses and uses that expression or symbol when looking up other symbols that are used inside the scope of :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">struct</span> S {
+    <span class="keyword">int</span> i;
+    <span class="keyword">int</span> j;
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">auto</span> s = S();
+
+    <span class="keyword">with</span> () {
+         = 1;    <span class="comment">// means s.i
+</span>         = 2;    <span class="comment">// means s.j
+</span>    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>It is possible to create a temporary object inside the parentheses. In that case, the temporary object becomes <a href="lvalue_rvalue.html">an lvalue</a>, lifetime of which ends upon leaving the scope:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">with</span> (S()) {
+        i = 1;    <span class="comment">// the i member of the temporary object
+</span>        j = 2;    <span class="comment">// the j member of the temporary object
+</span>    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>As we will see later in <a href="pointers.html">the Pointers chapter</a>, it is possible to construct the temporary object with the  keyword, in which case its lifetime can be extended beyond the scope.
+</p>
+<br><br>
+<p> is especially useful with  sections for removing repeated references to e.g. an  type:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">enum</span> Color { red, orange }
+
+<span class="comment">// ...
+</span>
+    <span class="keyword">final</span> <span class="keyword">switch</span> (c)  {
+
+    <span class="keyword">case</span> red:       <span class="comment">// means Color.red
+</span>        <span class="comment">// ...
+</span>
+    <span class="keyword">case</span> orange:    <span class="comment">// means Color.orange
+</span>        <span class="comment">// ...
+</span>    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h5>Summary</h5>
+<br><br>
+<ul><br><br>
+<li> assigns aliases to existing names.</li>
+<br><br>
+<li> removes repeated references to the same object or symbol.</li>
+<br><br>
+</ul>
+
+</section>
+      </article>
+    </div>
+  </body>
+</html>

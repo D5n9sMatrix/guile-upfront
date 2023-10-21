@@ -1,0 +1,1341 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>mixin</title>
+    <style type="text/css" media="screen">
+      html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p,
+      blockquote, pre, a, abbr, address, cite, code, del, dfn, em, figure,
+      img, ins, kbd, q, s, samp, small, strong, sub, sup, var, b, u, i, dl,
+      dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption,
+      tbody, tfoot, thead, tr, th, td {
+        background: transparent none repeat scroll 0 0;
+        border: 0 none;
+        font-size: 100%;
+        margin: 0;
+        outline: 0 none;
+        padding: 0;
+        vertical-align: baseline;
+      }
+
+      h1 { font-size: 200%; }
+      h2 { font-size: 160%; }
+      h3 { font-size: 120%; }
+      h4 { font-size: 100%; }
+      h5 { font-size: 80%; }
+      h6 { font-size: 80%; font-weight: normal; }
+
+      ul, ol {
+        margin: 1.4em 0;
+      }
+      ul ul, ol ol, ul ol, ol ul {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      ul, ol {
+        margin-left: 2.8em;
+      }
+
+      ol {
+        list-style: decimal;
+      }
+      ol ol {
+        list-style: lower-alpha;
+      }
+      ol ol ol {
+        list-style: lower-roman;
+      }
+      ol ol ol ol {
+        list-style: decimal;
+      }
+
+      blockquote {
+        margin: 0.1em;
+        margin-left: 1em;
+        border-left: 2px solid #cccccc;
+        padding-left: 0.7em;
+      }
+
+      .color_red { color: #dc322f; }
+      .color_blue { color: #268bd2; }
+      .color_green { color: #859901; }
+      .color_yellow { color: #b58901; }
+      .color_black { color: black; }
+      .color_white { color: white; }
+
+      .font_big {
+        font-size: 1.2em;
+      }
+
+      .ddoc_section_h {
+        font-weight: bold;
+        font-size: 13px;
+        line-height: 19.5px;
+        margin-top: 11px;
+        display: block;
+      }
+
+      body.dlang .dlang {
+        display: inline-block;
+      }
+
+      body.dlang .declaration .dlang {
+          display: block;
+      }
+
+      body.dlang .ddoc_header_anchor a.dlang {
+        display: block;
+        color: rgba(0, 136, 204, 1);
+        text-decoration: none;
+      }
+
+      body.dlang .ddoc_header_anchor .code {
+        color: rgba(0, 136, 204, 1);
+      }
+
+      #ddoc_main .module {
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          overflow-x: hidden;
+          padding: 15px;
+      }
+
+      #ddoc_main .section .section {
+        margin-top: 0;
+      }
+
+      #ddoc_main .ddoc_module_members_section {
+          padding: 1px 0 0;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members section.intro {
+          background: #fff none repeat scroll 0 0;
+          list-style-type: none;
+          width: 100%;
+      }
+
+      #ddoc_main .ddoc_header_anchor {
+          font-size: 1.4em;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_header_anchor > .code {
+          display: inline-block;
+
+      }
+
+      #ddoc_main .ddoc_decl {
+        background-color: transparent;
+        height: 100%;
+        left: 0;
+        top: 0;
+        padding: 0;
+        padding-left: 15px;
+      }
+
+      #ddoc_main .ddoc_decl .section, #ddoc_main .section.ddoc_sections {
+        background: white none repeat scroll 0 0;
+        margin: 0;
+        padding: 5px;
+        position: relative;
+        border-radius: 5px;
+      }
+
+      #ddoc_main .ddoc_decl .section h4:first-of-type, #ddoc_main .section.ddoc_sections h4:first-of-type {
+        font-size: 13px;
+        line-height: 1.5;
+        margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration {
+          margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration .code {
+          color: rgba(0, 0, 0, 1);
+          margin-bottom: 15px;
+          padding-bottom: 6px;
+      }
+
+      #ddoc_main .declaration div .para {
+          margin-bottom: 0;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr td:first-of-type {
+        padding: 7px;
+        text-align: right;
+        vertical-align: top;
+        word-break: normal;
+        white-space: nowrap;
+      }
+
+      #ddoc_main .ddoc_params .graybox {
+        border: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox td {
+        border-color: rgba(214, 214, 214, 1);
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:first-child > td {
+        border-top: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:last-child > td {
+        border-bottom: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:first-child {
+        border-left: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:last-child {
+        border-right: 0 none;
+        width: 100%;
+      }
+
+      #ddoc_main em.term, #ddoc_main em.term .code {
+        color: rgba(65, 65, 65, 1);
+        font-size: 12px;
+        font-style: italic;
+        line-height: 1.5;
+      }
+
+      #ddoc_main .see-also {
+        cursor: pointer;
+        font-family: Menlo,monospace;
+      }
+
+      #ddoc_main .ddoc_decl .section > div:last-of-type {
+        margin-bottom: 15px;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members {
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .code_sample {
+        background: inherit;
+      }
+
+      #ddoc_main .declaration .code-line {
+          display: block;
+          font: 1em Menlo,monospace;
+      }
+
+      #ddoc_main a[name] {
+        margin: -112px 0 0;
+        padding-top: 112px;
+      }
+
+      #ddoc_main .ddoc_decl td {
+        max-width: inherit;
+      }
+
+      #ddoc_main .declaration a {
+        color: inherit;
+      }
+
+      #ddoc_main .declaration a:hover {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: underline;
+      }
+
+      body.ddoc {
+        background-color: transparent;
+        color: rgba(0, 0, 0, 1);
+        font-family: Helvetica,Arial,sans-serif;
+        font-size: 62.5%;
+        margin: 0;
+        border: 0;
+        left: 0;
+        top: 0;
+        padding: 0;
+      }
+
+      .ddoc a[name] {
+        display: block;
+        height: 0;
+        margin: -85px 0 0;
+        padding-top: 85px;
+        width: 0;
+      }
+
+      .ddoc .module {
+          border-color: transparent;
+          background-color: rgba(255, 255, 255, 1);
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-image: none;
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          box-shadow: 0 0 1px rgba(0, 0, 0, 0.07);
+          display: block;
+          margin-left: 0;
+          min-height: calc(100% - 173px);
+          overflow: auto;
+          padding-bottom: 100px;
+      }
+
+      .ddoc .content_wrapper {
+          background-color: rgba(242, 242, 242, 1);
+          margin: 0 auto;
+          max-width: 980px;
+      }
+
+      .ddoc .section {
+        padding: 15px 25px 30px;
+      }
+
+      .ddoc .section .section {
+        margin: 30px 0 0;
+        padding: 0;
+      }
+
+      .ddoc .para {
+        color: rgba(65, 65, 65, 1);
+        font-size: 1.4em;
+        line-height: 145%;
+        margin-bottom: 15px;
+      }
+
+      .ddoc .ddoc_examples .para {
+        margin-bottom: 0;
+      }
+
+      .ddoc .module_name {
+          color: rgba(0, 0, 0, 1);
+          display: block;
+          font-family: Helvetica;
+          font-size: 2.8em;
+          font-weight: 100;
+          margin-bottom: 0;
+          padding: 15px 0;
+      }
+
+      .ddoc .module a {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: none;
+      }
+
+      .ddoc .code {
+        color: rgba(128, 128, 128, 1);
+        font-family: Menlo,monospace;
+        font-size: 0.85em;
+        word-wrap: break-word;
+      }
+
+      .ddoc .code i {
+        font-style: normal;
+      }
+
+      .ddoc .code .code {
+        font-size: 1em;
+      }
+
+      .ddoc .code_sample {
+        background-clip: padding-box;
+        margin: 1px 0;
+        text-align: left;
+      }
+
+      .ddoc .code_sample {
+        display: block;
+        font-size: 1.4em;
+        margin-left: 21px;
+      }
+
+      .ddoc ol .code_sample {
+        font-size: 1em;
+      }
+
+      .ddoc .code_lines {
+        counter-reset: li;
+        line-height: 1.6em;
+        list-style: outside none none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .ddoc .code_listing .code_sample div {
+        margin-left: 13px;
+        width: 93%;
+      }
+
+      .ddoc .code_listing .code_sample div .code_lines li {
+        list-style-type: none;
+        margin: 0;
+        padding-right: 10px;
+      }
+
+      .ddoc .code_sample div .code_lines li::before {
+        margin-left: -33px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+10)::before {
+        margin-left: -39px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+100)::before {
+        margin-left: -46px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample .code_lines .code {
+        color: #000;
+      }
+
+      .ddoc div.dlang {
+        margin: 10px 0 21px;
+        padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+          margin: 10px 0 21px;
+          padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+        border-left: 5px solid rgba(0, 155, 51, 0.2);
+      }
+
+      .ddoc .code_lines li::before {
+        color: rgba(128, 128, 128, 1);
+        content: counter(li, decimal);
+        counter-increment: li;
+        font-family: Menlo,monospace;
+        font-size: 0.9em;
+        margin-right: 16px;
+      }
+
+      .ddoc .code_lines li {
+        padding-left: 0;
+        white-space: pre-wrap;
+      }
+
+      .ddoc .code_lines li:only-of-type::before {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:only-of-type {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:nth-child(n+10) {
+        text-indent: -17px;
+      }
+
+      .ddoc .code_lines li:nth-child(n+10)::before {
+        margin-right: 12px;
+      }
+
+      .ddoc .graybox {
+        border: 1px solid rgba(233, 233, 233, 1);
+        border-collapse: collapse;
+        border-spacing: 0;
+        empty-cells: hide;
+        margin: 20px 0 36px;
+        text-align: left;
+      }
+
+      .ddoc .graybox p {
+        margin: 0;
+        min-width: 50px;
+      }
+
+      .ddoc th {
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: bottom;
+      }
+
+      .ddoc td {
+        border: 1px solid rgba(233, 233, 233, 1);
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: middle;
+      }
+
+      .punctuation {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .comment {
+        color: rgba(0, 131, 18, 1);
+      }
+
+      .operator {
+        color: #000;
+      }
+
+      .keyword {
+        color: rgba(170, 13, 145, 1);
+      }
+
+      .keyword_type {
+        color: rgba(170, 51, 145, 1);
+      }
+
+      .string_literal {
+        color: rgba(196, 26, 22, 1);
+      }
+
+      .ddoc_psuper_symbol {
+        color: rgba(92, 38, 153, 1);
+      }
+
+      .param {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .psymbol {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .ddoc_member_header .ddoc_header_anchor .code {
+        font-size: 1em;
+      }
+    </style>
+  </head>
+  <body id="ddoc_main" class="ddoc dlang">
+    <div class="content_wrapper">
+      <article class="module">
+        <h1 class="module_name">mixin</h1>
+        <section id="module_content"><br><br>
+<br><br>
+
+<br><br>
+<p>Mixins are for <i>mixing in</i> generated code into the source code. The mixed-in code may be generated as a template instance or a .
+</p>
+<br><br>
+<p>Code can be inserted into the program as a <i>string import</i> as well.
+</p>
+<br><br>
+<h5> Template mixins</h5>
+<br><br>
+<p>We have seen in the <a href="templates.html">Templates</a> and <a href="templates_more.html">More Templates</a> chapters that templates define code as a pattern, for the compiler to generate actual instances from that pattern. Templates can generate functions, structs, unions, classes, interfaces, and any other legal D code.
+</p>
+<br><br>
+<p>Template mixins insert instantiations of templates into the code by the  keyword:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">mixin</span> <i>a_template</i>!(<i>template_parameters</i>)
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>As we will see in the example below, the  keyword is used in the definitions of template mixins as well.
+</p>
+<br><br>
+<p>The instantiation of the template for the specific set of template parameters is inserted into the source code right where the  keyword appears.
+</p>
+<br><br>
+<p>For example, let's have a template that defines both an array of edges and a pair of functions that operate on those edges:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"> <span class="keyword">template</span> EdgeArrayFeature(T, size_t count) {
+    T[count] edges;
+
+    <span class="keyword">void</span> setEdge(size_t index, T edge) {
+        edges[index] = edge;
+    }
+
+    <span class="keyword">void</span> printEdges() {
+        writeln(<span class="string_literal">"The edges:"</span>);
+
+        <span class="keyword">foreach</span> (i, edge; edges) {
+            writef(<span class="string_literal">"%s:%s "</span>, i, edge);
+        }
+
+        writeln();
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>That template leaves the type and number of array elements flexible. The instantiation of that template for  and  would be mixed in by the following syntax:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">     EdgeArrayFeature!(<span class="keyword">int</span>, 2);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>For example, the  above can insert the two-element  array and the two functions that are generated by the template right inside a  definition:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">struct</span> Line {
+     <span class="keyword">mixin</span> EdgeArrayFeature!(<span class="keyword">int</span>, 2);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>As a result,  ends up defining a member array and two member functions:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">auto</span> line = Line();
+    line.setEdge(0, 100);
+    line.setEdge(1, 200);
+    line.printEdges();
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output:
+</p>
+<br><br>
+
+<br><br>
+<p>Another instantiation of the same template can be used e.g. inside a function:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">struct</span> Point {
+    <span class="keyword">int</span> x;
+    <span class="keyword">int</span> y;
+}
+
+<span class="keyword">void</span> main() {
+     EdgeArrayFeature!(, 5);
+
+    setEdge(3, Point(3, 3));
+    printEdges();
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>That  inserts an array and two local functions inside . The output:
+</p>
+<br><br>
+
+<br><br>
+<h6>  Template mixins must use local imports</h6>
+<br><br>
+<p>Mixing in template instantiations <i>as is</i> can cause problems about the modules that the template itself is making use of: Those modules may not be available at the  site.
+</p>
+<br><br>
+<p>Let's consider the following module named . Naturally, it would have to import the  module that it is making use of:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">module</span> a;
+
+    
+
+<span class="keyword">mixin</span> <span class="keyword">template</span> A(T) {
+    string a() {
+        T[] array;
+        <span class="comment">// ...
+</span>        <span class="keyword">return</span> format(<span class="string_literal">"%(%s, %)"</span>, array);
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>However, if  is not imported at the actual  site, then the compiler would not be able to find the definition of  at that point. Let's consider the following program that imports  and tries to mix in  from that module:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> a;
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">mixin</span> A!<span class="keyword">int</span>;    
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<p>For that reason, the modules that template mixins use must be imported in local scopes:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">module</span> a;
+
+<span class="keyword">mixin</span> <span class="keyword">template</span> A(T) {
+    string a() {
+            
+
+        T[] array;
+        <span class="comment">// ...
+</span>        <span class="keyword">return</span> format(<span class="string_literal">"%(%s, %)"</span>, array);
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>As long as it is inside the template definition, the  directive above can be outside of the  function as well.
+</p>
+<br><br>
+<h6> Identifying the type that is mixing in</h6>
+<br><br>
+<p>Sometimes a mixin may need to identify the actual type that is mixing it in. That information is available through <i> template parameters</i> as we have seen in <a href="templates_more.html">the More Templates chapter</a>:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">mixin</span> <span class="keyword">template</span> MyMixin(T) {
+    <span class="keyword">void</span> foo() {
+        <span class="keyword">import</span> std.stdio;
+        writefln(<span class="string_literal">"The actual type that is mixing in: %s"</span>,
+                 .stringof);
+    }
+}
+
+<span class="keyword">struct</span> MyStruct {
+    <span class="keyword">mixin</span> MyMixin!(<span class="keyword">int</span>);
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">auto</span> a = MyStruct();
+    a.foo();
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output of the program shows that the actual type is available inside the template as :
+</p>
+<br><br>
+
+<br><br>
+<h5> String mixins</h5>
+<br><br>
+<p>Another powerful feature of D is being able to insert code as  as long as that string is known at compile time. The syntax of string mixins requires the use of parentheses:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">mixin</span> <i>compile_time_generated_string</i>
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>For example, the <i>hello world</i> program can be written with a  as well:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">mixin</span> (<span class="string_literal">`writeln("Hello, World!");`</span>);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The string gets inserted as code and the program produces the following output:
+</p>
+<br><br>
+
+<br><br>
+<p>We can go further and insert all of the program as a string mixin:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">mixin</span> (
+<span class="string_literal">`import std.stdio; void main() { writeln("Hello, World!"); }`</span>
+);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Obviously, there is no need for mixins in these examples, as the strings could have been written as code as well.
+</p>
+<br><br>
+<p>The power of string mixins comes from the fact that the code can be generated at compile time. The following example takes advantage of CTFE to generate statements at compile time:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+string printStatement(string message) {
+    <span class="keyword">return</span> <span class="string_literal">`writeln("`</span> ~ message ~ <span class="string_literal">`");`</span>;
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">mixin</span> (printStatement(<span class="string_literal">"Hello, World!"</span>));
+    <span class="keyword">mixin</span> (printStatement(<span class="string_literal">"Hi, World!"</span>));
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output:
+</p>
+<br><br>
+
+<br><br>
+<p>Note that the  expressions are not executed inside . Rather,  generates code that includes  expressions that are executed inside . The generated code is the equivalent of the following:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> main() {
+    writeln(<span class="string_literal">"Hello, World!"</span>);
+    writeln(<span class="string_literal">"Hi, World!"</span>);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h6>Multiple  arguments</h6>
+<br><br>
+<p>As long as they are all known at compile time,  can take multiple arguments and automatically concatenates their string representations:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">  <span class="keyword">mixin</span> (<span class="string_literal">"const a = "</span>, <span class="keyword">int</span>.sizeof, <span class="string_literal">";"</span>);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>This can be more convenient compared to using e.g. a  expression:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">  <span class="keyword">mixin</span> (format!<span class="string_literal">"const a = %s;"</span>(<span class="keyword">int</span>.sizeof));  <span class="comment">// Same as above
+</span></code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h6>Debugging string mixins</h6>
+<br><br>
+<p> Because generated code is not readily visible as a whole in source code, it can be difficult to identify causes of compilation errors with  expressions. To help with debugging string mixins, there is the  compiler switch , which writes all mixed-in code to a specified file.
+</p>
+<br><br>
+<p>Let's consider the following program that has a syntax error in code that is being mixed in. It is not obvious from the compiler error that the syntax error is the missing semicolon at the end of the definition of the  member:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">string makeStruct(string name, string member) {
+  <span class="keyword">import</span> std.format;
+  <span class="keyword">return</span> format!<span class="string_literal">"struct %s {\n  int %s\n}"</span>(name, member);
+}
+
+<span class="keyword">mixin</span> (makeStruct(<span class="string_literal">"S"</span>, <span class="string_literal">"m"</span>));    
+
+<span class="keyword">void</span> main() {
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>When compiled with the  switch, the compilation error would point at a line inside the specified file ( in the example below):
+</p>
+<br><br>
+
+<br><br>
+<p>Along with all other code that are mixed-in by the standard library, there would be the following code at the specified line inside file :
+</p>
+<br><br>
+
+<br><br>
+<br><br>
+<p>Another option for debugging string mixins is <a href="pragma.html"></a>, which would print the generated code during compilation. This option is less practical because it requires replacing the  keyword with  temporarily for debugging:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">pragma</span>(msg, makeStruct(<span class="string_literal">"S"</span>, <span class="string_literal">"m"</span>));
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h5> Mixin name spaces</h5>
+<br><br>
+<p>It is possible to avoid and resolve name ambiguities in template mixins.
+</p>
+<br><br>
+<p>For example, there are two  variables defined inside  in the following program: one is defined explicitly in  and the other is mixed in. When a mixed-in name is the same as a name that is in the surrounding scope, then the name that is in the surrounding scope gets used:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">template</span> Templ() {
+    
+
+    <span class="keyword">void</span> print() {
+        writeln(i);  <span class="comment">// Always the 'i' that is defined in Templ
+</span>    }
+}
+
+<span class="keyword">void</span> main() {
+    
+    <span class="keyword">mixin</span> Templ;
+
+    i = 42;      <span class="comment">// Sets the 'i' that is defined explicitly in main
+</span>    writeln(i);  <span class="comment">// Prints the 'i' that is defined explicitly in main
+</span>    print();     <span class="comment">// Prints the 'i' that is mixed in
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>As implied in the comments above, template mixins define a name space for their contents and the names that appear in the template code are first looked up in that name space. We can see this in the behavior of :
+</p>
+<br><br>
+
+<br><br>
+<p>The compiler cannot resolve name conflicts if the same name is defined by more than one template mixin. Let's see this in a short program that mixes in the same template instance twice:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">template</span> Templ() {
+    <span class="keyword">int</span> i;
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">mixin</span> Templ;
+    <span class="keyword">mixin</span> Templ;
+
+    i = 42;        
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<p>To prevent this, it is possible to assign name space identifiers for template mixins and refer to contained names by those identifiers:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">mixin</span> Templ ;    <span class="comment">// Defines A.i
+</span>    <span class="keyword">mixin</span> Templ ;    <span class="comment">// Defines B.i
+</span>
+    i = 42;         <span class="comment">// ← not ambiguous anymore
+</span></code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>String mixins do not have these name space features. However, it is trivial to use a string as a template mixin simply by passing it through a simple wrapper template.
+</p>
+<br><br>
+<p>Let's first see a similar name conflict with string mixins:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> main() {
+    <span class="keyword">mixin</span> (<span class="string_literal">"int i;"</span>);
+    <span class="keyword">mixin</span> (<span class="string_literal">"int i;"</span>);    
+
+    i = 42;
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<p>One way of resolving this issue is to pass the  through the following trivial template that effectively converts a string mixin to a template mixin:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">template</span> Templatize(string str) {
+    <span class="keyword">mixin</span> (str);
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">mixin</span> Templatize!(<span class="string_literal">"int i;"</span>) A;    <span class="comment">// Defines A.i
+</span>    <span class="keyword">mixin</span> Templatize!(<span class="string_literal">"int i;"</span>) B;    <span class="comment">// Defines B.i
+</span>
+    A.i = 42;                         <span class="comment">// ← not ambiguous anymore
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h5> String mixins in operator overloading</h5>
+<br><br>
+<p>We have seen in <a href="operator_overloading.html">the Operator Overloading chapter</a> how  expressions helped with the definitions of some of the operators.
+</p>
+<br><br>
+<p>In fact, the reason why most operator member functions are defined as templates is to make the operators available as  values so that they can be used for code generation. We have seen examples of this both in that chapter and its exercise solutions.
+</p>
+<br><br>
+<h5> Mixed in destructors</h5>
+<br><br>
+<p>It is possible to mix in multiple destructors to a user defined type. Those destructors are called in the reverse order of the  statements that added them. This feature allows mixing in different resources to a type, each introducing its own cleanup code.
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">mixin</span> <span class="keyword">template</span> Foo() {
+    ~<span class="keyword">this</span>() {
+        writeln(<span class="string_literal">"Destructor mixed-in by Foo"</span>);
+    }
+}
+
+<span class="keyword">mixin</span> <span class="keyword">template</span> Bar() {
+    ~<span class="keyword">this</span>() {
+        writeln(<span class="string_literal">"Destructor mixed-in by Bar"</span>);
+    }
+}
+
+<span class="keyword">struct</span> S {
+    ~<span class="keyword">this</span>() {
+        writeln(<span class="string_literal">"Actual destructor"</span>);
+    }
+    <span class="keyword">mixin</span> Foo;
+    <span class="keyword">mixin</span> Bar;
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">auto</span> s = S();
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<p>Due to a bug as of this writing, the same behavior does not apply to other special functions like constructors. Additionally, a destructor mixed in by a string mixin does conflict with the existing destructor of the type.
+</p>
+<br><br>
+<h5>     Importing text files</h5>
+<br><br>
+<p>It is possible to insert contents of text files into code at compile time. The contents are treated as  literals and can be used anywhere strings can be used. For example, they can be mixed in as code.
+</p>
+<br><br>
+<p>For example, let's assume there are two text files on the file system named  and  having the following contents.
+</p>
+<br><br>
+<ul><li>:
+<br><br>
+
+</li>
+<br><br>
+<li>:
+<br><br>
+
+</li>
+<br><br>
+</ul>
+<br><br>
+<p>The two  directives in the following program would correspond to the contents of those files converted to  literals at compile time:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> main() {
+    string s = <span class="keyword">import</span> (<span class="string_literal">"file_one"</span>);
+    <span class="keyword">mixin</span> (<span class="keyword">import</span> (<span class="string_literal">"file_two"</span>));
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p> Text file imports (a.k.a. string imports) require the  compiler switch which tells the compiler where to find the text files. For example, if the two files are in the <i>current directory</i> (specified with  in Linux environments), the program can be compiled with the following command:
+</p>
+<br><br>
+
+<br><br>
+<p>The output:
+</p>
+<br><br>
+
+<br><br>
+<p>Considering the file contents as  literals, the program is the equivalent of the following one:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> main() {
+    string s = <span class="string_literal">`Hello`</span>;         
+    <span class="keyword">mixin</span> (<span class="string_literal">`s ~= ", World!";
+import std.stdio;
+writeln(s);`</span>);                  
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Further, considering the mixed-in string as well, the program is the equivalent of the following one:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> main() {
+    string s = <span class="string_literal">`Hello`</span>;
+    s ~= <span class="string_literal">", World!"</span>;
+    <span class="keyword">import</span> std.stdio;
+    writeln(s);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h5>Example</h5>
+<br><br>
+<p>(<i><b>Note:</b> Specifying predicates as strings was used more commonly before the lambda syntax was added to D. Although string predicates as in this example are still used in Phobos, the  lambda syntax may be more suitable in most cases.</i>)
+</p>
+<br><br>
+<p>Let's consider the following function template that takes an array of numbers and returns another array that consists of the elements that satisfy a specific condition:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">int</span>[] filter()(<span class="keyword">int</span>[] numbers) {
+    <span class="keyword">int</span>[] result;
+
+    <span class="keyword">foreach</span> (number; numbers) {
+        <span class="keyword">if</span> () {
+            result ~= number;
+        }
+    }
+
+    <span class="keyword">return</span> result;
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>That function template takes the filtering condition as its template parameter and inserts that condition directly into an  statement as is.
+</p>
+<br><br>
+<p>For that condition to choose numbers that are e.g. less than 7, the  condition should look like the following code:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">        <span class="keyword">if</span> (number &lt; 7) {
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The users of  template can provide the condition as a :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span>[] numbers = [ 1, 8, 6, -2, 10 ];
+    <span class="keyword">int</span>[] chosen = filter!(numbers);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Importantly, the name used in the template parameter must match the name of the variable used in the implementation of . So, the template must document what that name should be and the users must use that name.
+</p>
+<br><br>
+<p>Phobos uses names consisting of single letters like a, b, n, etc.
+</p>
+<br><br>
+macros:
+        TITLE=Mixins
+<br><br>
+        DESCRIPTION=Template mixins and string mixins.
+<br><br>
+        KEYWORDS=d programming language tutorial book mixin
+<br><br>
+SOZLER=
+
+
+</section>
+      </article>
+    </div>
+  </body>
+</html>

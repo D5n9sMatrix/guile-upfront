@@ -1,0 +1,1046 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Unit Testing</title>
+    <style type="text/css" media="screen">
+      html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p,
+      blockquote, pre, a, abbr, address, cite, code, del, dfn, em, figure,
+      img, ins, kbd, q, s, samp, small, strong, sub, sup, var, b, u, i, dl,
+      dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption,
+      tbody, tfoot, thead, tr, th, td {
+        background: transparent none repeat scroll 0 0;
+        border: 0 none;
+        font-size: 100%;
+        margin: 0;
+        outline: 0 none;
+        padding: 0;
+        vertical-align: baseline;
+      }
+
+      h1 { font-size: 200%; }
+      h2 { font-size: 160%; }
+      h3 { font-size: 120%; }
+      h4 { font-size: 100%; }
+      h5 { font-size: 80%; }
+      h6 { font-size: 80%; font-weight: normal; }
+
+      ul, ol {
+        margin: 1.4em 0;
+      }
+      ul ul, ol ol, ul ol, ol ul {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      ul, ol {
+        margin-left: 2.8em;
+      }
+
+      ol {
+        list-style: decimal;
+      }
+      ol ol {
+        list-style: lower-alpha;
+      }
+      ol ol ol {
+        list-style: lower-roman;
+      }
+      ol ol ol ol {
+        list-style: decimal;
+      }
+
+      blockquote {
+        margin: 0.1em;
+        margin-left: 1em;
+        border-left: 2px solid #cccccc;
+        padding-left: 0.7em;
+      }
+
+      .color_red { color: #dc322f; }
+      .color_blue { color: #268bd2; }
+      .color_green { color: #859901; }
+      .color_yellow { color: #b58901; }
+      .color_black { color: black; }
+      .color_white { color: white; }
+
+      .font_big {
+        font-size: 1.2em;
+      }
+
+      .ddoc_section_h {
+        font-weight: bold;
+        font-size: 13px;
+        line-height: 19.5px;
+        margin-top: 11px;
+        display: block;
+      }
+
+      body.dlang .dlang {
+        display: inline-block;
+      }
+
+      body.dlang .declaration .dlang {
+          display: block;
+      }
+
+      body.dlang .ddoc_header_anchor a.dlang {
+        display: block;
+        color: rgba(0, 136, 204, 1);
+        text-decoration: none;
+      }
+
+      body.dlang .ddoc_header_anchor .code {
+        color: rgba(0, 136, 204, 1);
+      }
+
+      #ddoc_main .module {
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          overflow-x: hidden;
+          padding: 15px;
+      }
+
+      #ddoc_main .section .section {
+        margin-top: 0;
+      }
+
+      #ddoc_main .ddoc_module_members_section {
+          padding: 1px 0 0;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members section.intro {
+          background: #fff none repeat scroll 0 0;
+          list-style-type: none;
+          width: 100%;
+      }
+
+      #ddoc_main .ddoc_header_anchor {
+          font-size: 1.4em;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_header_anchor > .code {
+          display: inline-block;
+
+      }
+
+      #ddoc_main .ddoc_decl {
+        background-color: transparent;
+        height: 100%;
+        left: 0;
+        top: 0;
+        padding: 0;
+        padding-left: 15px;
+      }
+
+      #ddoc_main .ddoc_decl .section, #ddoc_main .section.ddoc_sections {
+        background: white none repeat scroll 0 0;
+        margin: 0;
+        padding: 5px;
+        position: relative;
+        border-radius: 5px;
+      }
+
+      #ddoc_main .ddoc_decl .section h4:first-of-type, #ddoc_main .section.ddoc_sections h4:first-of-type {
+        font-size: 13px;
+        line-height: 1.5;
+        margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration {
+          margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration .code {
+          color: rgba(0, 0, 0, 1);
+          margin-bottom: 15px;
+          padding-bottom: 6px;
+      }
+
+      #ddoc_main .declaration div .para {
+          margin-bottom: 0;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr td:first-of-type {
+        padding: 7px;
+        text-align: right;
+        vertical-align: top;
+        word-break: normal;
+        white-space: nowrap;
+      }
+
+      #ddoc_main .ddoc_params .graybox {
+        border: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox td {
+        border-color: rgba(214, 214, 214, 1);
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:first-child > td {
+        border-top: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:last-child > td {
+        border-bottom: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:first-child {
+        border-left: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:last-child {
+        border-right: 0 none;
+        width: 100%;
+      }
+
+      #ddoc_main em.term, #ddoc_main em.term .code {
+        color: rgba(65, 65, 65, 1);
+        font-size: 12px;
+        font-style: italic;
+        line-height: 1.5;
+      }
+
+      #ddoc_main .see-also {
+        cursor: pointer;
+        font-family: Menlo,monospace;
+      }
+
+      #ddoc_main .ddoc_decl .section > div:last-of-type {
+        margin-bottom: 15px;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members {
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .code_sample {
+        background: inherit;
+      }
+
+      #ddoc_main .declaration .code-line {
+          display: block;
+          font: 1em Menlo,monospace;
+      }
+
+      #ddoc_main a[name] {
+        margin: -112px 0 0;
+        padding-top: 112px;
+      }
+
+      #ddoc_main .ddoc_decl td {
+        max-width: inherit;
+      }
+
+      #ddoc_main .declaration a {
+        color: inherit;
+      }
+
+      #ddoc_main .declaration a:hover {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: underline;
+      }
+
+      body.ddoc {
+        background-color: transparent;
+        color: rgba(0, 0, 0, 1);
+        font-family: Helvetica,Arial,sans-serif;
+        font-size: 62.5%;
+        margin: 0;
+        border: 0;
+        left: 0;
+        top: 0;
+        padding: 0;
+      }
+
+      .ddoc a[name] {
+        display: block;
+        height: 0;
+        margin: -85px 0 0;
+        padding-top: 85px;
+        width: 0;
+      }
+
+      .ddoc .module {
+          border-color: transparent;
+          background-color: rgba(255, 255, 255, 1);
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-image: none;
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          box-shadow: 0 0 1px rgba(0, 0, 0, 0.07);
+          display: block;
+          margin-left: 0;
+          min-height: calc(100% - 173px);
+          overflow: auto;
+          padding-bottom: 100px;
+      }
+
+      .ddoc .content_wrapper {
+          background-color: rgba(242, 242, 242, 1);
+          margin: 0 auto;
+          max-width: 980px;
+      }
+
+      .ddoc .section {
+        padding: 15px 25px 30px;
+      }
+
+      .ddoc .section .section {
+        margin: 30px 0 0;
+        padding: 0;
+      }
+
+      .ddoc .para {
+        color: rgba(65, 65, 65, 1);
+        font-size: 1.4em;
+        line-height: 145%;
+        margin-bottom: 15px;
+      }
+
+      .ddoc .ddoc_examples .para {
+        margin-bottom: 0;
+      }
+
+      .ddoc .module_name {
+          color: rgba(0, 0, 0, 1);
+          display: block;
+          font-family: Helvetica;
+          font-size: 2.8em;
+          font-weight: 100;
+          margin-bottom: 0;
+          padding: 15px 0;
+      }
+
+      .ddoc .module a {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: none;
+      }
+
+      .ddoc .code {
+        color: rgba(128, 128, 128, 1);
+        font-family: Menlo,monospace;
+        font-size: 0.85em;
+        word-wrap: break-word;
+      }
+
+      .ddoc .code i {
+        font-style: normal;
+      }
+
+      .ddoc .code .code {
+        font-size: 1em;
+      }
+
+      .ddoc .code_sample {
+        background-clip: padding-box;
+        margin: 1px 0;
+        text-align: left;
+      }
+
+      .ddoc .code_sample {
+        display: block;
+        font-size: 1.4em;
+        margin-left: 21px;
+      }
+
+      .ddoc ol .code_sample {
+        font-size: 1em;
+      }
+
+      .ddoc .code_lines {
+        counter-reset: li;
+        line-height: 1.6em;
+        list-style: outside none none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .ddoc .code_listing .code_sample div {
+        margin-left: 13px;
+        width: 93%;
+      }
+
+      .ddoc .code_listing .code_sample div .code_lines li {
+        list-style-type: none;
+        margin: 0;
+        padding-right: 10px;
+      }
+
+      .ddoc .code_sample div .code_lines li::before {
+        margin-left: -33px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+10)::before {
+        margin-left: -39px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+100)::before {
+        margin-left: -46px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample .code_lines .code {
+        color: #000;
+      }
+
+      .ddoc div.dlang {
+        margin: 10px 0 21px;
+        padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+          margin: 10px 0 21px;
+          padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+        border-left: 5px solid rgba(0, 155, 51, 0.2);
+      }
+
+      .ddoc .code_lines li::before {
+        color: rgba(128, 128, 128, 1);
+        content: counter(li, decimal);
+        counter-increment: li;
+        font-family: Menlo,monospace;
+        font-size: 0.9em;
+        margin-right: 16px;
+      }
+
+      .ddoc .code_lines li {
+        padding-left: 0;
+        white-space: pre-wrap;
+      }
+
+      .ddoc .code_lines li:only-of-type::before {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:only-of-type {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:nth-child(n+10) {
+        text-indent: -17px;
+      }
+
+      .ddoc .code_lines li:nth-child(n+10)::before {
+        margin-right: 12px;
+      }
+
+      .ddoc .graybox {
+        border: 1px solid rgba(233, 233, 233, 1);
+        border-collapse: collapse;
+        border-spacing: 0;
+        empty-cells: hide;
+        margin: 20px 0 36px;
+        text-align: left;
+      }
+
+      .ddoc .graybox p {
+        margin: 0;
+        min-width: 50px;
+      }
+
+      .ddoc th {
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: bottom;
+      }
+
+      .ddoc td {
+        border: 1px solid rgba(233, 233, 233, 1);
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: middle;
+      }
+
+      .punctuation {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .comment {
+        color: rgba(0, 131, 18, 1);
+      }
+
+      .operator {
+        color: #000;
+      }
+
+      .keyword {
+        color: rgba(170, 13, 145, 1);
+      }
+
+      .keyword_type {
+        color: rgba(170, 51, 145, 1);
+      }
+
+      .string_literal {
+        color: rgba(196, 26, 22, 1);
+      }
+
+      .ddoc_psuper_symbol {
+        color: rgba(92, 38, 153, 1);
+      }
+
+      .param {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .psymbol {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .ddoc_member_header .ddoc_header_anchor .code {
+        font-size: 1em;
+      }
+    </style>
+  </head>
+  <body id="ddoc_main" class="ddoc dlang">
+    <div class="content_wrapper">
+      <article class="module">
+        <h1 class="module_name">Unit Testing</h1>
+        <section id="module_content"><br><br>
+<br><br>
+
+<br><br>
+<p>As it should be known by most people, any device that runs some piece of computer program contains software bugs. Software bugs plague computer devices from the simplest to the most complex. Debugging and fixing software bugs is among the less favorable daily activities of a programmer.
+</p>
+<br><br>
+<h5> Causes of bugs</h5>
+<br><br>
+<p>There are many reasons why software bugs occur. The following is an incomplete list roughly from the design stage of a program through the actual coding of it:
+</p>
+<br><br>
+<ul><br><br>
+<li>The requirements and the specifications of the program may not be clear. What the program should actually do may not be known at the design stage.
+</li>
+<br><br>
+<li>The programmer may misunderstand some of the requirements of the program.
+</li>
+<br><br>
+<li>The programming language may not be expressive enough. Considering that there are confusions even between native speakers of human languages, the unnatural syntax and rules of a programming language may be cause of mistakes.
+</li>
+<br><br>
+<li>Certain assumptions of the programmer may be incorrect. For example, the programmer may be assuming that 3.14 would be precise enough to represent π.
+</li>
+<br><br>
+<li>The programmer may have incorrect information on a topic or none at all. For example, the programmer may not know that using a floating point variable in a particular logical expression would not be reliable.
+</li>
+<br><br>
+<li>The program may encounter an unforeseen situation. For example, one of the files of a directory may be deleted or renamed while the program is using the files of that directory in a  loop.
+</li>
+<br><br>
+<li>The programmer may make silly mistakes. For example, the name of a variable may be mistyped and accidentally matched the name of another variable.
+</li>
+<br><br>
+<li>etc.</li>
+<br><br>
+</ul>
+<br><br>
+<p>Unfortunately, there is still no software development methodology that ensures that a program will always work correctly. This is still a hot software engineering topic where promising solutions emerge every decade or so.
+</p>
+<br><br>
+<h5>Discovering the bugs</h5>
+<br><br>
+<p>Software bugs are discovered at various stages of the lifetime of the program by various types of tools and people. The following is a partial list of when a bug may be discovered, from the earliest to the latest:
+</p>
+<br><br>
+<ul><li>When writing the program
+<br><br>
+<ul><li>By the programmer
+</li>
+<br><br>
+<li>By another programmer during <i>pair programming</i>
+</li>
+<br><br>
+<li>By the compiler through compiler messages
+</li>
+<br><br>
+<li>By  as a part of building the program
+</li>
+<br><br>
+</ul>
+<br><br>
+</li>
+<br><br>
+<li>When reviewing the code
+<br><br>
+<ul><li>By tools that analyze the code at compile time
+</li>
+<br><br>
+<li>By other programmers during <i>code reviews</i>
+</li>
+</ul>
+<br><br>
+</li>
+<br><br>
+<li>When running the program
+<br><br>
+<ul><li>By tools that analyze the execution of the program at run time (e.g. by valgrind)
+</li>
+<br><br>
+<li>During QA testing, either by the failure of  checks or by the observed behavior of the program
+</li>
+<br><br>
+<li>By the <i>beta</i> users before the release of the program
+</li>
+<br><br>
+<li>By the end users after the release of the program</li>
+<br><br>
+</ul>
+<br><br>
+</li>
+<br><br>
+</ul>
+<br><br>
+<p>Detecting bugs as early as possible reduces loss of money, time, and in some cases human lives. Additionally, identifying the causes of bugs that have been discovered by the end users are harder than identifying the causes of bugs that are discovered early, during development.
+</p>
+<br><br>
+<h5>Unit testing for catching bugs</h5>
+<br><br>
+<p>Since programs are written by programmers and D is a compiled language, the programmers and the compiler will always be there to discover bugs. Those two aside, the earliest and partly for that reason the most effective way of catching bugs is unit testing.
+</p>
+<br><br>
+<p>Unit testing is an indispensable part of modern programming. It is the most effective method of reducing coding errors. According to some development methodologies, code that is not guarded by unit tests is buggy code.
+</p>
+<br><br>
+<p>Unfortunately, the opposite is not true: Unit tests do not guarantee that the code is free of bugs. Although they are very effective, they can only reduce the risk of bugs.
+</p>
+<br><br>
+<p>Unit testing also enables refactoring the code (i.e. making improvements to it) with ease and confidence. Otherwise, it is common to accidentally break some of the existing functionality of a program when adding new features to it. Bugs of this type are called <i>regressions</i>. Without unit testing, regressions are sometimes discovered as late as during the QA testing of future releases, or worse, by the end users.
+</p>
+<br><br>
+<p>Risk of regressions discourage programmers from refactoring the code, sometimes preventing them from performing the simplest of improvements like correcting the name of a variable. This in turn causes <i>code rot</i>, a condition where the code becomes more and more unmaintainable. For example, although some lines of code would better be moved to a newly defined function in order to be called from more than one place, fear of regressions make programmers copy and paste the existing lines to other places instead, leading to the problem of <i>code duplication</i>.
+</p>
+<br><br>
+<p>Phrases like "if it isn't broken, don't fix it" are related to fear of regressions. Although they seem to be conveying wisdom, such guidelines cause the code to rot slowly and become an untouchable mess.
+</p>
+<br><br>
+<p>Modern programming rejects such "wisdom". To the contrary, to prevent it from becoming a source of bugs, the code is supposed to be "refactored mercilessly". The most powerful tool of this modern approach is unit testing.
+</p>
+<br><br>
+<p>Unit testing involves testing the smallest units of code independently. When units of code are tested independently, it is less likely that there are bugs in higher-level code that use those units. When the parts work correctly, it is more likely that the whole will work correctly as well.
+</p>
+<br><br>
+<p>Unit tests are provided as library solutions in other languages (e.g. JUnit, CppUnit, Unittest++, etc.) In D, unit testing is a core feature of the language. It is debatable whether a library solution or a language feature is better for unit testing. Because D does not provide some of the features that are commonly found in unit testing libraries, it may be worthwhile to consider library solutions as well.
+</p>
+<br><br>
+<p>The unit testing features of D are as simple as inserting  checks into  blocks.
+</p>
+<br><br>
+<h5> Activating the unit tests</h5>
+<br><br>
+<p>Unit tests are not a part of the actual execution of the program. They should be activated only during program development when explicitly requested.
+</p>
+<br><br>
+<p>The  compiler switch that activates unit tests is .
+</p>
+<br><br>
+<p>Assuming that the program is written in a single source file named , its unit tests can be activated by the following command:
+</p>
+<br><br>
+
+<br><br>
+<p>When a program that is built by the  switch is started, its unit test blocks are executed first. Only if all of the unit tests pass then the program execution continues with .
+</p>
+<br><br>
+<h5>  blocks</h5>
+<br><br>
+<p>The lines of code that involve unit tests are written inside  blocks. These blocks do not have any significance for the program other than containing the unit tests:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">unittest</span> {
+    <span class="comment">/* ... the tests and the code that support them ... */</span>
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Although  blocks can appear anywhere, it is convenient to define them right after the code that they test.
+</p>
+<br><br>
+<p>As an example, let's test a function that returns the ordinal form of the specified number as in "1st", "2nd", etc. A  block of this function can simply contain  statements that compare the return values of the function to the expected values. The following function is being tested with the four distinct expected outcomes of the function:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">string ordinal(size_t number) {
+    <span class="comment">// ...
+</span>}
+
+ {
+    <span class="keyword">assert</span>(ordinal(1) == <span class="string_literal">"1st"</span>);
+    <span class="keyword">assert</span>(ordinal(2) == <span class="string_literal">"2nd"</span>);
+    <span class="keyword">assert</span>(ordinal(3) == <span class="string_literal">"3rd"</span>);
+    <span class="keyword">assert</span>(ordinal(10) == <span class="string_literal">"10th"</span>);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The four tests above test that the function works correctly at least for the values of 1, 2, 3, and 10 by making four separate calls to the function and comparing the returned values to the expected ones.
+</p>
+<br><br>
+<p>Although unit tests are based on  checks,  blocks can contain any D code. This allows for preparations before actually starting the tests or any other supporting code that the tests may need. For example, the following block first defines a variable to reduce code duplication:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">dstring toFront(dstring str, <span class="keyword">dchar</span> letter) {
+    <span class="comment">// ...
+</span>}
+
+<span class="keyword">unittest</span> {
+    <span class="keyword">immutable</span> str = <span class="string_literal">"hello"d</span>;
+
+    <span class="keyword">assert</span>(toFront(str, 'h') == <span class="string_literal">"hello"</span>);
+    <span class="keyword">assert</span>(toFront(str, 'o') == <span class="string_literal">"ohell"</span>);
+    <span class="keyword">assert</span>(toFront(str, 'l') == <span class="string_literal">"llheo"</span>);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The three  checks above test that  works according to its specification.
+</p>
+<br><br>
+<p>As these examples show, unit tests are also useful as examples of how particular functions should be called. Usually it is easy to get an idea on what a function does just by reading its unit tests.
+</p>
+<br><br>
+<h5>  Testing for exceptions</h5>
+<br><br>
+<p>It is common to test some code for exception types that it should or should not throw under certain conditions. The  module contains two functions that help with testing for exceptions:
+</p>
+<br><br>
+<ul><br><br>
+<li>: Ensures that a specific exception type is thrown from an expression</li>
+<br><br>
+<li>: Ensures that a specific exception type is <i>not</i> thrown from an expression</li>
+<br><br>
+</ul>
+<br><br>
+<p>For example, a function that requires that both of its slice parameters have equal lengths and that it works with empty slices can be tested as in the following tests:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.exception;
+
+<span class="keyword">int</span>[] average(<span class="keyword">int</span>[] a, <span class="keyword">int</span>[] b) {
+    <span class="comment">// ...
+</span>}
+
+<span class="keyword">unittest</span> {
+    <span class="comment">/* Must throw for uneven slices */</span>
+    assertThrown(average([1], [1, 2]));
+
+    <span class="comment">/* Must not throw for empty slices */</span>
+    assertNotThrown(average([], []));
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Normally,  ensures that some type of exception is thrown without regard to the actual type of that exception. When needed, it can test against a specific exception type as well. Likewise,  ensures that no exception is thrown whatsoever but it can be instructed to test that a specific exception type is not thrown. The specific exception types are specified as template parameters to these functions:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="comment">/* Must throw UnequalLengths for uneven slices */</span>
+    assertThrown(average([1], [1, 2]));
+
+    <span class="comment">/* Must not throw RangeError for empty slices (it may
+     * throw other types of exceptions) */</span>
+    assertNotThrown(average([], []));
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>We will see templates in a <a href="templates.html">later chapter</a>.
+</p>
+<br><br>
+<p>The main purpose of these functions is to make code more succinct and more readable. For example, the following  line is the equivalent of the lengthy code below it:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    assertThrown(average([1], [1, 2]));
+
+<span class="comment">// ...
+</span>
+    <span class="comment">/* The equivalent of the line above */</span>
+    {
+        <span class="keyword">auto</span> isThrown = <span class="keyword">false</span>;
+
+        <span class="keyword">try</span> {
+            average([1], [1, 2]);
+
+        } <span class="keyword">catch</span> (Exception exc) {
+            isThrown = <span class="keyword">true</span>;
+        }
+
+        <span class="keyword">assert</span>(isThrown);
+    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h5>  Test driven development</h5>
+<br><br>
+<p>Test driven development (TDD) is a software development methodology that prescribes writing unit tests before implementing functionality. In TDD, the focus is on unit testing. Coding is a secondary activity that makes the tests pass.
+</p>
+<br><br>
+<p>In accordance to TDD, the  function above can first be implemented intentionally incorrectly:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.string;
+
+string ordinal(size_t number) {
+    <span class="keyword">return</span> <span class="string_literal">""</span>;    <span class="comment">// ← intentionally wrong
+</span>}
+
+<span class="keyword">unittest</span> {
+    <span class="keyword">assert</span>(ordinal(1) == <span class="string_literal">"1st"</span>);
+    <span class="keyword">assert</span>(ordinal(2) == <span class="string_literal">"2nd"</span>);
+    <span class="keyword">assert</span>(ordinal(3) == <span class="string_literal">"3rd"</span>);
+    <span class="keyword">assert</span>(ordinal(10) == <span class="string_literal">"10th"</span>);
+}
+
+<span class="keyword">void</span> main() {
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Although the function is obviously wrong, the next step would be to run the unit tests to see that the tests do indeed catch problems with the function:
+</p>
+<br><br>
+
+<br><br>
+<p>The function should be implemented only <i>after</i> seeing the failure, and only to make the tests pass. Here is just one implementation that passes the tests:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.string;
+
+string ordinal(size_t number) {
+    string suffix;
+
+    <span class="keyword">switch</span> (number) {
+    <span class="keyword">case</span>  1: suffix = <span class="string_literal">"st"</span>; <span class="keyword">break</span>;
+    <span class="keyword">case</span>  2: suffix = <span class="string_literal">"nd"</span>; <span class="keyword">break</span>;
+    <span class="keyword">case</span>  3: suffix = <span class="string_literal">"rd"</span>; <span class="keyword">break</span>;
+    <span class="keyword">default</span>: suffix = <span class="string_literal">"th"</span>; <span class="keyword">break</span>;
+    }
+
+    <span class="keyword">return</span> format(<span class="string_literal">"%s%s"</span>, number, suffix);
+}
+
+<span class="keyword">unittest</span> {
+    <span class="keyword">assert</span>(ordinal(1) == <span class="string_literal">"1st"</span>);
+    <span class="keyword">assert</span>(ordinal(2) == <span class="string_literal">"2nd"</span>);
+    <span class="keyword">assert</span>(ordinal(3) == <span class="string_literal">"3rd"</span>);
+    <span class="keyword">assert</span>(ordinal(10) == <span class="string_literal">"10th"</span>);
+}
+
+<span class="keyword">void</span> main() {
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Since the implementation above does pass the unit tests, there is reason to trust that the  function is correct. Under the assurance that the tests bring, the implementation of the function can be changed in many ways with confidence.
+</p>
+<br><br>
+<h6>Unit tests before bug fixes</h6>
+<br><br>
+<p>Unit tests are not a panacea; there will always be bugs. If a bug is discovered when actually running the program, it can be seen as an indication that the unit tests have been incomplete. For that reason, it is better to <i>first</i> write a unit test that reproduces the bug and only <i>then</i> to fix the bug to pass the new test.
+</p>
+<br><br>
+<p>Let's have a look at the following function that returns the spelling of the ordinal form of a number specified as a :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.exception;
+<span class="keyword">import</span> std.string;
+
+dstring ordinalSpelled(dstring number) {
+    enforce(number.length, <span class="string_literal">"number cannot be empty"</span>);
+
+    dstring[dstring] exceptions = [
+        <span class="string_literal">"one"</span>: <span class="string_literal">"first"</span>, <span class="string_literal">"two"</span> : <span class="string_literal">"second"</span>, <span class="string_literal">"three"</span> : <span class="string_literal">"third"</span>,
+        <span class="string_literal">"five"</span> : <span class="string_literal">"fifth"</span>, <span class="string_literal">"eight"</span>: <span class="string_literal">"eighth"</span>, <span class="string_literal">"nine"</span> : <span class="string_literal">"ninth"</span>,
+        <span class="string_literal">"twelve"</span> : <span class="string_literal">"twelfth"</span>
+    ];
+
+    dstring result;
+
+    <span class="keyword">if</span> (number <span class="keyword">in</span> exceptions) {
+        result = exceptions[number];
+
+    } <span class="keyword">else</span> {
+        result = number ~ <span class="string_literal">"th"</span>;
+    }
+
+    <span class="keyword">return</span> result;
+}
+
+<span class="keyword">unittest</span> {
+    <span class="keyword">assert</span>(ordinalSpelled(<span class="string_literal">"one"</span>) == <span class="string_literal">"first"</span>);
+    <span class="keyword">assert</span>(ordinalSpelled(<span class="string_literal">"two"</span>) == <span class="string_literal">"second"</span>);
+    <span class="keyword">assert</span>(ordinalSpelled(<span class="string_literal">"three"</span>) == <span class="string_literal">"third"</span>);
+    <span class="keyword">assert</span>(ordinalSpelled(<span class="string_literal">"ten"</span>) == <span class="string_literal">"tenth"</span>);
+}
+
+<span class="keyword">void</span> main() {
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The function takes care of exceptional spellings and even includes a unit test for that. Still, the function has a bug yet to be discovered:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> main() {
+    writefln(<span class="string_literal">"He came the %s in the race."</span>,
+             ordinalSpelled(<span class="string_literal">"twenty"</span>));
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The spelling error in the output of the program is due to a bug in , which its unit tests fail to catch:
+</p>
+<br><br>
+
+<br><br>
+<p>Although it is easy to see that the function does not produce the correct spelling for numbers that end with the letter y, TDD prescribes that first a unit test must be written to reproduce the bug before actually fixing it:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">unittest</span> {
+<span class="comment">// ...
+</span>    <span class="keyword">assert</span>(ordinalSpelled(<span class="string_literal">"twenty"</span>) == <span class="string_literal">"twentieth"</span>);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>With that improvement to the tests, now the bug in the function is being caught during development:
+</p>
+<br><br>
+
+<br><br>
+<p>The function should be fixed only then:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">dstring ordinalSpelled(dstring number) {
+<span class="comment">// ...
+</span>    <span class="keyword">if</span> (number <span class="keyword">in</span> exceptions) {
+        result = exceptions[number];
+
+    } <span class="keyword">else</span> {
+        <span class="keyword">if</span> () {
+            result = number[0..$-1] ~ <span class="string_literal">"ieth"</span>;
+
+        } <span class="keyword">else</span> {
+            result = number ~ <span class="string_literal">"th"</span>;
+        }
+    }
+
+    <span class="keyword">return</span> result;
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+
+</section>
+      </article>
+    </div>
+  </body>
+</html>

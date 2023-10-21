@@ -1,0 +1,27 @@
+Ddoc
+
+$(SCRIPT
+    var redir = window.location.href.replace(
+        /\\/changelog\\/index.html#(?:2\\.|new2_)(\\d+(?:\\.\\d+)?)$(DOLLAR)/,
+        "/changelog/2.$(DOLLAR)1.html"
+    );
+
+    if (redir !== window.location.href)
+    {
+        window.location = redir;
+    }
+)
+
+$(D_S D Change Log,
+
+$(UL
+    $(CHANGELOG_VERSIONS)
+
+    $(LI $(LINK2 http://www.digitalmars.com/d/1.0/changelog.html, changelog for 1.0))
+)
+
+)
+
+Macros:
+
+TITLE=Change Log: List of All Versions

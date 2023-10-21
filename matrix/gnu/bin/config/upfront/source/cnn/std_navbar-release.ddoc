@@ -1,0 +1,13 @@
+SUBNAV=
+$(SUBNAV_TEMPLATE
+    $(DIVC head,
+        $(H2 Library Reference)
+        $(P $(SPANC smallprint, version $(LATEST) $(SPANC separator, $(BR))
+            )
+        )
+        $(P $(LINK2 index.html, overview))
+    )
+    $(UL $(MODULE_MENU))
+)
+_=
+EXTRA_FOOTERS=$(SCRIPTLOAD $(STATIC js/run_examples.js))

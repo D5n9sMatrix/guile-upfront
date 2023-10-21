@@ -1,0 +1,1437 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Exceptions</title>
+    <style type="text/css" media="screen">
+      html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p,
+      blockquote, pre, a, abbr, address, cite, code, del, dfn, em, figure,
+      img, ins, kbd, q, s, samp, small, strong, sub, sup, var, b, u, i, dl,
+      dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption,
+      tbody, tfoot, thead, tr, th, td {
+        background: transparent none repeat scroll 0 0;
+        border: 0 none;
+        font-size: 100%;
+        margin: 0;
+        outline: 0 none;
+        padding: 0;
+        vertical-align: baseline;
+      }
+
+      h1 { font-size: 200%; }
+      h2 { font-size: 160%; }
+      h3 { font-size: 120%; }
+      h4 { font-size: 100%; }
+      h5 { font-size: 80%; }
+      h6 { font-size: 80%; font-weight: normal; }
+
+      ul, ol {
+        margin: 1.4em 0;
+      }
+      ul ul, ol ol, ul ol, ol ul {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      ul, ol {
+        margin-left: 2.8em;
+      }
+
+      ol {
+        list-style: decimal;
+      }
+      ol ol {
+        list-style: lower-alpha;
+      }
+      ol ol ol {
+        list-style: lower-roman;
+      }
+      ol ol ol ol {
+        list-style: decimal;
+      }
+
+      blockquote {
+        margin: 0.1em;
+        margin-left: 1em;
+        border-left: 2px solid #cccccc;
+        padding-left: 0.7em;
+      }
+
+      .color_red { color: #dc322f; }
+      .color_blue { color: #268bd2; }
+      .color_green { color: #859901; }
+      .color_yellow { color: #b58901; }
+      .color_black { color: black; }
+      .color_white { color: white; }
+
+      .font_big {
+        font-size: 1.2em;
+      }
+
+      .ddoc_section_h {
+        font-weight: bold;
+        font-size: 13px;
+        line-height: 19.5px;
+        margin-top: 11px;
+        display: block;
+      }
+
+      body.dlang .dlang {
+        display: inline-block;
+      }
+
+      body.dlang .declaration .dlang {
+          display: block;
+      }
+
+      body.dlang .ddoc_header_anchor a.dlang {
+        display: block;
+        color: rgba(0, 136, 204, 1);
+        text-decoration: none;
+      }
+
+      body.dlang .ddoc_header_anchor .code {
+        color: rgba(0, 136, 204, 1);
+      }
+
+      #ddoc_main .module {
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          overflow-x: hidden;
+          padding: 15px;
+      }
+
+      #ddoc_main .section .section {
+        margin-top: 0;
+      }
+
+      #ddoc_main .ddoc_module_members_section {
+          padding: 1px 0 0;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members section.intro {
+          background: #fff none repeat scroll 0 0;
+          list-style-type: none;
+          width: 100%;
+      }
+
+      #ddoc_main .ddoc_header_anchor {
+          font-size: 1.4em;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_header_anchor > .code {
+          display: inline-block;
+
+      }
+
+      #ddoc_main .ddoc_decl {
+        background-color: transparent;
+        height: 100%;
+        left: 0;
+        top: 0;
+        padding: 0;
+        padding-left: 15px;
+      }
+
+      #ddoc_main .ddoc_decl .section, #ddoc_main .section.ddoc_sections {
+        background: white none repeat scroll 0 0;
+        margin: 0;
+        padding: 5px;
+        position: relative;
+        border-radius: 5px;
+      }
+
+      #ddoc_main .ddoc_decl .section h4:first-of-type, #ddoc_main .section.ddoc_sections h4:first-of-type {
+        font-size: 13px;
+        line-height: 1.5;
+        margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration {
+          margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration .code {
+          color: rgba(0, 0, 0, 1);
+          margin-bottom: 15px;
+          padding-bottom: 6px;
+      }
+
+      #ddoc_main .declaration div .para {
+          margin-bottom: 0;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr td:first-of-type {
+        padding: 7px;
+        text-align: right;
+        vertical-align: top;
+        word-break: normal;
+        white-space: nowrap;
+      }
+
+      #ddoc_main .ddoc_params .graybox {
+        border: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox td {
+        border-color: rgba(214, 214, 214, 1);
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:first-child > td {
+        border-top: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:last-child > td {
+        border-bottom: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:first-child {
+        border-left: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:last-child {
+        border-right: 0 none;
+        width: 100%;
+      }
+
+      #ddoc_main em.term, #ddoc_main em.term .code {
+        color: rgba(65, 65, 65, 1);
+        font-size: 12px;
+        font-style: italic;
+        line-height: 1.5;
+      }
+
+      #ddoc_main .see-also {
+        cursor: pointer;
+        font-family: Menlo,monospace;
+      }
+
+      #ddoc_main .ddoc_decl .section > div:last-of-type {
+        margin-bottom: 15px;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members {
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .code_sample {
+        background: inherit;
+      }
+
+      #ddoc_main .declaration .code-line {
+          display: block;
+          font: 1em Menlo,monospace;
+      }
+
+      #ddoc_main a[name] {
+        margin: -112px 0 0;
+        padding-top: 112px;
+      }
+
+      #ddoc_main .ddoc_decl td {
+        max-width: inherit;
+      }
+
+      #ddoc_main .declaration a {
+        color: inherit;
+      }
+
+      #ddoc_main .declaration a:hover {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: underline;
+      }
+
+      body.ddoc {
+        background-color: transparent;
+        color: rgba(0, 0, 0, 1);
+        font-family: Helvetica,Arial,sans-serif;
+        font-size: 62.5%;
+        margin: 0;
+        border: 0;
+        left: 0;
+        top: 0;
+        padding: 0;
+      }
+
+      .ddoc a[name] {
+        display: block;
+        height: 0;
+        margin: -85px 0 0;
+        padding-top: 85px;
+        width: 0;
+      }
+
+      .ddoc .module {
+          border-color: transparent;
+          background-color: rgba(255, 255, 255, 1);
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-image: none;
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          box-shadow: 0 0 1px rgba(0, 0, 0, 0.07);
+          display: block;
+          margin-left: 0;
+          min-height: calc(100% - 173px);
+          overflow: auto;
+          padding-bottom: 100px;
+      }
+
+      .ddoc .content_wrapper {
+          background-color: rgba(242, 242, 242, 1);
+          margin: 0 auto;
+          max-width: 980px;
+      }
+
+      .ddoc .section {
+        padding: 15px 25px 30px;
+      }
+
+      .ddoc .section .section {
+        margin: 30px 0 0;
+        padding: 0;
+      }
+
+      .ddoc .para {
+        color: rgba(65, 65, 65, 1);
+        font-size: 1.4em;
+        line-height: 145%;
+        margin-bottom: 15px;
+      }
+
+      .ddoc .ddoc_examples .para {
+        margin-bottom: 0;
+      }
+
+      .ddoc .module_name {
+          color: rgba(0, 0, 0, 1);
+          display: block;
+          font-family: Helvetica;
+          font-size: 2.8em;
+          font-weight: 100;
+          margin-bottom: 0;
+          padding: 15px 0;
+      }
+
+      .ddoc .module a {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: none;
+      }
+
+      .ddoc .code {
+        color: rgba(128, 128, 128, 1);
+        font-family: Menlo,monospace;
+        font-size: 0.85em;
+        word-wrap: break-word;
+      }
+
+      .ddoc .code i {
+        font-style: normal;
+      }
+
+      .ddoc .code .code {
+        font-size: 1em;
+      }
+
+      .ddoc .code_sample {
+        background-clip: padding-box;
+        margin: 1px 0;
+        text-align: left;
+      }
+
+      .ddoc .code_sample {
+        display: block;
+        font-size: 1.4em;
+        margin-left: 21px;
+      }
+
+      .ddoc ol .code_sample {
+        font-size: 1em;
+      }
+
+      .ddoc .code_lines {
+        counter-reset: li;
+        line-height: 1.6em;
+        list-style: outside none none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .ddoc .code_listing .code_sample div {
+        margin-left: 13px;
+        width: 93%;
+      }
+
+      .ddoc .code_listing .code_sample div .code_lines li {
+        list-style-type: none;
+        margin: 0;
+        padding-right: 10px;
+      }
+
+      .ddoc .code_sample div .code_lines li::before {
+        margin-left: -33px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+10)::before {
+        margin-left: -39px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+100)::before {
+        margin-left: -46px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample .code_lines .code {
+        color: #000;
+      }
+
+      .ddoc div.dlang {
+        margin: 10px 0 21px;
+        padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+          margin: 10px 0 21px;
+          padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+        border-left: 5px solid rgba(0, 155, 51, 0.2);
+      }
+
+      .ddoc .code_lines li::before {
+        color: rgba(128, 128, 128, 1);
+        content: counter(li, decimal);
+        counter-increment: li;
+        font-family: Menlo,monospace;
+        font-size: 0.9em;
+        margin-right: 16px;
+      }
+
+      .ddoc .code_lines li {
+        padding-left: 0;
+        white-space: pre-wrap;
+      }
+
+      .ddoc .code_lines li:only-of-type::before {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:only-of-type {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:nth-child(n+10) {
+        text-indent: -17px;
+      }
+
+      .ddoc .code_lines li:nth-child(n+10)::before {
+        margin-right: 12px;
+      }
+
+      .ddoc .graybox {
+        border: 1px solid rgba(233, 233, 233, 1);
+        border-collapse: collapse;
+        border-spacing: 0;
+        empty-cells: hide;
+        margin: 20px 0 36px;
+        text-align: left;
+      }
+
+      .ddoc .graybox p {
+        margin: 0;
+        min-width: 50px;
+      }
+
+      .ddoc th {
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: bottom;
+      }
+
+      .ddoc td {
+        border: 1px solid rgba(233, 233, 233, 1);
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: middle;
+      }
+
+      .punctuation {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .comment {
+        color: rgba(0, 131, 18, 1);
+      }
+
+      .operator {
+        color: #000;
+      }
+
+      .keyword {
+        color: rgba(170, 13, 145, 1);
+      }
+
+      .keyword_type {
+        color: rgba(170, 51, 145, 1);
+      }
+
+      .string_literal {
+        color: rgba(196, 26, 22, 1);
+      }
+
+      .ddoc_psuper_symbol {
+        color: rgba(92, 38, 153, 1);
+      }
+
+      .param {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .psymbol {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .ddoc_member_header .ddoc_header_anchor .code {
+        font-size: 1em;
+      }
+    </style>
+  </head>
+  <body id="ddoc_main" class="ddoc dlang">
+    <div class="content_wrapper">
+      <article class="module">
+        <h1 class="module_name">Exceptions</h1>
+        <section id="module_content"><br><br>
+<br><br>
+
+<br><br>
+<p>Unexpected situations are parts of programs: user mistakes, programming errors, changes in the program environment, etc. Programs must be written in ways to avoid producing incorrect results when faced with such <i>exceptional</i> conditions.
+</p>
+<br><br>
+<p>Some of these conditions may be severe enough to stop the execution of the program. For example, a required piece of information may be missing or invalid, or a device may not be functioning correctly. The exception handling mechanism of D helps with stopping program execution when necessary, and to recover from the unexpected situations when possible.
+</p>
+<br><br>
+<p>As an example of a severe condition, we can think of passing an unknown operator to a function that knows only the four arithmetic operators, as we have seen in the exercises of the previous chapter:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">switch</span> (operator) {
+
+    <span class="keyword">case</span> <span class="string_literal">"+"</span>:
+        writeln(first + second);
+        <span class="keyword">break</span>;
+
+    <span class="keyword">case</span> <span class="string_literal">"-"</span>:
+        writeln(first - second);
+        <span class="keyword">break</span>;
+
+    <span class="keyword">case</span> <span class="string_literal">"x"</span>:
+        writeln(first * second);
+        <span class="keyword">break</span>;
+
+    <span class="keyword">case</span> <span class="string_literal">"/"</span>:
+        writeln(first / second);
+        <span class="keyword">break</span>;
+
+    <span class="keyword">default</span>:
+        <span class="keyword">throw</span> <span class="keyword">new</span> Exception(format(<span class="string_literal">"Invalid operator: %s"</span>, operator));
+    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The  statement above does not know what to do with operators that are not listed on the  statements; so throws an exception.
+</p>
+<br><br>
+<p>There are many examples of thrown exceptions in Phobos. For example, , which can be used to convert a string representation of an integer to an  value throws an exception when that representation is not valid:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.conv;
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">const</span> <span class="keyword">int</span> value = to!<span class="keyword">int</span>(<span class="string_literal">"hello"</span>);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The program terminates with an exception that is thrown by :
+</p>
+<br><br>
+
+<br><br>
+<p> at the beginning of the message is the type of the thrown exception object. We can tell from the name that the type is  that is defined in the  module.
+</p>
+<br><br>
+<h5> The  statement to throw exceptions</h5>
+<br><br>
+<p>We've seen the  statement both in the examples above and in the previous chapters.
+</p>
+<br><br>
+<p> throws an <i>exception object</i> and this terminates the current operation of the program. The expressions and statements that are written after the  statement are not executed. This behavior is according to the nature of exceptions: they must be thrown when the program cannot continue with its current task.
+</p>
+<br><br>
+<p>Conversely, if the program could continue then the situation would not warrant throwing an exception. In such cases the function would find a way and continue.
+</p>
+<br><br>
+<h6>   The exception types  and </h6>
+<br><br>
+<p>Only the types that are inherited from the  class can be thrown.  is almost never used directly in programs. The types that are actually thrown are types that are inherited from  or , which themselves are the types that are inherited from . For example, all of the exceptions that Phobos throws are inherited from either  or .
+</p>
+<br><br>
+<p> represents unrecoverable conditions and is not recommended to be <i>caught</i>. For that reason, most of the exceptions that a program throws are the types that are inherited from . (<i><b>Note:</b> Inheritance is a topic related to classes. We will see classes in a later chapter.</i>)
+</p>
+<br><br>
+<p> objects are constructed with a  value that represents an error message. You may find it easy to create this message with the  function from the  module:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+<span class="keyword">import</span> std.random;
+<span class="keyword">import</span> std.string;
+
+<span class="keyword">int</span>[] randomDiceValues(<span class="keyword">int</span> count) {
+    <span class="keyword">if</span> (count &lt; 0) {
+        (
+            format(<span class="string_literal">"Invalid dice count: %s"</span>, count));
+    }
+
+    <span class="keyword">int</span>[] values;
+
+    <span class="keyword">foreach</span> (i; 0 .. count) {
+        values ~= uniform(1, 7);
+    }
+
+    <span class="keyword">return</span> values;
+}
+
+<span class="keyword">void</span> main() {
+    writeln(randomDiceValues(-5));
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<p>In most cases, instead of creating an exception object explicitly by  and throwing it explicitly by , the  function is called. For example, the equivalent of the error check above is the following  call:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    enforce(count &gt;= 0, format(<span class="string_literal">"Invalid dice count: %s"</span>, count));
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>We will see the differences between  and  in a later chapter.
+</p>
+<br><br>
+<h6>Thrown exception terminates all scopes</h6>
+<br><br>
+<p>We have seen that the program execution starts from the  function and branches into other functions from there. This layered execution of going deeper into functions and eventually returning from them can be seen as the branches of a tree.
+</p>
+<br><br>
+<p>For example,  may call a function named , which in turn may call another function named , which in turn may call another function named , etc. Assuming that the arrows indicate function calls, the branching of such a program can be shown as in the following function call tree:
+</p>
+<br><br>
+
+<br><br>
+<p>The following program demonstrates the branching above by using different levels of indentation in its output. The program doesn't do anything useful other than producing an output suitable to our purposes:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> indent(<span class="keyword">int</span> level) {
+    <span class="keyword">foreach</span> (i; 0 .. level * 2) {
+        write(' ');
+    }
+}
+
+<span class="keyword">void</span> entering(string functionName, <span class="keyword">int</span> level) {
+    indent(level);
+    writeln(<span class="string_literal">"▶ "</span>, functionName, <span class="string_literal">"'s first line"</span>);
+}
+
+<span class="keyword">void</span> exiting(string functionName, <span class="keyword">int</span> level) {
+    indent(level);
+    writeln(<span class="string_literal">"◁ "</span>, functionName, <span class="string_literal">"'s last line"</span>);
+}
+
+<span class="keyword">void</span> main() {
+    entering(<span class="string_literal">"main"</span>, 0);
+    makeOmelet();
+    eatOmelet();
+    exiting(<span class="string_literal">"main"</span>, 0);
+}
+
+<span class="keyword">void</span> makeOmelet() {
+    entering(<span class="string_literal">"makeOmelet"</span>, 1);
+    prepareAll();
+    cookEggs();
+    cleanAll();
+    exiting(<span class="string_literal">"makeOmelet"</span>, 1);
+}
+
+<span class="keyword">void</span> eatOmelet() {
+    entering(<span class="string_literal">"eatOmelet"</span>, 1);
+    exiting(<span class="string_literal">"eatOmelet"</span>, 1);
+}
+
+<span class="keyword">void</span> prepareAll() {
+    entering(<span class="string_literal">"prepareAll"</span>, 2);
+    prepareEggs();
+    prepareButter();
+    preparePan();
+    exiting(<span class="string_literal">"prepareAll"</span>, 2);
+}
+
+<span class="keyword">void</span> cookEggs() {
+    entering(<span class="string_literal">"cookEggs"</span>, 2);
+    exiting(<span class="string_literal">"cookEggs"</span>, 2);
+}
+
+<span class="keyword">void</span> cleanAll() {
+    entering(<span class="string_literal">"cleanAll"</span>, 2);
+    exiting(<span class="string_literal">"cleanAll"</span>, 2);
+}
+
+<span class="keyword">void</span> prepareEggs() {
+    entering(<span class="string_literal">"prepareEggs"</span>, 3);
+    exiting(<span class="string_literal">"prepareEggs"</span>, 3);
+}
+
+<span class="keyword">void</span> prepareButter() {
+    entering(<span class="string_literal">"prepareButter"</span>, 3);
+    exiting(<span class="string_literal">"prepareButter"</span>, 3);
+}
+
+<span class="keyword">void</span> preparePan() {
+    entering(<span class="string_literal">"preparePan"</span>, 3);
+    exiting(<span class="string_literal">"preparePan"</span>, 3);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The program produces the following output:
+</p>
+<br><br>
+
+<br><br>
+<p>The functions  and  are used to indicate the first and last lines of functions with the help of the  and  characters. The program starts with the first line of , branches down to other functions, and finally ends with the last line of .
+</p>
+<br><br>
+<p>Let's modify the  function to take the number of eggs as a parameter. Since certain values of this parameter would be an error, let's have this function throw an exception when the number of eggs is less than one:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.string;
+
+<span class="comment">// ...
+</span>
+<span class="keyword">void</span> prepareEggs() {
+    entering(<span class="string_literal">"prepareEggs"</span>, 3);
+
+    <span class="keyword">if</span> (count &lt; 1) {
+        <span class="keyword">throw</span> <span class="keyword">new</span> Exception(
+            format(<span class="string_literal">"Cannot take %s eggs from the fridge"</span>, count));
+    }
+
+    exiting(<span class="string_literal">"prepareEggs"</span>, 3);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>In order to be able to compile the program, we must modify other lines of the program to be compatible with this change. The number of eggs to take out of the fridge can be handed down from function to function, starting with . The parts of the program that need to change are the following. The invalid value of -8 is intentional to show how the output of the program will be different from the previous output when an exception is thrown:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="comment">// ...
+</span>
+<span class="keyword">void</span> main() {
+    entering(<span class="string_literal">"main"</span>, 0);
+    makeOmelet();
+    eatOmelet();
+    exiting(<span class="string_literal">"main"</span>, 0);
+}
+
+<span class="keyword">void</span> makeOmelet() {
+    entering(<span class="string_literal">"makeOmelet"</span>, 1);
+    prepareAll();
+    cookEggs();
+    cleanAll();
+    exiting(<span class="string_literal">"makeOmelet"</span>, 1);
+}
+
+<span class="comment">// ...
+</span>
+<span class="keyword">void</span> prepareAll() {
+    entering(<span class="string_literal">"prepareAll"</span>, 2);
+    prepareEggs();
+    prepareButter();
+    preparePan();
+    exiting(<span class="string_literal">"prepareAll"</span>, 2);
+}
+
+<span class="comment">// ...
+</span></code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>When we start the program now, we see that the lines that used to be printed after the point where the exception is thrown are missing:
+</p>
+<br><br>
+
+<br><br>
+<p>When the exception is thrown, the program execution exits the , ,  and  functions in that order, from the bottom level to the top level. No additional steps are executed as the program exits these functions.
+</p>
+<br><br>
+<p>The rationale for such a drastic termination is that a failure in a lower level function would mean that the higher level functions that needed its successful completion should also be considered as failed.
+</p>
+<br><br>
+<p>The exception object that is thrown from a lower level function is transferred to the higher level functions one level at a time and causes the program to finally exit the  function. The path that the exception takes can be shown as the highlighted path in the following tree:
+</p>
+<br><br>
+
+<br><br>
+<p>The point of the exception mechanism is precisely this behavior of exiting all of the layers of function calls right away.
+</p>
+<br><br>
+<p>Sometimes it makes sense to <i>catch</i> the thrown exception to find a way to continue the execution of the program. I will introduce the  keyword below.
+</p>
+<br><br>
+<h6>When to use </h6>
+<br><br>
+<p>Use  in situations when it is not possible to continue. For example, a function that reads the number of students from a file may throw an exception if this information is not available or incorrect.
+</p>
+<br><br>
+<p>On the other hand, if the problem is caused by some user action like entering invalid data, it may make more sense to validate the data instead of throwing an exception. Displaying an error message and asking the user to re-enter the data is more appropriate in many cases.
+</p>
+<br><br>
+<h5>  The  statement to catch exceptions</h5>
+<br><br>
+<p>As we've seen above, a thrown exception causes the program execution to exit all functions and this finally terminates the whole program.
+</p>
+<br><br>
+<p>The exception object can be caught by a  statement at any point on its path as it exits the functions. The  statement models the phrase "<i>try</i> to do something, and <i>catch</i> exceptions that may be thrown." Here is the syntax of :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">try</span> {
+        <span class="comment">// the code block that is being executed, where an
+</span>        <span class="comment">// exception may be thrown
+</span>
+    } <span class="keyword">catch</span> (<i>an_exception_type</i>) {
+        <span class="comment">// expressions to execute if an exception of this
+</span>        <span class="comment">// type is caught
+</span>
+    } <span class="keyword">catch</span> (<i>another_exception_type</i>) {
+        <span class="comment">// expressions to execute if an exception of this
+</span>        <span class="comment">// other type is caught
+</span>
+    <span class="comment">// ... more catch blocks as appropriate ...
+</span>
+    } <span class="keyword">finally</span> {
+        <span class="comment">// expressions to execute regardless of whether an
+</span>        <span class="comment">// exception is thrown
+</span>    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Let's start with the following program that does not use a  statement at this state. The program reads the value of a die from a file and prints it to the standard output:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">int</span> readDieFromFile() {
+    <span class="keyword">auto</span> file = File(<span class="string_literal">"the_file_that_contains_the_value"</span>, <span class="string_literal">"r"</span>);
+
+    <span class="keyword">int</span> die;
+    file.readf(<span class="string_literal">" %s"</span>, &amp;die);
+
+    <span class="keyword">return</span> die;
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">const</span> <span class="keyword">int</span> die = readDieFromFile();
+
+    writeln(<span class="string_literal">"Die value: "</span>, die);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Note that the  function is written in a way that ignores error conditions, expecting that the file and the value that it contains are available. In other words, the function is dealing only with its own task instead of paying attention to error conditions. This is a benefit of exceptions: many functions can be written in ways that focus on their actual tasks, rather than focusing on error conditions.
+</p>
+<br><br>
+<p>Let's start the program when  is missing:
+</p>
+<br><br>
+
+<br><br>
+<p>An exception of type  is thrown and the program terminates without printing "Die&nbsp;value:&nbsp;".
+</p>
+<br><br>
+<p>Let's add an intermediate function to the program that calls  from within a  block and let's have  call this new function:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">int</span> readDieFromFile() {
+    <span class="keyword">auto</span> file = File(<span class="string_literal">"the_file_that_contains_the_value"</span>, <span class="string_literal">"r"</span>);
+
+    <span class="keyword">int</span> die;
+    file.readf(<span class="string_literal">" %s"</span>, &amp;die);
+
+    <span class="keyword">return</span> die;
+}
+
+<span class="keyword">int</span> () {
+    <span class="keyword">int</span> die;
+
+     {
+        die = readDieFromFile();
+
+    }  (std.exception.ErrnoException exc) {
+        writeln(<span class="string_literal">"(Could not read from file; assuming 1)"</span>);
+        die = 1;
+    }
+
+    <span class="keyword">return</span> die;
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">const</span> <span class="keyword">int</span> die = ();
+
+    writeln(<span class="string_literal">"Die value: "</span>, die);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>When we start the program again when  is still missing, this time the program does not terminate with an exception:
+</p>
+<br><br>
+
+<br><br>
+<p>The new program <i>tries</i> executing  in a  block. If that block executes successfully, the function ends normally with the  statement. If the execution of the  block ends with the specified , then the program execution enters the  block.
+</p>
+<br><br>
+<p>The following is a summary of events when the program is started when the file is missing:
+</p>
+<br><br>
+<ul><li>like in the previous program, a  object is thrown (by , not by our code),</li>
+<li>this exception is caught by ,</li>
+<li>the value of 1 is assumed during the normal execution of the  block,</li>
+<li>and the program continues its normal operations.</li>
+</ul>
+<br><br>
+<p> is to catch thrown exceptions to find a way to continue executing the program.
+</p>
+<br><br>
+<p>As another example, let's go back to the omelet program and add a  statement to its  function:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> main() {
+    entering(<span class="string_literal">"main"</span>, 0);
+
+    <span class="keyword">try</span> {
+        makeOmelet(-8);
+        eatOmelet();
+
+    } <span class="keyword">catch</span> (Exception exc) {
+        write(<span class="string_literal">"Failed to eat omelet: "</span>);
+        writeln('"', exc.msg, '"');
+        writeln(<span class="string_literal">"Will eat at neighbor's..."</span>);
+    }
+
+    exiting(<span class="string_literal">"main"</span>, 0);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>(<i><b>Note:</b> The  property will be explained below.</i>)
+</p>
+<br><br>
+<p>That  block contains two lines of code. Any exception thrown from either of those lines would be caught by the  block.
+</p>
+<br><br>
+
+<br><br>
+<p>As can be seen from the output, the program doesn't terminate because of the thrown exception anymore. It recovers from the error condition and continues executing normally till the end of the  function.
+</p>
+<br><br>
+<h6> blocks are considered sequentially</h6>
+<br><br>
+<p>The type , which we have used so far in the examples is a general exception type. This type merely specifies that an error occurred in the program. It also contains a message that can explain the error further, but it does not contain information about the <i>type</i> of the error.
+</p>
+<br><br>
+<p> and  that we have seen earlier in this chapter are more specific exception types: the former is about a conversion error, and the latter is about a system error. Like many other exception types in Phobos and as their names suggest,  and  are both inherited from the  class.
+</p>
+<br><br>
+<p> and its sibling  are further inherited from , the most general exception type.
+</p>
+<br><br>
+<p>Although possible, it is not recommended to catch objects of type  and objects of types that are inherited from . Since it is more general than , it is not recommended to catch  either. What should normally be caught are the types that are under the  hierarchy, including  itself.
+</p>
+<br><br>
+
+<br><br>
+<p><i><b>Note:</b> I will explain the hierarchy representations later in <a href="inheritance.html">the Inheritance chapter</a>. The tree above indicates that  is the most general and  and  are more specific.</i>
+</p>
+<br><br>
+<p>It is possible to catch exception objects of a particular type. For example, it is possible to catch an  object specifically to detect and handle a system error.
+</p>
+<br><br>
+<p>Exceptions are caught only if they match a type that is specified in a  block. For example, a catch block that is trying to catch a  would not catch an .
+</p>
+<br><br>
+<p>The type of the exception object that is thrown during the execution of a  block is matched to the types that are specified by the  blocks, in the order in which the  blocks are written. If the type of the object matches the type of the  block, then the exception is considered to be caught by that  block, and the code that is within that block is executed. Once a match is found, the remaining  blocks are ignored.
+</p>
+<br><br>
+<p>Because the  blocks are matched in order from the first to the last, the  blocks must be ordered from the most specific exception types to the most general exception types. Accordingly, and if it makes sense to catch that type of exceptions, the  type must be specified at the last  block.
+</p>
+<br><br>
+<p>For example, a  statement that is trying to catch several specific types of exceptions about student records must order the  blocks from the most specific to the most general as in the following code:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">try</span> {
+        <span class="comment">// operations about student records that may throw ...
+</span>
+    } <span class="keyword">catch</span> (StudentIdDigitException exc) {
+
+        <span class="comment">// an exception that is specifically about errors with
+</span>        <span class="comment">// the digits of student ids
+</span>
+    } <span class="keyword">catch</span> (StudentIdException exc) {
+
+        <span class="comment">// a more general exception about student ids but not
+</span>        <span class="comment">// necessarily about their digits
+</span>
+    } <span class="keyword">catch</span> (StudentRecordException exc) {
+
+        <span class="comment">// even more general exception about student records
+</span>
+    } <span class="keyword">catch</span> (Exception exc) {
+
+        <span class="comment">// the most general exception that may not be related
+</span>        <span class="comment">// to student records
+</span>
+    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h6> The  block</h6>
+<br><br>
+<p> is an optional block of the  statement. It includes expressions that should be executed regardless of whether an exception is thrown or not.
+</p>
+<br><br>
+<p>To see how  works, let's look at a program that throws an exception 50% of the time:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+<span class="keyword">import</span> std.random;
+
+<span class="keyword">void</span> throwsHalfTheTime() {
+    <span class="keyword">if</span> (uniform(0, 2) == 1) {
+        <span class="keyword">throw</span> <span class="keyword">new</span> Exception(<span class="string_literal">"the error message"</span>);
+    }
+}
+
+<span class="keyword">void</span> foo() {
+    writeln(<span class="string_literal">"the first line of foo()"</span>);
+
+    <span class="keyword">try</span> {
+        writeln(<span class="string_literal">"the first line of the try block"</span>);
+        throwsHalfTheTime();
+        writeln(<span class="string_literal">"the last line of the try block"</span>);
+
+    <span class="comment">// ... there may be one or more catch blocks here ...
+</span>
+    }  {
+        writeln(<span class="string_literal">"the body of the finally block"</span>);
+    }
+
+    writeln(<span class="string_literal">"the last line of foo()"</span>);
+}
+
+<span class="keyword">void</span> main() {
+    foo();
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output of the program is the following when the function does not throw:
+</p>
+<br><br>
+
+<br><br>
+<p>The output of the program is the following when the function does throw:
+</p>
+<br><br>
+
+<br><br>
+<p>As can be seen, although "the last line of the try block" and "the last line of foo()" are not printed, the content of the  block is still executed when an exception is thrown.
+</p>
+<br><br>
+<h6>When to use the  statement</h6>
+<br><br>
+<p>The  statement is useful to catch exceptions to do something special about them.
+</p>
+<br><br>
+<p>For that reason, the  statement should be used only when there is something special to be done. Do not catch exceptions otherwise and leave them to higher level functions that may want to catch them.
+</p>
+<br><br>
+<h5>Exception properties</h5>
+<br><br>
+<p>The information that is automatically printed on the output when the program terminates due to an exception is available as properties of exception objects as well. These properties are provided by the  interface:
+</p>
+<br><br>
+<ul><br><br>
+<li> : The source file where the exception was thrown from</li>
+<br><br>
+<li> : The line number where the exception was thrown from</li>
+<br><br>
+<li> : The error message</li>
+<br><br>
+<li> : The state of the program stack when the exception was thrown</li>
+<br><br>
+<li> : The next collateral exception</li>
+<br><br>
+</ul>
+<br><br>
+<p>We saw that  blocks are executed when leaving scopes due to exceptions as well. (As we will see in later chapters, the same is true for  statements and <i>destructors</i> as well.)
+</p>
+<br><br>
+<p> Naturally, such code blocks can throw exceptions as well. Exceptions that are thrown when leaving scopes due to an already thrown exception are called <i>collateral exceptions</i>. Both the main exception and the collateral exceptions are elements of a <i>linked list</i> data structure, where every exception object is accessible through the  property of the previous exception object. The value of the  property of the last exception is . (We will see  in a later chapter.)
+</p>
+<br><br>
+<p>There are three exceptions that are thrown in the example below: The main exception that is thrown in  and the two collateral exceptions that are thrown in the  blocks of  and . The program accesses the collateral exceptions through the  properties.
+</p>
+<br><br>
+<p>Some of the concepts that are used in this program will be explained in later chapters. For example, the continuation condition of the  loop that consists solely of  means <i>as long as  is not </i>.
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> foo() {
+    <span class="keyword">try</span> {
+        <span class="keyword">throw</span> <span class="keyword">new</span> Exception(<span class="string_literal">"Exception thrown in foo"</span>);
+
+    } <span class="keyword">finally</span> {
+        <span class="keyword">throw</span> <span class="keyword">new</span> Exception(
+            <span class="string_literal">"Exception thrown in foo's finally block"</span>);
+    }
+}
+
+<span class="keyword">void</span> bar() {
+    <span class="keyword">try</span> {
+        foo();
+
+    } <span class="keyword">finally</span> {
+        <span class="keyword">throw</span> <span class="keyword">new</span> Exception(
+            <span class="string_literal">"Exception thrown in bar's finally block"</span>);
+    }
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">try</span> {
+        bar();
+
+    } <span class="keyword">catch</span> (Exception caughtException) {
+
+        <span class="keyword">for</span> (Throwable exc = caughtException;
+             exc;    <span class="comment">// ← Meaning: as long as exc is not 'null'
+</span>             exc = exc) {
+
+            writefln(<span class="string_literal">"error message: %s"</span>, exc);
+            writefln(<span class="string_literal">"source file  : %s"</span>, exc);
+            writefln(<span class="string_literal">"source line  : %s"</span>, exc);
+            writeln();
+        }
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output:
+</p>
+<br><br>
+
+<br><br>
+<h5> Kinds of errors</h5>
+<br><br>
+<p>We have seen how useful the exception mechanism is. It enables both the lower and higher level operations to be aborted right away, instead of the program continuing with incorrect or missing data, or behaving in any other incorrect way.
+</p>
+<br><br>
+<p>This does not mean that every error condition warrants throwing an exception. There may be better things to do depending on the kinds of errors.
+</p>
+<br><br>
+<h6>User errors</h6>
+<br><br>
+<p>Some of the errors are caused by the user. As we have seen above, the user may have entered a string like "hello" even though the program has been expecting a number. It may be more appropriate to display an error message and ask the user to enter appropriate data again.
+</p>
+<br><br>
+<p>Even so, it may be fine to accept and use the data directly without validating the data up front; as long as the code that uses the data would throw anyway. What is important is to be able to notify the user why the data is not suitable.
+</p>
+<br><br>
+<p>For example, let's look at a program that takes a file name from the user. There are at least two ways of dealing with potentially invalid file names:
+</p>
+<br><br>
+<ul><li><b>Validating the data before use</b>: We can determine whether the file with the given name exists by calling  of the  module:
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">if</span> (exists(fileName)) {
+        <span class="comment">// yes, the file exists
+</span>
+    } <span class="keyword">else</span> {
+        <span class="comment">// no, the file doesn't exist
+</span>    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>This gives us the chance to be able to open the data only if it exists. Unfortunately, it is still possible that the file cannot be opened even if  returns , if for example another process on the system deletes or renames the file before this program actually opens it.
+</p>
+<br><br>
+<p>For that reason, the following method may be more useful.
+</p>
+<br><br>
+</li>
+<br><br>
+<li><b>Using the data without first validating it</b>: We can assume that the data is valid and start using it right away, because  would throw an exception if the file cannot be opened anyway.
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+<span class="keyword">import</span> std.string;
+
+<span class="keyword">void</span> useTheFile(string fileName) {
+    <span class="keyword">auto</span> file = File(fileName, <span class="string_literal">"r"</span>);
+    <span class="comment">// ...
+</span>}
+
+string read_string(string prompt) {
+    write(prompt, <span class="string_literal">": "</span>);
+    <span class="keyword">return</span> strip(readln());
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">bool</span> is_fileUsed = <span class="keyword">false</span>;
+
+    <span class="keyword">while</span> (!is_fileUsed) {
+        <span class="keyword">try</span> {
+            useTheFile(
+                read_string(<span class="string_literal">"Please enter a file name"</span>));
+
+            <span class="comment">/* If we are at this line, it means that
+             * useTheFile() function has been completed
+             * successfully. This indicates that the file
+             * name was valid.
+             *
+             * We can now set the value of the loop flag to
+             * terminate the while loop. */</span>
+            is_fileUsed = <span class="keyword">true</span>;
+            writeln(<span class="string_literal">"The file has been used successfully"</span>);
+
+        } <span class="keyword">catch</span> (std.exception.ErrnoException exc) {
+            stderr.writeln(<span class="string_literal">"This file could not be opened"</span>);
+        }
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+</li>
+<br><br>
+</ul>
+<br><br>
+<h6>Programmer errors</h6>
+<br><br>
+<p>Some errors are caused by programmer mistakes. For example, the programmer may think that a function that has just been written will always be called with a value greater than or equal to zero, and this may be true according to the design of the program. The function having still been called with a value less than zero would indicate either a mistake in the design of the program or in the implementation of that design. Both of these can be thought of as programming errors.
+</p>
+<br><br>
+<p>It is more appropriate to use  instead of the exception mechanism for errors that are caused by programmer mistakes. (<i><b>Note:</b> We will cover  in <a href="assert.html">a later chapter</a>.</i>)
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> processMenuSelection(<span class="keyword">int</span> selection) {
+    <span class="keyword">assert</span>(selection &gt;= 0);
+    <span class="comment">// ...
+</span>}
+
+<span class="keyword">void</span> main() {
+    processMenuSelection(-1);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The program terminates with an  failure:
+</p>
+<br><br>
+
+<br><br>
+<p> validates program state and prints the file name and line number of the validation if it fails. The message above indicates that the assertion at line 2 of  has failed.
+</p>
+<br><br>
+<h6>Unexpected situations</h6>
+<br><br>
+<p>For unexpected situations that are outside of the two general cases above, it is still appropriate to throw exceptions. If the program cannot continue its execution, there is nothing else to do but to throw.
+</p>
+<br><br>
+<p>It is up to the higher layer functions that call this function to decide what to do with thrown exceptions. They may catch the exceptions that we throw to remedy the situation.
+</p>
+<br><br>
+<h5>Summary</h5>
+<br><br>
+<ul><br><br>
+<li>When faced with a user error either warn the user right away or ensure that an exception is thrown; the exception may be thrown anyway by another function when using incorrect data, or you may throw directly.
+</li>
+<br><br>
+<li>Use  to validate program logic and implementation. (<i><b>Note:</b>  will be explained in a later chapter.</i>)
+</li>
+<br><br>
+<li>When in doubt, throw an exception with  or . (<i><b>Note:</b>  will be explained in a later chapter.</i>)
+</li>
+<br><br>
+<li>Catch exceptions if and only if you can do something useful about that exception. Otherwise, do not encapsulate code with a  statement; instead, leave the exceptions to higher layers of the code that may do something about them.
+</li>
+<br><br>
+<li>Order the  blocks from the most specific to the most general.
+</li>
+<br><br>
+<li>Put the expressions that must always be executed when leaving a scope, in  blocks.
+</li>
+<br><br>
+</ul>
+
+</section>
+      </article>
+    </div>
+  </body>
+</html>

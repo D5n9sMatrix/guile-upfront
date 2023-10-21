@@ -1,0 +1,83 @@
+DDOC=
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en-US">
+
+<!--
+    Copyright (c) 1999-$(YEAR) by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>D Programming Language Specification</title>
+<link rel="stylesheet" type="text/css" href="ebook.css">
+
+</head>
+
+<body class="hyphenate">
+$(BODY)
+$(FOOTER)
+
+</body>
+</html>$(LF)
+_=
+
+
+
+FOOTER=
+TOP=
+_=
+
+LAYOUT=
+<p class="pagebreak">&nbsp;</p>
+<div id="content">
+  <h1><a name="$2">$2</a></h1>
+  $3
+</div>
+_=
+
+CODE=<tt>$0</tt>
+D_CODE = <pre class="d_code">$0</pre><p></p>
+OTHER_CODE = <pre class="$1code">$+</pre><p></p>
+CCODE=<pre class="ccode">$0</pre><p></p>
+CPPCODE=<pre class="cppcode">$0</pre><p></p>
+GRAMMAR=<pre class="bnf">$0</pre><p></p>
+DDOCCODE=<pre class="ddoccode">$0</pre><p></p>
+SCINI=<pre class="scini">$0</pre><p></p>
+CONSOLE=<pre class="console">$0</pre><p></p>
+MODDEFFILE=<pre class="moddeffile">$0</pre><p></p>
+_=
+
+GLINK2=$(GLINK $2)
+GLINK2_ALTTEXT=$(RELATIVE_LINK2 $2, $3)
+GLINK_LEX=$(GLINK $1)
+DDLINK=$(RELATIVE_LINK2 $2, $3)
+DDSUBLINK=$(RELATIVE_LINK2 $2, $3)
+DPLLINK=$(LINK2 https://dlang.org/$1, $2)
+NOT_EBOOK=
+RAWHTML=$0
+RUNNABLE_EXAMPLE=$0
+RUNNABLE_EXAMPLE_STDIN=
+RUNNABLE_EXAMPLE_ARGS=
+RUNNABLE_EXAMPLE_COMPILE=$(RUNNABLE_EXAMPLE $0)
+SPEC_RUNNABLE_EXAMPLE=$0
+SPEC_RUNNABLE_EXAMPLE_COMPILE=$0
+SPEC_RUNNABLE_EXAMPLE_RUN=$0
+SPEC_RUNNABLE_EXAMPLE_FAIL=$0
+SPEC_SUBNAV_NEXT=
+SPEC_SUBNAV_PREV_NEXT=
+SPEC_SUBNAV_PREV=
+HEADERNAV_TOC=
+HEADERNAV_ITEM=
+HEADERNAV_SUBITEMS=
+_=
+
+
+_= specification boxes
+BEST_PRACTICE= $(P $(B Best Practices:) $0)
+IMPLEMENTATION_DEFINED=$(P $(B Implementation Defined:) $0)
+UNDEFINED_BEHAVIOR=$(P $(B Undefined Behavior:) $0)
+RATIONALE=$(P $(B Rationale:) $0)
+NOTE=$(P $(B Note:) $0)
+_=

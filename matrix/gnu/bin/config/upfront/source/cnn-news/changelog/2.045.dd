@@ -1,0 +1,17 @@
+Ddoc
+
+$(CHANGELOG_NAV_INJECT)
+
+$(VERSION May 4, 2010, =================================================,
+
+    $(WHATSNEW
+    )
+    $(BUGSFIXED
+        $(LI Another try at fixing the Dwarf issues.)
+    )
+)
+$(CHANGELOG_NAV_INJECT)
+
+Macros:
+        VER=2.045
+        TITLE=Change Log: $(VER)

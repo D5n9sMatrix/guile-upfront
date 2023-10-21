@@ -1,0 +1,35 @@
+Ddoc
+
+$(CHANGELOG_NAV_INJECT)
+
+$(VERSION Feb 16, 2017, =================================================,
+
+$(BR)$(BIG $(RELATIVE_LINK2 bugfix-list, List of all bug fixes and enhancements in D $(VER).))
+
+$(HR)
+
+$(BR)$(BIG $(LNAME2 bugfix-list, List of all bug fixes and enhancements in D $(VER):))
+
+$(BUGSTITLE DMD Compiler regressions,
+
+$(LI $(BUGZILLA 17123): [REG 2.073] Issues with return @safe inference)
+$(LI $(BUGZILLA 17143): [REG2.072.0]  Declaration is already defined on global enum = tuple$(LPAREN)...$(RPAREN).expand declaration)
+)
+$(BUGSTITLE DMD Compiler bugs,
+
+$(LI $(BUGZILLA 17168): Shift left operator causes segfault when compiling with -O flag)
+$(LI $(BUGZILLA 17169): New default ddoc theme merges all paragraphs except the first)
+)
+$(BUGSTITLE Phobos regressions,
+
+$(LI $(BUGZILLA 17161): [REG 2.072.2] Massive Regex Slowdown)
+)
+$(BUGSTITLE Phobos bugs,
+
+$(LI $(BUGZILLA 17176): https://dlang.org/phobos/std_stdio.html#.File.tmpfile broken link)
+)
+)
+$(CHANGELOG_NAV_INJECT)
+Macros:
+    VER=2.073.1
+    TITLE=Change Log: $(VER)

@@ -1,0 +1,142 @@
+Ddoc
+
+$(D_S $(TITLE),
+
+$(H4 The D Language Foundation is a
+    $(HTTPS en.wikipedia.org/wiki/501(c)_organization, 501(c) non-profit public charity)
+     devoted to advancing open source technology related to the D programming language.
+)
+
+The D Language Foundation:
+
+$(COMMENT keep this list in sync with foundation.dd)
+$(UL
+    $(LI holds and defends the copyright and other intellectual property rights for the D programming language.)
+    $(LI provides resources for furthering the development and adoption of the D programming language.)
+    $(LI awards $(LINK2 http://dlang.org/blog/2016/12/05/the-d-language-foundations-scholarship-program, scholarships)
+        to highly skilled students.)
+    $(LI organizes the yearly $(HTTP dconf.org, DConf), the international annual conference of D Language developers and users.)
+    $(LI pays for hardware costs
+        (e.g. this website, $(LINK2 http://dlang.org/download.html, dmd downloads),
+        the $(LINK2 https://tour.dlang.org, D tour) and more).)
+    $(LI is an accepted Google Summer of Code (GSOC) organization, with projects hosted during
+        $(HTTPS summerofcode.withgoogle.com/archive/2016/organizations/4688223091556352/, GSOC 2016) and
+        $(HTTPS summerofcode.withgoogle.com/archive/2019/organizations/6223494952517632/, GSOC 2019).
+    )
+)
+
+$(P We are always in search of ways to improve the D programming language
+experience for new and existing D users. Whether that means hiring programmers
+to carry out contract work, sponsoring bounties on specific tasks, providing
+scholarships for students performing D-related research, or anything else that
+benefits the D community and ecosystem, we cannot make any of it happen without
+funding. We $(LINK2 sponsors.html, welcome contributions) from both
+organizations and individuals. Your help is highly appreciated and is what
+enables the D Language Foundation to fulfill its mission.)
+
+$(H3 How will my donation be used?)
+
+$(P Donations go toward supporting the D Language Foundation's regular, non-sponsored
+operations (DConf expenses, part-time workers, blog post bounties, reimbursements, etc.).
+One of the important ways we make use of donations is $(LINK2
+http://dlang.org/blog/2016/12/05/the-d-language-foundations-scholarship-program,
+in awarding scholarships) to highly skilled students. Each $(DOLLAR)5 you donate
+contributes to approximately one hour of work by a talented graduate student,
+and these hours add quickly toward important projects that further the state of
+the art in the D programming language.)
+
+$(H3 How can I donate?)
+
+$(DONATE_ITEM Donate through GitHub Sponsors, github,
+
+    The D Language Foundation is enrolled in the GitHub Sponsors program. One-time donations here will go toward our general expense fund. We aim to use
+    monthly donations to hire part-time workers who can help us achieve our vision for the D programming language. You can see our current monthly donation target
+    along with multiple one-time and monthly donation tiers $(LINK2 https://github.com/sponsors/dlang, on our GitHub Sponsors page).
+)
+
+$(DONATE_ITEM Donate through PayPal, paypal,
+
+    Click the yellow Donate button to make a donation to the D Language Foundation via PayPal. If
+    you want the money to be directed toward a specific campaign, project, task, or bounty, please be sure to leave
+    a note letting us know!
+    $(BR) $(BR)
+
+    <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+    <input type="hidden" name="cmd" value="_s-xclick" />
+    <input type="hidden" name="hosted_button_id" value="FDEUVLD5MB44G" />
+    <input type="image" src="https://www.paypal.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate" />
+    <img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" />
+    </form>
+)
+
+$(DONATE_ITEM Donate through OpenCollective, users,
+
+    Make a $(I transparent) donation and select the package you're comfortable with. If
+    you want the money to be directed toward a specific campaign, project, task, or bounty, please be sure to leave
+    a note letting us know!
+    $(BR) $(BR)
+
+<a href="https://opencollective.com/dlang" target="_blank">
+  <img src="https://opencollective.com/dlang/donate/button@2x.png?color=blue" width=250 />
+</a>
+)
+
+$(DONATE_ITEM Donate by credit card, credit-card,
+    Please use the PayPal button above to donate by credit card. You don't need a PayPal account to use the donation button.
+)
+
+$(DONATE_ITEM Electronic wire transfers or bank check, money,
+    Wire transfer information will be announced soon. In the meantime please use PayPal or $(LINK2 mailto:foundation@dlang.org, contact the D Language Foundation).
+)
+
+$(DONATE_ITEM smile.amazon.com, shopping-cart,
+    Visit $(HTTPS smile.amazon.com, smile.amazon.com) and select the D
+    Language Foundation as your charity. We'll receive a small percentage
+    of every purchase you make through smile.amazon.com (not www.amazon.com or the mobile app).
+)
+
+$(DONATE_ITEM The DLang Swag Emporium, shopping-cart,
+    Visit the $(HTTPS www.zazzle.com/store/dlang_swag?rf=238129799288374326,
+    DLang Swag Emporium) to purchase D-themed t-shirts, coffee mugs, and other
+    swag. The D Language Foundation will receive between %15-25 royalties on
+    each purchase. And if you use the preceding link, we'll also earn a small
+    referral fee.
+)
+
+$(H3 The D Language Foundation is a non-profit organization)
+
+$(P By the Foundation bylaws, its officers (Walter Bright, Andrei Alexandrescu
+and Ali Çehreli) cannot receive income from the Foundation, which preempts a
+variety of conflicts of interest.)
+
+$(P For US taxpayers, contributions to the D Language Foundation are
+tax-deductible. The D Language Foundation is a $(HTTPS
+en.wikipedia.org/wiki/501(c)_organization, 501(c) non-profit public charity)
+registered in the state of Washington, USA. You should consult your tax adviser
+for rules as they apply to your situation.)
+
+$(P Donations to the D Language Foundation are currently not tax-deductible in
+most other countries as they require an organisation to be incorporated in that
+country and the D Language Foundation does currently not have the resources to
+do so.)
+
+$(P If you have a question about donations, please write to the D Language
+Foundation at $(LINK2 mailto:foundation@dlang.org, foundation@dlang.org).)
+)
+
+Macros:
+        TITLE=Contribute to the D Language Foundation
+        NOSPAM_FOUNDATION=<span class="antimail-foundation">$1</span>
+    FA_ICON=<i class="fa fa-$1" aria-hidden="true"></i>
+        REMOVE_FIRST=$+
+        DONATE_ITEM=<div class="donate-item"><h4>$(FA_ICON $2) $1</h4><div>$(REMOVE_FIRST $+)</div></div>
+        SUBNAV=$(SUBNAV_FOUNDATION)
+    EXTRA_HEADERS=$(T style,
+        .donate-item {
+            padding-left: 30px;
+        }
+        .donate-item div {
+            padding-left: 30px;
+        }
+    )
+    _=

@@ -1,0 +1,32 @@
+Ddoc
+
+$(SPEC_S Grammar,
+
+$(HEADERNAV_TOC)
+
+$(H2 Lexical Syntax)
+
+    $(P Refer to the page for $(LINK2 lex.html, lexical syntax).)
+
+$(GRAMMAR_SUMMARY)
+
+$(SPEC_SUBNAV_PREV_NEXT lex, Lexical, module, Modules)
+)
+
+Macros:
+        CHAPTER=3
+        TITLE=D Grammar
+        IDENTIFIER=$(GLINK Identifier)
+        EXPRESSION=$(GLINK Expression)
+        ASSIGNEXPRESSION=$(GLINK AssignExpression)
+        PSSEMI_PSCURLYSCOPE=$(GLINK Statement)
+        PSSEMI_PSCURLYSCOPE_LIST=$(GLINK ScopeStatementList)
+        PS0=$(GLINK NoScopeNonEmptyStatement)
+        PSSCOPE=$(GLINK ScopeStatement)
+        PSCURLY=$(GLINK BlockStatement)
+        PSSEMI=$(GLINK NoScopeStatement)
+        PSCURLY_PSSCOPE=$(GLINK ScopeBlockStatement)
+        PSCURLYSCOPE=$(GLINK NonEmptyOrScopeBlockStatement)
+        TRAITS_LINK2=$(LINK2 traits.html#$1, $(D $1))
+        GLINK2=$(GLINK $2)
+        GRAMMAR_SUMMARY=$0

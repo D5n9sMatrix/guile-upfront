@@ -1,0 +1,1232 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Structs and Classes with foreach</title>
+    <style type="text/css" media="screen">
+      html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p,
+      blockquote, pre, a, abbr, address, cite, code, del, dfn, em, figure,
+      img, ins, kbd, q, s, samp, small, strong, sub, sup, var, b, u, i, dl,
+      dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption,
+      tbody, tfoot, thead, tr, th, td {
+        background: transparent none repeat scroll 0 0;
+        border: 0 none;
+        font-size: 100%;
+        margin: 0;
+        outline: 0 none;
+        padding: 0;
+        vertical-align: baseline;
+      }
+
+      h1 { font-size: 200%; }
+      h2 { font-size: 160%; }
+      h3 { font-size: 120%; }
+      h4 { font-size: 100%; }
+      h5 { font-size: 80%; }
+      h6 { font-size: 80%; font-weight: normal; }
+
+      ul, ol {
+        margin: 1.4em 0;
+      }
+      ul ul, ol ol, ul ol, ol ul {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      ul, ol {
+        margin-left: 2.8em;
+      }
+
+      ol {
+        list-style: decimal;
+      }
+      ol ol {
+        list-style: lower-alpha;
+      }
+      ol ol ol {
+        list-style: lower-roman;
+      }
+      ol ol ol ol {
+        list-style: decimal;
+      }
+
+      blockquote {
+        margin: 0.1em;
+        margin-left: 1em;
+        border-left: 2px solid #cccccc;
+        padding-left: 0.7em;
+      }
+
+      .color_red { color: #dc322f; }
+      .color_blue { color: #268bd2; }
+      .color_green { color: #859901; }
+      .color_yellow { color: #b58901; }
+      .color_black { color: black; }
+      .color_white { color: white; }
+
+      .font_big {
+        font-size: 1.2em;
+      }
+
+      .ddoc_section_h {
+        font-weight: bold;
+        font-size: 13px;
+        line-height: 19.5px;
+        margin-top: 11px;
+        display: block;
+      }
+
+      body.dlang .dlang {
+        display: inline-block;
+      }
+
+      body.dlang .declaration .dlang {
+          display: block;
+      }
+
+      body.dlang .ddoc_header_anchor a.dlang {
+        display: block;
+        color: rgba(0, 136, 204, 1);
+        text-decoration: none;
+      }
+
+      body.dlang .ddoc_header_anchor .code {
+        color: rgba(0, 136, 204, 1);
+      }
+
+      #ddoc_main .module {
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          overflow-x: hidden;
+          padding: 15px;
+      }
+
+      #ddoc_main .section .section {
+        margin-top: 0;
+      }
+
+      #ddoc_main .ddoc_module_members_section {
+          padding: 1px 0 0;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members section.intro {
+          background: #fff none repeat scroll 0 0;
+          list-style-type: none;
+          width: 100%;
+      }
+
+      #ddoc_main .ddoc_header_anchor {
+          font-size: 1.4em;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_header_anchor > .code {
+          display: inline-block;
+
+      }
+
+      #ddoc_main .ddoc_decl {
+        background-color: transparent;
+        height: 100%;
+        left: 0;
+        top: 0;
+        padding: 0;
+        padding-left: 15px;
+      }
+
+      #ddoc_main .ddoc_decl .section, #ddoc_main .section.ddoc_sections {
+        background: white none repeat scroll 0 0;
+        margin: 0;
+        padding: 5px;
+        position: relative;
+        border-radius: 5px;
+      }
+
+      #ddoc_main .ddoc_decl .section h4:first-of-type, #ddoc_main .section.ddoc_sections h4:first-of-type {
+        font-size: 13px;
+        line-height: 1.5;
+        margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration {
+          margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration .code {
+          color: rgba(0, 0, 0, 1);
+          margin-bottom: 15px;
+          padding-bottom: 6px;
+      }
+
+      #ddoc_main .declaration div .para {
+          margin-bottom: 0;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr td:first-of-type {
+        padding: 7px;
+        text-align: right;
+        vertical-align: top;
+        word-break: normal;
+        white-space: nowrap;
+      }
+
+      #ddoc_main .ddoc_params .graybox {
+        border: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox td {
+        border-color: rgba(214, 214, 214, 1);
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:first-child > td {
+        border-top: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:last-child > td {
+        border-bottom: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:first-child {
+        border-left: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:last-child {
+        border-right: 0 none;
+        width: 100%;
+      }
+
+      #ddoc_main em.term, #ddoc_main em.term .code {
+        color: rgba(65, 65, 65, 1);
+        font-size: 12px;
+        font-style: italic;
+        line-height: 1.5;
+      }
+
+      #ddoc_main .see-also {
+        cursor: pointer;
+        font-family: Menlo,monospace;
+      }
+
+      #ddoc_main .ddoc_decl .section > div:last-of-type {
+        margin-bottom: 15px;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members {
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .code_sample {
+        background: inherit;
+      }
+
+      #ddoc_main .declaration .code-line {
+          display: block;
+          font: 1em Menlo,monospace;
+      }
+
+      #ddoc_main a[name] {
+        margin: -112px 0 0;
+        padding-top: 112px;
+      }
+
+      #ddoc_main .ddoc_decl td {
+        max-width: inherit;
+      }
+
+      #ddoc_main .declaration a {
+        color: inherit;
+      }
+
+      #ddoc_main .declaration a:hover {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: underline;
+      }
+
+      body.ddoc {
+        background-color: transparent;
+        color: rgba(0, 0, 0, 1);
+        font-family: Helvetica,Arial,sans-serif;
+        font-size: 62.5%;
+        margin: 0;
+        border: 0;
+        left: 0;
+        top: 0;
+        padding: 0;
+      }
+
+      .ddoc a[name] {
+        display: block;
+        height: 0;
+        margin: -85px 0 0;
+        padding-top: 85px;
+        width: 0;
+      }
+
+      .ddoc .module {
+          border-color: transparent;
+          background-color: rgba(255, 255, 255, 1);
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-image: none;
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          box-shadow: 0 0 1px rgba(0, 0, 0, 0.07);
+          display: block;
+          margin-left: 0;
+          min-height: calc(100% - 173px);
+          overflow: auto;
+          padding-bottom: 100px;
+      }
+
+      .ddoc .content_wrapper {
+          background-color: rgba(242, 242, 242, 1);
+          margin: 0 auto;
+          max-width: 980px;
+      }
+
+      .ddoc .section {
+        padding: 15px 25px 30px;
+      }
+
+      .ddoc .section .section {
+        margin: 30px 0 0;
+        padding: 0;
+      }
+
+      .ddoc .para {
+        color: rgba(65, 65, 65, 1);
+        font-size: 1.4em;
+        line-height: 145%;
+        margin-bottom: 15px;
+      }
+
+      .ddoc .ddoc_examples .para {
+        margin-bottom: 0;
+      }
+
+      .ddoc .module_name {
+          color: rgba(0, 0, 0, 1);
+          display: block;
+          font-family: Helvetica;
+          font-size: 2.8em;
+          font-weight: 100;
+          margin-bottom: 0;
+          padding: 15px 0;
+      }
+
+      .ddoc .module a {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: none;
+      }
+
+      .ddoc .code {
+        color: rgba(128, 128, 128, 1);
+        font-family: Menlo,monospace;
+        font-size: 0.85em;
+        word-wrap: break-word;
+      }
+
+      .ddoc .code i {
+        font-style: normal;
+      }
+
+      .ddoc .code .code {
+        font-size: 1em;
+      }
+
+      .ddoc .code_sample {
+        background-clip: padding-box;
+        margin: 1px 0;
+        text-align: left;
+      }
+
+      .ddoc .code_sample {
+        display: block;
+        font-size: 1.4em;
+        margin-left: 21px;
+      }
+
+      .ddoc ol .code_sample {
+        font-size: 1em;
+      }
+
+      .ddoc .code_lines {
+        counter-reset: li;
+        line-height: 1.6em;
+        list-style: outside none none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .ddoc .code_listing .code_sample div {
+        margin-left: 13px;
+        width: 93%;
+      }
+
+      .ddoc .code_listing .code_sample div .code_lines li {
+        list-style-type: none;
+        margin: 0;
+        padding-right: 10px;
+      }
+
+      .ddoc .code_sample div .code_lines li::before {
+        margin-left: -33px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+10)::before {
+        margin-left: -39px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+100)::before {
+        margin-left: -46px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample .code_lines .code {
+        color: #000;
+      }
+
+      .ddoc div.dlang {
+        margin: 10px 0 21px;
+        padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+          margin: 10px 0 21px;
+          padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+        border-left: 5px solid rgba(0, 155, 51, 0.2);
+      }
+
+      .ddoc .code_lines li::before {
+        color: rgba(128, 128, 128, 1);
+        content: counter(li, decimal);
+        counter-increment: li;
+        font-family: Menlo,monospace;
+        font-size: 0.9em;
+        margin-right: 16px;
+      }
+
+      .ddoc .code_lines li {
+        padding-left: 0;
+        white-space: pre-wrap;
+      }
+
+      .ddoc .code_lines li:only-of-type::before {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:only-of-type {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:nth-child(n+10) {
+        text-indent: -17px;
+      }
+
+      .ddoc .code_lines li:nth-child(n+10)::before {
+        margin-right: 12px;
+      }
+
+      .ddoc .graybox {
+        border: 1px solid rgba(233, 233, 233, 1);
+        border-collapse: collapse;
+        border-spacing: 0;
+        empty-cells: hide;
+        margin: 20px 0 36px;
+        text-align: left;
+      }
+
+      .ddoc .graybox p {
+        margin: 0;
+        min-width: 50px;
+      }
+
+      .ddoc th {
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: bottom;
+      }
+
+      .ddoc td {
+        border: 1px solid rgba(233, 233, 233, 1);
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: middle;
+      }
+
+      .punctuation {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .comment {
+        color: rgba(0, 131, 18, 1);
+      }
+
+      .operator {
+        color: #000;
+      }
+
+      .keyword {
+        color: rgba(170, 13, 145, 1);
+      }
+
+      .keyword_type {
+        color: rgba(170, 51, 145, 1);
+      }
+
+      .string_literal {
+        color: rgba(196, 26, 22, 1);
+      }
+
+      .ddoc_psuper_symbol {
+        color: rgba(92, 38, 153, 1);
+      }
+
+      .param {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .psymbol {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .ddoc_member_header .ddoc_header_anchor .code {
+        font-size: 1em;
+      }
+    </style>
+  </head>
+  <body id="ddoc_main" class="ddoc dlang">
+    <div class="content_wrapper">
+      <article class="module">
+        <h1 class="module_name">Structs and Classes with foreach</h1>
+        <section id="module_content"><br><br>
+<br><br>
+
+<br><br>
+<p>As you remember from <a href="foreach.html">the  Loop chapter</a>, both how  works and the types and numbers of loop variables that it supports depend on the kind of collection: For slices,  provides access to elements with or without a counter; for associative arrays, to values with or without keys; for number ranges, to the individual values. For library types,  behaves in a way that is specific to that type; e.g. for , it provides the lines of a file.
+</p>
+<br><br>
+<p>It is possible to define the behavior of  for user-defined types as well. There are two methods of providing this support:
+</p>
+<br><br>
+<ul><li>Defining <i>range member functions</i>, which allows using the user-defined type with other range algorithms as well</li>
+<br><br>
+<li>Defining one or more  member functions</li>
+</ul>
+<br><br>
+<p>Of the two methods,  has priority: If it is defined, the compiler uses , otherwise it considers the range member functions. However, in most cases range member functions are sufficient, easier, and more useful.
+</p>
+<br><br>
+<p> need not be supported for every type. Iterating over an object makes sense only if that object defines the concept of <i>a collection</i>.
+</p>
+<br><br>
+<p>For example, it may not be clear what elements should  provide when iterating over a class that represents a student, so the class better not support  at all. On the other hand, a design may require that  is a collection of grades and  may provide individual grades of the student.
+</p>
+<br><br>
+<p>It depends on the design of the program what types should provide this support and how.
+</p>
+<br><br>
+<h5>  support by range member functions</h5>
+<br><br>
+<p>   We know that  is very similar to , except that it is more useful and safer than . Consider the following loop:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">foreach</span> (element; myObject) {
+        <span class="comment">// ... expressions ...
+</span>    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Behind the scenes, the compiler rewrites that  loop as a  loop, roughly an equivalent of the following one:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">for</span> ( ; <span class="comment">/* while not done */</span>; <span class="comment">/* skip the front element */</span>) {
+
+        <span class="keyword">auto</span> element = <span class="comment">/* the front element */</span>;
+
+        <span class="comment">// ... expressions ...
+</span>    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>User-defined types that need to support  can provide three member functions that correspond to the three sections of the previous code: determining whether the loop is over, skipping the front element, and providing access to the front element.
+</p>
+<br><br>
+<p>Those three member functions must be named as , , and , respectively. The code that is generated by the compiler calls those functions:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">for</span> ( ; !myObject.empty(); myObject.popFront()) {
+
+        <span class="keyword">auto</span> element = myObject.front();
+
+        <span class="comment">// ... expressions ...
+</span>    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>These three functions must work according to the following expectations:
+</p>
+<br><br>
+<ul><br><br>
+<li> must return  if the loop is over,  otherwise</li>
+<br><br>
+<li> must move to the next element (in other words, skip the front element)</li>
+<br><br>
+<li> must return the front element</li>
+<br><br>
+</ul>
+<br><br>
+<p>Any type that defines those member functions can be used with .
+</p>
+<br><br>
+<h6>Example</h6>
+<br><br>
+<p>Let's define a  that produces numbers within a certain range. In order to be consistent with D's number ranges and slice indexes, let's have the last number be outside of the valid numbers. Under these requirements, the following  would work exactly like D's number ranges:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">struct</span> NumberRange {
+    <span class="keyword">int</span> begin;
+    <span class="keyword">int</span> end;
+
+    <span class="keyword">invariant</span>() {
+        <span class="comment">// There is a bug if begin is greater than end
+</span>        <span class="keyword">assert</span>(begin &lt;= end);
+    }
+
+    <span class="keyword">bool</span> empty() <span class="keyword">const</span> {
+        <span class="comment">// The range is consumed when begin equals end
+</span>        <span class="keyword">return</span> begin == end;
+    }
+
+    <span class="keyword">void</span> popFront() {
+        <span class="comment">// Skipping the first element is achieved by
+</span>        <span class="comment">// incrementing the beginning of the range
+</span>        ++begin;
+    }
+
+    <span class="keyword">int</span> front() <span class="keyword">const</span> {
+        <span class="comment">// The front element is the one at the beginning
+</span>        <span class="keyword">return</span> begin;
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p><i><b>Note:</b> The safety of that implementation depends solely on a single  block. Additional checks could be added to  and  to ensure that those functions are never called when the range is empty.</i>
+</p>
+<br><br>
+<p>Objects of that  can be used with :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">foreach</span> (element; NumberRange(3, 7)) {
+        write(element, ' ');
+    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p> uses those three functions behind the scenes and iterates until  returns :
+</p>
+<br><br>
+
+<br><br>
+<h6>  to iterate in reverse</h6>
+<br><br>
+<p>   The  module contains many range algorithms.  is one of those algorithms, which iterates a range in reverse order. It requires two additional range member functions:
+</p>
+<br><br>
+<ul><br><br>
+<li> must move to the element that is one before the end (skips the last element)</li>
+<br><br>
+<li> must return the last element</li>
+<br><br>
+</ul>
+<br><br>
+<p>However, although not directly related to reverse iteration, for  to consider those functions at all, there must be one more function defined:
+</p>
+<br><br>
+<ul><li> must return a copy of this object</li>
+</ul>
+<br><br>
+<p>We will learn more about these member functions later in <a href="ranges.html">the Ranges chapter</a>.
+</p>
+<br><br>
+<p>These three additional member functions can trivially be defined for :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">struct</span> NumberRange {
+<span class="comment">// ...
+</span>
+    <span class="keyword">void</span> popBack() {
+        <span class="comment">// Skipping the last element is achieved by
+</span>        <span class="comment">// decrementing the end of the range.
+</span>        --end;
+    }
+
+    <span class="keyword">int</span> back() <span class="keyword">const</span> {
+        <span class="comment">// As the 'end' value is outside of the range, the
+</span>        <span class="comment">// last element is one less than that
+</span>        <span class="keyword">return</span> end - 1;
+    }
+
+    NumberRange save() <span class="keyword">const</span> {
+        <span class="comment">// Returning a copy of this struct object
+</span>        <span class="keyword">return</span> <span class="keyword">this</span>;
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Objects of this type can now be used with :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.range;
+
+<span class="comment">// ...
+</span>
+    <span class="keyword">foreach</span> (element; NumberRange(3, 7)) {
+        write(element, ' ');
+    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output of the program is now in reverse:
+</p>
+<br><br>
+
+<br><br>
+<h5>   support by  and  member functions</h5>
+<br><br>
+<p> Everything that is said about  in this section is valid for  as well.  is for defining the behaviors of objects in the  loops.
+</p>
+<br><br>
+<p>The member functions above allow using objects as ranges. That method is more suitable when there is only one sensible way of iterating over a range. For example, it would be easy to provide access to individual students of a  type.
+</p>
+<br><br>
+<p>On the other hand, sometimes it makes more sense to iterate over the same object in different ways. We know this from associative arrays where it is possible to access either only to the values or to both the keys and the values:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    string[string] dictionary;    <span class="comment">// from English to Turkish
+</span>
+    <span class="comment">// ...
+</span>
+    <span class="keyword">foreach</span> (inTurkish; dictionary) {
+        <span class="comment">// ... only values ...
+</span>    }
+
+    <span class="keyword">foreach</span> (inEnglish, inTurkish; dictionary) {
+        <span class="comment">// ... keys and values ...
+</span>    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p> allows using user-defined types with  in various and sometimes more complex ways. Before learning how to define , we must first understand how it is called automatically by .
+</p>
+<br><br>
+<p>The program execution alternates between the expressions inside the  block and the expressions inside the  function. First the  member function gets called, and then  makes an explicit call to the  block. They alternate in that way until the loop eventually terminates. This process is based on a <i>convention</i>, which I will explain soon.
+</p>
+<br><br>
+<p>Let's first observe the structure of the  loop one more time:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="comment">// The loop that is written by the programmer:
+</span>
+    <span class="keyword">foreach</span> (<span class="comment">/* loop variables */</span>; myObject) {
+        <span class="comment">// ... expressions inside the foreach block ...
+</span>    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p> If there is an  member function that matches the loop variables, then the  block becomes a delegate, which is then passed to .
+</p>
+<br><br>
+<p>Accordingly, the loop above is converted to the following code behind the scenes. The curly brackets that define the body of the delegate are highlighted:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="comment">// The code that the compiler generates behind the scenes:
+</span>
+    myObject.opApply(<span class="keyword">delegate</span> <span class="keyword">int</span>(<span class="comment">/* loop variables */</span>) 
+        <span class="comment">// ... expressions inside the foreach block ...
+</span>        <span class="keyword">return</span> hasBeenTerminated;
+    );
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>In other words, the  loop is replaced by a  that is passed to . Before showing an example, here are the requirements and expectations of this convention that  must observe:
+</p>
+<br><br>
+<ol><br><br>
+<li>The body of the  loop becomes the body of the delegate.  must call this delegate for each iteration.</li>
+<br><br>
+<li>The loop variables become the parameters of the delegate.  must define these parameters as . (The variables may be defined without the  keyword as well but doing that would prevent iterating over the elements <a href="value_vs_reference.html"><i>by reference</i></a>.)</li>
+<br><br>
+<li>The return type of the delegate is . Accordingly, the compiler injects a  statement at the end of the delegate, which determines whether the loop has been terminated (by a  or a  statement): If the return value is zero, the iteration must continue, otherwise it must terminate.</li>
+<br><br>
+<li>The actual iteration happens inside .</li>
+<br><br>
+<li> must return the same value that is returned by the delegate.</li>
+<br><br>
+</ol>
+<br><br>
+<p>The following is a definition of  that is implemented according to that convention:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">struct</span> NumberRange {
+    <span class="keyword">int</span> begin;
+    <span class="keyword">int</span> end;
+                         <span class="comment">//    (2)       (1)
+</span>    <span class="keyword">int</span> opApply(<span class="keyword">int</span> <span class="keyword">delegate</span>(<span class="keyword">ref</span> <span class="keyword">int</span>) operations) <span class="keyword">const</span> {
+        <span class="keyword">int</span> result = 0;
+
+        <span class="keyword">for</span> (<span class="keyword">int</span> number = begin; number != end; ++number) { <span class="comment">// (4)
+</span>            result = operations(number);  <span class="comment">// (1)
+</span>
+            <span class="keyword">if</span> (result) {
+                <span class="keyword">break</span>;                    <span class="comment">// (3)
+</span>            }
+        }
+
+        <span class="keyword">return</span> result;                    <span class="comment">// (5)
+</span>    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>This definition of  can be used with  in exactly the same way as before:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">foreach</span> (element; NumberRange(3, 7)) {
+        write(element, ' ');
+    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output is the same as the one produced by range member functions:
+</p>
+<br><br>
+
+<br><br>
+<h6>Overloading  to iterate in different ways</h6>
+<br><br>
+<p>It is possible to iterate over the same object in different ways by defining overloads of  that take different types of delegates. The compiler calls the overload that matches the particular set of loop variables.
+</p>
+<br><br>
+<p>As an example, let's make it possible to iterate over  by two loop variables as well:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">foreach</span> (; NumberRange(0, 15)) {
+        writef(<span class="string_literal">"%s,%s "</span>, first, second);
+    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Note how it is similar to the way associative arrays are iterated over by both keys and values.
+</p>
+<br><br>
+<p>For this example, let's require that when a  object is iterated by two variables, it should provide two consecutive values and that it arbitrarily increases the values by 5. So, the loop above should produce the following output:
+</p>
+<br><br>
+
+<br><br>
+<p>This is achieved by an additional definition of  that takes a delegate that takes two parameters.  must call that delegate with two values:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span> opApply(<span class="keyword">int</span> <span class="keyword">delegate</span> dg) <span class="keyword">const</span> {
+        <span class="keyword">int</span> result = 0;
+
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = begin; (i + 1) &lt; end; i += 5) {
+            <span class="keyword">int</span> first = i;
+            <span class="keyword">int</span> second = i + 1;
+
+            result = dg();
+
+            <span class="keyword">if</span> (result) {
+                <span class="keyword">break</span>;
+            }
+        }
+
+        <span class="keyword">return</span> result;
+    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>When there are two loop variables, this overload of  gets called.
+</p>
+<br><br>
+<p>There may be as many overloads of  as needed.
+</p>
+<br><br>
+<p>It is possible and sometimes necessary to give hints to the compiler on what overload to choose. This is done by specifying types of the loop variables explicitly.
+</p>
+<br><br>
+<p>For example, let's assume that there is a  type that supports iterating over the teachers and the students separately:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">class</span> School {
+    <span class="keyword">int</span> opApply(<span class="keyword">int</span> <span class="keyword">delegate</span>(<span class="keyword">ref</span> ) dg) <span class="keyword">const</span> {
+        <span class="comment">// ...
+</span>    }
+
+    <span class="keyword">int</span> opApply(<span class="keyword">int</span> <span class="keyword">delegate</span>(<span class="keyword">ref</span> ) dg) <span class="keyword">const</span> {
+        <span class="comment">// ...
+</span>    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>To indicate the desired overload, the loop variable must be specified:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">foreach</span> ( student; school) {
+        <span class="comment">// ...
+</span>    }
+
+    <span class="keyword">foreach</span> ( teacher; school) {
+        <span class="comment">// ...
+</span>    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h5>  Loop counter</h5>
+<br><br>
+<p>The convenient loop counter of slices is not automatic for other types. Loop counter can be achieved for user-defined types in different ways depending on whether the  support is provided by range member functions or by  overloads.
+</p>
+<br><br>
+<h6>Loop counter with range functions</h6>
+<br><br>
+<p> If  support is provided by range member functions, then a loop counter can be achieved simply by  from the  module:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.range;
+
+<span class="comment">// ...
+</span>
+    <span class="keyword">foreach</span> (, element; NumberRange(42, 47)) {
+        writefln(<span class="string_literal">"%s: %s"</span>, i, element);
+    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p> is a range that produces consecutive numbers starting by default from 0.  pairs each number with the elements of the range that it is applied on. As a result, the numbers that  generates and the elements of the actual range ( in this case) appear in lockstep as loop variables:
+</p>
+<br><br>
+
+<br><br>
+<h6>Loop counter with </h6>
+<br><br>
+<p>On the other hand, if  support is provided by , then the loop counter must be defined as a separate parameter of the delegate, suitably as type . Let's see this on a  that represents a colored polygon.
+</p>
+<br><br>
+<p>As we have already seen above, an  that provides access to the points of this polygon can be implemented <i>without</i> a counter as in the following code:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">enum</span> Color { blue, green, red }
+
+<span class="keyword">struct</span> Point {
+    <span class="keyword">int</span> x;
+    <span class="keyword">int</span> y;
+}
+
+<span class="keyword">struct</span> Polygon {
+    Color color;
+    Point[] points;
+
+    <span class="keyword">int</span> (<span class="keyword">int</span> <span class="keyword">delegate</span>(<span class="keyword">ref</span> <span class="keyword">const</span>(Point)) dg) <span class="keyword">const</span> {
+        <span class="keyword">int</span> result = 0;
+
+        <span class="keyword">foreach</span> (point; points) {
+            result = dg(point);
+
+            <span class="keyword">if</span> (result) {
+                <span class="keyword">break</span>;
+            }
+        }
+
+        <span class="keyword">return</span> result;
+    }
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">auto</span> polygon = Polygon(Color.blue,
+                           [ Point(0, 0), Point(1, 1) ] );
+
+    <span class="keyword">foreach</span> (point; polygon) {
+        writeln(point);
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Note that  itself is implemented by a  loop. As a result, the  inside  ends up making indirect use of a  over the  member.
+</p>
+<br><br>
+<p>Also note that the type of the delegate parameter is . This means that this definition of  does not allow modifying the  elements of the polygon. In order to allow user code to modify the elements, both the  function itself and the delegate parameter must be defined without the  specifier.
+</p>
+<br><br>
+<p>The output:
+</p>
+<br><br>
+
+<br><br>
+<p>Naturally, trying to use this definition of  with a loop counter would cause a compilation error:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">foreach</span> (, point; polygon) {    
+        writefln(<span class="string_literal">"%s: %s"</span>, i, point);
+    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The compilation error:
+</p>
+<br><br>
+
+<br><br>
+<p>For that to work, another  overload that supports a counter must be defined:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span> opApply(<span class="keyword">int</span> <span class="keyword">delegate</span>(,
+                             <span class="keyword">ref</span> <span class="keyword">const</span>(Point)) dg) <span class="keyword">const</span> {
+        <span class="keyword">int</span> result = 0;
+
+        <span class="keyword">foreach</span> (, point; points) {
+            result = dg(, point);
+
+            <span class="keyword">if</span> (result) {
+                <span class="keyword">break</span>;
+            }
+        }
+
+        <span class="keyword">return</span> result;
+    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>This time the  variables are matched to the new  overload and the program prints the desired output:
+</p>
+<br><br>
+
+<br><br>
+<p>Note that this implementation of  takes advantage of the automatic counter over the  member. (<i>Although the delegate variable is defined as , the  loop inside  cannot modify the counter variable over </i>).
+</p>
+<br><br>
+<p>When needed, the loop counter can be defined and incremented explicitly as well. For example, because the following  is implemented by a  statement it must define a separate variable for the counter:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span> opApply(<span class="keyword">int</span> <span class="keyword">delegate</span>(<span class="keyword">ref</span> size_t,
+                             <span class="keyword">ref</span> <span class="keyword">const</span>(Point)) dg) <span class="keyword">const</span> {
+        <span class="keyword">int</span> result = 0;
+        <span class="keyword">bool</span> isDone = <span class="keyword">false</span>;
+
+        
+        <span class="keyword">while</span> (!isDone) {
+            <span class="comment">// ...
+</span>
+            result = dg(counter, nextElement);
+
+            <span class="keyword">if</span> (result) {
+                <span class="keyword">break</span>;
+            }
+
+            ++counter;
+        }
+
+        <span class="keyword">return</span> result;
+    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h5>Warning: The collection must not mutate during the iteration</h5>
+<br><br>
+<p>Regardless of whether the iteration support is provided by the range member functions or by  functions, the collection itself must not mutate. New elements must not be added to the container and the existing elements must not be removed. (Mutating the existing elements is allowed.)
+</p>
+<br><br>
+<p>Doing otherwise is undefined behavior.
+</p>
+<br><br>
+
+
+</section>
+      </article>
+    </div>
+  </body>
+</html>

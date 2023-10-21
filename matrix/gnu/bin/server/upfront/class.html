@@ -1,0 +1,1028 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Classes</title>
+    <style type="text/css" media="screen">
+      html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p,
+      blockquote, pre, a, abbr, address, cite, code, del, dfn, em, figure,
+      img, ins, kbd, q, s, samp, small, strong, sub, sup, var, b, u, i, dl,
+      dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption,
+      tbody, tfoot, thead, tr, th, td {
+        background: transparent none repeat scroll 0 0;
+        border: 0 none;
+        font-size: 100%;
+        margin: 0;
+        outline: 0 none;
+        padding: 0;
+        vertical-align: baseline;
+      }
+
+      h1 { font-size: 200%; }
+      h2 { font-size: 160%; }
+      h3 { font-size: 120%; }
+      h4 { font-size: 100%; }
+      h5 { font-size: 80%; }
+      h6 { font-size: 80%; font-weight: normal; }
+
+      ul, ol {
+        margin: 1.4em 0;
+      }
+      ul ul, ol ol, ul ol, ol ul {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      ul, ol {
+        margin-left: 2.8em;
+      }
+
+      ol {
+        list-style: decimal;
+      }
+      ol ol {
+        list-style: lower-alpha;
+      }
+      ol ol ol {
+        list-style: lower-roman;
+      }
+      ol ol ol ol {
+        list-style: decimal;
+      }
+
+      blockquote {
+        margin: 0.1em;
+        margin-left: 1em;
+        border-left: 2px solid #cccccc;
+        padding-left: 0.7em;
+      }
+
+      .color_red { color: #dc322f; }
+      .color_blue { color: #268bd2; }
+      .color_green { color: #859901; }
+      .color_yellow { color: #b58901; }
+      .color_black { color: black; }
+      .color_white { color: white; }
+
+      .font_big {
+        font-size: 1.2em;
+      }
+
+      .ddoc_section_h {
+        font-weight: bold;
+        font-size: 13px;
+        line-height: 19.5px;
+        margin-top: 11px;
+        display: block;
+      }
+
+      body.dlang .dlang {
+        display: inline-block;
+      }
+
+      body.dlang .declaration .dlang {
+          display: block;
+      }
+
+      body.dlang .ddoc_header_anchor a.dlang {
+        display: block;
+        color: rgba(0, 136, 204, 1);
+        text-decoration: none;
+      }
+
+      body.dlang .ddoc_header_anchor .code {
+        color: rgba(0, 136, 204, 1);
+      }
+
+      #ddoc_main .module {
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          overflow-x: hidden;
+          padding: 15px;
+      }
+
+      #ddoc_main .section .section {
+        margin-top: 0;
+      }
+
+      #ddoc_main .ddoc_module_members_section {
+          padding: 1px 0 0;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members section.intro {
+          background: #fff none repeat scroll 0 0;
+          list-style-type: none;
+          width: 100%;
+      }
+
+      #ddoc_main .ddoc_header_anchor {
+          font-size: 1.4em;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_header_anchor > .code {
+          display: inline-block;
+
+      }
+
+      #ddoc_main .ddoc_decl {
+        background-color: transparent;
+        height: 100%;
+        left: 0;
+        top: 0;
+        padding: 0;
+        padding-left: 15px;
+      }
+
+      #ddoc_main .ddoc_decl .section, #ddoc_main .section.ddoc_sections {
+        background: white none repeat scroll 0 0;
+        margin: 0;
+        padding: 5px;
+        position: relative;
+        border-radius: 5px;
+      }
+
+      #ddoc_main .ddoc_decl .section h4:first-of-type, #ddoc_main .section.ddoc_sections h4:first-of-type {
+        font-size: 13px;
+        line-height: 1.5;
+        margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration {
+          margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration .code {
+          color: rgba(0, 0, 0, 1);
+          margin-bottom: 15px;
+          padding-bottom: 6px;
+      }
+
+      #ddoc_main .declaration div .para {
+          margin-bottom: 0;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr td:first-of-type {
+        padding: 7px;
+        text-align: right;
+        vertical-align: top;
+        word-break: normal;
+        white-space: nowrap;
+      }
+
+      #ddoc_main .ddoc_params .graybox {
+        border: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox td {
+        border-color: rgba(214, 214, 214, 1);
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:first-child > td {
+        border-top: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:last-child > td {
+        border-bottom: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:first-child {
+        border-left: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:last-child {
+        border-right: 0 none;
+        width: 100%;
+      }
+
+      #ddoc_main em.term, #ddoc_main em.term .code {
+        color: rgba(65, 65, 65, 1);
+        font-size: 12px;
+        font-style: italic;
+        line-height: 1.5;
+      }
+
+      #ddoc_main .see-also {
+        cursor: pointer;
+        font-family: Menlo,monospace;
+      }
+
+      #ddoc_main .ddoc_decl .section > div:last-of-type {
+        margin-bottom: 15px;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members {
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .code_sample {
+        background: inherit;
+      }
+
+      #ddoc_main .declaration .code-line {
+          display: block;
+          font: 1em Menlo,monospace;
+      }
+
+      #ddoc_main a[name] {
+        margin: -112px 0 0;
+        padding-top: 112px;
+      }
+
+      #ddoc_main .ddoc_decl td {
+        max-width: inherit;
+      }
+
+      #ddoc_main .declaration a {
+        color: inherit;
+      }
+
+      #ddoc_main .declaration a:hover {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: underline;
+      }
+
+      body.ddoc {
+        background-color: transparent;
+        color: rgba(0, 0, 0, 1);
+        font-family: Helvetica,Arial,sans-serif;
+        font-size: 62.5%;
+        margin: 0;
+        border: 0;
+        left: 0;
+        top: 0;
+        padding: 0;
+      }
+
+      .ddoc a[name] {
+        display: block;
+        height: 0;
+        margin: -85px 0 0;
+        padding-top: 85px;
+        width: 0;
+      }
+
+      .ddoc .module {
+          border-color: transparent;
+          background-color: rgba(255, 255, 255, 1);
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-image: none;
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          box-shadow: 0 0 1px rgba(0, 0, 0, 0.07);
+          display: block;
+          margin-left: 0;
+          min-height: calc(100% - 173px);
+          overflow: auto;
+          padding-bottom: 100px;
+      }
+
+      .ddoc .content_wrapper {
+          background-color: rgba(242, 242, 242, 1);
+          margin: 0 auto;
+          max-width: 980px;
+      }
+
+      .ddoc .section {
+        padding: 15px 25px 30px;
+      }
+
+      .ddoc .section .section {
+        margin: 30px 0 0;
+        padding: 0;
+      }
+
+      .ddoc .para {
+        color: rgba(65, 65, 65, 1);
+        font-size: 1.4em;
+        line-height: 145%;
+        margin-bottom: 15px;
+      }
+
+      .ddoc .ddoc_examples .para {
+        margin-bottom: 0;
+      }
+
+      .ddoc .module_name {
+          color: rgba(0, 0, 0, 1);
+          display: block;
+          font-family: Helvetica;
+          font-size: 2.8em;
+          font-weight: 100;
+          margin-bottom: 0;
+          padding: 15px 0;
+      }
+
+      .ddoc .module a {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: none;
+      }
+
+      .ddoc .code {
+        color: rgba(128, 128, 128, 1);
+        font-family: Menlo,monospace;
+        font-size: 0.85em;
+        word-wrap: break-word;
+      }
+
+      .ddoc .code i {
+        font-style: normal;
+      }
+
+      .ddoc .code .code {
+        font-size: 1em;
+      }
+
+      .ddoc .code_sample {
+        background-clip: padding-box;
+        margin: 1px 0;
+        text-align: left;
+      }
+
+      .ddoc .code_sample {
+        display: block;
+        font-size: 1.4em;
+        margin-left: 21px;
+      }
+
+      .ddoc ol .code_sample {
+        font-size: 1em;
+      }
+
+      .ddoc .code_lines {
+        counter-reset: li;
+        line-height: 1.6em;
+        list-style: outside none none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .ddoc .code_listing .code_sample div {
+        margin-left: 13px;
+        width: 93%;
+      }
+
+      .ddoc .code_listing .code_sample div .code_lines li {
+        list-style-type: none;
+        margin: 0;
+        padding-right: 10px;
+      }
+
+      .ddoc .code_sample div .code_lines li::before {
+        margin-left: -33px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+10)::before {
+        margin-left: -39px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+100)::before {
+        margin-left: -46px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample .code_lines .code {
+        color: #000;
+      }
+
+      .ddoc div.dlang {
+        margin: 10px 0 21px;
+        padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+          margin: 10px 0 21px;
+          padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+        border-left: 5px solid rgba(0, 155, 51, 0.2);
+      }
+
+      .ddoc .code_lines li::before {
+        color: rgba(128, 128, 128, 1);
+        content: counter(li, decimal);
+        counter-increment: li;
+        font-family: Menlo,monospace;
+        font-size: 0.9em;
+        margin-right: 16px;
+      }
+
+      .ddoc .code_lines li {
+        padding-left: 0;
+        white-space: pre-wrap;
+      }
+
+      .ddoc .code_lines li:only-of-type::before {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:only-of-type {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:nth-child(n+10) {
+        text-indent: -17px;
+      }
+
+      .ddoc .code_lines li:nth-child(n+10)::before {
+        margin-right: 12px;
+      }
+
+      .ddoc .graybox {
+        border: 1px solid rgba(233, 233, 233, 1);
+        border-collapse: collapse;
+        border-spacing: 0;
+        empty-cells: hide;
+        margin: 20px 0 36px;
+        text-align: left;
+      }
+
+      .ddoc .graybox p {
+        margin: 0;
+        min-width: 50px;
+      }
+
+      .ddoc th {
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: bottom;
+      }
+
+      .ddoc td {
+        border: 1px solid rgba(233, 233, 233, 1);
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: middle;
+      }
+
+      .punctuation {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .comment {
+        color: rgba(0, 131, 18, 1);
+      }
+
+      .operator {
+        color: #000;
+      }
+
+      .keyword {
+        color: rgba(170, 13, 145, 1);
+      }
+
+      .keyword_type {
+        color: rgba(170, 51, 145, 1);
+      }
+
+      .string_literal {
+        color: rgba(196, 26, 22, 1);
+      }
+
+      .ddoc_psuper_symbol {
+        color: rgba(92, 38, 153, 1);
+      }
+
+      .param {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .psymbol {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .ddoc_member_header .ddoc_header_anchor .code {
+        font-size: 1em;
+      }
+    </style>
+  </head>
+  <body id="ddoc_main" class="ddoc dlang">
+    <div class="content_wrapper">
+      <article class="module">
+        <h1 class="module_name">Classes</h1>
+        <section id="module_content"><br><br>
+<br><br>
+
+<br><br>
+<p>   Similar to structs,  is a feature for defining new types. By this definition, classes are <i>user defined types</i>. Different from structs, classes provide the <i>object oriented programming</i> (OOP) paradigm in D. The major aspects of OOP are the following:
+</p>
+<br><br>
+<ul><br><br>
+<li><b>Encapsulation:</b> Controlling access to members (<i>Encapsulation is available for structs as well but it has not been mentioned until this chapter.</i>)
+</li>
+<br><br>
+<li><b>Inheritance:</b> Acquiring members of another type
+</li>
+<br><br>
+<li><b>Polymorphism:</b> Being able to use a more special type in place of a more general type
+</li>
+<br><br>
+</ul>
+<br><br>
+<p>Encapsulation is achieved by <i>protection attributes</i>, which we will see in <a href="encapsulation.html">a later chapter</a>. Inheritance is for acquiring <i>implementations</i> of other types. <a href="inheritance.html">Polymorphism</a> is for abstracting parts of programs from each other and is achieved by class <i>interfaces</i>.
+</p>
+<br><br>
+<p>This chapter will introduce classes at a high level, underlining the fact that they are reference types. Classes will be explained in more detail in later chapters.
+</p>
+<br><br>
+<h5>Comparing with structs</h5>
+<br><br>
+<p>In general, classes are very similar to structs. Most of the features that we have seen for structs in the following chapters apply to classes as well:
+</p>
+<br><br>
+<ul><li><a href="struct.html">Structs</a></li>
+<li><a href="member_functions.html">Member Functions</a></li>
+<li><a href="const_member_functions.html"> Parameters and  Member Functions</a></li>
+<li><a href="special_functions.html">Constructor and Other Special Functions</a></li>
+<li><a href="operator_overloading.html">Operator Overloading</a></li>
+</ul>
+<br><br>
+<p>However, there are important differences between classes and structs.
+</p>
+<br><br>
+<h6>Classes are reference types</h6>
+<br><br>
+<p>The biggest difference from structs is that structs are <i>value types</i> and classes are <i>reference types</i>. The other differences outlined below are mostly due to this fact.
+</p>
+<br><br>
+<h6>  Class variables may be </h6>
+<br><br>
+<p>As it has been mentioned briefly in <a href="null_is.html">The  Value and the  Operator chapter</a>, class variables can be . In other words, class variables may not be providing access to any object. Class variables do not have values themselves; the actual class objects must be constructed by the  keyword.
+</p>
+<br><br>
+<p>As you would also remember, comparing a reference to  by the  or the  operator is an error. Instead, the comparison must be done by the  or the  operator, accordingly:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    MyClass referencesAnObject = <span class="keyword">new</span> MyClass;
+    <span class="keyword">assert</span>(referencesAnObject  <span class="keyword">null</span>);
+
+    MyClass variable;   <span class="comment">// does not reference an object
+</span>    <span class="keyword">assert</span>(variable  <span class="keyword">null</span>);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The reason is that, the  operator may need to consult the values of the members of the objects and that attempting to access the members through a potentially  variable would cause a memory access error. For that reason, class variables must always be compared by the  and  operators.
+</p>
+<br><br>
+<h6>  Class variables versus class objects</h6>
+<br><br>
+<p>Class variable and class object are separate concepts.
+</p>
+<br><br>
+<p>Class objects are constructed by the  keyword; they do not have names. The actual concept that a class type represents in a program is provided by a class object. For example, assuming that a  class represents students by their names and grades, such information would be stored by the members of  <i>objects</i>. Partly because they are anonymous, it is not possible to access class objects directly.
+</p>
+<br><br>
+<p>A class variable on the other hand is a language feature for accessing class objects. Although it may seem syntactically that operations are being performed on a class <i>variable</i>, the operations are actually dispatched to a class <i>object</i>.
+</p>
+<br><br>
+<p>Let's consider the following code that we saw previously in the <a href="value_vs_reference.html">Value Types and Reference Types chapter</a>:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> variable1 = <span class="keyword">new</span> MyClass;
+    <span class="keyword">auto</span> variable2 = variable1;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The  keyword constructs an anonymous class object.  and  above merely provide access to that anonymous object:
+</p>
+<br><br>
+
+<br><br>
+<h6> Copying</h6>
+<br><br>
+<p>Copying affects only the variables, not the object.
+</p>
+<br><br>
+<p>Because classes are reference types, defining a new class variable as a copy of another makes two variables that provide access to the same object. The actual object is not copied.
+</p>
+<br><br>
+<p>Since no object gets copied, the postblit function  is not available for classes.
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> variable2 = variable1;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>In the code above,  is being initialized by . The two variables start providing access to the same object.
+</p>
+<br><br>
+<p>When the actual object needs to be copied, the class must have a member function for that purpose. To be compatible with arrays, this function may be named . This function must create and return a new class object. Let's see this on a class that has various types of members:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">class</span> Foo {
+    S      o;  <span class="comment">// assume S is a struct type
+</span>    <span class="keyword">char</span>[] s;
+    <span class="keyword">int</span>    i;
+
+<span class="comment">// ...
+</span>
+    <span class="keyword">this</span>(S o, <span class="keyword">const</span> <span class="keyword">char</span>[] s, <span class="keyword">int</span> i) {
+        <span class="keyword">this</span>.o = o;
+        <span class="keyword">this</span>.s = s.dup;
+        <span class="keyword">this</span>.i = i;
+    }
+
+    Foo dup() <span class="keyword">const</span> {
+        <span class="keyword">return</span> <span class="keyword">new</span> Foo(o, s, i);
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The  member function makes a new object by taking advantage of the constructor of  and returns the new object. Note that the constructor copies the  member explicitly by the  property of arrays. Being value types,  and  are copied automatically.
+</p>
+<br><br>
+<p>The following code makes use of  to create a new object:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> var1 = <span class="keyword">new</span> Foo(S(1.5), <span class="string_literal">"hello"</span>, 42);
+    <span class="keyword">auto</span> var2 = var1.dup();
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>As a result, the objects that are associated with  and  are different.
+</p>
+<br><br>
+<p>Similarly, an  copy of an object can be provided by a member function appropriately named . In this case, the constructor must be defined as  as well. We will cover the  keyword in <a href="functions_more.html">a later chapter</a>.
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">class</span> Foo {
+<span class="comment">// ...
+</span>    <span class="keyword">this</span>(S o, <span class="keyword">const</span> <span class="keyword">char</span>[] s, <span class="keyword">int</span> i)  {
+        <span class="comment">// ...
+</span>
+    }
+    <span class="keyword">immutable</span>(Foo) idup() <span class="keyword">const</span> {
+        <span class="keyword">return</span> <span class="keyword">new</span> <span class="keyword">immutable</span>(Foo)(o, s, i);
+    }
+}
+
+<span class="comment">// ...
+</span>
+    <span class="keyword">immutable</span>(Foo) imm = var1.idup();
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h6> Assignment</h6>
+<br><br>
+<p>Just like copying, assignment affects only the variables.
+</p>
+<br><br>
+<p>Assigning to a class variable disassociates that variable from its current object and associates it with a new object.
+</p>
+<br><br>
+<p>If there is no other class variable that still provides access to the object that has been disassociated from, then that object is going to be destroyed some time in the future by the garbage collector.
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> variable1 = <span class="keyword">new</span> MyClass();
+    <span class="keyword">auto</span> variable2 = <span class="keyword">new</span> MyClass();
+    variable1  variable2;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The assignment above makes  leave its object and start providing access to 's object. Since there is no other variable for 's original object, that object will be destroyed by the garbage collector.
+</p>
+<br><br>
+<p>The behavior of assignment cannot be changed for classes. In other words,  cannot be overloaded for them.
+</p>
+<br><br>
+<h6>Definition</h6>
+<br><br>
+<p>Classes are defined by the  keyword instead of the  keyword:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"> ChessPiece {
+    <span class="comment">// ...
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h6>Construction</h6>
+<br><br>
+<p>As with structs, the name of the constructor is . Unlike structs, class objects cannot be constructed by the  syntax.
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">class</span> ChessPiece {
+    <span class="keyword">dchar</span> shape;
+
+    <span class="keyword">this</span>(<span class="keyword">dchar</span> shape) {
+        <span class="keyword">this</span>.shape = shape;
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Unlike structs, there is no automatic object construction where the constructor parameters are assigned to members sequentially:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">class</span> ChessPiece {
+    <span class="keyword">dchar</span> shape;
+    size_t value;
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">auto</span> king = <span class="keyword">new</span> ChessPiece('♔', 100);  
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<p>For that syntax to work, a constructor must be defined explicitly by the programmer.
+</p>
+<br><br>
+<h6>Destruction</h6>
+<br><br>
+<p>As with structs, the name of the destructor is :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    ~<span class="keyword">this</span>() {
+        <span class="comment">// ...
+</span>    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p> However, different from structs, class destructors are not executed at the time when the lifetime of a class object ends. As we have seen above, the destructor is executed some time in the future during a garbage collection cycle. (By this distinction, class destructors should have more accurately been called <i>finalizers</i>).
+</p>
+<br><br>
+<p>As we will see later in <a href="memory.html">the Memory Management chapter</a>, class destructors must observe the following rules:
+</p>
+<br><br>
+<ul><br><br>
+<li>A class destructor must not access a member that is managed by the garbage collector. This is because garbage collectors are not required to guarantee that the object and its members are finalized in any specific order. All members may have already been finalized when the destructor is executing.</li>
+<br><br>
+<li>A class destructor must not allocate new memory that is managed by the garbage collector. This is because garbage collectors are not required to guarantee that they can allocate new objects during a garbage collection cycle.</li>
+<br><br>
+</ul>
+<br><br>
+<p>Violating these rules is undefined behavior. It is easy to see an example of such a problem simply by trying to allocate an object in a class destructor:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">class</span> C {
+    ~<span class="keyword">this</span>() {
+        <span class="keyword">auto</span> c = <span class="keyword">new</span> C();    <span class="comment">// ← WRONG: Allocates explicitly
+</span>                             <span class="comment">//          in a class destructor
+</span>    }
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">auto</span> c = <span class="keyword">new</span> C();
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The program is terminated with an exception:
+</p>
+<br><br>
+
+<br><br>
+<p>It is equally wrong to allocate new memory <i>indirectly</i> from the garbage collector in a destructor. For example, memory used for the elements of a dynamic array is allocated by the garbage collector as well. Using an array in a way that would require allocating a new memory block for the elements is undefined behavior as well:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    ~<span class="keyword">this</span>() {
+        <span class="keyword">auto</span> arr = [ 1 ];    <span class="comment">// ← WRONG: Allocates indirectly
+</span>                             <span class="comment">//          in a class destructor
+</span>    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<h6>Member access</h6>
+<br><br>
+<p>Same as structs, the members are accessed by the <i>dot</i> operator:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> king = <span class="keyword">new</span> ChessPiece('♔');
+    writeln(king);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Although the syntax makes it look as if a member of the <i>variable</i> is being accessed, it is actually the member of the <i>object</i>. Class variables do not have members, the class objects do. The  variable does not have a  member, the anonymous object does.
+</p>
+<br><br>
+<p><i><b>Note:</b> It is usually not proper to access members directly as in the code above. When that exact syntax is desired, properties should be preferred, which will be explained in <a href="property.html">a later chapter</a>.</i>
+</p>
+<br><br>
+<h6>Operator overloading</h6>
+<br><br>
+<p>Other than the fact that  cannot be overloaded for classes, operator overloading is the same as structs. For classes, the meaning of  is always <i>associating a class variable with a class object</i>.
+</p>
+<br><br>
+<h6>Member functions</h6>
+<br><br>
+<p>Although member functions are defined and used the same way as structs, there is an important difference: Class member functions can be and by-default are <i>overridable</i>. We will see this concept later in <a href="inheritance.html">the Inheritance chapter</a>.
+</p>
+<br><br>
+<p> As overridable member functions have a runtime performance cost, without going into more detail, I recommend that you define all  functions that do not need to be overridden with the  keyword. You can apply this guideline blindly unless there are compilation errors:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">class</span> C {
+     <span class="keyword">int</span> func() {    
+        <span class="comment">// ...
+</span>    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Another difference from structs is that some member functions are automatically inherited from the  class. We will see in <a href="inheritance.html">the next chapter</a> how the definition of  can be changed by the  keyword.
+</p>
+<br><br>
+<h6>  The  and  operators</h6>
+<br><br>
+<p>These operators operate on class variables.
+</p>
+<br><br>
+<p> specifies whether two class variables provide access to the same class object. It returns  if the object is the same and  otherwise.  is the opposite of .
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> myKing = <span class="keyword">new</span> ChessPiece('♔');
+    <span class="keyword">auto</span> yourKing = <span class="keyword">new</span> ChessPiece('♔');
+    <span class="keyword">assert</span>(myKing !<span class="keyword">is</span> yourKing);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Since the objects of  and  variables are different, the  operator returns . Even though the two objects are constructed by the same character , they are still two separate objects.
+</p>
+<br><br>
+<p>When the variables provide access to the same object,  returns :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> myKing2 = myKing;
+    <span class="keyword">assert</span>(myKing2 <span class="keyword">is</span> myKing);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Both of the variables above provide access to the same object.
+</p>
+<br><br>
+<h5>Summary</h5>
+<br><br>
+<ul><br><br>
+<li>Classes and structs share common features but have big differences.
+</li>
+<br><br>
+<li>Classes are reference types. The  keyword constructs an anonymous <i>class object</i> and returns a <i>class variable</i>.
+</li>
+<br><br>
+<li>Class variables that are not associated with any object are . Checking against  must be done by  or , not by  or .
+</li>
+<br><br>
+<li>The act of copying associates an additional variable with an object. In order to copy class objects, the type must have a special function likely named .
+</li>
+<br><br>
+<li>Assignment associates a variable with an object. This behavior cannot be changed.
+</li>
+<br><br>
+</ul>
+
+</section>
+      </article>
+    </div>
+  </body>
+</html>

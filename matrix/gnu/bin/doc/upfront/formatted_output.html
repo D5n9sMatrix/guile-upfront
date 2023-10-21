@@ -1,0 +1,1279 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Formatted Output</title>
+    <style type="text/css" media="screen">
+      html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p,
+      blockquote, pre, a, abbr, address, cite, code, del, dfn, em, figure,
+      img, ins, kbd, q, s, samp, small, strong, sub, sup, var, b, u, i, dl,
+      dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption,
+      tbody, tfoot, thead, tr, th, td {
+        background: transparent none repeat scroll 0 0;
+        border: 0 none;
+        font-size: 100%;
+        margin: 0;
+        outline: 0 none;
+        padding: 0;
+        vertical-align: baseline;
+      }
+
+      h1 { font-size: 200%; }
+      h2 { font-size: 160%; }
+      h3 { font-size: 120%; }
+      h4 { font-size: 100%; }
+      h5 { font-size: 80%; }
+      h6 { font-size: 80%; font-weight: normal; }
+
+      ul, ol {
+        margin: 1.4em 0;
+      }
+      ul ul, ol ol, ul ol, ol ul {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      ul, ol {
+        margin-left: 2.8em;
+      }
+
+      ol {
+        list-style: decimal;
+      }
+      ol ol {
+        list-style: lower-alpha;
+      }
+      ol ol ol {
+        list-style: lower-roman;
+      }
+      ol ol ol ol {
+        list-style: decimal;
+      }
+
+      blockquote {
+        margin: 0.1em;
+        margin-left: 1em;
+        border-left: 2px solid #cccccc;
+        padding-left: 0.7em;
+      }
+
+      .color_red { color: #dc322f; }
+      .color_blue { color: #268bd2; }
+      .color_green { color: #859901; }
+      .color_yellow { color: #b58901; }
+      .color_black { color: black; }
+      .color_white { color: white; }
+
+      .font_big {
+        font-size: 1.2em;
+      }
+
+      .ddoc_section_h {
+        font-weight: bold;
+        font-size: 13px;
+        line-height: 19.5px;
+        margin-top: 11px;
+        display: block;
+      }
+
+      body.dlang .dlang {
+        display: inline-block;
+      }
+
+      body.dlang .declaration .dlang {
+          display: block;
+      }
+
+      body.dlang .ddoc_header_anchor a.dlang {
+        display: block;
+        color: rgba(0, 136, 204, 1);
+        text-decoration: none;
+      }
+
+      body.dlang .ddoc_header_anchor .code {
+        color: rgba(0, 136, 204, 1);
+      }
+
+      #ddoc_main .module {
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          overflow-x: hidden;
+          padding: 15px;
+      }
+
+      #ddoc_main .section .section {
+        margin-top: 0;
+      }
+
+      #ddoc_main .ddoc_module_members_section {
+          padding: 1px 0 0;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members section.intro {
+          background: #fff none repeat scroll 0 0;
+          list-style-type: none;
+          width: 100%;
+      }
+
+      #ddoc_main .ddoc_header_anchor {
+          font-size: 1.4em;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_header_anchor > .code {
+          display: inline-block;
+
+      }
+
+      #ddoc_main .ddoc_decl {
+        background-color: transparent;
+        height: 100%;
+        left: 0;
+        top: 0;
+        padding: 0;
+        padding-left: 15px;
+      }
+
+      #ddoc_main .ddoc_decl .section, #ddoc_main .section.ddoc_sections {
+        background: white none repeat scroll 0 0;
+        margin: 0;
+        padding: 5px;
+        position: relative;
+        border-radius: 5px;
+      }
+
+      #ddoc_main .ddoc_decl .section h4:first-of-type, #ddoc_main .section.ddoc_sections h4:first-of-type {
+        font-size: 13px;
+        line-height: 1.5;
+        margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration {
+          margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration .code {
+          color: rgba(0, 0, 0, 1);
+          margin-bottom: 15px;
+          padding-bottom: 6px;
+      }
+
+      #ddoc_main .declaration div .para {
+          margin-bottom: 0;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr td:first-of-type {
+        padding: 7px;
+        text-align: right;
+        vertical-align: top;
+        word-break: normal;
+        white-space: nowrap;
+      }
+
+      #ddoc_main .ddoc_params .graybox {
+        border: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox td {
+        border-color: rgba(214, 214, 214, 1);
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:first-child > td {
+        border-top: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:last-child > td {
+        border-bottom: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:first-child {
+        border-left: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:last-child {
+        border-right: 0 none;
+        width: 100%;
+      }
+
+      #ddoc_main em.term, #ddoc_main em.term .code {
+        color: rgba(65, 65, 65, 1);
+        font-size: 12px;
+        font-style: italic;
+        line-height: 1.5;
+      }
+
+      #ddoc_main .see-also {
+        cursor: pointer;
+        font-family: Menlo,monospace;
+      }
+
+      #ddoc_main .ddoc_decl .section > div:last-of-type {
+        margin-bottom: 15px;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members {
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .code_sample {
+        background: inherit;
+      }
+
+      #ddoc_main .declaration .code-line {
+          display: block;
+          font: 1em Menlo,monospace;
+      }
+
+      #ddoc_main a[name] {
+        margin: -112px 0 0;
+        padding-top: 112px;
+      }
+
+      #ddoc_main .ddoc_decl td {
+        max-width: inherit;
+      }
+
+      #ddoc_main .declaration a {
+        color: inherit;
+      }
+
+      #ddoc_main .declaration a:hover {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: underline;
+      }
+
+      body.ddoc {
+        background-color: transparent;
+        color: rgba(0, 0, 0, 1);
+        font-family: Helvetica,Arial,sans-serif;
+        font-size: 62.5%;
+        margin: 0;
+        border: 0;
+        left: 0;
+        top: 0;
+        padding: 0;
+      }
+
+      .ddoc a[name] {
+        display: block;
+        height: 0;
+        margin: -85px 0 0;
+        padding-top: 85px;
+        width: 0;
+      }
+
+      .ddoc .module {
+          border-color: transparent;
+          background-color: rgba(255, 255, 255, 1);
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-image: none;
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          box-shadow: 0 0 1px rgba(0, 0, 0, 0.07);
+          display: block;
+          margin-left: 0;
+          min-height: calc(100% - 173px);
+          overflow: auto;
+          padding-bottom: 100px;
+      }
+
+      .ddoc .content_wrapper {
+          background-color: rgba(242, 242, 242, 1);
+          margin: 0 auto;
+          max-width: 980px;
+      }
+
+      .ddoc .section {
+        padding: 15px 25px 30px;
+      }
+
+      .ddoc .section .section {
+        margin: 30px 0 0;
+        padding: 0;
+      }
+
+      .ddoc .para {
+        color: rgba(65, 65, 65, 1);
+        font-size: 1.4em;
+        line-height: 145%;
+        margin-bottom: 15px;
+      }
+
+      .ddoc .ddoc_examples .para {
+        margin-bottom: 0;
+      }
+
+      .ddoc .module_name {
+          color: rgba(0, 0, 0, 1);
+          display: block;
+          font-family: Helvetica;
+          font-size: 2.8em;
+          font-weight: 100;
+          margin-bottom: 0;
+          padding: 15px 0;
+      }
+
+      .ddoc .module a {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: none;
+      }
+
+      .ddoc .code {
+        color: rgba(128, 128, 128, 1);
+        font-family: Menlo,monospace;
+        font-size: 0.85em;
+        word-wrap: break-word;
+      }
+
+      .ddoc .code i {
+        font-style: normal;
+      }
+
+      .ddoc .code .code {
+        font-size: 1em;
+      }
+
+      .ddoc .code_sample {
+        background-clip: padding-box;
+        margin: 1px 0;
+        text-align: left;
+      }
+
+      .ddoc .code_sample {
+        display: block;
+        font-size: 1.4em;
+        margin-left: 21px;
+      }
+
+      .ddoc ol .code_sample {
+        font-size: 1em;
+      }
+
+      .ddoc .code_lines {
+        counter-reset: li;
+        line-height: 1.6em;
+        list-style: outside none none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .ddoc .code_listing .code_sample div {
+        margin-left: 13px;
+        width: 93%;
+      }
+
+      .ddoc .code_listing .code_sample div .code_lines li {
+        list-style-type: none;
+        margin: 0;
+        padding-right: 10px;
+      }
+
+      .ddoc .code_sample div .code_lines li::before {
+        margin-left: -33px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+10)::before {
+        margin-left: -39px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+100)::before {
+        margin-left: -46px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample .code_lines .code {
+        color: #000;
+      }
+
+      .ddoc div.dlang {
+        margin: 10px 0 21px;
+        padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+          margin: 10px 0 21px;
+          padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+        border-left: 5px solid rgba(0, 155, 51, 0.2);
+      }
+
+      .ddoc .code_lines li::before {
+        color: rgba(128, 128, 128, 1);
+        content: counter(li, decimal);
+        counter-increment: li;
+        font-family: Menlo,monospace;
+        font-size: 0.9em;
+        margin-right: 16px;
+      }
+
+      .ddoc .code_lines li {
+        padding-left: 0;
+        white-space: pre-wrap;
+      }
+
+      .ddoc .code_lines li:only-of-type::before {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:only-of-type {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:nth-child(n+10) {
+        text-indent: -17px;
+      }
+
+      .ddoc .code_lines li:nth-child(n+10)::before {
+        margin-right: 12px;
+      }
+
+      .ddoc .graybox {
+        border: 1px solid rgba(233, 233, 233, 1);
+        border-collapse: collapse;
+        border-spacing: 0;
+        empty-cells: hide;
+        margin: 20px 0 36px;
+        text-align: left;
+      }
+
+      .ddoc .graybox p {
+        margin: 0;
+        min-width: 50px;
+      }
+
+      .ddoc th {
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: bottom;
+      }
+
+      .ddoc td {
+        border: 1px solid rgba(233, 233, 233, 1);
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: middle;
+      }
+
+      .punctuation {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .comment {
+        color: rgba(0, 131, 18, 1);
+      }
+
+      .operator {
+        color: #000;
+      }
+
+      .keyword {
+        color: rgba(170, 13, 145, 1);
+      }
+
+      .keyword_type {
+        color: rgba(170, 51, 145, 1);
+      }
+
+      .string_literal {
+        color: rgba(196, 26, 22, 1);
+      }
+
+      .ddoc_psuper_symbol {
+        color: rgba(92, 38, 153, 1);
+      }
+
+      .param {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .psymbol {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .ddoc_member_header .ddoc_header_anchor .code {
+        font-size: 1em;
+      }
+    </style>
+  </head>
+  <body id="ddoc_main" class="ddoc dlang">
+    <div class="content_wrapper">
+      <article class="module">
+        <h1 class="module_name">Formatted Output</h1>
+        <section id="module_content"><br><br>
+<br><br>
+
+<br><br>
+<p>This chapter is about features of the  module, not about the core features of the D language.
+</p>
+<br><br>
+<p>  Like all modules that have the prefix ,  is a module inside Phobos, the standard library of D. There is not enough space to fully explore Phobos in this book.
+</p>
+<br><br>
+<p>D's input and output format specifiers are similar to the ones in the C language.
+</p>
+<br><br>
+<p>Before going further, I would like to summarize the format specifiers and flags, for your reference:
+</p>
+<br><br>
+
+<br><br>
+<p>We have been using functions like  with multiple parameters as necessary to print the desired output. The parameters would be converted to their string representations and then
+ sent to the output.
+</p>
+<br><br>
+<p>Sometimes this is not sufficient. The output may have to be in a very specific format. Let's look at the following code that is used to print items of an invoice:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    items ~= 1.23;
+    items ~= 45.6;
+
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = 0; i != items.length; ++i) {
+        writeln(<span class="string_literal">"Item "</span>, i + 1, <span class="string_literal">": "</span>, items[i]);
+    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output:
+</p>
+<br><br>
+
+<br><br>
+<p>Despite the information being correct, we may be required to print it in a different format. For example, maybe the decimal marks (the dots, in this case) must line up and we must ensure that there always are two digits after the decimal mark, as in the following output:
+</p>
+<br><br>
+
+<br><br>
+<p>Formatted output is useful in such cases. The output functions that we have been using so far have counterparts that contain the letter  in their names:  and . The letter  is short for <i>formatted</i>. The first parameter of these functions is a <i>format string</i> that describes how the other parameters should be printed.
+</p>
+<br><br>
+<p>For example,  can produce the desired output above with the following format string:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">        writefln(<span class="string_literal">"Item %d:%9.02f"</span>, i + 1, items[i]);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The format string contains regular characters that are passed to the output as is, as well as special format specifiers that correspond to each parameter that is to be printed. Format specifiers start with the  character and end with a <i>format character</i>. The format string above has two format specifiers:  and .
+</p>
+<br><br>
+<p>Every specifier is associated with the respective parameter, usually in order of appearance. For example,  is associated with  and  is associated with . Every specifier specifies the format of the parameter that it corresponds to. (Format specifiers may have parameter numbers as well. This will be explained later in the chapter.)
+</p>
+<br><br>
+<p>All of the other characters of the format string that are not part of format specifiers are printed as is. Such <i>regular</i> characters of the format specifier above are highlighted in .
+</p>
+<br><br>
+<p>Format specifiers consist of several parts, most of which are optional. The part named <i>position</i> will be explained later below. The others are the following: (<i><b>Note:</b> The spaces between these parts are inserted here to help with readability; they are not part of the specifiers.</i>)
+</p>
+<br><br>
+
+<br><br>
+<p>The  character at the beginning and the format character at the end are required; the others are optional.
+</p>
+<br><br>
+<p>Because  has a special meaning in format strings, when we need to print a  as a regular character, we must type it as .
+</p>
+<br><br>
+<h5><i>format_character</i></h5>
+<br><br>
+<p> : An integer argument is printed in the binary system.
+</p>
+<br><br>
+<p> : An integer argument is printed in the octal system.
+</p>
+<br><br>
+<p>   and : An integer argument is printed in the hexadecimal system; with lowercase letters when using  and with uppercase letters when using .
+</p>
+<br><br>
+<p> : An integer argument is printed in the decimal system; a negative sign is also printed if it is a signed type and the value is less than zero.
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span> value = 12;
+
+    writefln(<span class="string_literal">"Binary     : %b"</span>, value);
+    writefln(<span class="string_literal">"Octal      : %o"</span>, value);
+    writefln(<span class="string_literal">"Hexadecimal: %x"</span>, value);
+    writefln(<span class="string_literal">"Decimal    : %d"</span>, value);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<p> : A floating point argument is printed according to the following rules.
+</p>
+<br><br>
+<ul><li>a single digit before the decimal mark</li>
+<li>a decimal mark if <i>precision</i> is nonzero</li>
+<li>the required digits after the decimal mark, the number of which is determined by <i>precision</i> (default precision is 6)</li>
+<li>the  character (meaning "10 to the power of")</li>
+<li>the  or  character, depending on whether the exponent is less than or greater than zero</li>
+<li>the exponent, consisting of at least two digits</li>
+</ul>
+<br><br>
+<p> : Same as , with the exception of outputting the character  instead of .
+</p>
+<br><br>
+<p>   and : A floating point argument is printed in the decimal system; there is at least one digit before the decimal mark and the default precision is 6 digits after the decimal mark.
+</p>
+<br><br>
+<p> : Same as  if the exponent is between -5 and <i>precision</i>; otherwise same as . <i>precision</i> does not specify the number of digits after the decimal mark, but the significant digits of the entire value. If there are no significant digits after the decimal mark, then the decimal mark is not printed. The rightmost zeros after the decimal mark are not printed.
+</p>
+<br><br>
+<p> : Same as , with the exception of outputting the character .
+</p>
+<br><br>
+<p> : A floating point argument is printed in the hexadecimal floating point notation:
+</p>
+<br><br>
+<ul><li>the characters </li>
+<li>a single hexadecimal digit</li>
+<li>a decimal mark if <i>precision</i> is nonzero</li>
+<li>the required digits after the decimal mark, the number of which is determined by <i>precision</i>; if no <i>precision</i> is specified, then as many digits as necessary</li>
+<li>the  character (meaning "2 to the power of")</li>
+<li>the  or  character, depending on whether the exponent is less than or greater than zero</li>
+<li>the exponent, consisting of at least one digit (the exponent of the value 0 is 0)</li>
+</ul>
+<br><br>
+<p> : Same as , with the exception of outputting the characters  and .
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">double</span> value = 123.456789;
+
+    writefln(<span class="string_literal">"with e: %e"</span>, value);
+    writefln(<span class="string_literal">"with f: %f"</span>, value);
+    writefln(<span class="string_literal">"with g: %g"</span>, value);
+    writefln(<span class="string_literal">"with a: %a"</span>, value);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<p> : The value is printed in the same way as in regular output, according to the type of the argument:
+</p>
+<br><br>
+<ul><br><br>
+<li> values as  or 
+</li>
+<li>integer values same as 
+</li>
+<li>floating point values same as 
+</li>
+<li>strings in UTF-8 encoding; <i>precision</i> determines the maximum number of bytes to use (remember that in UTF-8 encoding, the number of bytes is not the same as the number of characters; for example, the string "ağ" has 2 characters, consisting a total of 3 bytes)
+</li>
+<li>struct and class objects as the return value of the  member functions of their types; <i>precision</i> determines the maximum number of bytes to use
+</li>
+<li>arrays as their element values, side by side
+</li>
+<br><br>
+</ul>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">bool</span> b = <span class="keyword">true</span>;
+    <span class="keyword">int</span> i = 365;
+    <span class="keyword">double</span> d = 9.87;
+    string s = <span class="string_literal">"formatted"</span>;
+    <span class="keyword">auto</span> o = File(<span class="string_literal">"test_file"</span>, <span class="string_literal">"r"</span>);
+    <span class="keyword">int</span>[] a = [ 2, 4, 6, 8 ];
+
+    writefln(<span class="string_literal">"bool  : %s"</span>, b);
+    writefln(<span class="string_literal">"int   : %s"</span>, i);
+    writefln(<span class="string_literal">"double: %s"</span>, d);
+    writefln(<span class="string_literal">"string: %s"</span>, s);
+    writefln(<span class="string_literal">"object: %s"</span>, o);
+    writefln(<span class="string_literal">"array : %s"</span>, a);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<h5> <i>width</i></h5>
+<br><br>
+<p> This part determines the width of the field that the argument is printed in. If the width is specified as the character , then the actual width value is read from the next argument (that argument must be an ). If width is a negative value, then the  flag is assumed.
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span> value = 100;
+
+    writefln(<span class="string_literal">"In a field of 10 characters:%10s"</span>, value);
+    writefln(<span class="string_literal">"In a field of 5 characters :%5s"</span>, value);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<h5>  <i>separator</i></h5>
+<br><br>
+<p> The comma character specifies to separate digits of a number in groups. The default number of digits in a group is 3 but it can be specified after the comma:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    writefln(<span class="string_literal">"%,f"</span>, 1234.5678);        <span class="comment">// Groups of 3
+</span>    writefln(<span class="string_literal">"%,s"</span>, 1000000);          <span class="comment">// Groups of 3
+</span>    writefln(<span class="string_literal">"%,2s"</span>, 1000000);         <span class="comment">// Groups of 2
+</span></code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<p>If the number of digits is specified as the character , then the actual number of digits is read from the next argument (that argument must be an ).
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    writefln(<span class="string_literal">"%,*s"</span>, , 1000000);      <span class="comment">// Groups of 1
+</span></code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<p>Similarly, it is possible to specify the separator character by using a question mark after the comma and providing the character as an additional argument before the number:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    writefln(<span class="string_literal">"%,?s"</span>, , 1000000);    <span class="comment">// The separator is '.'
+</span></code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<h5> <i>precision</i></h5>
+<br><br>
+<p>Precision is specified after a dot in the format specifier. For floating point types, it determines the precision of the printed representation of the values. If the precision is specified as the character , then the actual precision is read from the next argument (that argument must be an ). Negative precision values are ignored.
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">double</span> value = 1234.56789;
+
+    writefln(<span class="string_literal">"%.8g"</span>, value);
+    writefln(<span class="string_literal">"%.3g"</span>, value);
+    writefln(<span class="string_literal">"%.8f"</span>, value);
+    writefln(<span class="string_literal">"%.3f"</span>, value);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> number = 0.123456789;
+    writefln(<span class="string_literal">"Number: %.*g"</span>, 4, number);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<h5> <i>flags</i></h5>
+<br><br>
+<p>More than one flag can be specified.
+</p>
+<br><br>
+<p>: the value is printed left-aligned in its field; this flag cancels the  flag
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span> value = 123;
+
+    writefln(<span class="string_literal">"Normally right-aligned:|%10d|"</span>, value);
+    writefln(<span class="string_literal">"Left-aligned          :|%-10d|"</span>, value);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<p>: if the value is positive, it is prepended with the  character; this flag cancels the <i>space</i> flag
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    writefln(<span class="string_literal">"No effect for negative values    : %+d"</span>, -50);
+    writefln(<span class="string_literal">"Positive value with the + flag   : %+d"</span>, 50);
+    writefln(<span class="string_literal">"Positive value without the + flag: %d"</span>, 50);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<p>: prints the value in an <i>alternate</i> form depending on the <i>format_character</i>
+</p>
+<br><br>
+<ul><li>: the first character of the octal value is always printed as 0</li>
+<br><br>
+<li> and : if the value is not zero, it is prepended with  or </li>
+<br><br>
+<li>floating points: a decimal mark is printed even if there are no significant digits after the decimal mark</li>
+<br><br>
+<li> and : even the insignificant zero digits after the decimal mark are printed</li>
+</ul>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    writefln(<span class="string_literal">"Octal starts with 0                        : %#o"</span>, 1000);
+    writefln(<span class="string_literal">"Hexadecimal starts with 0x                 : %#x"</span>, 1000);
+    writefln(<span class="string_literal">"Contains decimal mark even when unnecessary: %#g"</span>, 1f);
+    writefln(<span class="string_literal">"Rightmost zeros are printed                : %#g"</span>, 1.2);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<p>: the field is padded with zeros (unless the value is  or ); if <i>precision</i> is also specified, this flag is ignored
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    writefln(<span class="string_literal">"In a field of 8 characters: %08d"</span>, 42);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<p><i>space</i> character: if the value is positive, a space character is prepended to align the negative and positive values</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    writefln(<span class="string_literal">"No effect for negative values: % d"</span>, -34);
+    writefln(<span class="string_literal">"Positive value with space    : % d"</span>, 56);
+    writefln(<span class="string_literal">"Positive value without space : %d"</span>, 56);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<br><br>
+<h5>   Positional parameters</h5>
+<br><br>
+<p>We have seen above that the arguments are associated one by one with the specifiers in the format string. It is also possible to use position numbers within format specifiers. This enables associating the specifiers with specific arguments. Arguments are numbered in increasing fashion, starting with 1. The argument numbers are specified immediately after the  character, followed by a :
+</p>
+<br><br>
+
+<br><br>
+<p>An advantage of positional parameters is being able to use the same argument in more than one place in the same format string:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    writefln(<span class="string_literal">"%1$d %1$x %1$o %1$b"</span>, 42);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The format string above uses the argument numbered 1 within four specifiers to print it in decimal, hexadecimal, octal, and binary formats:
+</p>
+<br><br>
+
+<br><br>
+<p>Another application of positional parameters is supporting multiple natural languages. When referred by position numbers, arguments can be moved anywhere within the specific format string for a given human language. For example, the number of students of a given classroom can be printed as in the following:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    writefln(<span class="string_literal">"There are %s students in room %s."</span>, count, room);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<p>Let's assume that the program must also support Turkish. In this case the format string needs to be selected according to the active language. The following method takes advantage of the ternary operator:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> format = (language == <span class="string_literal">"en"</span>
+                   ? <span class="string_literal">"There are %s students in room %s."</span>
+                   : <span class="string_literal">"%s sınıfında %s öğrenci var."</span>);
+
+    writefln(format, count, room);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Unfortunately, when the arguments are associated one by one, the classroom and student count information appear in reverse order in the Turkish message; the room information is where the count should be and the count is where the room should be:
+</p>
+<br><br>
+
+<br><br>
+<p>To avoid this, the arguments can be specified by numbers, such as  and , to associate each specifier with the exact argument:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> format = (language == <span class="string_literal">"en"</span>
+                   ? <span class="string_literal">"There are %1$s students in room %2$s."</span>
+                   : <span class="string_literal">"%2$s sınıfında %1$s öğrenci var."</span>);
+
+    writefln(format, count, room);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Now the arguments appear in the proper order, regardless of the language selected:
+</p>
+<br><br>
+
+<br><br>
+
+<br><br>
+<h5>  Formatted element output</h5>
+<br><br>
+<p>Format specifiers between  and  are applied to every element of a container (e.g. an array or a range):
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> numbers = [ 1, 2, 3, 4 ];
+    writefln(<span class="string_literal">"%(%s%)"</span>, numbers);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The format string above consists of three parts:
+</p>
+<br><br>
+<ul><li>: Start of element format</li>
+<li>: Format for each element</li>
+<li>: End of element format</li>
+</ul>
+<br><br>
+<p>Each being printed with the  format, the elements appear one after the other:
+</p>
+<br><br>
+
+<br><br>
+<p>The regular characters before and after the element format are repeated for each element. For example, the  specifier would print each element between curly brackets separated by commas:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    writefln(<span class="string_literal">"%({%s},%)"</span>, numbers);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>However, regular characters to the right of the format specifier are considered to be element delimiters and are printed only between elements, not after the last one:
+</p>
+<br><br>
+
+<br><br>
+<p>  is used for specifying the characters that should be printed even for the last element. Characters that are to the right of  are considered to be the delimiters and are not printed for the last element. Conversely, characters to the left of  are printed even for the last element.
+</p>
+<br><br>
+<p>For example, the following format specifier would print the closing curly bracket after the last element but not the comma:
+</p>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    writefln(<span class="string_literal">"%({%s}%|,%)"</span>, numbers);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<p>Unlike strings that are printed individually, strings that are printed as elements appear within double quotes:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> vegetables = [ <span class="string_literal">"spinach"</span>, <span class="string_literal">"asparagus"</span>, <span class="string_literal">"artichoke"</span> ];
+    writefln(<span class="string_literal">"%(%s, %)"</span>, vegetables);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<p> When the double quotes are not desired, the element format must be started with  instead of :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    writefln(<span class="string_literal">"%-(%s, %)"</span>, vegetables);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<p>The same applies to characters as well.  prints them within single quotes:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    writefln(<span class="string_literal">"%(%s%)"</span>, <span class="string_literal">"hello"</span>);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<p> prints them without quotes:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    writefln(<span class="string_literal">"%-(%s%)"</span>, <span class="string_literal">"hello"</span>);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<p>There must be two format specifiers for associative arrays: one for the keys and one for the values. For example, the following  specifier would print first the key and then the value in parentheses:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> spelled = [ 1 : <span class="string_literal">"one"</span>, 10 : <span class="string_literal">"ten"</span>, 100 : <span class="string_literal">"hundred"</span> ];
+    writefln(<span class="string_literal">"%-(%s (%s)%|, %)"</span>, spelled);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Also note that, being specified to the right of , the comma is not printed for the last element:
+</p>
+<br><br>
+
+<br><br>
+<h5> </h5>
+<br><br>
+<p>Formatted output is available through the  function of the  module as well.  works the same as  but it <i>returns</i> the result as a  instead of printing it to the output:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+<span class="keyword">import</span> std.string;
+
+<span class="keyword">void</span> main() {
+    write(<span class="string_literal">"What is your name? "</span>);
+    <span class="keyword">auto</span> name = strip(readln());
+
+    <span class="keyword">auto</span> result = (<span class="string_literal">"Hello %s!"</span>, name);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The program can make use of that result in later expressions.
+</p>
+<br><br>
+<h6> Checked format string</h6>
+<br><br>
+<p>There is an alternative syntax for functions like  in the standard library that take a format string (, , , , , etc.). It is possible to provide the format string as a <i>template argument</i> to these functions so that the validity of the format string and the arguments are checked at compile time:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> main() {
+    writefln!<span class="string_literal">"%s %s"</span>(1);        (extra %s)
+    writefln!<span class="string_literal">"%s"</span>(1, 2);        (extra 2)
+    writefln!<span class="string_literal">"%s %d"</span>(1, 2.5);   (mismatched %d and 2.5)
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The  character above is the template instantiation operator, which we will see in <a href="templates.html">a later chapter</a>.
+</p>
+<br><br>
+<p>(<i><b>Note:</b> Although this snytax is safer because it catches potential programmer errors at compile time, it may also make compilation times longer.</i>)
+</p>
+<br><br>
+
+
+</section>
+      </article>
+    </div>
+  </body>
+</html>

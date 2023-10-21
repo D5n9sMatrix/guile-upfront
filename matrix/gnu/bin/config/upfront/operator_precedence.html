@@ -1,0 +1,928 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Operator Precedence</title>
+    <style type="text/css" media="screen">
+      html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p,
+      blockquote, pre, a, abbr, address, cite, code, del, dfn, em, figure,
+      img, ins, kbd, q, s, samp, small, strong, sub, sup, var, b, u, i, dl,
+      dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption,
+      tbody, tfoot, thead, tr, th, td {
+        background: transparent none repeat scroll 0 0;
+        border: 0 none;
+        font-size: 100%;
+        margin: 0;
+        outline: 0 none;
+        padding: 0;
+        vertical-align: baseline;
+      }
+
+      h1 { font-size: 200%; }
+      h2 { font-size: 160%; }
+      h3 { font-size: 120%; }
+      h4 { font-size: 100%; }
+      h5 { font-size: 80%; }
+      h6 { font-size: 80%; font-weight: normal; }
+
+      ul, ol {
+        margin: 1.4em 0;
+      }
+      ul ul, ol ol, ul ol, ol ul {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      ul, ol {
+        margin-left: 2.8em;
+      }
+
+      ol {
+        list-style: decimal;
+      }
+      ol ol {
+        list-style: lower-alpha;
+      }
+      ol ol ol {
+        list-style: lower-roman;
+      }
+      ol ol ol ol {
+        list-style: decimal;
+      }
+
+      blockquote {
+        margin: 0.1em;
+        margin-left: 1em;
+        border-left: 2px solid #cccccc;
+        padding-left: 0.7em;
+      }
+
+      .color_red { color: #dc322f; }
+      .color_blue { color: #268bd2; }
+      .color_green { color: #859901; }
+      .color_yellow { color: #b58901; }
+      .color_black { color: black; }
+      .color_white { color: white; }
+
+      .font_big {
+        font-size: 1.2em;
+      }
+
+      .ddoc_section_h {
+        font-weight: bold;
+        font-size: 13px;
+        line-height: 19.5px;
+        margin-top: 11px;
+        display: block;
+      }
+
+      body.dlang .dlang {
+        display: inline-block;
+      }
+
+      body.dlang .declaration .dlang {
+          display: block;
+      }
+
+      body.dlang .ddoc_header_anchor a.dlang {
+        display: block;
+        color: rgba(0, 136, 204, 1);
+        text-decoration: none;
+      }
+
+      body.dlang .ddoc_header_anchor .code {
+        color: rgba(0, 136, 204, 1);
+      }
+
+      #ddoc_main .module {
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          overflow-x: hidden;
+          padding: 15px;
+      }
+
+      #ddoc_main .section .section {
+        margin-top: 0;
+      }
+
+      #ddoc_main .ddoc_module_members_section {
+          padding: 1px 0 0;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members section.intro {
+          background: #fff none repeat scroll 0 0;
+          list-style-type: none;
+          width: 100%;
+      }
+
+      #ddoc_main .ddoc_header_anchor {
+          font-size: 1.4em;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_header_anchor > .code {
+          display: inline-block;
+
+      }
+
+      #ddoc_main .ddoc_decl {
+        background-color: transparent;
+        height: 100%;
+        left: 0;
+        top: 0;
+        padding: 0;
+        padding-left: 15px;
+      }
+
+      #ddoc_main .ddoc_decl .section, #ddoc_main .section.ddoc_sections {
+        background: white none repeat scroll 0 0;
+        margin: 0;
+        padding: 5px;
+        position: relative;
+        border-radius: 5px;
+      }
+
+      #ddoc_main .ddoc_decl .section h4:first-of-type, #ddoc_main .section.ddoc_sections h4:first-of-type {
+        font-size: 13px;
+        line-height: 1.5;
+        margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration {
+          margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration .code {
+          color: rgba(0, 0, 0, 1);
+          margin-bottom: 15px;
+          padding-bottom: 6px;
+      }
+
+      #ddoc_main .declaration div .para {
+          margin-bottom: 0;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr td:first-of-type {
+        padding: 7px;
+        text-align: right;
+        vertical-align: top;
+        word-break: normal;
+        white-space: nowrap;
+      }
+
+      #ddoc_main .ddoc_params .graybox {
+        border: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox td {
+        border-color: rgba(214, 214, 214, 1);
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:first-child > td {
+        border-top: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:last-child > td {
+        border-bottom: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:first-child {
+        border-left: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:last-child {
+        border-right: 0 none;
+        width: 100%;
+      }
+
+      #ddoc_main em.term, #ddoc_main em.term .code {
+        color: rgba(65, 65, 65, 1);
+        font-size: 12px;
+        font-style: italic;
+        line-height: 1.5;
+      }
+
+      #ddoc_main .see-also {
+        cursor: pointer;
+        font-family: Menlo,monospace;
+      }
+
+      #ddoc_main .ddoc_decl .section > div:last-of-type {
+        margin-bottom: 15px;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members {
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .code_sample {
+        background: inherit;
+      }
+
+      #ddoc_main .declaration .code-line {
+          display: block;
+          font: 1em Menlo,monospace;
+      }
+
+      #ddoc_main a[name] {
+        margin: -112px 0 0;
+        padding-top: 112px;
+      }
+
+      #ddoc_main .ddoc_decl td {
+        max-width: inherit;
+      }
+
+      #ddoc_main .declaration a {
+        color: inherit;
+      }
+
+      #ddoc_main .declaration a:hover {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: underline;
+      }
+
+      body.ddoc {
+        background-color: transparent;
+        color: rgba(0, 0, 0, 1);
+        font-family: Helvetica,Arial,sans-serif;
+        font-size: 62.5%;
+        margin: 0;
+        border: 0;
+        left: 0;
+        top: 0;
+        padding: 0;
+      }
+
+      .ddoc a[name] {
+        display: block;
+        height: 0;
+        margin: -85px 0 0;
+        padding-top: 85px;
+        width: 0;
+      }
+
+      .ddoc .module {
+          border-color: transparent;
+          background-color: rgba(255, 255, 255, 1);
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-image: none;
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          box-shadow: 0 0 1px rgba(0, 0, 0, 0.07);
+          display: block;
+          margin-left: 0;
+          min-height: calc(100% - 173px);
+          overflow: auto;
+          padding-bottom: 100px;
+      }
+
+      .ddoc .content_wrapper {
+          background-color: rgba(242, 242, 242, 1);
+          margin: 0 auto;
+          max-width: 980px;
+      }
+
+      .ddoc .section {
+        padding: 15px 25px 30px;
+      }
+
+      .ddoc .section .section {
+        margin: 30px 0 0;
+        padding: 0;
+      }
+
+      .ddoc .para {
+        color: rgba(65, 65, 65, 1);
+        font-size: 1.4em;
+        line-height: 145%;
+        margin-bottom: 15px;
+      }
+
+      .ddoc .ddoc_examples .para {
+        margin-bottom: 0;
+      }
+
+      .ddoc .module_name {
+          color: rgba(0, 0, 0, 1);
+          display: block;
+          font-family: Helvetica;
+          font-size: 2.8em;
+          font-weight: 100;
+          margin-bottom: 0;
+          padding: 15px 0;
+      }
+
+      .ddoc .module a {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: none;
+      }
+
+      .ddoc .code {
+        color: rgba(128, 128, 128, 1);
+        font-family: Menlo,monospace;
+        font-size: 0.85em;
+        word-wrap: break-word;
+      }
+
+      .ddoc .code i {
+        font-style: normal;
+      }
+
+      .ddoc .code .code {
+        font-size: 1em;
+      }
+
+      .ddoc .code_sample {
+        background-clip: padding-box;
+        margin: 1px 0;
+        text-align: left;
+      }
+
+      .ddoc .code_sample {
+        display: block;
+        font-size: 1.4em;
+        margin-left: 21px;
+      }
+
+      .ddoc ol .code_sample {
+        font-size: 1em;
+      }
+
+      .ddoc .code_lines {
+        counter-reset: li;
+        line-height: 1.6em;
+        list-style: outside none none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .ddoc .code_listing .code_sample div {
+        margin-left: 13px;
+        width: 93%;
+      }
+
+      .ddoc .code_listing .code_sample div .code_lines li {
+        list-style-type: none;
+        margin: 0;
+        padding-right: 10px;
+      }
+
+      .ddoc .code_sample div .code_lines li::before {
+        margin-left: -33px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+10)::before {
+        margin-left: -39px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+100)::before {
+        margin-left: -46px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample .code_lines .code {
+        color: #000;
+      }
+
+      .ddoc div.dlang {
+        margin: 10px 0 21px;
+        padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+          margin: 10px 0 21px;
+          padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+        border-left: 5px solid rgba(0, 155, 51, 0.2);
+      }
+
+      .ddoc .code_lines li::before {
+        color: rgba(128, 128, 128, 1);
+        content: counter(li, decimal);
+        counter-increment: li;
+        font-family: Menlo,monospace;
+        font-size: 0.9em;
+        margin-right: 16px;
+      }
+
+      .ddoc .code_lines li {
+        padding-left: 0;
+        white-space: pre-wrap;
+      }
+
+      .ddoc .code_lines li:only-of-type::before {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:only-of-type {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:nth-child(n+10) {
+        text-indent: -17px;
+      }
+
+      .ddoc .code_lines li:nth-child(n+10)::before {
+        margin-right: 12px;
+      }
+
+      .ddoc .graybox {
+        border: 1px solid rgba(233, 233, 233, 1);
+        border-collapse: collapse;
+        border-spacing: 0;
+        empty-cells: hide;
+        margin: 20px 0 36px;
+        text-align: left;
+      }
+
+      .ddoc .graybox p {
+        margin: 0;
+        min-width: 50px;
+      }
+
+      .ddoc th {
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: bottom;
+      }
+
+      .ddoc td {
+        border: 1px solid rgba(233, 233, 233, 1);
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: middle;
+      }
+
+      .punctuation {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .comment {
+        color: rgba(0, 131, 18, 1);
+      }
+
+      .operator {
+        color: #000;
+      }
+
+      .keyword {
+        color: rgba(170, 13, 145, 1);
+      }
+
+      .keyword_type {
+        color: rgba(170, 51, 145, 1);
+      }
+
+      .string_literal {
+        color: rgba(196, 26, 22, 1);
+      }
+
+      .ddoc_psuper_symbol {
+        color: rgba(92, 38, 153, 1);
+      }
+
+      .param {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .psymbol {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .ddoc_member_header .ddoc_header_anchor .code {
+        font-size: 1em;
+      }
+    </style>
+  </head>
+  <body id="ddoc_main" class="ddoc dlang">
+    <div class="content_wrapper">
+      <article class="module">
+        <h1 class="module_name">Operator Precedence</h1>
+        <section id="module_content"><br><br>
+<br><br>
+
+<br><br>
+<p>As we have been using throughout the book, expressions can be <i>chained</i> with more than one operator. For example, the following line contains four expressions chained with three operators:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    a = b + c * d    <span class="comment">// three operators: =, +, and *
+</span></code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Operator precedence rules specify the order that the chained operators are executed in and the expressions that they use. Operators are executed according to their precedences: first the higher ones, then the lower ones.
+</p>
+<br><br>
+<p>The following is D's operator precedence table. Operators are listed from the highest precedence to the lowest. The ones that are in the same table row have the same precedence. (Line wrapping inside table cells is insignificant; for example,  and  have the same precedence.) Unless specified otherwise, operators are <i>left-associative</i>.
+</p>
+<br><br>
+<p>Some of the terms used in the table are explained later below.
+</p>
+<br><br>
+<table class="full" border="1" cellpadding="4" cellspacing="0">
+<br><br>
+<col width="20%"/>
+<col width="28%"/>
+<col width="52%"/>
+<br><br>
+<th scope="col">Operators</th>
+<th scope="col">Description</th>
+<th scope="col">Notes</th>
+<br><br>
+<tr>
+<br><br>
+<td>            </td>
+<td class="serif"> Template instantiation</td>
+<td class="serif">Cannot be chained
+</td></tr>
+<tr>
+<br><br>
+<td>           </td>
+<td class="serif">Lambda definition</td>
+<td class="serif"> Not a real operator; occurs twice in the table; this row is for binding power to the <i>left</i>
+</td></tr>
+<tr>
+<br><br>
+<td>  </td>
+<td class="serif"> Postfix operators        </td>
+<td class="serif"> and  must be balanced with  and , respectively
+</td></tr>
+<tr>
+<br><br>
+<td>           </td>
+<td class="serif"> Power operator           </td>
+<td class="serif"> Right-associative
+</td></tr>
+<tr>
+<br><br>
+<td>  </td>
+<td class="serif"> Unary operators          </td>
+<td class="serif">
+</td></tr>
+<tr>
+<br><br>
+<td>        </td>
+<td class="serif"> Binary operators</td>
+<td class="serif">
+</td></tr>
+<tr>
+<br><br>
+<td>        </td>
+<td class="serif">Binary operators</td>
+<td class="serif"></td>
+<br><br>
+</tr>
+<tr>
+<br><br>
+<td>    </td>
+<td class="serif"> Bit shift operators      </td>
+<td class="serif">
+</td></tr>
+<tr>
+<br><br>
+<td> </td>
+<td class="serif"> Comparison operators     </td>
+<td class="serif"> Unordered with respect to bitwise operators, cannot be chained
+</td></tr>
+<tr>
+<br><br>
+<td>            </td>
+<td class="serif">Bitwise <i>and</i></td>
+<td class="serif"> Unordered with respect to comparison operators
+</td></tr>
+<tr>
+<br><br>
+<td>            </td>
+<td class="serif"> Bitwise <i>xor</i></td>
+<td class="serif"> Unordered with respect to comparison operators
+</td></tr>
+<tr>
+<br><br>
+<td>            </td>
+<td class="serif"> Bitwise <i>or</i></td>
+<td class="serif"> Unordered with respect to comparison operators
+</td></tr>
+<tr>
+<br><br>
+<td>           </td>
+<td class="serif">Logical <i>and</i></td>
+<td class="serif">Short-circuit</td>
+<br><br>
+</tr>
+<tr>
+<br><br>
+<td></td>
+<td class="serif">Logical <i>or</i></td>
+<td class="serif">Short-circuit</td>
+<br><br>
+</tr>
+<tr>
+<br><br>
+<td></td>
+<td class="serif">Ternary operator</td>
+<td class="serif">Right-associative
+</td></tr>
+<tr>
+<br><br>
+<td>
+ </td>
+<td class="serif"> Assignment operators     </td>
+<td class="serif"> Right-associative
+</td></tr>
+<tr>
+<br><br>
+<td>           </td>
+<td class="serif">Lambda definition</td>
+<td class="serif"> Not a real operator; occurs twice in the table; this row is for binding power to the <i>right</i></td>
+</tr>
+<tr>
+<br><br>
+<td>            </td>
+<td class="serif">Comma operator</td>
+<td class="serif">Not to be confused with using comma as a separator (e.g. in parameter lists)</td>
+<br><br>
+</tr>
+<tr>
+<br><br>
+<td>           </td>
+<td class="serif">Number range</td>
+<td class="serif"> Not a real operator; hardwired into syntax at specific points
+</td></tr>
+</table>
+<br><br>
+<br><br>
+<h6>  Chaining</h6>
+<br><br>
+<p>Let's consider the line from the beginning of the chapter:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    a = b + c * d
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Because binary  has higher precedence than binary , and binary  has higher precedence than , that expression is executed as the following parenthesized equivalent:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    a = (b + (c * d))    <span class="comment">// first *, then +, then =
+</span></code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>As another example, because postfix  has higher precedence than unary , the following expression would first access member  of object  and then dereference it:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    *o.ptr      
+    *(o.ptr)    
+    (*o).ptr    
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Some operators cannot be chained:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">if</span> (a &gt; b == c) {      
+        <span class="comment">// ...
+</span>    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<p>The programmer must specify the desired execution order with parentheses:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">if</span> ((a &gt; b) == c) {    
+        <span class="comment">// ...
+</span>    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h6>    Associativity</h6>
+<br><br>
+<p>If two operators have the same precedence, then their associativity determines which operator is executed first: the one on the left or the one on the right.
+</p>
+<br><br>
+<p>Most operators are <i>left-associative</i>; the one on the left-hand side is executed first:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    10 - 7 - 3;
+    (10 - 7) - 3;    
+    10 - (7 - 3);    
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Some operators are right-associative; the one on the right-hand side is executed first:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    4 ^^ 3 ^^ 2;
+    4 ^^ (3 ^^ 2);    
+    (4 ^^ 3) ^^ 2;    
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h6>Unordered operator groups</h6>
+<br><br>
+<p>Precedence between bitwise operators and logical operators are not specified by the language:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">if</span> (a &amp; b == c) {      
+        <span class="comment">// ...
+</span>    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<p>The programmer must specify the desired execution order with parentheses:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">if</span> ((a &amp; b) == c) {    
+        <span class="comment">// ...
+</span>    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h6> The precedence of </h6>
+<br><br>
+<p>Although  is not an operator, it takes part in the table twice to specify how it interacts with operators on its left-hand side and right-hand side.
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    l = a =&gt; a = 1;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Although both sides of  above have an  operator,  has precedence over  on the left hand side so it <i>binds stronger</i> to  as if the programmer wrote the following parentheses:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    l = (a =&gt; a = 1);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>On the right-hand side,  has lower precedence than , so the  on the right-hand side binds stronger to  as if the following extra set of parentheses are specified:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    l = (a =&gt; a = 1);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>As a result, the lambda expression does not become just  but includes the rest of the expression as well: , which means <i>given a, produce a = 1</i>. That lambda is then assigned to the variable .
+</p>
+<br><br>
+<p><i><b>Note:</b> This is just an example; otherwise,  is not a meaningful body for a lambda because the mutation to its parameter  is seemingly lost and the result of calling the lambda is always 1. (The reason I say "seemingly" is that the assignment operator may have been overloaded for 's type and may have side-effects.)</i>
+</p>
+<br><br>
+<h6>  Comma operator</h6>
+<br><br>
+<p>Comma operator is a binary operator. It executes first the left-hand side expression then the right-hand side expression. The values of both expressions are ignored.
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span> a = 1;
+    foo() bar() ++a;
+
+    <span class="keyword">assert</span>(a == 2);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The comma operator is most commonly used with  loops when the loop iteration involves mutating more than one variable:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">for</span> ({ <span class="keyword">int</span> i; <span class="keyword">int</span> j; } i &lt; 10; ++i ++j) {
+        <span class="comment">// ...
+</span>    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+</section>
+      </article>
+    </div>
+  </body>
+</html>

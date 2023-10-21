@@ -1,0 +1,2796 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>ranges</title>
+    <style type="text/css" media="screen">
+      html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p,
+      blockquote, pre, a, abbr, address, cite, code, del, dfn, em, figure,
+      img, ins, kbd, q, s, samp, small, strong, sub, sup, var, b, u, i, dl,
+      dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption,
+      tbody, tfoot, thead, tr, th, td {
+        background: transparent none repeat scroll 0 0;
+        border: 0 none;
+        font-size: 100%;
+        margin: 0;
+        outline: 0 none;
+        padding: 0;
+        vertical-align: baseline;
+      }
+
+      h1 { font-size: 200%; }
+      h2 { font-size: 160%; }
+      h3 { font-size: 120%; }
+      h4 { font-size: 100%; }
+      h5 { font-size: 80%; }
+      h6 { font-size: 80%; font-weight: normal; }
+
+      ul, ol {
+        margin: 1.4em 0;
+      }
+      ul ul, ol ol, ul ol, ol ul {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      ul, ol {
+        margin-left: 2.8em;
+      }
+
+      ol {
+        list-style: decimal;
+      }
+      ol ol {
+        list-style: lower-alpha;
+      }
+      ol ol ol {
+        list-style: lower-roman;
+      }
+      ol ol ol ol {
+        list-style: decimal;
+      }
+
+      blockquote {
+        margin: 0.1em;
+        margin-left: 1em;
+        border-left: 2px solid #cccccc;
+        padding-left: 0.7em;
+      }
+
+      .color_red { color: #dc322f; }
+      .color_blue { color: #268bd2; }
+      .color_green { color: #859901; }
+      .color_yellow { color: #b58901; }
+      .color_black { color: black; }
+      .color_white { color: white; }
+
+      .font_big {
+        font-size: 1.2em;
+      }
+
+      .ddoc_section_h {
+        font-weight: bold;
+        font-size: 13px;
+        line-height: 19.5px;
+        margin-top: 11px;
+        display: block;
+      }
+
+      body.dlang .dlang {
+        display: inline-block;
+      }
+
+      body.dlang .declaration .dlang {
+          display: block;
+      }
+
+      body.dlang .ddoc_header_anchor a.dlang {
+        display: block;
+        color: rgba(0, 136, 204, 1);
+        text-decoration: none;
+      }
+
+      body.dlang .ddoc_header_anchor .code {
+        color: rgba(0, 136, 204, 1);
+      }
+
+      #ddoc_main .module {
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          overflow-x: hidden;
+          padding: 15px;
+      }
+
+      #ddoc_main .section .section {
+        margin-top: 0;
+      }
+
+      #ddoc_main .ddoc_module_members_section {
+          padding: 1px 0 0;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members section.intro {
+          background: #fff none repeat scroll 0 0;
+          list-style-type: none;
+          width: 100%;
+      }
+
+      #ddoc_main .ddoc_header_anchor {
+          font-size: 1.4em;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_header_anchor > .code {
+          display: inline-block;
+
+      }
+
+      #ddoc_main .ddoc_decl {
+        background-color: transparent;
+        height: 100%;
+        left: 0;
+        top: 0;
+        padding: 0;
+        padding-left: 15px;
+      }
+
+      #ddoc_main .ddoc_decl .section, #ddoc_main .section.ddoc_sections {
+        background: white none repeat scroll 0 0;
+        margin: 0;
+        padding: 5px;
+        position: relative;
+        border-radius: 5px;
+      }
+
+      #ddoc_main .ddoc_decl .section h4:first-of-type, #ddoc_main .section.ddoc_sections h4:first-of-type {
+        font-size: 13px;
+        line-height: 1.5;
+        margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration {
+          margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration .code {
+          color: rgba(0, 0, 0, 1);
+          margin-bottom: 15px;
+          padding-bottom: 6px;
+      }
+
+      #ddoc_main .declaration div .para {
+          margin-bottom: 0;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr td:first-of-type {
+        padding: 7px;
+        text-align: right;
+        vertical-align: top;
+        word-break: normal;
+        white-space: nowrap;
+      }
+
+      #ddoc_main .ddoc_params .graybox {
+        border: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox td {
+        border-color: rgba(214, 214, 214, 1);
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:first-child > td {
+        border-top: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:last-child > td {
+        border-bottom: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:first-child {
+        border-left: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:last-child {
+        border-right: 0 none;
+        width: 100%;
+      }
+
+      #ddoc_main em.term, #ddoc_main em.term .code {
+        color: rgba(65, 65, 65, 1);
+        font-size: 12px;
+        font-style: italic;
+        line-height: 1.5;
+      }
+
+      #ddoc_main .see-also {
+        cursor: pointer;
+        font-family: Menlo,monospace;
+      }
+
+      #ddoc_main .ddoc_decl .section > div:last-of-type {
+        margin-bottom: 15px;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members {
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .code_sample {
+        background: inherit;
+      }
+
+      #ddoc_main .declaration .code-line {
+          display: block;
+          font: 1em Menlo,monospace;
+      }
+
+      #ddoc_main a[name] {
+        margin: -112px 0 0;
+        padding-top: 112px;
+      }
+
+      #ddoc_main .ddoc_decl td {
+        max-width: inherit;
+      }
+
+      #ddoc_main .declaration a {
+        color: inherit;
+      }
+
+      #ddoc_main .declaration a:hover {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: underline;
+      }
+
+      body.ddoc {
+        background-color: transparent;
+        color: rgba(0, 0, 0, 1);
+        font-family: Helvetica,Arial,sans-serif;
+        font-size: 62.5%;
+        margin: 0;
+        border: 0;
+        left: 0;
+        top: 0;
+        padding: 0;
+      }
+
+      .ddoc a[name] {
+        display: block;
+        height: 0;
+        margin: -85px 0 0;
+        padding-top: 85px;
+        width: 0;
+      }
+
+      .ddoc .module {
+          border-color: transparent;
+          background-color: rgba(255, 255, 255, 1);
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-image: none;
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          box-shadow: 0 0 1px rgba(0, 0, 0, 0.07);
+          display: block;
+          margin-left: 0;
+          min-height: calc(100% - 173px);
+          overflow: auto;
+          padding-bottom: 100px;
+      }
+
+      .ddoc .content_wrapper {
+          background-color: rgba(242, 242, 242, 1);
+          margin: 0 auto;
+          max-width: 980px;
+      }
+
+      .ddoc .section {
+        padding: 15px 25px 30px;
+      }
+
+      .ddoc .section .section {
+        margin: 30px 0 0;
+        padding: 0;
+      }
+
+      .ddoc .para {
+        color: rgba(65, 65, 65, 1);
+        font-size: 1.4em;
+        line-height: 145%;
+        margin-bottom: 15px;
+      }
+
+      .ddoc .ddoc_examples .para {
+        margin-bottom: 0;
+      }
+
+      .ddoc .module_name {
+          color: rgba(0, 0, 0, 1);
+          display: block;
+          font-family: Helvetica;
+          font-size: 2.8em;
+          font-weight: 100;
+          margin-bottom: 0;
+          padding: 15px 0;
+      }
+
+      .ddoc .module a {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: none;
+      }
+
+      .ddoc .code {
+        color: rgba(128, 128, 128, 1);
+        font-family: Menlo,monospace;
+        font-size: 0.85em;
+        word-wrap: break-word;
+      }
+
+      .ddoc .code i {
+        font-style: normal;
+      }
+
+      .ddoc .code .code {
+        font-size: 1em;
+      }
+
+      .ddoc .code_sample {
+        background-clip: padding-box;
+        margin: 1px 0;
+        text-align: left;
+      }
+
+      .ddoc .code_sample {
+        display: block;
+        font-size: 1.4em;
+        margin-left: 21px;
+      }
+
+      .ddoc ol .code_sample {
+        font-size: 1em;
+      }
+
+      .ddoc .code_lines {
+        counter-reset: li;
+        line-height: 1.6em;
+        list-style: outside none none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .ddoc .code_listing .code_sample div {
+        margin-left: 13px;
+        width: 93%;
+      }
+
+      .ddoc .code_listing .code_sample div .code_lines li {
+        list-style-type: none;
+        margin: 0;
+        padding-right: 10px;
+      }
+
+      .ddoc .code_sample div .code_lines li::before {
+        margin-left: -33px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+10)::before {
+        margin-left: -39px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+100)::before {
+        margin-left: -46px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample .code_lines .code {
+        color: #000;
+      }
+
+      .ddoc div.dlang {
+        margin: 10px 0 21px;
+        padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+          margin: 10px 0 21px;
+          padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+        border-left: 5px solid rgba(0, 155, 51, 0.2);
+      }
+
+      .ddoc .code_lines li::before {
+        color: rgba(128, 128, 128, 1);
+        content: counter(li, decimal);
+        counter-increment: li;
+        font-family: Menlo,monospace;
+        font-size: 0.9em;
+        margin-right: 16px;
+      }
+
+      .ddoc .code_lines li {
+        padding-left: 0;
+        white-space: pre-wrap;
+      }
+
+      .ddoc .code_lines li:only-of-type::before {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:only-of-type {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:nth-child(n+10) {
+        text-indent: -17px;
+      }
+
+      .ddoc .code_lines li:nth-child(n+10)::before {
+        margin-right: 12px;
+      }
+
+      .ddoc .graybox {
+        border: 1px solid rgba(233, 233, 233, 1);
+        border-collapse: collapse;
+        border-spacing: 0;
+        empty-cells: hide;
+        margin: 20px 0 36px;
+        text-align: left;
+      }
+
+      .ddoc .graybox p {
+        margin: 0;
+        min-width: 50px;
+      }
+
+      .ddoc th {
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: bottom;
+      }
+
+      .ddoc td {
+        border: 1px solid rgba(233, 233, 233, 1);
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: middle;
+      }
+
+      .punctuation {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .comment {
+        color: rgba(0, 131, 18, 1);
+      }
+
+      .operator {
+        color: #000;
+      }
+
+      .keyword {
+        color: rgba(170, 13, 145, 1);
+      }
+
+      .keyword_type {
+        color: rgba(170, 51, 145, 1);
+      }
+
+      .string_literal {
+        color: rgba(196, 26, 22, 1);
+      }
+
+      .ddoc_psuper_symbol {
+        color: rgba(92, 38, 153, 1);
+      }
+
+      .param {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .psymbol {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .ddoc_member_header .ddoc_header_anchor .code {
+        font-size: 1em;
+      }
+    </style>
+  </head>
+  <body id="ddoc_main" class="ddoc dlang">
+    <div class="content_wrapper">
+      <article class="module">
+        <h1 class="module_name">ranges</h1>
+        <section id="module_content"><br><br>
+<br><br>
+
+<br><br>
+<p>Ranges are an abstraction of element access. This abstraction enables the use of great number of algorithms over great number of container types. Ranges emphasize how container elements are accessed, as opposed to how the containers are implemented.
+</p>
+<br><br>
+<p>Ranges are a very simple concept that is based on whether a type defines certain sets of member functions. We have already seen this concept in the <a href="foreach_opapply.html"> with Structs and Classes chapter</a>: any type that provides the member functions , , and  can be used with the  loop. The set of those three member functions is the requirement of the range type .
+</p>
+<br><br>
+<p>I will start introducing ranges with , the simplest of all the range types. The other ranges require more member functions over .
+</p>
+<br><br>
+<p>Before going further, I would like to provide the definitions of containers and algorithms.
+</p>
+<br><br>
+<p>  <b>Container (data structure):</b> Container is a very useful concept that appears in almost every program. Variables are put together for a purpose and are used together as elements of a container. D's containers are its core features arrays and associative arrays, and special container types that are defined in the  module. Every container is implemented as a specific data structure. For example, associative arrays are a <i>hash table</i> implementation.
+</p>
+<br><br>
+<p>Every data structure stores its elements and provides access to them in ways that are special to that data structure. For example, in the array data structure the elements are stored side by side and accessed by an element index; in the linked list data structure the elements are stored in nodes and are accessed by going through those nodes one by one; in a sorted binary tree data structure, the nodes provide access to the preceding and successive elements through separate branches; etc.
+</p>
+<br><br>
+<p>In this chapter, I will use the terms <i>container</i> and <i>data structure</i> interchangeably.
+</p>
+<br><br>
+<p> <b>Algorithm (function):</b> Processing of data structures for specific purposes in specific ways is called an <i>algorithm</i>. For example, <i>linear search</i> is an algorithm that searches by iterating over a container from the beginning to the end; <i>binary search</i> is an algorithm that searches for an element by eliminating half of the candidates at every step; etc.
+</p>
+<br><br>
+<p>In this chapter, I will use the terms <i>algorithm</i> and <i>function</i> interchangeably.
+</p>
+<br><br>
+<p>For most of the samples below, I will use  as the element type and  as the container type. In reality, ranges are more powerful when used with templated containers and algorithms. In fact, most of the containers and algorithms that ranges tie together are all templates. I will leave examples of templated ranges to <a href="ranges_more.html">the next chapter</a>.
+</p>
+<br><br>
+<h5>History</h5>
+<br><br>
+<p>A very successful library that abstracts algorithms and data structures from each other is the Standard Template Library (STL), which also appears as a part of the C++ standard library. STL provides this abstraction with the <i>iterator</i> concept, which is implemented by C++'s templates.
+</p>
+<br><br>
+<p>Although they are a very useful abstraction, iterators do have some weaknesses. D's ranges were designed to overcome these weaknesses.
+</p>
+<br><br>
+<p>Andrei Alexandrescu introduces ranges in his paper <a href="http://www.informit.com/articles/printerfriendly.aspx?p=1407357">On Iteration</a> and demonstrates how they can be superior to iterators.
+</p>
+<br><br>
+<h5>Ranges are an integral part of D</h5>
+<br><br>
+<p>D's slices happen to be implementations of the most powerful range , and there are many range features in Phobos. It is essential to understand how ranges are used in Phobos.
+</p>
+<br><br>
+<p>Many Phobos algorithms return temporary range objects. For example, , which chooses elements that are greater than 10 in the following code, actually returns a range object, not an array:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+<span class="keyword">import</span> std.algorithm;
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">int</span>[] values = [ 1, 20, 7, 11 ];
+    writeln(values.filter!(value =&gt; value &gt; 10));
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p> uses that range object lazily and accesses the elements as it needs them:
+</p>
+<br><br>
+
+<br><br>
+<p>That output may suggest that  returns an  but this is not the case. We can see this from the fact that the following assignment produces a compilation error:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span>[] chosen = values.filter!(value =&gt; value &gt; 10); 
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The error message contains the type of the range object:
+</p>
+<br><br>
+
+<br><br>
+<p><i><b>Note:</b> The type may be different in the version of Phobos that you are using.</i>
+</p>
+<br><br>
+<p>It is possible to convert that temporary object to an actual array, as we will see later in the chapter.
+</p>
+<br><br>
+<h5>Traditional implementations of algorithms</h5>
+<br><br>
+<p>In traditional implementations of algorithms, the algorithms know how the data structures that they operate on are implemented. For example, the following function that prints the elements of a linked list must know that the nodes of the linked list have members named  and :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">struct</span> Node {
+    <span class="keyword">int</span> element;
+    Node * next;
+}
+
+<span class="keyword">void</span> print(<span class="keyword">const</span>(Node) * list) {
+    <span class="keyword">for</span> ( ; list; list = list.) {
+        write(' ', list.);
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Similarly, a function that prints the elements of an array must know that arrays have a  property and their elements are accessed by the  operator:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> print(<span class="keyword">const</span> <span class="keyword">int</span>[] array) {
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = 0; i != array.; ++i) {
+        write(' ', array);
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p><i><b>Note:</b> We know that  is more useful when iterating over arrays. As a demonstration of how traditional algorithms are tied to data structures, let's assume that the use of  is justified.</i>
+</p>
+<br><br>
+<p>Having algorithms tied to data structures makes it necessary to write them specially for each type. For example, the functions find(), sort(), swap(), etc. must be written separately for array, linked list, associative array, binary tree, heap, etc. As a result, N algorithms that support M data structures must be written NxM times. (Note: In reality, the count is less than NxM because not every algorithm can be applied to every data structure; for example, associative arrays cannot be sorted.)
+</p>
+<br><br>
+<p>Conversely, because ranges abstract algorithms away from data structures, implementing just N algorithms and M data structures would be sufficient. A newly implemented data structure can work with all of the existing algorithms that support the type of range that the new data structure provides, and a newly implemented algorithm can work with all of the existing data structures that support the range type that the new algorithm requires.
+</p>
+<br><br>
+<h5>Phobos ranges</h5>
+<br><br>
+<p>The ranges in this chapter are different from number ranges that are written in the form . We have seen how number ranges are used with the  loop and with slices:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">foreach</span> (value; ) {       <span class="comment">// number range,
+</span>                                  <span class="comment">// NOT a Phobos range
+</span>
+    <span class="keyword">int</span>[] slice = array[];   <span class="comment">// number range,
+</span>                                  <span class="comment">// NOT a Phobos range
+</span></code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>When I write <i>range</i> in this chapter, I mean a Phobos range .
+</p>
+<br><br>
+<p>Ranges form a <i>range hierarchy</i>. At the bottom of this hierarchy is the simplest range . The other ranges bring more requirements on top of the range on which they are based. The following are all of the ranges with their requirements, sorted from the simplest to the more capable:
+</p>
+<br><br>
+<ul><br><br>
+<li>: requires the ,  and  member functions</li>
+<br><br>
+<li>: additionally requires the  member function</li>
+<br><br>
+<li>: additionally requires the  and  member functions</li>
+<br><br>
+<li>: additionally requires the  operator (and another property depending on whether the range is finite or infinite)</li>
+<br><br>
+</ul>
+<br><br>
+<p>This hierarchy can be shown as in the following graph.  has finite and infinite versions:
+</p>
+<br><br>
+
+<br><br>
+<p>The graph above is in the style of class hierarchies where the lowest level type is at the top.
+</p>
+<br><br>
+<p>Those ranges are about providing element access. There is one more range, which is about element <i>output</i>:
+</p>
+<br><br>
+<ul><li>: requires support for the  operation</li>
+</ul>
+<br><br>
+<p>These five range types are sufficient to abstract algorithms from data structures.
+</p>
+<br><br>
+<h6>Iterating by shortening the range</h6>
+<br><br>
+<p>Normally, iterating over the elements of a container does not change the container itself. For example, iterating over a slice with  or  does not affect the slice:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span>[] slice = [ 10, 11, 12 ];
+
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = 0; i != slice.length; ++i) {
+        write(' ', slice[i]);
+    }
+
+    <span class="keyword">assert</span>(slice.length == 3);  <span class="comment">// ← the length doesn't change
+</span></code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Another way of iteration requires a different way of thinking: iteration can be achieved by shortening the range from the beginning. In this method, it is always the first element that is used for element access and the first element is <i>popped</i> from the beginning in order to get to the next element:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">for</span> ( ; slice.length; slice = slice[1..$]) {
+        write(' ', );   <span class="comment">// ← always the first element
+</span>    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p><i>Iteration</i> is achieved by removing the first element by the  expression. The slice above is completely consumed by going through the following stages:
+</p>
+<br><br>
+
+<br><br>
+<p>The iteration concept of Phobos ranges is based on this new thinking of shortening the range from the beginning. ( and finite  types can be shortened from the end as well.)
+</p>
+<br><br>
+<p>Please note that the code above is just to demonstrate this type of iteration; it should not be considered normal to iterate as in that example.
+</p>
+<br><br>
+<p>Since losing elements just to iterate over a range would not be desired in most cases, a surrogate range may be consumed instead. The following code uses a separate slice to preserve the elements of the original one:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span>[] slice = [ 10, 11, 12 ];
+    <span class="keyword">int</span>[] surrogate = slice;
+
+    <span class="keyword">for</span> ( ; surrogate.length; ) {
+        write(' ', surrogate[0]);
+    }
+
+    <span class="keyword">assert</span>(surrogate.length == 0); <span class="comment">// ← surrogate is consumed
+</span>    <span class="keyword">assert</span>(slice.length == 3);     <span class="comment">// ← slice remains the same
+</span></code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>This is the method employed by most of the Phobos range functions: they return special range objects to be consumed in order to preserve the original containers.
+</p>
+<br><br>
+<h5> </h5>
+<br><br>
+<p>This type of range models the type of iteration where elements are accessed in sequence as we have seen in the  functions above. Most algorithms only require that elements are iterated in the forward direction without needing to look at elements that have already been iterated over.  models the standard input streams of programs as well, where elements are removed from the stream as they are read.
+</p>
+<br><br>
+<p>For completeness, here are the three functions that  requires:
+</p>
+<br><br>
+<ul><br><br>
+<li> : specifies whether the range is empty; it must return  when the range is considered to be empty, and  otherwise</li>
+<br><br>
+<li> : provides access to the element at the beginning of the range</li>
+<br><br>
+<li> : shortens the range from the beginning by removing the first element</li>
+<br><br>
+</ul>
+<br><br>
+<p><i><b>Note:</b> I write  and  without parentheses, as they can be seen as properties of the range; and  with parentheses as it is a function with side effects.</i>
+</p>
+<br><br>
+<p>Here is how  can be implemented by using these range functions:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> print(T)(T range) {
+    <span class="keyword">for</span> ( ; !range; range) {
+        write(' ', range);
+    }
+
+    writeln();
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Please also note that  is now a function template to avoid limiting the range type arbitrarily.  can now work with any type that provides the three  functions.
+</p>
+<br><br>
+<h6> example</h6>
+<br><br>
+<p>Let's redesign the  type that we have seen before, this time as an . We can imagine  as a  container so when designed as a range, it can be seen as a range of s.
+</p>
+<br><br>
+<p>In order to keep the example short, let's disregard some important design aspects. Let's
+</p>
+<br><br>
+<ul><br><br>
+<li>implement only the members that are related to this section</li>
+<br><br>
+<li>design all types as structs</li>
+<br><br>
+<li>ignore specifiers and qualifiers like , , and </li>
+<br><br>
+<li>not take advantage of contract programming and unit testing</li>
+<br><br>
+</ul>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.string;
+
+<span class="keyword">struct</span> Student {
+    string name;
+    <span class="keyword">int</span> number;
+
+    string toString() <span class="keyword">const</span> {
+        <span class="keyword">return</span> format(<span class="string_literal">"%s(%s)"</span>, name, number);
+    }
+}
+
+<span class="keyword">struct</span> School {
+    Student[] students;
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">auto</span> school = School( [ Student(<span class="string_literal">"Ebru"</span>, 1),
+                            Student(<span class="string_literal">"Derya"</span>, 2) ,
+                            Student(<span class="string_literal">"Damla"</span>, 3) ] );
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>To make  be accepted as an , we must define the three  member functions.
+</p>
+<br><br>
+<p>For  to return  when the range is empty, we can use the length of the  array. When the length of that array is 0, the range is considered empty:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">struct</span> School {
+    <span class="comment">// ...
+</span>
+    <span class="keyword">bool</span> empty() <span class="keyword">const</span> {
+        <span class="keyword">return</span> students.length == 0;
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>For  to return the first element of the range, we can return the first element of the array:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">struct</span> School {
+    <span class="comment">// ...
+</span>
+    <span class="keyword">ref</span> Student front() {
+        <span class="keyword">return</span> students[0];
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p><i><b>Note:</b> I have used the  keyword to be able to provide access to the actual element instead of a copy of it. Otherwise the elements would be copied because  is a struct.</i>
+</p>
+<br><br>
+<p>For  to shorten the range from the beginning, we can shorten the  array from the beginning:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">struct</span> School {
+    <span class="comment">// ...
+</span>
+    <span class="keyword">void</span> popFront() {
+        students = students[1 .. $];
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p><i><b>Note:</b> As I have mentioned above, it is not normal to lose the original elements from the container just to iterate over them. We will address this issue below by introducing a special range type.</i>
+</p>
+<br><br>
+<p>These three functions are sufficient to make  to be used as an . As an example, let's add the following line at the end of  above to have our new  function template to use  as a range:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    print(school);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p> uses that object as an  and prints its elements to the output:
+</p>
+<br><br>
+
+<br><br>
+<p>We have achieved our goal of defining a user type as an ; we have sent it to an algorithm that operates on  types.  is actually ready to be used with algorithms of Phobos or any other library that work with  types. We will see examples of this below.
+</p>
+<br><br>
+<h6> The  module to use slices as ranges</h6>
+<br><br>
+<p>Merely importing the  module makes the most common container type conform to the most capable range type: slices can seamlessly be used as  objects.
+</p>
+<br><br>
+<p>The  module provides the functions , ,  and other range functions for slices. As a result, slices are ready to be used with any range function, for example with :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> ;
+
+<span class="comment">// ...
+</span>
+    print([ 1, 2, 3, 4 ]);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>It is not necessary to import  if the  module has already been imported.
+</p>
+<br><br>
+<p>Since it is not possible to remove elements from fixed-length arrays,  cannot be defined for them. For that reason, fixed-length arrays cannot be used as ranges themselves:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> print(T)(T range) {
+    <span class="keyword">for</span> ( ; !range.empty; range.popFront()) {  
+        write(' ', range.front);
+    }
+
+    writeln();
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">int</span>[] array = [ 1, 2, 3, 4 ];
+    print(array);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>It would be better if the compilation error appeared on the line where  is called. This is possible by adding a template constraint to . The following template constraint takes advantage of , which we will see in the next chapter. By the help of the template constraint, now the compilation error is for the line where  is called, not for a line where  is defined:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> print(T)(T range)
+        <span class="keyword">if</span> (isInputRange!T) {    <span class="comment">// template constraint
+</span>    <span class="comment">// ...
+</span>}
+<span class="comment">// ...
+</span>    print(array);    
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The elements of a fixed-length array can still be accessed by range functions. What needs to be done is to use a slice of the whole array, not the array itself:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    print(array);    <span class="comment">// now compiles
+</span></code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Even though slices can be used as ranges, not every range type can be used as an array. When necessary, all of the elements can be copied one by one into an array.  is a helper function to simplify this task;  iterates over  ranges, copies the elements, and returns a new array:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.array;
+
+<span class="comment">// ...
+</span>
+    <span class="comment">// Note: Also taking advantage of UFCS
+</span>    <span class="keyword">auto</span> copiesOfStudents = school.;
+    writeln(copiesOfStudents);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output:
+</p>
+<br><br>
+
+<br><br>
+<p>Also note the use of <a href="ufcs.html">UFCS</a> in the code above. UFCS goes very well with range algorithms by making code naturally match the execution order of expressions.
+</p>
+<br><br>
+<h6>   Automatic decoding of strings as ranges of </h6>
+<br><br>
+<p>Being character arrays by definition, strings can also be used as ranges just by importing . However,  and  strings cannot be used as .
+</p>
+<br><br>
+<p> provides a special functionality with all types of strings: Iterating over strings becomes iterating over Unicode code points, not over UTF code units. As a result, strings appear as ranges of Unicode characters.
+</p>
+<br><br>
+<p>The following strings contain ç and é, which cannot be represented by a single , and 𝔸 (mathematical double-struck capital A), which cannot be represented by a single  (note that these characters may not be displayed correctly in the environment that you are reading this chapter):
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.array;
+
+<span class="comment">// ...
+</span>
+    print(<span class="string_literal">"abcçdeé𝔸"c</span>);
+    print(<span class="string_literal">"abcçdeé𝔸"w</span>);
+    print(<span class="string_literal">"abcçdeé𝔸"d</span>);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output of the program is what we would normally expect from a <i>range of letters</i>:
+</p>
+<br><br>
+
+
+<br><br>
+<p>As you can see, that output does not match what we saw in the <a href="characters.html">Characters</a> and <a href="strings.html">Strings</a> chapters. We have seen in those chapters that  is an alias to an array of  and  is an alias to an array of . Accordingly, one might expect to see UTF code units in the previous output instead of the properly decoded Unicode characters.
+</p>
+<br><br>
+<p>The reason why the characters are displayed correctly is because when used as ranges, string elements are automatically decoded. As we will see below, the decoded  values are not actual elements of the strings but <a href="lvalue_rvalue.html">rvalues</a>.
+</p>
+<br><br>
+<p>As a reminder, let's consider the following function that treats the strings as arrays of code units:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> (T)(T str) {
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = 0; i != str.length; ++i) {
+        write(' ', str);
+    }
+
+    writeln();
+}
+
+<span class="comment">// ...
+</span>
+    printElements(<span class="string_literal">"abcçdeé𝔸"c</span>);
+    printElements(<span class="string_literal">"abcçdeé𝔸"w</span>);
+    printElements(<span class="string_literal">"abcçdeé𝔸"d</span>);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>When the characters are accessed directly by indexing, the elements of the arrays are not decoded:
+</p>
+<br><br>
+
+
+<br><br>
+<p> Automatic decoding is not always the desired behavior. For example, the following program that is trying to assign to the first element of a string cannot be compiled because the return value of  is an rvalue:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.array;
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">char</span>[] s = <span class="string_literal">"hello"</span>.dup;
+    s.front = 'H';                   
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<p>When a range algorithm needs to modify the actual code units of a string (and when doing so does not invalidate the UTF encoding), then the string can be used as a range of  elements by :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.array;
+<span class="keyword">import</span> std.string;
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">char</span>[] s = <span class="string_literal">"hello"</span>.dup;
+    s.front = 'H';    <span class="comment">// compiles
+</span>    <span class="keyword">assert</span>(s == <span class="string_literal">"Hello"</span>);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p> presents the actual elements of , , and  strings as ranges of , , and , respectively.
+</p>
+<br><br>
+<h6>Ranges without actual elements</h6>
+<br><br>
+<p>The elements of the  objects were actually stored in the  member slices. So,  returned a reference to an existing  object.
+</p>
+<br><br>
+<p>One of the powers of ranges is the flexibility of not actually owning elements.  need not return an actual element of an actual container. The returned <i>element</i> can be calculated each time when  is called, and can be used as the value that is returned by .
+</p>
+<br><br>
+<p>We have already seen a range without actual elements above: Since  and  cannot represent all Unicode characters, the Unicode characters that appear as range elements cannot be actual elements of any  or  array. In the case of strings,  returns a  that is <i>constructed</i> from the corresponding UTF code units of arrays:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.array;
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">dchar</span> letter = <span class="string_literal">"é"</span>.front; <span class="comment">// The dchar that is returned by
+</span>                              <span class="comment">// front is constructed from the
+</span>                              <span class="comment">// two chars that represent é
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Although the element type of the array is , the return type of  above is . That  is not an element of the array but is an <a href="lvalue_rvalue.html">rvalue</a> decoded as a Unicode character from the elements of the array.
+</p>
+<br><br>
+<p>Similarly, some ranges do not own any elements but are used for providing access to elements of other ranges. This is a solution to the problem of losing elements while iterating over  objects above. In order to preserve the elements of the actual  objects, a special  can be used.
+</p>
+<br><br>
+<p>To see how this is done, let's define a new struct named  and move all of the range member functions from  to this new struct. Note that  itself is not a range anymore:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">struct</span> School {
+    Student[] students;
+}
+
+<span class="keyword">struct</span> StudentRange {
+    Student[] students;
+
+    <span class="keyword">this</span>(School school) {
+        ;
+    }
+
+    <span class="keyword">bool</span> empty() <span class="keyword">const</span> {
+        <span class="keyword">return</span> students.length == 0;
+    }
+
+    <span class="keyword">ref</span> Student front() {
+        <span class="keyword">return</span> students[0];
+    }
+
+    <span class="keyword">void</span> popFront() {
+        students = students[1 .. $];
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The new range starts with a member slice that provides access to the students of  and consumes that member slice in . As a result, the actual slice in  is preserved:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> school = School( [ Student(<span class="string_literal">"Ebru"</span>, 1),
+                            Student(<span class="string_literal">"Derya"</span>, 2) ,
+                            Student(<span class="string_literal">"Damla"</span>, 3) ] );
+
+    print((school));
+
+    <span class="comment">// The actual array is now preserved:
+</span>    <span class="keyword">assert</span>(school.students.length == 3);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p><i><b>Note:</b> Since all its work is dispatched to its member slice,  may not be seen as a good example of a range. In fact, assuming that  is an accessible member of , the user code could have created a slice of  directly and could have used that slice as a range.</i>
+</p>
+<br><br>
+<h6> Infinite ranges</h6>
+<br><br>
+<p>Another benefit of not storing elements as actual members is the ability to create infinite ranges.
+</p>
+<br><br>
+<p>Making an infinite range is as simple as having  always return . Since it is constant,  need not even be a function and can be defined as an  value:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">enum</span> empty = <span class="keyword">false</span>;                   <span class="comment">// ← infinite range
+</span></code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Another option is to use an immutable  member:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">static</span> <span class="keyword">immutable</span> empty = <span class="keyword">false</span>;       <span class="comment">// same as above
+</span></code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>As an example of this, let's design a range that represents the Fibonacci series. Despite having only two  members, the following range can be used as the infinite Fibonacci series:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">struct</span> FibonacciSeries
+{
+    <span class="keyword">int</span> current = 0;
+    <span class="keyword">int</span> next = 1;
+
+    <span class="keyword">enum</span> empty = <span class="keyword">false</span>;   <span class="comment">// ← infinite range
+</span>
+    <span class="keyword">int</span> front() <span class="keyword">const</span> {
+        <span class="keyword">return</span> current;
+    }
+
+    <span class="keyword">void</span> popFront() {
+        <span class="keyword">const</span> nextNext = current + next;
+        current = next;
+        next = nextNext;
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p><i><b>Note:</b> Although it is infinite, because the members are of type , the elements of this Fibonacci series would be wrong beyond .</i>
+</p>
+<br><br>
+<p>Since  is always  for  objects, the  loop in  never terminates for them:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    print(FibonacciSeries());    <span class="comment">// never terminates
+</span></code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>An infinite range is useful when the range need not be consumed completely right away. We will see how to use only some of the elements of a  below.
+</p>
+<br><br>
+<h6>Functions that return ranges</h6>
+<br><br>
+<p>Earlier, we have created a  object by explicitly writing .
+</p>
+<br><br>
+<p> In most cases, a convenience function that returns the object of such a range is used instead. For example, a function with the whole purpose of returning a  would simplify the code:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">StudentRange studentsOf(<span class="keyword">ref</span> School school) {
+    <span class="keyword">return</span> StudentRange(school);
+}
+
+<span class="comment">// ...
+</span>
+    <span class="comment">// Note: Again, taking advantage of UFCS
+</span>    print(school.);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>This is a convenience over having to remember and spell out the names of range types explicitly, which can get quite complicated in practice.
+</p>
+<br><br>
+<p> We can see an example of this with the simple  function.  is a function that provides access to a specified number of elements of a range, from the beginning. In reality, this functionality is not achieved by the  function itself, but by a special range object that it returns. This fact need not be explicit when using :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.range;
+
+<span class="comment">// ...
+</span>
+    <span class="keyword">auto</span> school = School( [ Student(<span class="string_literal">"Ebru"</span>, 1),
+                            Student(<span class="string_literal">"Derya"</span>, 2) ,
+                            Student(<span class="string_literal">"Damla"</span>, 3) ] );
+
+    print(school.studentsOf.);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p> returns a temporary range object above, which provides access to the first 2 elements of . In turn,  uses that object and produces the following output:
+</p>
+<br><br>
+
+<br><br>
+<p>The operations above still don't make any changes to ; it still has 3 elements:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    print(school.studentsOf.take(2));
+    <span class="keyword">assert</span>(school.students.length == 3);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The specific types of the range objects that are returned by functions like  are not important. These types may sometimes be exposed in error messages, or we can print them ourselves with the help of  and :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    writeln(<span class="keyword">typeof</span>(school.studentsOf.take(2)).stringof);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>According to the output,  returns an instance of a template named :
+</p>
+<br><br>
+
+<br><br>
+<h6>   and  modules</h6>
+<br><br>
+<p>A great benefit of defining our types as ranges is being able to use them not only with our own functions, but with Phobos and other libraries as well.
+</p>
+<br><br>
+<p> includes a large number of range functions, structs, and classes.  includes many algorithms that are commonly found also in the standard libraries of other languages.
+</p>
+<br><br>
+<p> To see an example of how our types can be used with standard modules, let's use  with the  algorithm.  swaps the front elements of two  ranges. (It requires that the front elements of the two ranges are swappable. Arrays satisfy that condition.)
+</p>
+<br><br>
+<p><br><br>
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.algorithm;
+
+<span class="comment">// ...
+</span>
+    <span class="keyword">auto</span> turkishSchool = School( [ Student(<span class="string_literal">"Ebru"</span>, 1),
+                                   Student(<span class="string_literal">"Derya"</span>, 2) ,
+                                   Student(<span class="string_literal">"Damla"</span>, 3) ] );
+
+    <span class="keyword">auto</span> americanSchool = School( [ Student(<span class="string_literal">"Mary"</span>, 10),
+                                    Student(<span class="string_literal">"Jane"</span>, 20) ] );
+
+    (turkishSchool.studentsOf,
+              americanSchool.studentsOf);
+
+    print(turkishSchool.studentsOf);
+    print(americanSchool.studentsOf);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The first elements of the two schools are swapped:
+</p>
+<br><br>
+
+<br><br>
+<p> As another example, let's now look at the  algorithm.  returns a special range that filters out elements that do not satisfy a specific condition (a <i>predicate</i>). The operation of filtering out the elements only affects accessing the elements; the original range is preserved.
+</p>
+<br><br>
+<p> Predicates are expressions that must evaluate to  for the elements that are considered to satisfy a condition, and  for the elements that do not. There are a number of ways of specifying the predicate that  should use. As we have seen in earlier examples, one way is to use a lambda expression. The parameter  below represents each student:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    school.studentsOf.filter!(a =&gt; a.number % 2)
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The predicate above selects the elements of the range  that have odd numbers.
+</p>
+<br><br>
+<p>Like ,  returns a special range object as well. That range object in turn can be passed to other range functions. For example, it can be passed to :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    print(school.studentsOf.filter!(a =&gt; a.number % 2));
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>That expression can be explained as <i>start with the range , construct a range object that will filter out the elements of that initial range, and pass the new range object to </i>.
+</p>
+<br><br>
+<p>The output consists of students with odd numbers:
+</p>
+<br><br>
+
+<br><br>
+<p>As long as it returns  for the elements that satisfy the condition, the predicate can also be specified as a function:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.array;
+
+<span class="comment">// ...
+</span>
+    <span class="keyword">bool</span> startsWithD(Student student) {
+        <span class="keyword">return</span> student.name.front == 'D';
+    }
+
+    print(school.studentsOf.filter!startsWithD);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The predicate function above returns  for students having names starting with the letter D, and  for the others.
+</p>
+<br><br>
+<p><i><b>Note:</b> Using  would have meant the first UTF-8 code unit, not the first letter. As I have mentioned above,  uses  as a range and always returns the first Unicode character.</i>
+</p>
+<br><br>
+<p>This time the students whose names start with D are selected and printed:
+</p>
+<br><br>
+
+<br><br>
+<p> , a convenience function template of the  module, makes it easy to present values returned from a function as the elements of an . It takes any callable entity (function pointer, delegate, etc.) and returns an  object conceptually consisting of the values that are returned from that callable entity.
+</p>
+<br><br>
+<p>The returned range object is infinite. Every time the  property of that range object is accessed, the original callable entity is called to get a new <i>element</i> from it. The  function of the range object does not perform any work.
+</p>
+<br><br>
+<p>For example, the following range object  can be used as an infinite range:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+<span class="keyword">import</span> std.range;
+<span class="keyword">import</span> std.random;
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">auto</span> diceThrower = !(() =&gt; uniform(0, 6));
+    writeln(diceThrower.take(10));
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<h6> Laziness</h6>
+<br><br>
+<p>Another benefit of functions' returning range objects is that, those objects can be used lazily. Lazy ranges produce their elements one at a time and only when needed. This may be essential for execution speed and memory consumption. Indeed, the fact that infinite ranges can even exist is made possible by ranges being lazy.
+</p>
+<br><br>
+<p>Lazy ranges produce their elements one at a time and only when needed. We see an example of this with the  range: The elements are calculated by  only as they are needed. If  were an eager range and tried to produce all of the elements up front, it could never end or find room for the elements that it produced.
+</p>
+<br><br>
+<p>Another problem of eager ranges is the fact that they would have to spend time and space for elements that would perhaps never going to be used.
+</p>
+<br><br>
+<p>Like most of the algorithms in Phobos,  and  benefit from laziness. For example, we can pass  to  and have it generate a finite number of elements:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    print(FibonacciSeries().take(10));
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Although  is infinite, the output contains only the first 10 numbers:
+</p>
+<br><br>
+
+<br><br>
+<h5> </h5>
+<br><br>
+<p> models a range where elements are taken out of the range as they are iterated over.
+</p>
+<br><br>
+<p>Some ranges are capable of saving their states, as well as operating as an . For example,  objects can save their states because these objects can freely be copied and the two copies continue their lives independently from each other.
+</p>
+<br><br>
+<p>  provides the  member function, which is expected to return a copy of the range. The copy that  returns must operate independently from the range object that it was copied from: iterating over one copy must not affect the other copy.
+</p>
+<br><br>
+<p>Importing  automatically makes slices become  ranges.
+</p>
+<br><br>
+<p>In order to implement  for , we can simply return a copy of the object:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">struct</span> FibonacciSeries {
+<span class="comment">// ...
+</span>
+    FibonacciSeries save() <span class="keyword">const</span> {
+        <span class="keyword">return</span> <span class="keyword">this</span>;
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The returned copy is a separate range that would continue from the point where it was copied from.
+</p>
+<br><br>
+<p> We can demonstrate that the copied object is independent from the actual range with the following program. The algorithm  in the following code removes a specified number of elements from the specified range:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.range;
+
+<span class="comment">// ...
+</span>
+<span class="keyword">void</span> report(T)(<span class="keyword">const</span> <span class="keyword">dchar</span>[] title, <span class="keyword">const</span> <span class="keyword">ref</span> T range) {
+    writefln(<span class="string_literal">"%40s: %s"</span>, title, range.take(5));
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">auto</span> range = FibonacciSeries();
+    report(<span class="string_literal">"Original range"</span>, range);
+
+    range.popFrontN(2);
+    report(<span class="string_literal">"After removing two elements"</span>, range);
+
+    <span class="keyword">auto</span> theCopy = ;
+    report(<span class="string_literal">"The copy"</span>, theCopy);
+
+    range.popFrontN(3);
+    report(<span class="string_literal">"After removing three more elements"</span>, range);
+    report(<span class="string_literal">"The copy"</span>, theCopy);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output of the program shows that removing elements from the range does not affect its saved copy:
+</p>
+<br><br>
+
+<br><br>
+<p>Also note that the range is passed directly to  in . Like our  function, the output functions of the  module can take  objects. I will use 's output functions from now on.
+</p>
+<br><br>
+<p> An algorithm that works with  is .  iterates over the elements of a range repeatedly from the beginning to the end. In order to be able to start over from the beginning it must be able to save a copy of the initial state of the range, so it requires a .
+</p>
+<br><br>
+<p>Since  is now a , we can try  with a  object; but in order to avoid having  iterate over an infinite range, and as a result never find the end of it, we must first make a finite range by passing  through :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    writeln(FibonacciSeries().take(5).cycle.take(20));
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>In order to make the resultant range finite as well, the range that is returned by  is also passed through . The output consists of <i>the first twenty elements of cycling through the first five elements of </i>:
+</p>
+<br><br>
+
+<br><br>
+<p>We could have defined intermediate variables as well. The following is an equivalent of the single-line code above:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> series                   = FibonacciSeries();
+    <span class="keyword">auto</span> firstPart                = series.take(5);
+    <span class="keyword">auto</span> cycledThrough            = firstPart.cycle;
+    <span class="keyword">auto</span> firstPartOfCycledThrough = cycledThrough.take(20);
+
+    writeln(firstPartOfCycledThrough);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>I would like to point out the importance of laziness one more time: The first four lines above merely construct range objects that will eventually produce the elements. The numbers that are part of the result are calculated by  as needed.
+</p>
+<br><br>
+<p><i><b>Note:</b> Although we have started with  as a , we have actually passed the result of  to .  is adaptive: the range that it returns is a  if its parameter is a . We will see how this is accomplished with  in the next chapter.</i>
+</p>
+<br><br>
+<h5> </h5>
+<br><br>
+<p>   provides two member functions over the member functions of .  is similar to : it provides access to the last element of the range.  is similar to : it removes the last element from the range.
+</p>
+<br><br>
+<p>Importing  automatically makes slices become  ranges.
+</p>
+<br><br>
+<p> A good  example is the  function.  takes a  and ties its  to , and  to . As a result, the original range is iterated over in reverse order:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    writeln([ 1, 2, 3 ].retro);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output:
+</p>
+<br><br>
+
+<br><br>
+<p>Let's define a range that behaves similarly to the special range that  returns. Although the following range has limited functionality, it shows how powerful ranges are:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.array;
+<span class="keyword">import</span> std.stdio;
+
+<span class="keyword">struct</span> Reversed {
+    <span class="keyword">int</span>[] range;
+
+    <span class="keyword">this</span>(<span class="keyword">int</span>[] range) {
+        <span class="keyword">this</span>.range = range;
+    }
+
+    <span class="keyword">bool</span> empty() <span class="keyword">const</span> {
+        <span class="keyword">return</span> range.empty;
+    }
+
+    <span class="keyword">int</span> () <span class="keyword">const</span> {
+        <span class="keyword">return</span> range.;  <span class="comment">// ← reverse
+</span>    }
+
+    <span class="keyword">int</span> back() <span class="keyword">const</span> {
+        <span class="keyword">return</span> range.front; <span class="comment">// ← reverse
+</span>    }
+
+    <span class="keyword">void</span> popFront() {
+        range.popBack();    <span class="comment">// ← reverse
+</span>    }
+
+    <span class="keyword">void</span> popBack() {
+        range.popFront();   <span class="comment">// ← reverse
+</span>    }
+}
+
+<span class="keyword">void</span> main() {
+    writeln(Reversed([ 1, 2, 3]));
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output is the same as :
+</p>
+<br><br>
+
+<br><br>
+<h5> </h5>
+<br><br>
+<p>  represents ranges that allow accessing elements by the  operator. As we have seen in the <a href="operator_overloading.html">Operator Overloading chapter</a>,  operator is defined by the  member function.
+</p>
+<br><br>
+<p>Importing  module makes slices become  ranges only if possible. For example, since UTF-8 and UTF-16 encodings do not allow accessing Unicode characters by an index,  and  arrays cannot be used as  ranges of Unicode characters. On the other hand, since the codes of the UTF-32 encoding correspond one-to-one to Unicode character codes,  arrays can be used as  ranges of Unicode characters.
+</p>
+<br><br>
+<p> It is natural that every type would define the  member function according to its functionality. However, computer science has an expectation on its algorithmic complexity: random access must take <i>constant time</i>. Constant time access means that the time spent when accessing an element is independent of the number of elements in the container. Therefore, no matter how large the range is, element access should not depend on the length of the range.
+</p>
+<br><br>
+<p>In order to be considered a , <i>one</i> of the following conditions must also be satisfied:
+</p>
+<br><br>
+<ul><li>to be an infinite </li>
+</ul>
+<br><br>
+<p>or
+</p>
+<br><br>
+<ul><li> to be a  that also provides the  property</li>
+</ul>
+<br><br>
+<p>Depending on the condition that is satisfied, the range is either infinite or finite.
+</p>
+<br><br>
+<h6>Infinite </h6>
+<br><br>
+<p>The following are all of the requirements of a  that is based on an <i>infinite </i>:
+</p>
+<br><br>
+<ul><li>,  and  that  requires</li>
+<li> that  requires</li>
+<li> that  requires</li>
+<li>the value of  to be known at compile time as </li>
+</ul>
+<br><br>
+<p>We were able to define  as a . However,  cannot be implemented to operate at constant time for  because accessing an element requires accessing all of the previous elements first.
+</p>
+<br><br>
+<p>As an example where  can operate at constant time, let's define an infinite range that consists of squares of integers. Although the following range is infinite, accessing any one of its elements can happen at constant time:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">class</span> SquaresRange {
+    <span class="keyword">int</span> first;
+
+    <span class="keyword">this</span>(<span class="keyword">int</span> first = 0) {
+        <span class="keyword">this</span>.first = first;
+    }
+
+    <span class="keyword">enum</span> empty = <span class="keyword">false</span>;
+
+    <span class="keyword">int</span> front() <span class="keyword">const</span> {
+        <span class="keyword">return</span> opIndex(0);
+    }
+
+    <span class="keyword">void</span> popFront() {
+        ++first;
+    }
+
+    SquaresRange save() <span class="keyword">const</span> {
+        <span class="keyword">return</span> <span class="keyword">new</span> SquaresRange(first);
+    }
+
+    <span class="keyword">int</span> opIndex(size_t index) <span class="keyword">const</span> {
+         <span class="comment">/* This function operates at constant time */</span>
+        <span class="keyword">immutable</span> integerValue = first + <span class="keyword">cast</span>(<span class="keyword">int</span>)index;
+        <span class="keyword">return</span> integerValue * integerValue;
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p><i><b>Note:</b> It would make more sense to define  as a .</i>
+</p>
+<br><br>
+<p>Although no space has been allocated for the elements of this range, the elements can be accessed by the  operator:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> squares = <span class="keyword">new</span> SquaresRange();
+
+    writeln(squares);
+    writeln(squares);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output contains the elements at indexes 5 and 10:
+</p>
+<br><br>
+
+<br><br>
+<p>The element with index 0 should always represent the first element of the range. We can take advantage of  when testing whether this really is the case:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    squares.popFrontN(5);
+    writeln(squares);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The first 5 elements of the range are 0, 1, 4, 9 and 16; the squares of 0, 1, 2, 3 and 4. After removing those, the square of the next value becomes the first element of the range:
+</p>
+<br><br>
+
+<br><br>
+<p>Being a  (the most functional range),  can also be used as other types of ranges. For example, as an  when passing to :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">bool</span> are_lastTwoDigitsSame(<span class="keyword">int</span> value) {
+        <span class="comment">/* Must have at least two digits */</span>
+        <span class="keyword">if</span> (value &lt; 10) {
+            <span class="keyword">return</span> <span class="keyword">false</span>;
+        }
+
+        <span class="comment">/* Last two digits must be divisible by 11 */</span>
+        <span class="keyword">immutable</span> lastTwoDigits = value % 100;
+        <span class="keyword">return</span> (lastTwoDigits % 11) == 0;
+    }
+
+    writeln(squares.take(50).filter!are_lastTwoDigitsSame);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output consists of elements among the first 50, where last two digits are the same:
+</p>
+<br><br>
+
+<br><br>
+<h6>Finite </h6>
+<br><br>
+<p>The following are all of the requirements of a  that is based on a <i>finite </i>:
+</p>
+<br><br>
+<ul><li>,  and  that  requires</li>
+<li> that  requires</li>
+<li> and  that  requires</li>
+<li> that  requires</li>
+<li>, which provides the length of the range</li>
+</ul>
+<br><br>
+<p> As an example of a finite , let's define a range that works similarly to .  presents the elements of a number of separate ranges as if they are elements of a single larger range. Although  works with any type of element and any type of range, to keep the example short, let's implement a range that works only with  slices.
+</p>
+<br><br>
+<p>Let's name this range  and expect the following behavior from it:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> range = Together([ 1, 2, 3 ], [ 101, 102, 103]);
+    writeln(range[4]);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>When constructed with the two separate arrays above,  should present all of those elements as a single range. For example, although neither array has an element at index 4, the element 102 should be the element that corresponds to index 4 of the collective range:
+</p>
+<br><br>
+
+<br><br>
+<p>As expected, printing the entire range should contain all of the elements:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    writeln(range);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output:
+</p>
+<br><br>
+
+<br><br>
+<p> will operate lazily: the elements will not be copied to a new larger array; they will be accessed from the original slices.
+</p>
+<br><br>
+<p>We can take advantage of <i>variadic functions</i>, which were introduced in the <a href="parameter_flexibility.html">Variable Number of Parameters chapter</a>, to initialize the range by any number of original slices:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">struct</span> Together {
+    <span class="keyword">const</span>(<span class="keyword">int</span>)[][] slices;
+
+    <span class="keyword">this</span>(<span class="keyword">const</span>(<span class="keyword">int</span>)[][] slices) {
+        <span class="keyword">this</span>.slices = slices.dup;
+
+        clearFront();
+        clearBack();
+    }
+
+<span class="comment">// ...
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Note that the element type is , indicating that this  will not modify the elements of the ranges. However, the slices will necessarily be modified by  to implement iteration.
+</p>
+<br><br>
+<p>The  and  calls that the constructor makes are to remove empty slices from the beginning and the end of the original slices. Such empty slices do not change the behavior of  and removing them up front will simplify the implementation:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">struct</span> Together {
+<span class="comment">// ...
+</span>
+    <span class="keyword">private</span> <span class="keyword">void</span> clearFront() {
+        <span class="keyword">while</span> (!slices.empty &amp;&amp; slices.front.empty) {
+            slices.popFront();
+        }
+    }
+
+    <span class="keyword">private</span> <span class="keyword">void</span> clearBack() {
+        <span class="keyword">while</span> (!slices.empty &amp;&amp; slices.back.empty) {
+            slices.popBack();
+        }
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>We will call those functions later from  and  as well.
+</p>
+<br><br>
+<p>Since  and  remove all of the empty slices from the beginning and the end, still having a slice would mean that the collective range is not yet empty. In other words, the range should be considered empty only if there is no slice left:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">struct</span> Together {
+<span class="comment">// ...
+</span>
+    <span class="keyword">bool</span> empty() <span class="keyword">const</span> {
+        <span class="keyword">return</span> slices.empty;
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The first element of the first slice is the first element of this  range:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">struct</span> Together {
+<span class="comment">// ...
+</span>
+    <span class="keyword">int</span> front() <span class="keyword">const</span> {
+        <span class="keyword">return</span> slices.front.front;
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Removing the first element of the first slice removes the first element of this range as well. Since this operation may leave the first slice empty, we must call  to remove that empty slice and the ones that are after that one:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">struct</span> Together {
+<span class="comment">// ...
+</span>
+    <span class="keyword">void</span> popFront() {
+        slices.front.popFront();
+        clearFront();
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>A copy of this range can be constructed from a copy of the  member:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">struct</span> Together {
+<span class="comment">// ...
+</span>
+    Together save() <span class="keyword">const</span> {
+        <span class="keyword">return</span> Together(slices.dup);
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p><i>Please note that  copies only  in this case, not the slice elements that it contains.</i>
+</p>
+<br><br>
+<p>The operations at the end of the range are similar to the ones at the beginning:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">struct</span> Together {
+<span class="comment">// ...
+</span>
+    <span class="keyword">int</span> back() <span class="keyword">const</span> {
+        <span class="keyword">return</span> slices.back.back;
+    }
+
+    <span class="keyword">void</span> popBack() {
+        slices.back.popBack();
+        clearBack();
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The length of the range can be calculated as the sum of the lengths of the slices:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">struct</span> Together {
+<span class="comment">// ...
+</span>
+    size_t length() <span class="keyword">const</span> {
+        size_t totalLength = 0;
+
+        <span class="keyword">foreach</span> (slice; slices) {
+            totalLength += slice.length;
+        }
+
+        <span class="keyword">return</span> totalLength;
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p> Alternatively, the length may be calculated with less code by taking advantage of .  takes an operation as its template parameter and applies that operation to all elements of a range:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.algorithm;
+
+<span class="comment">// ...
+</span>
+    size_t length() <span class="keyword">const</span> {
+        <span class="keyword">return</span> slices.fold!((a, b) =&gt; a + b.length)(size_t.init);
+    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The  in the template parameter represents the current result (<i>the sum</i> in this case) and  represents the current element. The first function parameter is the range that contains the elements and the second function parameter is the initial value of the result ( is 0). (Note how  is written before  by taking advantage of <a href="ufcs.html">UFCS</a>.)
+</p>
+<br><br>
+<p><i><b>Note:</b> Further, instead of calculating the length every time when  is called, it may be measurably faster to maintain a member variable perhaps named , which always equals the correct length of the collective range. That member may be calculated once in the constructor and adjusted accordingly as elements are removed by  and .</i>
+</p>
+<br><br>
+<p>One way of returning the element that corresponds to a specific index is to look at every slice to determine whether the element would be among the elements of that slice:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">struct</span> Together {
+<span class="comment">// ...
+</span>
+    <span class="keyword">int</span> opIndex(size_t index) <span class="keyword">const</span> {
+        <span class="comment">/* Save the index for the error message */</span>
+        <span class="keyword">immutable</span> originalIndex = index;
+
+        <span class="keyword">foreach</span> (slice; slices) {
+            <span class="keyword">if</span> (slice.length &gt; index) {
+                <span class="keyword">return</span> slice[index];
+
+            } <span class="keyword">else</span> {
+                index -= slice.length;
+            }
+        }
+
+        <span class="keyword">throw</span> <span class="keyword">new</span> Exception(
+            format(<span class="string_literal">"Invalid index: %s (length: %s)"</span>,
+                   originalIndex, <span class="keyword">this</span>.length));
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p><i><b>Note:</b> This  does not satisfy the constant time requirement that has been mentioned above. For this implementation to be acceptably fast, the  member must not be too long.</i>
+</p>
+<br><br>
+<p>This new range is now ready to be used with any number of  slices. With the help of  and , we can even include the range types that we have defined earlier in this chapter:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> range = Together(FibonacciSeries().take(10).array,
+                          [ 777, 888 ],
+                          (<span class="keyword">new</span> SquaresRange()).take(5).array);
+
+    writeln(range.save);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The elements of the three slices are accessed as if they were elements of a single large array:
+</p>
+<br><br>
+
+<br><br>
+<p>We can pass this range to other range algorithms. For example, to , which requires a :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    writeln(range.save.retro);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output:
+</p>
+<br><br>
+
+<br><br>
+<p>Of course you should use the more functional  instead of  in your programs.
+</p>
+<br><br>
+<h5> </h5>
+<br><br>
+<p>All of the range types that we have seen so far are about element access.  represents streamed element output, similar to sending characters to .
+</p>
+<br><br>
+<p> I have mentioned earlier that  requires support for the  operation.  is a function defined in the  module. It determines the capabilities of the range and the element at compile time and uses the most appropriate method to <i>output</i> the element.
+</p>
+<br><br>
+<p> considers the following cases in the order that they are listed below, and applies the method for the first matching case.  represents the type of the range; , a range object; , the type of the element; and  an element of the range:
+</p>
+<br><br>
+<table>full,
+
+
+
+
+
+
+
+</table>
+<br><br>
+<p>Let's define a range that matches the first case: The range will have a member function named , which takes a parameter that matches the type of the output range.
+</p>
+<br><br>
+<p>This output range will be used for outputting elements to multiple files, including . When elements are outputted with , they will all be written to all of those files. As an additional functionality, let's add the ability to specify a delimiter to be written after each element.
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">struct</span> MultiFile {
+    string delimiter;
+    File[] files;
+
+    <span class="keyword">this</span>(string delimiter, string[] fileNames...) {
+        <span class="keyword">this</span>.delimiter = delimiter;
+
+        <span class="comment">/* stdout is always included */</span>
+        <span class="keyword">this</span>.files ~= stdout;
+
+        <span class="comment">/* A File object for each file name */</span>
+        <span class="keyword">foreach</span> (fileName; fileNames) {
+            <span class="keyword">this</span>.files ~= File(fileName, <span class="string_literal">"w"</span>);
+        }
+    }
+
+    <span class="comment">// This is the version that takes arrays (but not strings)
+</span>    <span class="keyword">void</span> put(T)(T slice)
+            <span class="keyword">if</span> (isArray!T &amp;&amp; !isSomeString!T) {
+        <span class="keyword">foreach</span> (element; slice) {
+            <span class="comment">// Note that this is a call to the other version
+</span>            <span class="comment">// of put() below
+</span>            put(element);
+        }
+    }
+
+    <span class="comment">// This is the version that takes non-arrays and strings
+</span>    <span class="keyword">void</span> put(T)(T value)
+            <span class="keyword">if</span> (!isArray!T || isSomeString!T) {
+        <span class="keyword">foreach</span> (file; files) {
+            file.write(value, delimiter);
+        }
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>In order to be used as an output range of any type of elements,  is also templatized on the element type.
+</p>
+<br><br>
+<p> An algorithm in Phobos that uses  is .  is a very simple algorithm, which copies the elements of an  to an .
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.traits;
+<span class="keyword">import</span> std.stdio;
+<span class="keyword">import</span> std.algorithm;
+
+<span class="comment">// ...
+</span>
+<span class="keyword">void</span> main() {
+    <span class="keyword">auto</span> output = MultiFile(<span class="string_literal">"\n"</span>, <span class="string_literal">"output_0"</span>, <span class="string_literal">"output_1"</span>);
+    copy([ 1, 2, 3], output);
+    copy([ <span class="string_literal">"red"</span>, <span class="string_literal">"blue"</span>, <span class="string_literal">"green"</span> ], output);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>That code outputs the elements of the input ranges both to  and to files named "output_0" and "output_1":
+</p>
+<br><br>
+
+<br><br>
+<h6> Using slices as </h6>
+<br><br>
+<p>The  module makes slices  objects as well. (By contrast,  makes them only input ranges.) Unfortunately, using slices as  objects has a confusing effect: slices lose an element for each  operation on them; and that element is the element that has just been outputted!
+</p>
+<br><br>
+<p>The reason for this behavior is a consequence of slices' not having a  member function. As a result, the third case of the previous table is matched for slices and the following method is applied:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    range.front = e;
+    range.popFront();
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>As the code above is executed for each , the front element of the slice is assigned to the value of the <i>outputted</i> element, to be subsequently removed from the slice with :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+<span class="keyword">import</span> std.range;
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">int</span>[] slice = [ 1, 2, 3 ];
+    ;
+    writeln(slice);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>As a result, although the slice is used as an , it surprisingly <i>loses</i> elements:
+</p>
+<br><br>
+
+<br><br>
+<p>To avoid this, a separate slice must be used as an  instead:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+<span class="keyword">import</span> std.range;
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">int</span>[] slice = [ 1, 2, 3 ];
+    <span class="keyword">int</span>[] slice2 = slice;
+
+    put(, 100);
+
+    writeln(slice2);
+    writeln(slice);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>This time the second slice is consumed and the original slice has the expected elements:
+</p>
+<br><br>
+
+<br><br>
+<p>Another important fact is that the length of the slice does not grow when used as an . It is the programmer's responsibility to ensure that there is enough room in the slice:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span>[] slice = [ 1, 2, 3 ];
+    <span class="keyword">int</span>[] slice2 = slice;
+
+    <span class="keyword">foreach</span> (i; 0 .. 4) {    <span class="comment">// ← no room for 4 elements
+</span>        put(slice2, i * 100);
+    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>When the slice becomes completely empty because of the indirect  calls, the program terminates with an exception:
+</p>
+<br><br>
+
+<br><br>
+<p>  and its convenience function  allows using slices as <i>an  where the elements are appended</i>. The  function of the special range object that  returns actually appends the elements to the original slice:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.array;
+
+<span class="comment">// ...
+</span>
+    <span class="keyword">auto</span> a = appender([ 1, 2, 3 ]);
+
+    <span class="keyword">foreach</span> (i; 0 .. 4) {
+        a.put(i * 100);
+    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>In the code above,  is called with an array and returns a special range object. That range object is in turn used as an  by calling its  member function. The resultant elements are accessed by its  property:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    writeln(a.data);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output:
+</p>
+<br><br>
+
+<br><br>
+<p> supports the  operator as well:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    a  1000;
+    writeln(a.data);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output:
+</p>
+<br><br>
+
+<br><br>
+<h6>  with an  parameter</h6>
+<br><br>
+<p>Similar to how  member functions can be defined as <a href="lambda.html">taking a  parameter</a>, it is possible to define one that takes an . Functions like , , and  operate more efficiently by placing the output characters right inside the output buffer of the output range.
+</p>
+<br><br>
+<p>To be able to work with any  type, such  definitions need to be function templates, optionally with template constraints:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+<span class="keyword">import</span> std.range;
+
+<span class="keyword">struct</span> S {
+    <span class="keyword">void</span> toString(O)(<span class="keyword">ref</span> O o) <span class="keyword">const</span>
+            <span class="keyword">if</span> (isOutputRange!(O, <span class="keyword">char</span>)) {
+        (o, <span class="string_literal">"hello"</span>);
+    }
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">auto</span> s = S();
+    writeln(s);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Note that the code inside  does not define an  object. That object is defined by  to store the characters before printing them:
+</p>
+<br><br>
+
+<br><br>
+<h5>Range templates</h5>
+<br><br>
+<p>Although we have used mostly  ranges in this chapter, ranges and range algorithms are much more useful when defined as templates.
+</p>
+<br><br>
+<p>The  module includes many range templates. We will see these templates in the next chapter.
+</p>
+<br><br>
+<h5>Summary</h5>
+<br><br>
+<ul><br><br>
+<li>Ranges abstract data structures from algorithms and allow them to be used with algorithms seamlessly.</li>
+<br><br>
+<li>Ranges are a D concept and are the basis for many features of Phobos.</li>
+<br><br>
+<li>Many Phobos algorithms return lazy range objects to accomplish their special tasks.</li>
+<br><br>
+<li>UFCS works well with range algorithms.</li>
+<br><br>
+<li>When used as  objects, the elements of strings are Unicode characters.</li>
+<br><br>
+<li> requires ,  and .</li>
+<br><br>
+<li> additionally requires .</li>
+<br><br>
+<li> additionally requires  and .</li>
+<br><br>
+<li>Infinite  requires  over .</li>
+<br><br>
+<li>Finite  requires  and  over .</li>
+<br><br>
+<li> returns an  that appends to slices.</li>
+<br><br>
+<li>Slices are ranges of finite </li>
+<br><br>
+<li>Fixed-length arrays are not ranges.</li>
+<br><br>
+</ul>
+<br><br>
+macros:
+        TITLE=Ranges
+<br><br>
+        DESCRIPTION=Phobos ranges that abstract data structures from algorithms and that enables them to be used seamlessly.
+<br><br>
+        KEYWORDS=d programming language tutorial book range OutputRange InputRange ForwardRange BidirectionalRange RandomAccessRange
+<br><br>
+MINI_SOZLUK=
+</section>
+      </article>
+    </div>
+  </body>
+</html>

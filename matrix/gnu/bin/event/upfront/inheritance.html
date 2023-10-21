@@ -1,0 +1,1656 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Inheritance</title>
+    <style type="text/css" media="screen">
+      html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p,
+      blockquote, pre, a, abbr, address, cite, code, del, dfn, em, figure,
+      img, ins, kbd, q, s, samp, small, strong, sub, sup, var, b, u, i, dl,
+      dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption,
+      tbody, tfoot, thead, tr, th, td {
+        background: transparent none repeat scroll 0 0;
+        border: 0 none;
+        font-size: 100%;
+        margin: 0;
+        outline: 0 none;
+        padding: 0;
+        vertical-align: baseline;
+      }
+
+      h1 { font-size: 200%; }
+      h2 { font-size: 160%; }
+      h3 { font-size: 120%; }
+      h4 { font-size: 100%; }
+      h5 { font-size: 80%; }
+      h6 { font-size: 80%; font-weight: normal; }
+
+      ul, ol {
+        margin: 1.4em 0;
+      }
+      ul ul, ol ol, ul ol, ol ul {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      ul, ol {
+        margin-left: 2.8em;
+      }
+
+      ol {
+        list-style: decimal;
+      }
+      ol ol {
+        list-style: lower-alpha;
+      }
+      ol ol ol {
+        list-style: lower-roman;
+      }
+      ol ol ol ol {
+        list-style: decimal;
+      }
+
+      blockquote {
+        margin: 0.1em;
+        margin-left: 1em;
+        border-left: 2px solid #cccccc;
+        padding-left: 0.7em;
+      }
+
+      .color_red { color: #dc322f; }
+      .color_blue { color: #268bd2; }
+      .color_green { color: #859901; }
+      .color_yellow { color: #b58901; }
+      .color_black { color: black; }
+      .color_white { color: white; }
+
+      .font_big {
+        font-size: 1.2em;
+      }
+
+      .ddoc_section_h {
+        font-weight: bold;
+        font-size: 13px;
+        line-height: 19.5px;
+        margin-top: 11px;
+        display: block;
+      }
+
+      body.dlang .dlang {
+        display: inline-block;
+      }
+
+      body.dlang .declaration .dlang {
+          display: block;
+      }
+
+      body.dlang .ddoc_header_anchor a.dlang {
+        display: block;
+        color: rgba(0, 136, 204, 1);
+        text-decoration: none;
+      }
+
+      body.dlang .ddoc_header_anchor .code {
+        color: rgba(0, 136, 204, 1);
+      }
+
+      #ddoc_main .module {
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          overflow-x: hidden;
+          padding: 15px;
+      }
+
+      #ddoc_main .section .section {
+        margin-top: 0;
+      }
+
+      #ddoc_main .ddoc_module_members_section {
+          padding: 1px 0 0;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members section.intro {
+          background: #fff none repeat scroll 0 0;
+          list-style-type: none;
+          width: 100%;
+      }
+
+      #ddoc_main .ddoc_header_anchor {
+          font-size: 1.4em;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_header_anchor > .code {
+          display: inline-block;
+
+      }
+
+      #ddoc_main .ddoc_decl {
+        background-color: transparent;
+        height: 100%;
+        left: 0;
+        top: 0;
+        padding: 0;
+        padding-left: 15px;
+      }
+
+      #ddoc_main .ddoc_decl .section, #ddoc_main .section.ddoc_sections {
+        background: white none repeat scroll 0 0;
+        margin: 0;
+        padding: 5px;
+        position: relative;
+        border-radius: 5px;
+      }
+
+      #ddoc_main .ddoc_decl .section h4:first-of-type, #ddoc_main .section.ddoc_sections h4:first-of-type {
+        font-size: 13px;
+        line-height: 1.5;
+        margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration {
+          margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration .code {
+          color: rgba(0, 0, 0, 1);
+          margin-bottom: 15px;
+          padding-bottom: 6px;
+      }
+
+      #ddoc_main .declaration div .para {
+          margin-bottom: 0;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr td:first-of-type {
+        padding: 7px;
+        text-align: right;
+        vertical-align: top;
+        word-break: normal;
+        white-space: nowrap;
+      }
+
+      #ddoc_main .ddoc_params .graybox {
+        border: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox td {
+        border-color: rgba(214, 214, 214, 1);
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:first-child > td {
+        border-top: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:last-child > td {
+        border-bottom: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:first-child {
+        border-left: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:last-child {
+        border-right: 0 none;
+        width: 100%;
+      }
+
+      #ddoc_main em.term, #ddoc_main em.term .code {
+        color: rgba(65, 65, 65, 1);
+        font-size: 12px;
+        font-style: italic;
+        line-height: 1.5;
+      }
+
+      #ddoc_main .see-also {
+        cursor: pointer;
+        font-family: Menlo,monospace;
+      }
+
+      #ddoc_main .ddoc_decl .section > div:last-of-type {
+        margin-bottom: 15px;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members {
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .code_sample {
+        background: inherit;
+      }
+
+      #ddoc_main .declaration .code-line {
+          display: block;
+          font: 1em Menlo,monospace;
+      }
+
+      #ddoc_main a[name] {
+        margin: -112px 0 0;
+        padding-top: 112px;
+      }
+
+      #ddoc_main .ddoc_decl td {
+        max-width: inherit;
+      }
+
+      #ddoc_main .declaration a {
+        color: inherit;
+      }
+
+      #ddoc_main .declaration a:hover {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: underline;
+      }
+
+      body.ddoc {
+        background-color: transparent;
+        color: rgba(0, 0, 0, 1);
+        font-family: Helvetica,Arial,sans-serif;
+        font-size: 62.5%;
+        margin: 0;
+        border: 0;
+        left: 0;
+        top: 0;
+        padding: 0;
+      }
+
+      .ddoc a[name] {
+        display: block;
+        height: 0;
+        margin: -85px 0 0;
+        padding-top: 85px;
+        width: 0;
+      }
+
+      .ddoc .module {
+          border-color: transparent;
+          background-color: rgba(255, 255, 255, 1);
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-image: none;
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          box-shadow: 0 0 1px rgba(0, 0, 0, 0.07);
+          display: block;
+          margin-left: 0;
+          min-height: calc(100% - 173px);
+          overflow: auto;
+          padding-bottom: 100px;
+      }
+
+      .ddoc .content_wrapper {
+          background-color: rgba(242, 242, 242, 1);
+          margin: 0 auto;
+          max-width: 980px;
+      }
+
+      .ddoc .section {
+        padding: 15px 25px 30px;
+      }
+
+      .ddoc .section .section {
+        margin: 30px 0 0;
+        padding: 0;
+      }
+
+      .ddoc .para {
+        color: rgba(65, 65, 65, 1);
+        font-size: 1.4em;
+        line-height: 145%;
+        margin-bottom: 15px;
+      }
+
+      .ddoc .ddoc_examples .para {
+        margin-bottom: 0;
+      }
+
+      .ddoc .module_name {
+          color: rgba(0, 0, 0, 1);
+          display: block;
+          font-family: Helvetica;
+          font-size: 2.8em;
+          font-weight: 100;
+          margin-bottom: 0;
+          padding: 15px 0;
+      }
+
+      .ddoc .module a {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: none;
+      }
+
+      .ddoc .code {
+        color: rgba(128, 128, 128, 1);
+        font-family: Menlo,monospace;
+        font-size: 0.85em;
+        word-wrap: break-word;
+      }
+
+      .ddoc .code i {
+        font-style: normal;
+      }
+
+      .ddoc .code .code {
+        font-size: 1em;
+      }
+
+      .ddoc .code_sample {
+        background-clip: padding-box;
+        margin: 1px 0;
+        text-align: left;
+      }
+
+      .ddoc .code_sample {
+        display: block;
+        font-size: 1.4em;
+        margin-left: 21px;
+      }
+
+      .ddoc ol .code_sample {
+        font-size: 1em;
+      }
+
+      .ddoc .code_lines {
+        counter-reset: li;
+        line-height: 1.6em;
+        list-style: outside none none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .ddoc .code_listing .code_sample div {
+        margin-left: 13px;
+        width: 93%;
+      }
+
+      .ddoc .code_listing .code_sample div .code_lines li {
+        list-style-type: none;
+        margin: 0;
+        padding-right: 10px;
+      }
+
+      .ddoc .code_sample div .code_lines li::before {
+        margin-left: -33px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+10)::before {
+        margin-left: -39px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+100)::before {
+        margin-left: -46px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample .code_lines .code {
+        color: #000;
+      }
+
+      .ddoc div.dlang {
+        margin: 10px 0 21px;
+        padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+          margin: 10px 0 21px;
+          padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+        border-left: 5px solid rgba(0, 155, 51, 0.2);
+      }
+
+      .ddoc .code_lines li::before {
+        color: rgba(128, 128, 128, 1);
+        content: counter(li, decimal);
+        counter-increment: li;
+        font-family: Menlo,monospace;
+        font-size: 0.9em;
+        margin-right: 16px;
+      }
+
+      .ddoc .code_lines li {
+        padding-left: 0;
+        white-space: pre-wrap;
+      }
+
+      .ddoc .code_lines li:only-of-type::before {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:only-of-type {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:nth-child(n+10) {
+        text-indent: -17px;
+      }
+
+      .ddoc .code_lines li:nth-child(n+10)::before {
+        margin-right: 12px;
+      }
+
+      .ddoc .graybox {
+        border: 1px solid rgba(233, 233, 233, 1);
+        border-collapse: collapse;
+        border-spacing: 0;
+        empty-cells: hide;
+        margin: 20px 0 36px;
+        text-align: left;
+      }
+
+      .ddoc .graybox p {
+        margin: 0;
+        min-width: 50px;
+      }
+
+      .ddoc th {
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: bottom;
+      }
+
+      .ddoc td {
+        border: 1px solid rgba(233, 233, 233, 1);
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: middle;
+      }
+
+      .punctuation {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .comment {
+        color: rgba(0, 131, 18, 1);
+      }
+
+      .operator {
+        color: #000;
+      }
+
+      .keyword {
+        color: rgba(170, 13, 145, 1);
+      }
+
+      .keyword_type {
+        color: rgba(170, 51, 145, 1);
+      }
+
+      .string_literal {
+        color: rgba(196, 26, 22, 1);
+      }
+
+      .ddoc_psuper_symbol {
+        color: rgba(92, 38, 153, 1);
+      }
+
+      .param {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .psymbol {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .ddoc_member_header .ddoc_header_anchor .code {
+        font-size: 1em;
+      }
+    </style>
+  </head>
+  <body id="ddoc_main" class="ddoc dlang">
+    <div class="content_wrapper">
+      <article class="module">
+        <h1 class="module_name">Inheritance</h1>
+        <section id="module_content"><br><br>
+<br><br>
+
+<br><br>
+<p>Inheritance is defining a more specialized type based on an existing more general base type. The specialized type acquires the members of the base type and as a result can be substituted in place of the base type.
+</p>
+<br><br>
+<p>  Inheritance is available for classes, not structs. The class that inherits another class is called the <i>subclass</i>, and the class that gets inherited is called the <i>superclass</i>, also called the <i>base class</i>.
+</p>
+<br><br>
+<p>There are two types of inheritance in D. We will cover <i>implementation inheritance</i> in this chapter and leave <i>interface inheritance</i> to a later chapter.
+</p>
+<br><br>
+<p> When defining a subclass, the superclass is specified after a colon character:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">class</span> <i>SubClass</i> : <i>SuperClass</i> {
+    <span class="comment">// ...
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>To see an example of this, let's assume that there is already the following class that represents a clock:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">class</span> Clock {
+    <span class="keyword">int</span> hour;
+    <span class="keyword">int</span> minute;
+    <span class="keyword">int</span> second;
+
+    <span class="keyword">void</span> adjust(<span class="keyword">int</span> hour, <span class="keyword">int</span> minute, <span class="keyword">int</span> second = 0) {
+        <span class="keyword">this</span>.hour = hour;
+        <span class="keyword">this</span>.minute = minute;
+        <span class="keyword">this</span>.second = second;
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Apparently, the members of that class do not need special values during construction; so there is no constructor. Instead, the members are set by the  member function:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> deskClock = <span class="keyword">new</span> Clock;
+    deskClock.adjust(20, 30);
+    writefln(
+        <span class="string_literal">"%02s:%02s:%02s"</span>,
+        deskClock.hour, deskClock.minute, deskClock.second);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p><i><b>Note:</b> It would be more useful to produce the time string by a  function. It will be added later when explaining the  keyword below.</i>
+</p>
+<br><br>
+<p>The output:
+</p>
+<br><br>
+
+<br><br>
+<p>With only that much functionality,  could be a struct as well, and depending on the needs of the program, that could be sufficient.
+</p>
+<br><br>
+<p>However, being a class makes it possible to inherit from .
+</p>
+<br><br>
+<p>To see an example of inheritance, let's consider an  that not only includes all of the functionality of , but also provides a way of setting the alarm. Let's first define this type without regard to . If we did that, we would have to include the same three members of  and the same  function that adjusted them.  would also have other members for its additional functionality:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">class</span> AlarmClock {
+    
+    
+    
+    <span class="keyword">int</span> alarmHour;
+    <span class="keyword">int</span> alarmMinute;
+
+    
+        
+        
+        
+    
+
+    <span class="keyword">void</span> adjustAlarm(<span class="keyword">int</span> hour, <span class="keyword">int</span> minute) {
+        alarmHour = hour;
+        alarmMinute = minute;
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The members that appear exactly in  are highlighted. As can be seen, defining  and  separately results in code duplication.
+</p>
+<br><br>
+<p>Inheritance is helpful in such cases. Inheriting  from  simplifies the new class and reduces code duplication:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">class</span> AlarmClock  {
+    <span class="keyword">int</span> alarmHour;
+    <span class="keyword">int</span> alarmMinute;
+
+    <span class="keyword">void</span> adjustAlarm(<span class="keyword">int</span> hour, <span class="keyword">int</span> minute) {
+        alarmHour = hour;
+        alarmMinute = minute;
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The new definition of  is the equivalent of the previous one. The highlighted part of the new definition corresponds to the highlighted parts of the old definition.
+</p>
+<br><br>
+<p>Because  inherits the members of , it can be used just like a :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> bedSideClock = <span class="keyword">new</span> AlarmClock;
+    bedSideClock.;
+    bedSideClock.adjustAlarm(7, 0);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The members that are inherited from the superclass can be accessed as if they were the members of the subclass:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    writefln(<span class="string_literal">"%02s:%02s:%02s ♫%02s:%02s"</span>,
+             bedSideClock,
+             bedSideClock,
+             bedSideClock,
+             bedSideClock.alarmHour,
+             bedSideClock.alarmMinute);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output:
+</p>
+<br><br>
+
+<br><br>
+<p><i><b>Note:</b> An  function would be more useful in this case. It will be defined later below.</i>
+</p>
+<br><br>
+<p>The inheritance used in this example is <i>implementation inheritance.</i>
+</p>
+<br><br>
+<p>If we imagine the memory as a ribbon going from top to bottom, the placement of the members of  in memory can be pictured as in the following illustration:
+</p>
+<br><br>
+
+<br><br>
+<p> The illustration above is just to give an idea on how the members of the superclass and the subclass may be combined together. The actual layout of the members depends on the implementation details of the compiler in use. For example, the part that is marked as <i>other data</i> typically includes the pointer to the <i>virtual function table</i> (vtbl) of that particular class type. The details of the object layout are outside the scope of this book.
+</p>
+<br><br>
+<h5> Warning: Inherit only if "is a"</h5>
+<br><br>
+<p>We have seen that implementation inheritance is about acquiring members. Consider this kind of inheritance only if the subtype can be thought of being a kind of the supertype as in the phrase "alarm clock <i>is a</i> clock."
+</p>
+<br><br>
+<p> "Is a" is not the only relationship between types; a more common relationship is the "has a" relationship. For example, let's assume that we want to add the concept of a  to the  class. It would not be appropriate to add  to  by inheritance because the statement "clock is a battery" is not true:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">class</span> Clock : Battery {    
+    <span class="comment">// ...
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>A clock is not a battery; it <i>has a</i> battery. When there is such a relationship of containment, the type that is contained must be defined as a member of the type that contains it:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">class</span> Clock {
+    Battery battery;       
+    <span class="comment">// ...
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h5>   Inheritance from at most one class</h5>
+<br><br>
+<p>Classes can only inherit from a single base class (which itself can potentially inherit from another single class). In other words, multiple inheritance is not supported in D.
+</p>
+<br><br>
+<p>For example, assuming that there is also a  class, and even though "alarm clock is a sound emitting object" is also true, it is not possible to inherit  both from  and :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">class</span> SoundEmitter {
+    <span class="comment">// ...
+</span>}
+
+<span class="keyword">class</span> AlarmClock : Clock {    
+    <span class="comment">// ...
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>On the other hand, there is no limit to the number of <i>interfaces</i> that a class can inherit from. We will see the  keyword in a later chapter.
+</p>
+<br><br>
+<p>Additionally, there is no limit to how deep the inheritance hierarchy can go:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">class</span> MusicalInstrument {
+    <span class="comment">// ...
+</span>}
+
+<span class="keyword">class</span> StringInstrument : MusicalInstrument {
+    <span class="comment">// ...
+</span>}
+
+<span class="keyword">class</span> Violin : StringInstrument {
+    <span class="comment">// ...
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The inheritance hierarchy above defines a relationship from the more general to the more specific: musical instrument, string instrument, and violin.
+</p>
+<br><br>
+<h5>Hierarchy charts</h5>
+<br><br>
+<p>Types that are related by the "is a" relationship form a <i>class hierarchy</i>.
+</p>
+<br><br>
+<p>According to OOP conventions, class hierarchies are represented by superclasses being on the top and the subclasses being at the bottom. The inheritance relationships are indicated by arrows pointing from the subclasses to the superclasses.
+</p>
+<br><br>
+<p>For example, the following can be a hierarchy of musical instruments:
+</p>
+<br><br>
+
+<br><br>
+<h5> Accessing superclass members</h5>
+<br><br>
+<p>The  keyword allows referring to members that are inherited from the superclass.
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">class</span> AlarmClock : Clock {
+    <span class="comment">// ...
+</span>
+    <span class="keyword">void</span> foo() {
+        <span class="keyword">super</span>.minute = 10; <span class="comment">// The inherited 'minute' member
+</span>        minute = 10;       <span class="comment">// Same thing if there is no ambiguity
+</span>    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The  keyword is not always necessary;  alone has the same meaning in the code above. The  keyword is needed when both the superclass and the subclass have members under the same names. We will see this below when we will need to write  and .
+</p>
+<br><br>
+<p>If multiple classes in an inheritance tree define a symbol with the same name, one can use the specific name of the class in the inheritance tree to disambiguate between the symbols:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">class</span> Device {
+    string ;
+}
+
+<span class="keyword">class</span> Clock : Device {
+    string ;
+}
+
+<span class="keyword">class</span> AlarmClock : Clock {
+    <span class="comment">// ...
+</span>
+    <span class="keyword">void</span> foo() {
+        manufacturer = <span class="string_literal">"Sunny Horology, Inc."</span>;
+        manufacturer = <span class="string_literal">"Better Watches, Ltd."</span>;
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h5> Constructing superclass members</h5>
+<br><br>
+<p>The other use of the  keyword is to call the constructor of the superclass. This is similar to calling the overloaded constructors of the current class:  when calling constructors of the current class and  when calling constructors of the superclass.
+</p>
+<br><br>
+<p>It is not required to call the superclass constructor explicitly. If the constructor of the subclass makes an explicit call to any overload of , then that constructor is executed by that call. Otherwise, and if the superclass has a default constructor, it is executed automatically before entering the body of the subclass.
+</p>
+<br><br>
+<p>We have not defined constructors for the  and  classes yet. For that reason, the members of both of those classes are initialized by the  values of their respective types, which is 0 for .
+</p>
+<br><br>
+<p>Let's assume that  has the following constructor:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">class</span> Clock {
+    <span class="keyword">this</span>(<span class="keyword">int</span> hour, <span class="keyword">int</span> minute, <span class="keyword">int</span> second) {
+        <span class="keyword">this</span>.hour = hour;
+        <span class="keyword">this</span>.minute = minute;
+        <span class="keyword">this</span>.second = second;
+    }
+
+    <span class="comment">// ...
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>That constructor must be used when constructing  objects:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> clock = <span class="keyword">new</span> Clock(17, 15, 0);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Naturally, the programmers who use the  type directly would have to use that syntax. However, when constructing an  object, they cannot construct its  part separately. Besides, the users of  need not even know that it inherits from .
+</p>
+<br><br>
+<p>A user of  should simply construct an  object and use it in the program without needing to pay attention to its  heritage:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> bedSideClock = <span class="keyword">new</span> AlarmClock(<span class="comment">/* ... */</span>);
+    <span class="comment">// ... use as an AlarmClock ...
+</span></code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>For that reason, constructing the superclass part is the responsibility of the subclass. The subclass calls the constructor of the superclass with the  syntax:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">class</span> AlarmClock : Clock {
+    <span class="keyword">this</span>(<span class="keyword">int</span> hour, <span class="keyword">int</span> minute, <span class="keyword">int</span> second,  <span class="comment">// for Clock's members
+</span>         <span class="keyword">int</span> alarmHour, <span class="keyword">int</span> alarmMinute) {  <span class="comment">// for AlarmClock's members
+</span>        (hour, minute, second);
+        <span class="keyword">this</span>.alarmHour = alarmHour;
+        <span class="keyword">this</span>.alarmMinute = alarmMinute;
+    }
+
+    <span class="comment">// ...
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The constructor of  takes arguments for both its own members and the members of its superclass. It then uses part of those arguments to construct its superclass part.
+</p>
+<br><br>
+<h5> Overriding the definitions of member functions</h5>
+<br><br>
+<p>One of the benefits of inheritance is being able to redefine the member functions of the superclass in the subclass. This is called <i>overriding</i>: The existing definition of the member function of the superclass is overridden by the subclass with the  keyword.
+</p>
+<br><br>
+<p> Overridable functions are called <i>virtual functions</i>. Virtual functions are implemented by the compiler through <i>virtual function pointer tables</i> (vtbl) and <i>vtbl pointers</i>. The details of this mechanism are outside the scope of this book. However, it must be known by every system programmer that virtual function calls are more expensive than regular function calls. Every non-private  member function in D is virtual by default. For that reason, when a superclass function does not need to be overridden at all, it should be defined as  so that it is not virtual. We will see the  keyword later in <a href="interface.html">the Interfaces chapter</a>.
+</p>
+<br><br>
+<p>Let's assume that  has a member function that is used for resetting its members all to zero:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">class</span> Clock {
+    <span class="keyword">void</span> reset() {
+        hour = 0;
+        minute = 0;
+        second = 0;
+    }
+
+    <span class="comment">// ...
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>That function is inherited by  and can be called on an  object:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> bedSideClock = <span class="keyword">new</span> AlarmClock(20, 30, 0, 7, 0);
+    <span class="comment">// ...
+</span>    bedSideClock.reset();
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>However, necessarily ignorant of the members of ,  can only reset its own members. For that reason, to reset the members of the subclass as well,  must be overridden:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">class</span> AlarmClock : Clock {
+     <span class="keyword">void</span> reset() {
+        <span class="keyword">super</span>.reset();
+        alarmHour = 0;
+        alarmMinute = 0;
+    }
+
+    <span class="comment">// ...
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The subclass resets only its own members and dispatches the rest of the task to  by the  call. Note that writing just  would not work as it would call the  function of  itself. Calling  from within itself would cause an infinite recursion.
+</p>
+<br><br>
+<p>The reason that I have delayed the definition of  until this point is that it must be defined by the  keyword for classes. As we will see in the next chapter, every class is automatically inherited from a superclass called  and  already defines a  member function.
+</p>
+<br><br>
+<p>For that reason, the  member function for classes must be defined by using the  keyword:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.string;
+
+<span class="keyword">class</span> Clock {
+     string toString() <span class="keyword">const</span> {
+        <span class="keyword">return</span> format(<span class="string_literal">"%02s:%02s:%02s"</span>, hour, minute, second);
+    }
+
+    <span class="comment">// ...
+</span>}
+
+<span class="keyword">class</span> AlarmClock : Clock {
+     string toString() <span class="keyword">const</span> {
+        <span class="keyword">return</span> format(<span class="string_literal">"%s ♫%02s:%02s"</span>, <span class="keyword">super</span>.toString(),
+                      alarmHour, alarmMinute);
+    }
+
+    <span class="comment">// ...
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Note that  is again dispatching some of the task to  by the  call.
+</p>
+<br><br>
+<p>Those two overrides of  allow converting  objects to strings:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> main() {
+    <span class="keyword">auto</span> deskClock = <span class="keyword">new</span> AlarmClock(10, 15, 0, 6, 45);
+    writeln();
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output:
+</p>
+<br><br>
+
+<br><br>
+<h5>  Using the subclass in place of the superclass</h5>
+<br><br>
+<p>Since the superclass is more <i>general</i> and the subclass is more <i>specialized</i>, objects of a subclass can be used in places where an object of the superclass type is required. This is called <i>polymorphism</i>.
+</p>
+<br><br>
+<p>The concepts of general and specialized types can be seen in statements like "this type is of that type": "alarm clock is a clock", "student is a person", "cat is an animal", etc. Accordingly, an alarm clock can be used where a clock is needed, a student can be used where a person is needed, and a cat can be used where an animal is needed.
+</p>
+<br><br>
+<p>When a subclass object is being used as a superclass object, it does not lose its own specialized type. This is similar to the examples in real life: Using an alarm clock simply as a clock does not change the fact that it is an alarm clock; it would still behave like an alarm clock.
+</p>
+<br><br>
+<p>Let's assume that a function takes a  object as parameter, which it resets at some point during its execution:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> use(Clock clock) {
+    <span class="comment">// ...
+</span>    clock.reset();
+    <span class="comment">// ...
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Polymorphism makes it possible to send an  to such a function:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> deskClock = <span class="keyword">new</span> AlarmClock(10, 15, 0, 6, 45);
+    writeln(<span class="string_literal">"Before: "</span>, deskClock);
+    ;
+    writeln(<span class="string_literal">"After : "</span>, deskClock);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>This is in accordance with the relationship "alarm clock is a clock." As a result, the members of the  object get reset:
+</p>
+<br><br>
+
+<br><br>
+<p>The important observation here is that not only the members of  but also the members of  have been reset.
+</p>
+<br><br>
+<p>Although  calls  on a  object, since the actual object is an , the function that gets called is . According to its definition above,  resets the members of both  and .
+</p>
+<br><br>
+<p>In other words, although  uses the object as a , the actual object may be an inherited type that behaves in its own special way.
+</p>
+<br><br>
+<p>Let's add another class to the  hierarchy. The  function of this type sets its members to random values:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.random;
+
+<span class="keyword">class</span> BrokenClock : Clock {
+    <span class="keyword">this</span>() {
+        <span class="keyword">super</span>(0, 0, 0);
+    }
+
+    <span class="keyword">override</span> <span class="keyword">void</span> reset() {
+        hour = uniform(0, 24);
+        minute = uniform(0, 60);
+        second = uniform(0, 60);
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>When an object of  is sent to , then the special  function of  would be called. Again, although it is passed as a , the actual object is still a :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> shelfClock = <span class="keyword">new</span> BrokenClock;
+    use(shelfClock);
+    writeln(shelfClock);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output shows random time values as a result of resetting a :
+</p>
+<br><br>
+
+<br><br>
+<h5>Inheritance is transitive</h5>
+<br><br>
+<p>Polymorphism is not just limited to two classes. Subclasses of subclasses can also be used in place of any superclass in the hierarchy.
+</p>
+<br><br>
+<p>Let's consider the  hierarchy:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">class</span> MusicalInstrument {
+    <span class="comment">// ...
+</span>}
+
+<span class="keyword">class</span> StringInstrument : MusicalInstrument {
+    <span class="comment">// ...
+</span>}
+
+<span class="keyword">class</span> Violin : StringInstrument {
+    <span class="comment">// ...
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The inheritances above builds the following relationships: "string instrument is a musical instrument" and "violin is a string instrument." Therefore, it is also true that "violin is a musical instrument." Consequently, a  object can be used in place of a .
+</p>
+<br><br>
+<p>Assuming that all of the supporting code below has also been defined:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> playInTune(MusicalInstrument instrument,
+                MusicalPiece piece) {
+    instrument.tune();
+    instrument.play(piece);
+}
+
+<span class="comment">// ...
+</span>
+<span class="keyword">auto</span> myViolin = <span class="keyword">new</span> Violin;
+playInTune(myViolin, improvisation);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Although  expects a , it is being called with a  due to the relationship "violin is a musical instrument."
+</p>
+<br><br>
+<p>Inheritance can be as deep as needed.
+</p>
+<br><br>
+<h5> Abstract member functions and abstract classes</h5>
+<br><br>
+<p>Sometimes there are member functions that are natural to appear in a class interface even though that class cannot provide its definition. When there is no <i>concrete</i> definition of a member function, that function is an <i>abstract</i> member function. A class that has at least one abstract member function is an abstract class.
+</p>
+<br><br>
+<p>For example, the  superclass in a hierarchy may have an  member function that determines whether a given move is valid for that chess piece. Since validity of a move depends on the actual type of the chess piece, the  general class cannot make this decision itself. The valid moves can only be known by the subclasses like , , etc.
+</p>
+<br><br>
+<p>The  keyword specifies that the inherited class must implement such a method itself:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">class</span> ChessPiece {
+     <span class="keyword">bool</span> isValid(Square from, Square to);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>It is not possible to construct objects of abstract classes:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> piece = <span class="keyword">new</span> ChessPiece;    
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The subclass would have to override and implement all the abstract functions in order to make the class non-abstract and therefore constructible:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">class</span> Pawn : ChessPiece {
+    <span class="keyword">override</span> <span class="keyword">bool</span> isValid(Square from, Square to) {
+        <span class="comment">// ... the implementation of isValid for pawn ...
+</span>        <span class="keyword">return</span> decision;
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>It is now possible to construct objects of :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> piece = <span class="keyword">new</span> Pawn;             <span class="comment">// compiles
+</span></code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Note that an abstract function may have an implementation of its own, but it would still require the subclass to provide its own implementation of such a function. For example, the 'es implementation may provide some useful checks of its own:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">class</span> ChessPiece {
+     <span class="keyword">bool</span> isValid(Square from, Square to) {
+        <span class="comment">// We require the 'to' position to be different than
+</span>        <span class="comment">// the 'from' position
+</span>        <span class="keyword">return</span> from != to;
+    }
+}
+
+<span class="keyword">class</span> Pawn : ChessPiece {
+    <span class="keyword">override</span> <span class="keyword">bool</span> isValid(Square from, Square to) {
+        <span class="comment">// First verify if it is a valid move for any ChessPiece
+</span>        <span class="keyword">if</span> (!(from, to)) {
+            <span class="keyword">return</span> <span class="keyword">false</span>;
+        }
+
+        <span class="comment">// ... then check if it is valid for the Pawn ...
+</span>
+        <span class="keyword">return</span> decision;
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The  class is still abstract even though  was already implemented, but the  class is non-abstract and can be instantiated.
+</p>
+<br><br>
+<h5>Example</h5>
+<br><br>
+<p>Let's consider a class hierarchy that represents railway vehicles:
+</p>
+<br><br>
+
+<br><br>
+<p>The functions that  will declare as  are indicated by question marks.
+</p>
+<br><br>
+<p>Since my goal is only to present a class hierarchy and point out some of its design decisions, I will not fully implement these classes. Instead of doing actual work, they will simply print messages.
+</p>
+<br><br>
+<p>The most general class of the hierarchy above is . In this program, it will only know how to move itself:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">class</span> RailwayVehicle {
+    <span class="keyword">void</span> advance(size_t kilometers) {
+        writefln(<span class="string_literal">"The vehicle is advancing %s kilometers"</span>,
+                 kilometers);
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>A class that inherits from  is , which does not have any special members yet:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">class</span> Locomotive : RailwayVehicle {
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>We will add a special  member function to  later during one of the exercises.
+</p>
+<br><br>
+<p> is a  as well. However, if the hierarchy supports different types of railway cars, then certain behaviors like loading and unloading must be done according to their exact types. For that reason,  can only declare these two functions as abstract:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">class</span> RailwayCar : RailwayVehicle {
+     <span class="keyword">void</span> load();
+     <span class="keyword">void</span> unload();
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Loading and unloading a passenger car is as simple as opening the doors of the car, while loading and unloading a freight car may involve porters and winches. The following subclasses provide definitions for the abstract functions of :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">class</span> PassengerCar : RailwayCar {
+    <span class="keyword">override</span> <span class="keyword">void</span> load() {
+        writeln(<span class="string_literal">"The passengers are getting on"</span>);
+    }
+
+    <span class="keyword">override</span> <span class="keyword">void</span> unload() {
+        writeln(<span class="string_literal">"The passengers are getting off"</span>);
+    }
+}
+
+<span class="keyword">class</span> FreightCar : RailwayCar {
+    <span class="keyword">override</span> <span class="keyword">void</span> load() {
+        writeln(<span class="string_literal">"The crates are being loaded"</span>);
+    }
+
+    <span class="keyword">override</span> <span class="keyword">void</span> unload() {
+        writeln(<span class="string_literal">"The crates are being unloaded"</span>);
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Being an abstract class does not preclude the use of  in the program. Objects of  can not be constructed but  can be used as an interface. As the subclasses define the two relationships "passenger car is a railway car" and "freight car is a railway car", the objects of  and  can be used in places of . This will be seen in the  class below.
+</p>
+<br><br>
+<p>The class that represents a train can consist of a locomotive and an array of railwaycars:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">class</span> Train : RailwayVehicle {
+    Locomotive locomotive;
+    RailwayCar[] cars;
+
+    <span class="comment">// ...
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>I would like to repeat an important point: Although both  and  inherit from , it would not be correct to inherit  from either of them. Inheritance models the "is a" relationship and a train is neither a locomotive nor a passenger car. A train consists of them.
+</p>
+<br><br>
+<p>If we require that every train must have a locomotive, the  constructor must ensure that it takes a valid  object. Similarly, if the railway cars are optional, they can be added by a member function:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.exception;
+<span class="comment">// ...
+</span>
+<span class="keyword">class</span> Train : RailwayVehicle {
+    <span class="comment">// ...
+</span>
+    <span class="keyword">this</span>(Locomotive locomotive) {
+        enforce(locomotive !<span class="keyword">is</span> <span class="keyword">null</span>,
+                <span class="string_literal">"Locomotive cannot be null"</span>);
+        <span class="keyword">this</span>.locomotive = locomotive;
+    }
+
+    <span class="keyword">void</span> addCar(RailwayCar[] cars...) {
+        <span class="keyword">this</span>.cars ~= cars;
+    }
+
+    <span class="comment">// ...
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Note that  can validate the  objects as well. I am ignoring that validation here.
+</p>
+<br><br>
+<p>We can imagine that the departures and arrivals of trains should also be supported:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">class</span> Train : RailwayVehicle {
+    <span class="comment">// ...
+</span>
+    <span class="keyword">void</span> departStation(string station) {
+        <span class="keyword">foreach</span> (car; cars) {
+            car.load();
+        }
+
+        writefln(<span class="string_literal">"Departing from %s station"</span>, station);
+    }
+
+    <span class="keyword">void</span> arriveStation(string station) {
+        writefln(<span class="string_literal">"Arriving at %s station"</span>, station);
+
+        <span class="keyword">foreach</span> (car; cars) {
+            car.unload();
+        }
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The following  is making use of the  hierarchy:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="comment">// ...
+</span>
+<span class="keyword">void</span> main() {
+    <span class="keyword">auto</span> locomotive = <span class="keyword">new</span> Locomotive;
+    <span class="keyword">auto</span> train = <span class="keyword">new</span> Train(locomotive);
+
+    train.addCar(<span class="keyword">new</span> PassengerCar, <span class="keyword">new</span> FreightCar);
+
+    train.departStation(<span class="string_literal">"Ankara"</span>);
+    train.advance(500);
+    train.arriveStation(<span class="string_literal">"Haydarpaşa"</span>);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The  class is being used by functions that are provided by two separate interfaces:
+</p>
+<br><br>
+<ol><br><br>
+<li>When the  function is called, the  object is being used as a  because that function is declared by .
+</li>
+<br><br>
+<li>When the  and  functions are called,  is being used as a  because those functions are declared by .</li>
+<br><br>
+</ol>
+<br><br>
+<p>The arrows indicate that  and  functions work according to the actual type of :
+</p>
+<br><br>
+
+<br><br>
+<h5>Summary</h5>
+<br><br>
+<ul><li>Inheritance is used for the "is a" relationship.</li>
+<li>Every class can inherit from up to one .</li>
+<li> has two uses: Calling the constructor of the superclass and accessing the members of the superclass.</li>
+<li> is for redefining member functions of the superclass specially for the subclass.</li>
+<li> requires that a member function must be overridden.</li>
+</ul>
+<br><br>
+
+
+</section>
+      </article>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,11 @@
+{
+	"name": "dpl-docs",
+	"dependencies": {
+		"ddox": "~>0.16.11",
+		"ddoc_preprocessor": {
+		  "path": "../ddoc"
+		}
+	},
+	"versions": ["VibeNoSSL"],
+	"subConfigurations": { "eventcore": "libasync"}
+}

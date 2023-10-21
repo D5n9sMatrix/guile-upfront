@@ -1,0 +1,1425 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Immutability</title>
+    <style type="text/css" media="screen">
+      html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p,
+      blockquote, pre, a, abbr, address, cite, code, del, dfn, em, figure,
+      img, ins, kbd, q, s, samp, small, strong, sub, sup, var, b, u, i, dl,
+      dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption,
+      tbody, tfoot, thead, tr, th, td {
+        background: transparent none repeat scroll 0 0;
+        border: 0 none;
+        font-size: 100%;
+        margin: 0;
+        outline: 0 none;
+        padding: 0;
+        vertical-align: baseline;
+      }
+
+      h1 { font-size: 200%; }
+      h2 { font-size: 160%; }
+      h3 { font-size: 120%; }
+      h4 { font-size: 100%; }
+      h5 { font-size: 80%; }
+      h6 { font-size: 80%; font-weight: normal; }
+
+      ul, ol {
+        margin: 1.4em 0;
+      }
+      ul ul, ol ol, ul ol, ol ul {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      ul, ol {
+        margin-left: 2.8em;
+      }
+
+      ol {
+        list-style: decimal;
+      }
+      ol ol {
+        list-style: lower-alpha;
+      }
+      ol ol ol {
+        list-style: lower-roman;
+      }
+      ol ol ol ol {
+        list-style: decimal;
+      }
+
+      blockquote {
+        margin: 0.1em;
+        margin-left: 1em;
+        border-left: 2px solid #cccccc;
+        padding-left: 0.7em;
+      }
+
+      .color_red { color: #dc322f; }
+      .color_blue { color: #268bd2; }
+      .color_green { color: #859901; }
+      .color_yellow { color: #b58901; }
+      .color_black { color: black; }
+      .color_white { color: white; }
+
+      .font_big {
+        font-size: 1.2em;
+      }
+
+      .ddoc_section_h {
+        font-weight: bold;
+        font-size: 13px;
+        line-height: 19.5px;
+        margin-top: 11px;
+        display: block;
+      }
+
+      body.dlang .dlang {
+        display: inline-block;
+      }
+
+      body.dlang .declaration .dlang {
+          display: block;
+      }
+
+      body.dlang .ddoc_header_anchor a.dlang {
+        display: block;
+        color: rgba(0, 136, 204, 1);
+        text-decoration: none;
+      }
+
+      body.dlang .ddoc_header_anchor .code {
+        color: rgba(0, 136, 204, 1);
+      }
+
+      #ddoc_main .module {
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          overflow-x: hidden;
+          padding: 15px;
+      }
+
+      #ddoc_main .section .section {
+        margin-top: 0;
+      }
+
+      #ddoc_main .ddoc_module_members_section {
+          padding: 1px 0 0;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members section.intro {
+          background: #fff none repeat scroll 0 0;
+          list-style-type: none;
+          width: 100%;
+      }
+
+      #ddoc_main .ddoc_header_anchor {
+          font-size: 1.4em;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_header_anchor > .code {
+          display: inline-block;
+
+      }
+
+      #ddoc_main .ddoc_decl {
+        background-color: transparent;
+        height: 100%;
+        left: 0;
+        top: 0;
+        padding: 0;
+        padding-left: 15px;
+      }
+
+      #ddoc_main .ddoc_decl .section, #ddoc_main .section.ddoc_sections {
+        background: white none repeat scroll 0 0;
+        margin: 0;
+        padding: 5px;
+        position: relative;
+        border-radius: 5px;
+      }
+
+      #ddoc_main .ddoc_decl .section h4:first-of-type, #ddoc_main .section.ddoc_sections h4:first-of-type {
+        font-size: 13px;
+        line-height: 1.5;
+        margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration {
+          margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration .code {
+          color: rgba(0, 0, 0, 1);
+          margin-bottom: 15px;
+          padding-bottom: 6px;
+      }
+
+      #ddoc_main .declaration div .para {
+          margin-bottom: 0;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr td:first-of-type {
+        padding: 7px;
+        text-align: right;
+        vertical-align: top;
+        word-break: normal;
+        white-space: nowrap;
+      }
+
+      #ddoc_main .ddoc_params .graybox {
+        border: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox td {
+        border-color: rgba(214, 214, 214, 1);
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:first-child > td {
+        border-top: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:last-child > td {
+        border-bottom: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:first-child {
+        border-left: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:last-child {
+        border-right: 0 none;
+        width: 100%;
+      }
+
+      #ddoc_main em.term, #ddoc_main em.term .code {
+        color: rgba(65, 65, 65, 1);
+        font-size: 12px;
+        font-style: italic;
+        line-height: 1.5;
+      }
+
+      #ddoc_main .see-also {
+        cursor: pointer;
+        font-family: Menlo,monospace;
+      }
+
+      #ddoc_main .ddoc_decl .section > div:last-of-type {
+        margin-bottom: 15px;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members {
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .code_sample {
+        background: inherit;
+      }
+
+      #ddoc_main .declaration .code-line {
+          display: block;
+          font: 1em Menlo,monospace;
+      }
+
+      #ddoc_main a[name] {
+        margin: -112px 0 0;
+        padding-top: 112px;
+      }
+
+      #ddoc_main .ddoc_decl td {
+        max-width: inherit;
+      }
+
+      #ddoc_main .declaration a {
+        color: inherit;
+      }
+
+      #ddoc_main .declaration a:hover {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: underline;
+      }
+
+      body.ddoc {
+        background-color: transparent;
+        color: rgba(0, 0, 0, 1);
+        font-family: Helvetica,Arial,sans-serif;
+        font-size: 62.5%;
+        margin: 0;
+        border: 0;
+        left: 0;
+        top: 0;
+        padding: 0;
+      }
+
+      .ddoc a[name] {
+        display: block;
+        height: 0;
+        margin: -85px 0 0;
+        padding-top: 85px;
+        width: 0;
+      }
+
+      .ddoc .module {
+          border-color: transparent;
+          background-color: rgba(255, 255, 255, 1);
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-image: none;
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          box-shadow: 0 0 1px rgba(0, 0, 0, 0.07);
+          display: block;
+          margin-left: 0;
+          min-height: calc(100% - 173px);
+          overflow: auto;
+          padding-bottom: 100px;
+      }
+
+      .ddoc .content_wrapper {
+          background-color: rgba(242, 242, 242, 1);
+          margin: 0 auto;
+          max-width: 980px;
+      }
+
+      .ddoc .section {
+        padding: 15px 25px 30px;
+      }
+
+      .ddoc .section .section {
+        margin: 30px 0 0;
+        padding: 0;
+      }
+
+      .ddoc .para {
+        color: rgba(65, 65, 65, 1);
+        font-size: 1.4em;
+        line-height: 145%;
+        margin-bottom: 15px;
+      }
+
+      .ddoc .ddoc_examples .para {
+        margin-bottom: 0;
+      }
+
+      .ddoc .module_name {
+          color: rgba(0, 0, 0, 1);
+          display: block;
+          font-family: Helvetica;
+          font-size: 2.8em;
+          font-weight: 100;
+          margin-bottom: 0;
+          padding: 15px 0;
+      }
+
+      .ddoc .module a {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: none;
+      }
+
+      .ddoc .code {
+        color: rgba(128, 128, 128, 1);
+        font-family: Menlo,monospace;
+        font-size: 0.85em;
+        word-wrap: break-word;
+      }
+
+      .ddoc .code i {
+        font-style: normal;
+      }
+
+      .ddoc .code .code {
+        font-size: 1em;
+      }
+
+      .ddoc .code_sample {
+        background-clip: padding-box;
+        margin: 1px 0;
+        text-align: left;
+      }
+
+      .ddoc .code_sample {
+        display: block;
+        font-size: 1.4em;
+        margin-left: 21px;
+      }
+
+      .ddoc ol .code_sample {
+        font-size: 1em;
+      }
+
+      .ddoc .code_lines {
+        counter-reset: li;
+        line-height: 1.6em;
+        list-style: outside none none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .ddoc .code_listing .code_sample div {
+        margin-left: 13px;
+        width: 93%;
+      }
+
+      .ddoc .code_listing .code_sample div .code_lines li {
+        list-style-type: none;
+        margin: 0;
+        padding-right: 10px;
+      }
+
+      .ddoc .code_sample div .code_lines li::before {
+        margin-left: -33px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+10)::before {
+        margin-left: -39px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+100)::before {
+        margin-left: -46px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample .code_lines .code {
+        color: #000;
+      }
+
+      .ddoc div.dlang {
+        margin: 10px 0 21px;
+        padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+          margin: 10px 0 21px;
+          padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+        border-left: 5px solid rgba(0, 155, 51, 0.2);
+      }
+
+      .ddoc .code_lines li::before {
+        color: rgba(128, 128, 128, 1);
+        content: counter(li, decimal);
+        counter-increment: li;
+        font-family: Menlo,monospace;
+        font-size: 0.9em;
+        margin-right: 16px;
+      }
+
+      .ddoc .code_lines li {
+        padding-left: 0;
+        white-space: pre-wrap;
+      }
+
+      .ddoc .code_lines li:only-of-type::before {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:only-of-type {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:nth-child(n+10) {
+        text-indent: -17px;
+      }
+
+      .ddoc .code_lines li:nth-child(n+10)::before {
+        margin-right: 12px;
+      }
+
+      .ddoc .graybox {
+        border: 1px solid rgba(233, 233, 233, 1);
+        border-collapse: collapse;
+        border-spacing: 0;
+        empty-cells: hide;
+        margin: 20px 0 36px;
+        text-align: left;
+      }
+
+      .ddoc .graybox p {
+        margin: 0;
+        min-width: 50px;
+      }
+
+      .ddoc th {
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: bottom;
+      }
+
+      .ddoc td {
+        border: 1px solid rgba(233, 233, 233, 1);
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: middle;
+      }
+
+      .punctuation {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .comment {
+        color: rgba(0, 131, 18, 1);
+      }
+
+      .operator {
+        color: #000;
+      }
+
+      .keyword {
+        color: rgba(170, 13, 145, 1);
+      }
+
+      .keyword_type {
+        color: rgba(170, 51, 145, 1);
+      }
+
+      .string_literal {
+        color: rgba(196, 26, 22, 1);
+      }
+
+      .ddoc_psuper_symbol {
+        color: rgba(92, 38, 153, 1);
+      }
+
+      .param {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .psymbol {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .ddoc_member_header .ddoc_header_anchor .code {
+        font-size: 1em;
+      }
+    </style>
+  </head>
+  <body id="ddoc_main" class="ddoc dlang">
+    <div class="content_wrapper">
+      <article class="module">
+        <h1 class="module_name">Immutability</h1>
+        <section id="module_content"><br><br>
+<br><br>
+
+<br><br>
+<p>We have seen that variables represent concepts in programs. The interactions of these concepts are achieved by expressions that change the values of those variables:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="comment">// Pay the bill
+</span>    totalPrice = calculateAmount(itemPrices);
+    moneyInWallet  totalPrice;
+    moneyAtMerchant  totalPrice;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Modifying a variable is called <i>mutating</i> that variable. The concept of mutability is essential for most tasks. However, there are some cases where mutability is not desirable:
+</p>
+<br><br>
+<ul><br><br>
+<li>Some concepts are immutable by definition. For example, there are always seven days in a week, the math constant <i>pi</i> (π) never changes, the list of natural languages supported by a program may be fixed and small (e.g. only English and Turkish), etc.
+</li>
+<br><br>
+<li>If every variable were modifiable, as we have seen so far, then every piece of code that used a variable could potentially modify it. Even if there was no reason to modify a variable in an operation there would be no guarantee that this would not happen by accident. Programs are difficult to read and maintain when there are no immutability guarantees.
+<br><br>
+<p>For example, consider a function call  that retires a worker of an office. If both of those variables were mutable it would not be clear (just by looking at that function call) which of them would be modified by the function. It may be expected that the number of active employees of  would be decreased, but would the function call also modify  in some way?
+</p>
+<br><br>
+</li>
+<br><br>
+</ul>
+<br><br>
+<p>The concept of immutability helps with understanding parts of programs by guaranteeing that certain operations do not change certain variables. It also reduces the risk of some types of programming errors.
+</p>
+<br><br>
+<p>The <i>immutability</i> concept is expressed in D by the  and  keywords. Although the two words themselves are close in meaning, their responsibilities in programs are different and they are sometimes incompatible.
+</p>
+<br><br>
+<p>  , , , and  are <i>type qualifiers</i>. (We will see <a href="function_parameters.html"></a> and <a href="concurrency_shared.html"></a> in later chapters.)
+</p>
+<br><br>
+<h5>Immutable variables</h5>
+<br><br>
+<p>Both of the terms "immutable variable" and "constant variable" are nonsensical when the word "variable" is taken literally to mean <i>something that changes</i>. In a broader sense, the word "variable" is often understood to mean any concept of a program which may be mutable or immutable.
+</p>
+<br><br>
+<p>There are three ways of defining variables that can never be mutated.
+</p>
+<br><br>
+<h6>  constants</h6>
+<br><br>
+<p>We have seen earlier in the <a href="enum.html"> chapter</a> that  defines named constant values:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">enum</span> fileName = <span class="string_literal">"list.txt"</span>;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>As long as their values can be determined at compile time,  variables can be initialized with return values of functions as well:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">int</span> totalLines() {
+    <span class="keyword">return</span> 42;
+}
+
+<span class="keyword">int</span> totalColumns() {
+    <span class="keyword">return</span> 7;
+}
+
+string name() {
+    <span class="keyword">return</span> <span class="string_literal">"list"</span>;
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">enum</span> fileName = name() ~ <span class="string_literal">".txt"</span>;
+    <span class="keyword">enum</span> totalSquares = totalLines() * totalColumns();
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The D feature that enables such initialization is <i>compile time function execution</i> (CTFE), which we will see in <a href="functions_more.html">a later chapter</a>.
+</p>
+<br><br>
+<br><br>
+<p>As expected, the values of  constants cannot be modified:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    ++totalSquares;    
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Although it is a very effective way of representing immutable values,  can only be used for compile-time values.
+</p>
+<br><br>
+<p>An  constant is <i>a manifest constant</i>, meaning that the program is compiled as if every mention of that constant had been replaced by its value. As an example, let's consider the following  definition and the two expressions that make use of it:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">enum</span> i = 42;
+    writeln(i);
+    foo(i);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The code above is completely equivalent to the one below, where we replace every use of  with its value of :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    writeln(42);
+    foo(42);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Although that replacement makes sense for simple types like  and makes no difference to the resulting program,  constants can bring a hidden cost when they are used for arrays or associative arrays:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">enum</span> a = [ 42, 100 ];
+    writeln(a);
+    foo(a);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>After replacing  with its value, the equivalent code that the compiler would be compiling is the following:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    writeln([ 42, 100 ]); <span class="comment">// an array is created at run time
+</span>    foo([ 42, 100 ]);     <span class="comment">// another array is created at run time
+</span></code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The hidden cost here is that there would be two separate arrays created for the two expressions above. For that reason, it may make more sense to define arrays and associative arrays as  variables if they are going to be used more than once in the program.
+</p>
+<br><br>
+<h6>  variables</h6>
+<br><br>
+<p>Like , this keyword specifies that the value of a variable will never change. Unlike , an  variable is an actual variable with a memory address, which means that we can set its value during the execution of the program and that we can refer to its memory location.
+</p>
+<br><br>
+<p>The following program compares the uses of  and . The program asks for the user to guess a number that has been picked randomly. Since the random number cannot be determined at compile time, it cannot be defined as an . Still, since the randomly picked value must never be changed after having been decided, it is suitable to specify that variable as .
+</p>
+<br><br>
+<p>The program takes advantage of the  function that was defined in the previous chapter:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+<span class="keyword">import</span> std.random;
+
+<span class="keyword">int</span> readInt(string message) {
+    <span class="keyword">int</span> result;
+    write(message, <span class="string_literal">"? "</span>);
+    readf(<span class="string_literal">" %s"</span>, &amp;result);
+    <span class="keyword">return</span> result;
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">enum</span> min = 1;
+    <span class="keyword">enum</span> max = 10;
+
+     number = uniform(min, max + 1);
+
+    writefln(<span class="string_literal">"I am thinking of a number between %s and %s."</span>,
+             min, max);
+
+    <span class="keyword">auto</span> isCorrect = <span class="keyword">false</span>;
+    <span class="keyword">while</span> (!isCorrect) {
+         guess = readInt(<span class="string_literal">"What is your guess"</span>);
+        isCorrect = (guess == number);
+    }
+
+    writeln(<span class="string_literal">"Correct!"</span>);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Observations:
+</p>
+<br><br>
+<ul><br><br>
+<li> and  are integral parts of the behavior of this program and their values are known at compile time. For that reason they are defined as  constants.
+</li>
+<br><br>
+<li> is specified as  because it would not be appropriate to modify it after its initialization at run time. Likewise for each user guess: once read, the guess should not be modified.
+</li>
+<br><br>
+<li>Observe that the types of those variables are not specified explicitly. As with  and , the type of an  variable can be inferred from the expression on the right hand side.
+</li>
+<br><br>
+</ul>
+<br><br>
+<p>Although it is not necessary to write the type fully,  normally takes the actual type within parentheses, e.g. . The output of the following program demonstrates that the full names of the types of the three variables are in fact the same:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">immutable</span>      inferredType = 0;
+    <span class="keyword">immutable</span> <span class="keyword">int</span>  explicitType = 1;
+    <span class="keyword">immutable</span>(<span class="keyword">int</span>) wholeType    = 2;
+
+    writeln(<span class="keyword">typeof</span>(inferredType).stringof);
+    writeln(<span class="keyword">typeof</span>(explicitType).stringof);
+    writeln(<span class="keyword">typeof</span>(wholeType).stringof);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The actual name of the type includes :
+</p>
+<br><br>
+
+<br><br>
+<p>The use of parentheses has significance, and specifies which parts of the type are immutable. We will see this below when discussing the immutability of the whole slice vs. its elements.
+</p>
+<br><br>
+<h6>  variables</h6>
+<br><br>
+<p>When defining variables the  keyword has the same effect as .  variables cannot be modified:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">     half = total / 2;
+    half = 10;    
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>I recommend that you prefer  over  for defining variables. The reason is that  variables can be passed to functions that have  parameters. We will see this below.
+</p>
+<br><br>
+<h5>Immutable parameters</h5>
+<br><br>
+<p>It is possible for functions to promise that they do not modify certain parameters that they take, and the compiler will enforce this promise. Before seeing how this is achieved, let's first see that functions can indeed modify the elements of slices that are passed as arguments to those functions.
+</p>
+<br><br>
+<p>As you would remember from the <a href="slices.html">Slices and Other Array Features chapter</a>, slices do not own elements but provide access to them. There may be more than one slice at a given time that provides access to the same elements.
+</p>
+<br><br>
+<p>Although the examples in this section focus only on slices, this topic is applicable to associative arrays and classes as well because they too are <i>reference types</i>.
+</p>
+<br><br>
+<p>A slice that is passed as a function argument is not the slice that the function is called with. The argument is a copy of the actual slice:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">int</span>[] slice = [ 10, 20, 30, 40 ];  <span class="comment">// 1
+</span>    halve(slice);
+    writeln(slice);
+}
+
+<span class="keyword">void</span> halve(<span class="keyword">int</span>[] numbers) {            <span class="comment">// 2
+</span>    <span class="keyword">foreach</span> (<span class="keyword">ref</span> number; numbers) {
+        number /= 2;
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>When program execution enters the  function, there are two slices that provide access to the same four elements:
+</p>
+<br><br>
+<ol><br><br>
+<li>The slice named  that is defined in , which is passed to  as its argument
+</li>
+<br><br>
+<li>The slice named  that  receives as its argument, which provides access to the same elements as 
+</li>
+<br><br>
+</ol>
+<br><br>
+<p>Since both slides refer to the same elements and given that we use the  keyword in the  loop, the values of the elements get halved:
+</p>
+<br><br>
+
+<br><br>
+<p>It is useful for functions to be able to modify the elements of the slices that are passed as arguments. Some functions exist just for that purpose, as has been seen in this example.
+</p>
+<br><br>
+<p>The compiler does not allow passing  variables as arguments to such functions because we cannot modify an immutable variable:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">     <span class="keyword">int</span>[] slice = [ 10, 20, 30, 40 ];
+    halve(slice);    
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The compilation error indicates that a variable of type  cannot be used as an argument of type :
+</p>
+<br><br>
+
+<br><br>
+<h6>  parameters</h6>
+<br><br>
+<p>It is important and natural that  variables be prevented from being passed to functions like , which modify their arguments. However, it would be a limitation if they could not be passed to functions that do not modify their arguments in any way:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">immutable</span> <span class="keyword">int</span>[] slice = [ 10, 20, 30, 40 ];
+    print(slice);    
+}
+
+<span class="keyword">void</span> print(<span class="keyword">int</span>[] slice) {
+    writefln(<span class="string_literal">"%s elements: "</span>, slice.length);
+
+    <span class="keyword">foreach</span> (i, element; slice) {
+        writefln(<span class="string_literal">"%s: %s"</span>, i, element);
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>It does not make sense above that a slice is prevented from being printed just because it is . The proper way of dealing with this situation is by using  parameters.
+</p>
+<br><br>
+<p>The  keyword specifies that a variable is not modified through <i>that particular reference</i> (e.g. a slice) of that variable. Specifying a parameter as  guarantees that the elements of the slice are not modified inside the function. Once  provides this guarantee, the program can now be compiled:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    print(slice);    <span class="comment">// now compiles
+</span><span class="comment">// ...
+</span><span class="keyword">void</span> print( <span class="keyword">int</span>[] slice)
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>This guarantee allows passing both mutable and  variables as arguments:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">immutable</span> <span class="keyword">int</span>[] slice = [ 10, 20, 30, 40 ];
+    print(slice);           <span class="comment">// compiles
+</span>
+    <span class="keyword">int</span>[] mutableSlice = [ 7, 8 ];
+    print(mutableSlice);    <span class="comment">// compiles
+</span></code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>A parameter that is not modified in a function but is not specified as  reduces the applicability of that function. Additionally,  parameters provide useful information to the programmer. Knowing that a variable will not be modified when passed to a function makes the code easier to understand. It also prevents potential errors because the compiler detects modifications to  parameters:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> print( <span class="keyword">int</span>[] slice) {
+    slice[0] = 42;    
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The programmer would either realize the mistake in the function or would rethink the design and perhaps remove the  specifier.
+</p>
+<br><br>
+<p>The fact that  parameters can accept both mutable and  variables has an interesting consequence. This is explained in the "Should a parameter be  or ?" section below.
+</p>
+<br><br>
+<h6>  parameters</h6>
+<br><br>
+<p>As we saw above, both mutable and  variables can be passed to functions as their  parameters. In a way,  parameters are welcoming.
+</p>
+<br><br>
+<p>In contrast,  parameters bring a strong requirement: only  variables can be passed to functions as their  parameters:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> func( <span class="keyword">int</span>[] slice) {
+    <span class="comment">// ...
+</span>}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">immutable</span> <span class="keyword">int</span>[] immSlice = [ 1, 2 ];
+              <span class="keyword">int</span>[]    slice = [ 8, 9 ];
+
+    func(immSlice);      <span class="comment">// compiles
+</span>    func(slice);         
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>For that reason, the  specifier should be used only when this requirement is actually necessary. We have indeed been using the  specifier indirectly through certain string types. This will be covered below.
+</p>
+<br><br>
+<p>We have seen that the parameters that are specified as  or  promise not to modify <i>the actual variable</i> that is passed as an argument. This is relevant only for reference types because only then there is <i>the actual variable</i> to talk about the immutability of.
+</p>
+<br><br>
+<p><i>Reference types</i> and <i>value types</i> will be covered in the next chapter. Among the types that we have seen so far, only slices and associative arrays are reference types; the others are value types.
+</p>
+<br><br>
+<h6> Should a parameter be  or ?</h6>
+<br><br>
+<p>The two sections above may give the impression that, being more flexible,  parameters should be preferred over  parameters. This is not always true.
+</p>
+<br><br>
+<p> <i>erases</i> the information about whether the original variable was mutable or . This information is hidden even from the compiler.
+</p>
+<br><br>
+<p>A consequence of this fact is that  parameters cannot be passed as arguments to functions that take  parameters. For example,  below cannot pass its  parameter to :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> main() {
+    <span class="comment">/* The original variable is immutable */</span>
+    <span class="keyword">immutable</span> <span class="keyword">int</span>[] slice = [ 10, 20, 30, 40 ];
+    foo(slice);
+}
+
+<span class="comment">/* A function that takes its parameter as const, in order to
+ * be more useful. */</span>
+<span class="keyword">void</span> foo(<span class="keyword">const</span> <span class="keyword">int</span>[] slice) {
+    bar(slice);    
+}
+
+<span class="comment">/* A function that takes its parameter as immutable, for a
+ * plausible reason. */</span>
+<span class="keyword">void</span> bar(<span class="keyword">immutable</span> <span class="keyword">int</span>[] slice) {
+    <span class="comment">// ...
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p> requires the parameter to be . However, it is not known (in general) whether the original variable that 's  parameter references was  or not.
+</p>
+<br><br>
+<p><i><b>Note:</b> It is clear in the code above that the original variable in  is . However, the compiler compiles functions individually, without regard to all of the places that function is called from. To the compiler, the  parameter of  may refer to a mutable variable or an  one.
+</i>
+</p>
+<br><br>
+<p>A solution would be to call  with an immutable copy of the parameter:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> foo(<span class="keyword">const</span> <span class="keyword">int</span>[] slice) {
+    bar(slice);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Although that is a sensible solution, it does incur into the cost of copying the slice and its contents, which would be wasteful in the case where the original variable was  to begin with.
+</p>
+<br><br>
+<p>After this analysis, it should be clear that always declaring parameters as  is not the best approach in every situation. After all, if 's parameter had been defined as  there would be no need to copy it before calling :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> foo(<span class="keyword">immutable</span> <span class="keyword">int</span>[] slice) {  <span class="comment">// This time immutable
+</span>    bar(slice);    <span class="comment">// Copying is not needed anymore
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Although the code compiles, defining the parameter as  has a similar cost: this time an immutable copy of the original variable is needed when calling , if that variable was not immutable to begin with:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    foo(mutableSlice);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Templates can help. (We will see templates in later chapters.) Although I don't expect you to fully understand the following function at this point in the book, I will present it as a solution to this problem. The following function template  can be called both with mutable and  variables. The parameter would be copied only if the original variable was mutable; no copying would take place if it were :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.conv;
+<span class="comment">// ...
+</span>
+<span class="comment">/* Because it is a template, foo() can be called with both mutable
+ * and immutable variables. */</span>
+<span class="keyword">void</span> foo(T)(T[] slice) {
+    <span class="comment">/* 'to()' does not make a copy if the original variable is
+     * already immutable. */</span>
+    bar(to!(<span class="keyword">immutable</span> T[])(slice));
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h5>Immutability of the slice versus the elements</h5>
+<br><br>
+<p>We have seen above that the type of an  slice has been printed as . As the parentheses after  indicate, it is the entire slice that is . Such a slice cannot be modified in any way: elements may not be added or removed, their values may not be modified, and the slice may not start providing access to a different set of elements:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">immutable</span> <span class="keyword">int</span>[] immSlice = [ 1, 2 ];
+    immSlice ~= 3;               
+    immSlice[0] = 3;             
+    immSlice.length = 1;         
+
+    <span class="keyword">immutable</span> <span class="keyword">int</span>[] immOtherSlice = [ 10, 11 ];
+    immSlice = immOtherSlice;    
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Taking immutability to that extreme may not be suitable in every case. In most cases, what is important is the immutability of the elements themselves. Since a slice is just a tool to access the elements, it should not matter if we make changes to the slice itself as long as the elements are not modified. This is especially true in the cases we have seen so far, where the function receives a copy of the slice itself.
+</p>
+<br><br>
+<p>To specify that only the elements are immutable we use the  keyword with parentheses that enclose just the element type. Modifying the code accordingly, now only the elements are immutable, not the slice itself:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">immutable</span>[] immSlice = [ 1, 2 ];
+    immSlice ~= 3;               <span class="comment">// can add elements
+</span>    immSlice[0] = 3;             
+    immSlice.length = 1;         <span class="comment">// can drop elements
+</span>
+    <span class="keyword">immutable</span> <span class="keyword">int</span>[] immOtherSlice = [ 10, 11 ];
+    immSlice = immOtherSlice;    <span class="comment">/* can provide access to
+                                  * other elements */</span>
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Although the two syntaxes are very similar, they have different meanings. To summarize:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">immutable</span> <span class="keyword">int</span>[]  a = [1]; <span class="comment">/* Neither the elements nor the
+                               * slice can be modified */</span>
+
+    <span class="keyword">immutable</span>(<span class="keyword">int</span>[]) b = [1]; <span class="comment">/* The same meaning as above */</span>
+
+    <span class="keyword">immutable</span>(<span class="keyword">int</span>)[] c = [1]; <span class="comment">/* The elements cannot be
+                               * modified but the slice can be */</span>
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>This distinction has been in effect in some of the programs that we have written so far. As you may remember, the three string aliases involve immutability:
+</p>
+<br><br>
+<ul><li> is an alias for </li>
+<li> is an alias for </li>
+<li> is an alias for </li>
+</ul>
+<br><br>
+<p>Likewise, string literals are immutable as well:
+</p>
+<br><br>
+<ul><li>The type of literal  is </li>
+<li>The type of literal  is </li>
+<li>The type of literal  is </li>
+</ul>
+<br><br>
+<p>According to these definitions, D strings are normally arrays of <i>immutable characters</i>.
+</p>
+<br><br>
+<h6>  and  are transitive</h6>
+<br><br>
+<p>As mentioned in the code comments of slices  and  above, both those slices and their elements are .
+</p>
+<br><br>
+<p>This is true for <a href="struct.html">structs</a> and <a href="class.html">classes</a> as well, both of which will be covered in later chapters. For example, all members of a   variable are  and all members of an   variable are . (Likewise for classes.)
+</p>
+<br><br>
+<h6>   and </h6>
+<br><br>
+<p>There may be mismatches in immutability when strings are passed to functions as parameters. The  and  properties make copies of arrays with the desired mutability:
+</p>
+<br><br>
+<ul><li> makes a mutable copy of the array; its name comes from "duplicate"</li>
+<li> makes an immutable copy of the array</li>
+</ul>
+<br><br>
+<p>For example, a function that insists on the immutability of a parameter may have to be called with an immutable copy of a mutable string:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> foo( s) {
+    <span class="comment">// ...
+</span>}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">char</span>[] salutation;
+    foo(salutation);                
+    foo(salutation);           <span class="comment">// ← this compiles
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h5>How to use</h5>
+<br><br>
+<ul><br><br>
+<li>As a general rule, prefer immutable variables over mutable ones.
+</li>
+<br><br>
+<li>Define constant values as  if their values can be calculated at compile time. For example, the constant value of <i>seconds per minute</i> can be an :
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">enum</span> <span class="keyword">int</span> secondsPerMinute = 60;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>There is no need to specify the type explicitly if it can be inferred from the right hand side:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">enum</span> secondsPerMinute = 60;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+</li>
+<br><br>
+<li>Consider the hidden cost of  arrays and  associative arrays. Define them as  variables if the arrays are large and they are used more than once in the program.
+</li>
+<br><br>
+<li>Specify variables as  if their values will never change but cannot be known at compile time. Again, the type can be inferred:
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">immutable</span> guess = readInt(<span class="string_literal">"What is your guess"</span>);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+</li>
+<br><br>
+<li>If a function does not modify a parameter, specify that parameter as . This would allow both mutable and  variables to be passed as arguments:
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> foo(<span class="keyword">const</span> <span class="keyword">char</span>[] s) {
+    <span class="comment">// ...
+</span>}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">char</span>[] mutableString;
+    string immutableString;
+
+    foo(mutableString);      <span class="comment">// ← compiles
+</span>    foo(immutableString);    <span class="comment">// ← compiles
+</span>}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+</li>
+<br><br>
+<li>Following from the previous guideline, consider that  parameters cannot be passed to functions taking . See the section titled "Should a parameter be  or ?" above.
+</li>
+<br><br>
+<li>If the function modifies a parameter, leave that parameter as mutable ( or  would not allow modifications anyway):
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> reverse(<span class="keyword">dchar</span>[] s) {
+    <span class="keyword">foreach</span> (i; 0 .. s.length / 2) {
+        <span class="keyword">immutable</span> temp = s[i];
+        s[i] = s[$ - 1 - i];
+        s[$ - 1 - i] = temp;
+    }
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">dchar</span>[] salutation = <span class="string_literal">"hello"d</span>.dup;
+    reverse(salutation);
+    writeln(salutation);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output:
+</p>
+<br><br>
+
+<br><br>
+</li>
+<br><br>
+</ul>
+<br><br>
+<h5>Summary</h5>
+<br><br>
+<ul><br><br>
+<li> variables represent immutable concepts that are known at compile time.</li>
+<br><br>
+<li> variables represent immutable concepts that must be calculated at run time, or that must have some memory location that we can refer to.</li>
+<br><br>
+<li> parameters are the ones that functions do not modify. Both mutable and  variables can be passed as arguments of  parameters.</li>
+<br><br>
+<li> parameters are the ones that functions specifically require them to be so. Only  variables can be passed as arguments of  parameters.</li>
+<br><br>
+<li> specifies that neither the slice nor its elements can be modified.</li>
+<br><br>
+<li> specifies that only the elements cannot be modified.</li>
+<br><br>
+</ul>
+
+</section>
+      </article>
+    </div>
+  </body>
+</html>

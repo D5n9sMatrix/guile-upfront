@@ -1,0 +1,853 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Associative Arrays</title>
+    <style type="text/css" media="screen">
+      html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p,
+      blockquote, pre, a, abbr, address, cite, code, del, dfn, em, figure,
+      img, ins, kbd, q, s, samp, small, strong, sub, sup, var, b, u, i, dl,
+      dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption,
+      tbody, tfoot, thead, tr, th, td {
+        background: transparent none repeat scroll 0 0;
+        border: 0 none;
+        font-size: 100%;
+        margin: 0;
+        outline: 0 none;
+        padding: 0;
+        vertical-align: baseline;
+      }
+
+      h1 { font-size: 200%; }
+      h2 { font-size: 160%; }
+      h3 { font-size: 120%; }
+      h4 { font-size: 100%; }
+      h5 { font-size: 80%; }
+      h6 { font-size: 80%; font-weight: normal; }
+
+      ul, ol {
+        margin: 1.4em 0;
+      }
+      ul ul, ol ol, ul ol, ol ul {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      ul, ol {
+        margin-left: 2.8em;
+      }
+
+      ol {
+        list-style: decimal;
+      }
+      ol ol {
+        list-style: lower-alpha;
+      }
+      ol ol ol {
+        list-style: lower-roman;
+      }
+      ol ol ol ol {
+        list-style: decimal;
+      }
+
+      blockquote {
+        margin: 0.1em;
+        margin-left: 1em;
+        border-left: 2px solid #cccccc;
+        padding-left: 0.7em;
+      }
+
+      .color_red { color: #dc322f; }
+      .color_blue { color: #268bd2; }
+      .color_green { color: #859901; }
+      .color_yellow { color: #b58901; }
+      .color_black { color: black; }
+      .color_white { color: white; }
+
+      .font_big {
+        font-size: 1.2em;
+      }
+
+      .ddoc_section_h {
+        font-weight: bold;
+        font-size: 13px;
+        line-height: 19.5px;
+        margin-top: 11px;
+        display: block;
+      }
+
+      body.dlang .dlang {
+        display: inline-block;
+      }
+
+      body.dlang .declaration .dlang {
+          display: block;
+      }
+
+      body.dlang .ddoc_header_anchor a.dlang {
+        display: block;
+        color: rgba(0, 136, 204, 1);
+        text-decoration: none;
+      }
+
+      body.dlang .ddoc_header_anchor .code {
+        color: rgba(0, 136, 204, 1);
+      }
+
+      #ddoc_main .module {
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          overflow-x: hidden;
+          padding: 15px;
+      }
+
+      #ddoc_main .section .section {
+        margin-top: 0;
+      }
+
+      #ddoc_main .ddoc_module_members_section {
+          padding: 1px 0 0;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members section.intro {
+          background: #fff none repeat scroll 0 0;
+          list-style-type: none;
+          width: 100%;
+      }
+
+      #ddoc_main .ddoc_header_anchor {
+          font-size: 1.4em;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_header_anchor > .code {
+          display: inline-block;
+
+      }
+
+      #ddoc_main .ddoc_decl {
+        background-color: transparent;
+        height: 100%;
+        left: 0;
+        top: 0;
+        padding: 0;
+        padding-left: 15px;
+      }
+
+      #ddoc_main .ddoc_decl .section, #ddoc_main .section.ddoc_sections {
+        background: white none repeat scroll 0 0;
+        margin: 0;
+        padding: 5px;
+        position: relative;
+        border-radius: 5px;
+      }
+
+      #ddoc_main .ddoc_decl .section h4:first-of-type, #ddoc_main .section.ddoc_sections h4:first-of-type {
+        font-size: 13px;
+        line-height: 1.5;
+        margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration {
+          margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration .code {
+          color: rgba(0, 0, 0, 1);
+          margin-bottom: 15px;
+          padding-bottom: 6px;
+      }
+
+      #ddoc_main .declaration div .para {
+          margin-bottom: 0;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr td:first-of-type {
+        padding: 7px;
+        text-align: right;
+        vertical-align: top;
+        word-break: normal;
+        white-space: nowrap;
+      }
+
+      #ddoc_main .ddoc_params .graybox {
+        border: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox td {
+        border-color: rgba(214, 214, 214, 1);
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:first-child > td {
+        border-top: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:last-child > td {
+        border-bottom: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:first-child {
+        border-left: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:last-child {
+        border-right: 0 none;
+        width: 100%;
+      }
+
+      #ddoc_main em.term, #ddoc_main em.term .code {
+        color: rgba(65, 65, 65, 1);
+        font-size: 12px;
+        font-style: italic;
+        line-height: 1.5;
+      }
+
+      #ddoc_main .see-also {
+        cursor: pointer;
+        font-family: Menlo,monospace;
+      }
+
+      #ddoc_main .ddoc_decl .section > div:last-of-type {
+        margin-bottom: 15px;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members {
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .code_sample {
+        background: inherit;
+      }
+
+      #ddoc_main .declaration .code-line {
+          display: block;
+          font: 1em Menlo,monospace;
+      }
+
+      #ddoc_main a[name] {
+        margin: -112px 0 0;
+        padding-top: 112px;
+      }
+
+      #ddoc_main .ddoc_decl td {
+        max-width: inherit;
+      }
+
+      #ddoc_main .declaration a {
+        color: inherit;
+      }
+
+      #ddoc_main .declaration a:hover {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: underline;
+      }
+
+      body.ddoc {
+        background-color: transparent;
+        color: rgba(0, 0, 0, 1);
+        font-family: Helvetica,Arial,sans-serif;
+        font-size: 62.5%;
+        margin: 0;
+        border: 0;
+        left: 0;
+        top: 0;
+        padding: 0;
+      }
+
+      .ddoc a[name] {
+        display: block;
+        height: 0;
+        margin: -85px 0 0;
+        padding-top: 85px;
+        width: 0;
+      }
+
+      .ddoc .module {
+          border-color: transparent;
+          background-color: rgba(255, 255, 255, 1);
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-image: none;
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          box-shadow: 0 0 1px rgba(0, 0, 0, 0.07);
+          display: block;
+          margin-left: 0;
+          min-height: calc(100% - 173px);
+          overflow: auto;
+          padding-bottom: 100px;
+      }
+
+      .ddoc .content_wrapper {
+          background-color: rgba(242, 242, 242, 1);
+          margin: 0 auto;
+          max-width: 980px;
+      }
+
+      .ddoc .section {
+        padding: 15px 25px 30px;
+      }
+
+      .ddoc .section .section {
+        margin: 30px 0 0;
+        padding: 0;
+      }
+
+      .ddoc .para {
+        color: rgba(65, 65, 65, 1);
+        font-size: 1.4em;
+        line-height: 145%;
+        margin-bottom: 15px;
+      }
+
+      .ddoc .ddoc_examples .para {
+        margin-bottom: 0;
+      }
+
+      .ddoc .module_name {
+          color: rgba(0, 0, 0, 1);
+          display: block;
+          font-family: Helvetica;
+          font-size: 2.8em;
+          font-weight: 100;
+          margin-bottom: 0;
+          padding: 15px 0;
+      }
+
+      .ddoc .module a {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: none;
+      }
+
+      .ddoc .code {
+        color: rgba(128, 128, 128, 1);
+        font-family: Menlo,monospace;
+        font-size: 0.85em;
+        word-wrap: break-word;
+      }
+
+      .ddoc .code i {
+        font-style: normal;
+      }
+
+      .ddoc .code .code {
+        font-size: 1em;
+      }
+
+      .ddoc .code_sample {
+        background-clip: padding-box;
+        margin: 1px 0;
+        text-align: left;
+      }
+
+      .ddoc .code_sample {
+        display: block;
+        font-size: 1.4em;
+        margin-left: 21px;
+      }
+
+      .ddoc ol .code_sample {
+        font-size: 1em;
+      }
+
+      .ddoc .code_lines {
+        counter-reset: li;
+        line-height: 1.6em;
+        list-style: outside none none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .ddoc .code_listing .code_sample div {
+        margin-left: 13px;
+        width: 93%;
+      }
+
+      .ddoc .code_listing .code_sample div .code_lines li {
+        list-style-type: none;
+        margin: 0;
+        padding-right: 10px;
+      }
+
+      .ddoc .code_sample div .code_lines li::before {
+        margin-left: -33px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+10)::before {
+        margin-left: -39px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+100)::before {
+        margin-left: -46px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample .code_lines .code {
+        color: #000;
+      }
+
+      .ddoc div.dlang {
+        margin: 10px 0 21px;
+        padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+          margin: 10px 0 21px;
+          padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+        border-left: 5px solid rgba(0, 155, 51, 0.2);
+      }
+
+      .ddoc .code_lines li::before {
+        color: rgba(128, 128, 128, 1);
+        content: counter(li, decimal);
+        counter-increment: li;
+        font-family: Menlo,monospace;
+        font-size: 0.9em;
+        margin-right: 16px;
+      }
+
+      .ddoc .code_lines li {
+        padding-left: 0;
+        white-space: pre-wrap;
+      }
+
+      .ddoc .code_lines li:only-of-type::before {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:only-of-type {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:nth-child(n+10) {
+        text-indent: -17px;
+      }
+
+      .ddoc .code_lines li:nth-child(n+10)::before {
+        margin-right: 12px;
+      }
+
+      .ddoc .graybox {
+        border: 1px solid rgba(233, 233, 233, 1);
+        border-collapse: collapse;
+        border-spacing: 0;
+        empty-cells: hide;
+        margin: 20px 0 36px;
+        text-align: left;
+      }
+
+      .ddoc .graybox p {
+        margin: 0;
+        min-width: 50px;
+      }
+
+      .ddoc th {
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: bottom;
+      }
+
+      .ddoc td {
+        border: 1px solid rgba(233, 233, 233, 1);
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: middle;
+      }
+
+      .punctuation {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .comment {
+        color: rgba(0, 131, 18, 1);
+      }
+
+      .operator {
+        color: #000;
+      }
+
+      .keyword {
+        color: rgba(170, 13, 145, 1);
+      }
+
+      .keyword_type {
+        color: rgba(170, 51, 145, 1);
+      }
+
+      .string_literal {
+        color: rgba(196, 26, 22, 1);
+      }
+
+      .ddoc_psuper_symbol {
+        color: rgba(92, 38, 153, 1);
+      }
+
+      .param {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .psymbol {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .ddoc_member_header .ddoc_header_anchor .code {
+        font-size: 1em;
+      }
+    </style>
+  </head>
+  <body id="ddoc_main" class="ddoc dlang">
+    <div class="content_wrapper">
+      <article class="module">
+        <h1 class="module_name">Associative Arrays</h1>
+        <section id="module_content"><br><br>
+<br><br>
+
+<br><br>
+<p>Associative arrays are a feature that is found in most modern high-level languages. They are very fast data structures that work like mini databases and are used in many programs.
+</p>
+<br><br>
+<p>We saw in the <a href="arrays.html">Arrays chapter</a> that plain arrays are containers that store their elements side-by-side and provide access to them by index. An array that stores the names of the days of the week can be defined like this:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    string[] dayNames =
+        [ <span class="string_literal">"Monday"</span>, <span class="string_literal">"Tuesday"</span>, <span class="string_literal">"Wednesday"</span>, <span class="string_literal">"Thursday"</span>,
+          <span class="string_literal">"Friday"</span>, <span class="string_literal">"Saturday"</span>, <span class="string_literal">"Sunday"</span> ];
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The name of a specific day can be accessed by its index in that array:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    writeln(dayNames[1]);   <span class="comment">// prints "Tuesday"
+</span></code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The fact that plain arrays provide access to their values through index numbers can be described as an <i>association</i> of indexes with values. In other words, arrays map indexes to values. Plain arrays can use only integers as indexes.
+</p>
+<br><br>
+<p>Associative arrays allow indexing not only using integers but also using any other type. They map the values of one type to the values of another type. The values of the type that associative arrays <i>map from</i> are called <i>keys</i>, rather than indexes. Associative arrays store their elements as key-value pairs.
+</p>
+<br><br>
+<p>Associative arrays are implemented in D using a <i>hash table</i>. Hash tables are among the fastest collections for storing and accessing elements. Other than in rare pathological cases, the time it takes to store or access an element is independent of the number of elements that are in the associative array.
+</p>
+<br><br>
+<p>The high performance of hash tables comes at the expense of storing the elements in an unordered way. Also, unlike arrays, the elements of hash tables are not stored side-by-side.
+</p>
+<br><br>
+<p>For plain arrays, index values are not stored at all. Because array elements are stored side-by-side in memory, index values are implicitly the relative positions of elements from the beginning of the array.
+</p>
+<br><br>
+<p>On the other hand, associative arrays do store both the keys and the values of elements. Although this difference makes associative arrays use more memory, it also allows them to use <i>sparse</i> key values. For example, when there are just two elements to store for keys 0 and 999, an associative array stores just two elements, not 1000 as a plain array has to.
+</p>
+<br><br>
+<h5>Definition</h5>
+<br><br>
+<p>The syntax of associative arrays is similar to the array syntax. The difference is that it is the type of the key that is specified within the square brackets, not the length of the array:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <i>value_type</i>[<i>key_type</i>] <i>associative_array_name</i>;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>For example, an associative array that maps day names of type  to day numbers of type  can be defined like this:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span>[string] dayNumbers;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The  variable above is an associative array that can be used as a table that provides a mapping from day names to day numbers. In other words, it can be used as the opposite of the  array at the beginning of this chapter. We will use the  associative array in the examples below.
+</p>
+<br><br>
+<p>The keys of associative arrays can be of any type, including user-defined  and  types. We will see user-defined types in later chapters.
+</p>
+<br><br>
+<p>The length of associative arrays cannot be specified when defined. They grow automatically as key-value pairs are added.
+</p>
+<br><br>
+<p><i><b>Note:</b> An associative array that is defined without any element is <a href="null_is.html"></a>, not empty. This distinction has an important consequence when  <a href="function_parameters.html">passing associative arrays to functions</a>. We will cover these concepts in later chapters.</i>
+</p>
+<br><br>
+<h5>Adding key-value pairs</h5>
+<br><br>
+<p>Using the assignment operator is sufficient to build the association between a key and a value:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="comment">// associates value 0 with key "Monday"
+</span>    dayNumbers[<span class="string_literal">"Monday"</span>]  0;
+
+    <span class="comment">// associates value 1 with key "Tuesday"
+</span>    dayNumbers[<span class="string_literal">"Tuesday"</span>]  1;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The table grows automatically with each association. For example,  would have two key-value pairs after the operations above. This can be demonstrated by printing the entire table:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    writeln(dayNumbers);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output indicates that the values 0 and 1 correspond to keys "Monday" and "Tuesday", respectively:
+</p>
+<br><br>
+
+<br><br>
+<p>There can be only one value per key. For that reason, when we assign a new key-value pair and the key already exists, the table does not grow; instead, the value of the existing key changes:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    dayNumbers[<span class="string_literal">"Tuesday"</span>] = 222;
+    writeln(dayNumbers);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output:
+</p>
+<br><br>
+
+<br><br>
+<br><br>
+<h5>Initialization</h5>
+<br><br>
+<p> Sometimes some of the mappings between the keys and the values are already known at the time of the definition of the associative array. Associative arrays are initialized similarly to regular arrays, using a colon to separate each key from its respective value:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="comment">// key : value
+</span>    <span class="keyword">int</span>[string] dayNumbers =
+        [ <span class="string_literal">"Monday"</span>   : 0, <span class="string_literal">"Tuesday"</span> : 1, <span class="string_literal">"Wednesday"</span> : 2,
+          <span class="string_literal">"Thursday"</span> : 3, <span class="string_literal">"Friday"</span>  : 4, <span class="string_literal">"Saturday"</span>  : 5,
+          <span class="string_literal">"Sunday"</span>   : 6 ];
+
+    writeln(dayNumbers[<span class="string_literal">"Tuesday"</span>]);    <span class="comment">// prints 1
+</span></code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h5>Removing key-value pairs</h5>
+<br><br>
+<p>Key-value pairs can be removed by using :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    dayNumbers.remove(<span class="string_literal">"Tuesday"</span>);
+    writeln(dayNumbers[<span class="string_literal">"Tuesday"</span>]);    <span class="comment">// ← run-time ERROR
+</span></code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The first line above removes the key-value pair "Tuesday" / . Since that key is not in the container anymore, the second line would cause an exception to be thrown and the program to be terminated if that exception is not caught. We will see exceptions in <a href="exceptions.html">a later chapter</a>.
+</p>
+<br><br>
+<p> removes all elements:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    dayNumbers.clear;    <span class="comment">// The associative array becomes empty
+</span></code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h5> Determining the presence of a key</h5>
+<br><br>
+<p>The  operator determines whether a given key exists in the associative array:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span>[string] colorCodes = [ <span class="comment">/* ... */</span> ];
+
+    <span class="keyword">if</span> (<span class="string_literal">"purple"</span>  colorCodes) {
+        <span class="comment">// key "purple" exists in the table
+</span>
+    } <span class="keyword">else</span> {
+        <span class="comment">// key "purple" does not exist in the table
+</span>    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Sometimes it makes sense to use a default value if a key does not exist in the associative array. For example, the special value of -1 can be used as the code for colors that are not in .  is useful in such cases: it returns the value associated with the specified key if that key exists, otherwise it returns the default value. The default value is specified as the second parameter of :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span>[string] colorCodes = [ <span class="string_literal">"blue"</span> : 10, <span class="string_literal">"green"</span> : 20 ];
+    writeln(colorCodes.get(<span class="string_literal">"purple"</span>, ));
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Since the array does not contain a value for the key ,  returns -1:
+</p>
+<br><br>
+
+<br><br>
+<h5>Properties</h5>
+<br><br>
+<ul><br><br>
+<li>  returns the number of key-value pairs.</li>
+<br><br>
+<li>  returns a copy of all keys as a dynamic array.</li>
+<br><br>
+<li>  provides access to the keys without copying them; we will see how  is used in  loops in the next chapter.</li>
+<br><br>
+<li>  returns a copy of all values as a dynamic array.</li>
+<br><br>
+<li>  provides access to the values without copying them.</li>
+<br><br>
+<li>  provides access to the key-value pairs without copying them.</li>
+<br><br>
+<li>  may make the array more efficient in some cases, such as after inserting a large number of key-value pairs.</li>
+<br><br>
+<li>  is the size of the array <i>reference</i> (it has nothing to do with the number of key-value pairs in the table and is the same value for all associative arrays).</li>
+<br><br>
+<li>  returns the value if it exists, the default value otherwise.</li>
+<br><br>
+<li>  removes the specified key and its value from the array.</li>
+<br><br>
+<li>  removes all elements.</li>
+<br><br>
+</ul>
+<br><br>
+<h5>Example</h5>
+<br><br>
+<p>Here is a program that prints the Turkish names of colors that are specified in English:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+<span class="keyword">import</span> std.string;
+
+<span class="keyword">void</span> main() {
+    string[string] colors = [ <span class="string_literal">"black"</span> : <span class="string_literal">"siyah"</span>,
+                              <span class="string_literal">"white"</span> : <span class="string_literal">"beyaz"</span>,
+                              <span class="string_literal">"red"</span>   : <span class="string_literal">"kırmızı"</span>,
+                              <span class="string_literal">"green"</span> : <span class="string_literal">"yeşil"</span>,
+                              <span class="string_literal">"blue"</span>  : <span class="string_literal">"mavi"</span> ];
+
+    writefln(<span class="string_literal">"I know the Turkish names of these %s colors: %s"</span>,
+             colors.length, colors.keys);
+
+    write(<span class="string_literal">"Please ask me one: "</span>);
+    string inEnglish = strip(readln());
+
+    <span class="keyword">if</span> (inEnglish <span class="keyword">in</span> colors) {
+        writefln(<span class="string_literal">"\"%s\" is \"%s\" in Turkish."</span>,
+                 inEnglish, colors[inEnglish]);
+
+    } <span class="keyword">else</span> {
+        writeln(<span class="string_literal">"I don't know that one."</span>);
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+
+</section>
+      </article>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,1250 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Value Types and Reference Types</title>
+    <style type="text/css" media="screen">
+      html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p,
+      blockquote, pre, a, abbr, address, cite, code, del, dfn, em, figure,
+      img, ins, kbd, q, s, samp, small, strong, sub, sup, var, b, u, i, dl,
+      dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption,
+      tbody, tfoot, thead, tr, th, td {
+        background: transparent none repeat scroll 0 0;
+        border: 0 none;
+        font-size: 100%;
+        margin: 0;
+        outline: 0 none;
+        padding: 0;
+        vertical-align: baseline;
+      }
+
+      h1 { font-size: 200%; }
+      h2 { font-size: 160%; }
+      h3 { font-size: 120%; }
+      h4 { font-size: 100%; }
+      h5 { font-size: 80%; }
+      h6 { font-size: 80%; font-weight: normal; }
+
+      ul, ol {
+        margin: 1.4em 0;
+      }
+      ul ul, ol ol, ul ol, ol ul {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      ul, ol {
+        margin-left: 2.8em;
+      }
+
+      ol {
+        list-style: decimal;
+      }
+      ol ol {
+        list-style: lower-alpha;
+      }
+      ol ol ol {
+        list-style: lower-roman;
+      }
+      ol ol ol ol {
+        list-style: decimal;
+      }
+
+      blockquote {
+        margin: 0.1em;
+        margin-left: 1em;
+        border-left: 2px solid #cccccc;
+        padding-left: 0.7em;
+      }
+
+      .color_red { color: #dc322f; }
+      .color_blue { color: #268bd2; }
+      .color_green { color: #859901; }
+      .color_yellow { color: #b58901; }
+      .color_black { color: black; }
+      .color_white { color: white; }
+
+      .font_big {
+        font-size: 1.2em;
+      }
+
+      .ddoc_section_h {
+        font-weight: bold;
+        font-size: 13px;
+        line-height: 19.5px;
+        margin-top: 11px;
+        display: block;
+      }
+
+      body.dlang .dlang {
+        display: inline-block;
+      }
+
+      body.dlang .declaration .dlang {
+          display: block;
+      }
+
+      body.dlang .ddoc_header_anchor a.dlang {
+        display: block;
+        color: rgba(0, 136, 204, 1);
+        text-decoration: none;
+      }
+
+      body.dlang .ddoc_header_anchor .code {
+        color: rgba(0, 136, 204, 1);
+      }
+
+      #ddoc_main .module {
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          overflow-x: hidden;
+          padding: 15px;
+      }
+
+      #ddoc_main .section .section {
+        margin-top: 0;
+      }
+
+      #ddoc_main .ddoc_module_members_section {
+          padding: 1px 0 0;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members section.intro {
+          background: #fff none repeat scroll 0 0;
+          list-style-type: none;
+          width: 100%;
+      }
+
+      #ddoc_main .ddoc_header_anchor {
+          font-size: 1.4em;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_header_anchor > .code {
+          display: inline-block;
+
+      }
+
+      #ddoc_main .ddoc_decl {
+        background-color: transparent;
+        height: 100%;
+        left: 0;
+        top: 0;
+        padding: 0;
+        padding-left: 15px;
+      }
+
+      #ddoc_main .ddoc_decl .section, #ddoc_main .section.ddoc_sections {
+        background: white none repeat scroll 0 0;
+        margin: 0;
+        padding: 5px;
+        position: relative;
+        border-radius: 5px;
+      }
+
+      #ddoc_main .ddoc_decl .section h4:first-of-type, #ddoc_main .section.ddoc_sections h4:first-of-type {
+        font-size: 13px;
+        line-height: 1.5;
+        margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration {
+          margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration .code {
+          color: rgba(0, 0, 0, 1);
+          margin-bottom: 15px;
+          padding-bottom: 6px;
+      }
+
+      #ddoc_main .declaration div .para {
+          margin-bottom: 0;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr td:first-of-type {
+        padding: 7px;
+        text-align: right;
+        vertical-align: top;
+        word-break: normal;
+        white-space: nowrap;
+      }
+
+      #ddoc_main .ddoc_params .graybox {
+        border: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox td {
+        border-color: rgba(214, 214, 214, 1);
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:first-child > td {
+        border-top: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:last-child > td {
+        border-bottom: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:first-child {
+        border-left: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:last-child {
+        border-right: 0 none;
+        width: 100%;
+      }
+
+      #ddoc_main em.term, #ddoc_main em.term .code {
+        color: rgba(65, 65, 65, 1);
+        font-size: 12px;
+        font-style: italic;
+        line-height: 1.5;
+      }
+
+      #ddoc_main .see-also {
+        cursor: pointer;
+        font-family: Menlo,monospace;
+      }
+
+      #ddoc_main .ddoc_decl .section > div:last-of-type {
+        margin-bottom: 15px;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members {
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .code_sample {
+        background: inherit;
+      }
+
+      #ddoc_main .declaration .code-line {
+          display: block;
+          font: 1em Menlo,monospace;
+      }
+
+      #ddoc_main a[name] {
+        margin: -112px 0 0;
+        padding-top: 112px;
+      }
+
+      #ddoc_main .ddoc_decl td {
+        max-width: inherit;
+      }
+
+      #ddoc_main .declaration a {
+        color: inherit;
+      }
+
+      #ddoc_main .declaration a:hover {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: underline;
+      }
+
+      body.ddoc {
+        background-color: transparent;
+        color: rgba(0, 0, 0, 1);
+        font-family: Helvetica,Arial,sans-serif;
+        font-size: 62.5%;
+        margin: 0;
+        border: 0;
+        left: 0;
+        top: 0;
+        padding: 0;
+      }
+
+      .ddoc a[name] {
+        display: block;
+        height: 0;
+        margin: -85px 0 0;
+        padding-top: 85px;
+        width: 0;
+      }
+
+      .ddoc .module {
+          border-color: transparent;
+          background-color: rgba(255, 255, 255, 1);
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-image: none;
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          box-shadow: 0 0 1px rgba(0, 0, 0, 0.07);
+          display: block;
+          margin-left: 0;
+          min-height: calc(100% - 173px);
+          overflow: auto;
+          padding-bottom: 100px;
+      }
+
+      .ddoc .content_wrapper {
+          background-color: rgba(242, 242, 242, 1);
+          margin: 0 auto;
+          max-width: 980px;
+      }
+
+      .ddoc .section {
+        padding: 15px 25px 30px;
+      }
+
+      .ddoc .section .section {
+        margin: 30px 0 0;
+        padding: 0;
+      }
+
+      .ddoc .para {
+        color: rgba(65, 65, 65, 1);
+        font-size: 1.4em;
+        line-height: 145%;
+        margin-bottom: 15px;
+      }
+
+      .ddoc .ddoc_examples .para {
+        margin-bottom: 0;
+      }
+
+      .ddoc .module_name {
+          color: rgba(0, 0, 0, 1);
+          display: block;
+          font-family: Helvetica;
+          font-size: 2.8em;
+          font-weight: 100;
+          margin-bottom: 0;
+          padding: 15px 0;
+      }
+
+      .ddoc .module a {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: none;
+      }
+
+      .ddoc .code {
+        color: rgba(128, 128, 128, 1);
+        font-family: Menlo,monospace;
+        font-size: 0.85em;
+        word-wrap: break-word;
+      }
+
+      .ddoc .code i {
+        font-style: normal;
+      }
+
+      .ddoc .code .code {
+        font-size: 1em;
+      }
+
+      .ddoc .code_sample {
+        background-clip: padding-box;
+        margin: 1px 0;
+        text-align: left;
+      }
+
+      .ddoc .code_sample {
+        display: block;
+        font-size: 1.4em;
+        margin-left: 21px;
+      }
+
+      .ddoc ol .code_sample {
+        font-size: 1em;
+      }
+
+      .ddoc .code_lines {
+        counter-reset: li;
+        line-height: 1.6em;
+        list-style: outside none none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .ddoc .code_listing .code_sample div {
+        margin-left: 13px;
+        width: 93%;
+      }
+
+      .ddoc .code_listing .code_sample div .code_lines li {
+        list-style-type: none;
+        margin: 0;
+        padding-right: 10px;
+      }
+
+      .ddoc .code_sample div .code_lines li::before {
+        margin-left: -33px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+10)::before {
+        margin-left: -39px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+100)::before {
+        margin-left: -46px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample .code_lines .code {
+        color: #000;
+      }
+
+      .ddoc div.dlang {
+        margin: 10px 0 21px;
+        padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+          margin: 10px 0 21px;
+          padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+        border-left: 5px solid rgba(0, 155, 51, 0.2);
+      }
+
+      .ddoc .code_lines li::before {
+        color: rgba(128, 128, 128, 1);
+        content: counter(li, decimal);
+        counter-increment: li;
+        font-family: Menlo,monospace;
+        font-size: 0.9em;
+        margin-right: 16px;
+      }
+
+      .ddoc .code_lines li {
+        padding-left: 0;
+        white-space: pre-wrap;
+      }
+
+      .ddoc .code_lines li:only-of-type::before {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:only-of-type {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:nth-child(n+10) {
+        text-indent: -17px;
+      }
+
+      .ddoc .code_lines li:nth-child(n+10)::before {
+        margin-right: 12px;
+      }
+
+      .ddoc .graybox {
+        border: 1px solid rgba(233, 233, 233, 1);
+        border-collapse: collapse;
+        border-spacing: 0;
+        empty-cells: hide;
+        margin: 20px 0 36px;
+        text-align: left;
+      }
+
+      .ddoc .graybox p {
+        margin: 0;
+        min-width: 50px;
+      }
+
+      .ddoc th {
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: bottom;
+      }
+
+      .ddoc td {
+        border: 1px solid rgba(233, 233, 233, 1);
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: middle;
+      }
+
+      .punctuation {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .comment {
+        color: rgba(0, 131, 18, 1);
+      }
+
+      .operator {
+        color: #000;
+      }
+
+      .keyword {
+        color: rgba(170, 13, 145, 1);
+      }
+
+      .keyword_type {
+        color: rgba(170, 51, 145, 1);
+      }
+
+      .string_literal {
+        color: rgba(196, 26, 22, 1);
+      }
+
+      .ddoc_psuper_symbol {
+        color: rgba(92, 38, 153, 1);
+      }
+
+      .param {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .psymbol {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .ddoc_member_header .ddoc_header_anchor .code {
+        font-size: 1em;
+      }
+    </style>
+  </head>
+  <body id="ddoc_main" class="ddoc dlang">
+    <div class="content_wrapper">
+      <article class="module">
+        <h1 class="module_name">Value Types and Reference Types</h1>
+        <section id="module_content"><br><br>
+<br><br>
+
+<br><br>
+<p>This chapter introduces the concepts of value types and reference types. These concepts are particularly important to understand the differences between structs and classes.
+</p>
+<br><br>
+<p>This chapter also gets into more detail with the  operator.
+</p>
+<br><br>
+<p>The chapter ends with a table that contains the outcomes of the following two concepts for different types of variables:
+</p>
+<br><br>
+<ul><li>Value comparison</li>
+<li>Address comparison</li>
+</ul>
+<br><br>
+<h5>Value types</h5>
+<br><br>
+<p>Value types are easy to describe: Variables of value types carry values. For example, all of the integer and floating point types are values types. Although not immediately obvious, fixed-length arrays are value types as well.
+</p>
+<br><br>
+<p>For example, a variable of type  has an integer value:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span> speed = 123;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The number of bytes that the variable  occupies is the size of an . If we visualize the memory as a ribbon going from left to right, we can imagine the variable living on some part of it:
+</p>
+<br><br>
+
+<br><br>
+<p>When variables of value types are copied, they get their own values:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span> newSpeed = speed;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The new variable would have a place and a value of its own:
+</p>
+<br><br>
+
+<br><br>
+<p>Naturally, modifications that are made to these variables are independent:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    speed = 200;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The value of the other variable does not change:
+</p>
+<br><br>
+
+<br><br>
+<h6>The use of  checks below</h6>
+<br><br>
+<p>The following examples contain  checks to indicate that their conditions are true. In other words, they are not checks in the normal sense, rather my way of telling to the reader that "this is true".
+</p>
+<br><br>
+<p>For example, the check  below means "speed is equal to newSpeed".
+</p>
+<br><br>
+<h6>Value identity</h6>
+<br><br>
+<p>As the memory representations above indicate, there are two types of equality that concern variables:
+</p>
+<br><br>
+<ul><br><br>
+<li><b>Value equality</b>: The  operator that appears in many examples throughout the book compares variables by their values. When two variables are said to be <i>equal</i> in that sense, their values are equal.
+</li>
+<li><b>Value identity</b>: In the sense of owning separate values,  and  have separate identities. Even when their values are equal, they are different variables.
+</li>
+<br><br>
+</ul>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span> speed = 123;
+    <span class="keyword">int</span> newSpeed = speed;
+    <span class="keyword">assert</span>(speed == newSpeed);
+    speed = 200;
+    <span class="keyword">assert</span>(speed != newSpeed);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h6>Address-of operator, </h6>
+<br><br>
+<p>We have been using the  operator so far with . The  operator tells  where to put the input data.
+</p>
+<br><br>
+<p><i><b>Note:</b> As we have seen in <a href="input.html">the Reading from the Standard Input chapter</a>,  can be used without explicit pointers as well.
+</i></p>
+<br><br>
+<p>The addresses of variables can be used for other purposes as well. The following code simply prints the addresses of two variables:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span> speed = 123;
+    <span class="keyword">int</span> newSpeed = speed;
+
+    writeln(<span class="string_literal">"speed   : "</span>, speed,    <span class="string_literal">" address: "</span>, speed);
+    writeln(<span class="string_literal">"newSpeed: "</span>, newSpeed, <span class="string_literal">" address: "</span>, newSpeed);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p> and  have the same value but their addresses are different:
+</p>
+<br><br>
+
+<br><br>
+<p><i><b>Note:</b> It is normal for the addresses to have different values every time the program is run. Variables live at parts of memory that happen to be available during that particular execution of the program.</i>
+</p>
+<br><br>
+<p>Addresses are normally printed in hexadecimal format.
+</p>
+<br><br>
+<p>Additionally, the fact that the two addresses are 4 apart indicates that those two integers are placed next to each other in memory. (Note that the value of hexadecimal C is 12, so the difference between 8 and 12 is 4.)
+</p>
+<br><br>
+<h5> Reference variables</h5>
+<br><br>
+<p>Before getting to reference types let's first define reference variables.
+</p>
+<br><br>
+<p><b>Terminology:</b> We have been using the phrase <i>to provide access to</i> so far in several contexts throughout the book. For example, slices and associative arrays do not own any elements but provide access to elements that are owned by the D runtime. Another phrase that is identical in meaning is <i>being a reference of</i> as in "slices are references of zero or more elements", which is sometimes used even shorter as <i>to reference</i> as in "this slice references two elements". Finally, the act of accessing a value through a reference is called <i>dereferencing</i>.
+</p>
+<br><br>
+<p>Reference variables are variables that act like aliases of other variables. Although they look and are used like variables, they do not have values themselves. Modifications made on a reference variable change the value of the actual variable.
+</p>
+<br><br>
+<p>We have already used reference variables so far in two contexts:
+</p>
+<br><br>
+<ul><br><br>
+<li><b> in  loops</b>: The  keyword makes the loop variable the <i>actual</i> element that corresponds to that iteration. When the  keyword is not used, the loop variable is a <i>copy</i> of the actual element.
+<br><br>
+<p>This can be demonstrated by the  operator as well. If their addresses are the same, two variables would be referencing the same value (or the <i>same element</i> in this case):
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span>[] slice = [ 0, 1, 2, 3, 4 ];
+
+    <span class="keyword">foreach</span> (i,  element; slice) {
+        <span class="keyword">assert</span>(&amp;element == &amp;slice[i]);
+    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Although they are separate variables, the fact that the addresses of  and  are the same proves that they have the same value identity.
+</p>
+<br><br>
+<p>In other words,  and  are references of the same value. Modifying either of those affects the actual value. The following memory layout indicates a snapshot of the iteration when  is 3:
+</p>
+<br><br>
+
+<br><br>
+</li>
+<br><br>
+<li><b> and  function parameters</b>: Function parameters that are specified as  or  are aliases of the actual variable the function is called with.
+<br><br>
+<p>The following example demonstrates this case by passing the same variable to separate  and  parameters of a function. Again, the  operator indicates that both parameters have the same value identity:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">int</span> originalVariable;
+    writeln(<span class="string_literal">"address of originalVariable: "</span>, &amp;originalVariable);
+    foo(originalVariable, originalVariable);
+}
+
+<span class="keyword">void</span> foo( <span class="keyword">int</span> refParameter,  <span class="keyword">int</span> outParameter) {
+    writeln(<span class="string_literal">"address of refParameter    : "</span>, &amp;refParameter);
+    writeln(<span class="string_literal">"address of outParameter    : "</span>, &amp;outParameter);
+    <span class="keyword">assert</span>(refParameter == outParameter);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Although they are defined as separate parameters,  and  are aliases of :
+</p>
+<br><br>
+
+<br><br>
+</li>
+<br><br>
+</ul>
+<br><br>
+<h5> Reference types</h5>
+<br><br>
+<p>Variables of reference types have individual identities but they do not have individual values. They <i>provide access to</i> existing variables.
+</p>
+<br><br>
+<p>We have already seen this concept with slices. Slices do not own elements, they provide access to existing elements:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> main() {
+    <span class="comment">// Although it is named as 'array' here, this variable is
+</span>    <span class="comment">// a slice as well. It provides access to all of the
+</span>    <span class="comment">// initial elements:
+</span>    <span class="keyword">int</span>[] array = [ 0, 1, 2, 3, 4 ];
+
+    <span class="comment">// A slice that provides access to elements other than the
+</span>    <span class="comment">// first and the last:
+</span>    <span class="keyword">int</span>[] slice = array[1 .. $ - 1];
+
+    <span class="comment">// At this point slice[0] and array[1] provide access to
+</span>    <span class="comment">// the same value:
+</span>    <span class="keyword">assert</span>(slice[0] == array[1]);
+
+    <span class="comment">// Changing slice[0] changes array[1]:
+</span>    slice[0] = 42;
+    <span class="keyword">assert</span>(array[1] == 42);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Contrary to reference variables, reference types are not simply aliases. To see this distinction, let's define another slice as a copy of one of the existing slices:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span>[] slice2 = slice;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The two slices have their own adresses. In other words, they have separate identities:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">assert</span>(&amp;slice != &amp;slice2);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The following list is a summary of the differences between reference variables and reference types:
+</p>
+<br><br>
+<ul><br><br>
+<li>Reference variables do not have identities, they are aliases of existing variables.</li>
+<br><br>
+<li>Variables of reference types have identities but they do not own values; rather, they provide access to existing values.</li>
+<br><br>
+</ul>
+<br><br>
+<p>The way  and  live in memory can be illustrated as in the following figure:
+</p>
+<br><br>
+
+<br><br>
+<p>The three elements that the two slices both reference are highlighted.
+</p>
+<br><br>
+<p>One of the differences between C++ and D is that classes are reference types in D. Although we will cover classes in later chapters in detail, the following is a short example to demonstrate this fact:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">class</span> MyClass {
+    <span class="keyword">int</span> member;
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Class objects are constructed by the  keyword:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> variable = <span class="keyword">new</span> MyClass;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p> is a reference to an anonymous  object that has been constructed by :
+</p>
+<br><br>
+
+<br><br>
+<p>Just like with slices, when  is copied, the copy becomes another reference to the same object. The copy has its own address:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> variable = <span class="keyword">new</span> MyClass;
+    <span class="keyword">auto</span> variable2 = variable;
+    <span class="keyword">assert</span>(variable == variable2);
+    <span class="keyword">assert</span>(&amp;variable != &amp;variable2);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>They are equal from the point of view of referencing the same object, but they are separate variables:
+</p>
+<br><br>
+
+<br><br>
+<p>This can also be shown by modifying the member of the object:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> variable = <span class="keyword">new</span> MyClass;
+    variable.member = 1;
+
+    <span class="keyword">auto</span> variable2 = variable;   <span class="comment">// They share the same object
+</span>    variable2.member = 2;
+
+    <span class="keyword">assert</span>(variable.member == 2); <span class="comment">// The object that variable
+</span>                                  <span class="comment">// provides access to has
+</span>                                  <span class="comment">// changed.
+</span></code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Another reference type is associative arrays. Like slices and classes, when an associative array is copied or assigned to another variable, both give access to the same set of elements:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    string[<span class="keyword">int</span>] byName =
+    [
+        1   : <span class="string_literal">"one"</span>,
+        10  : <span class="string_literal">"ten"</span>,
+        100 : <span class="string_literal">"hundred"</span>,
+    ];
+
+    <span class="comment">// The two associative arrays will be sharing the same
+</span>    <span class="comment">// set of elements
+</span>    string[<span class="keyword">int</span>] byName2 = byName;
+
+    <span class="comment">// The mapping added through the second ...
+</span>    byName2[4] = <span class="string_literal">"four"</span>;
+
+    <span class="comment">// ... is visible through the first.
+</span>    <span class="keyword">assert</span>(byName[4] == <span class="string_literal">"four"</span>);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>As it will be explained in the next chapter, there is no element sharing if the original associative array were  to begin with.
+</p>
+<br><br>
+<h6>The difference in the assignment operation</h6>
+<br><br>
+<p>With value types and reference variables, the assignment operation changes <i>the actual value</i>:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">void</span> main() {
+    <span class="keyword">int</span> number = 8;
+
+    halve(number);      <span class="comment">// The actual value changes
+</span>    <span class="keyword">assert</span>(number == 4);
+}
+
+<span class="keyword">void</span> halve( <span class="keyword">int</span> dividend) {
+    dividend /= 2;
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>On the other hand, with reference types, the assignment operation changes <i>which value is being accessed</i>. For example, the assignment of the  variable below does not change the value of any element; rather, it changes what elements  is now a reference of:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span>[] slice1 = [ 10, 11, 12, 13, 14 ];
+    <span class="keyword">int</span>[] slice2 = [ 20, 21, 22 ];
+
+    <span class="keyword">int</span>[] slice3 = slice1[1 .. 3]; <span class="comment">// Access to element 1 and
+</span>                                   <span class="comment">// element 2 of slice1
+</span>
+    slice3[0] = 777;
+    <span class="keyword">assert</span>(slice1 == [ 10, 777, 12, 13, 14 ]);
+
+    <span class="comment">// This assignment does not modify the elements that
+</span>    <span class="comment">// slice3 is providing access to. It makes slice3 provide
+</span>    <span class="comment">// access to other elements.
+</span>     slice2[$ - 1 .. $]; <span class="comment">// Access to the last element
+</span>
+    slice3[0] = 888;
+    <span class="keyword">assert</span>(slice2 == [ 20, 21, 888 ]);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Let's demonstrate the same effect this time with two objects of the  type:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> variable1 = <span class="keyword">new</span> MyClass;
+    variable1.member = 1;
+
+    <span class="keyword">auto</span> variable2 = <span class="keyword">new</span> MyClass;
+    variable2.member = 2;
+
+    <span class="keyword">auto</span> ;
+    aCopy.member = 3;
+
+    ;
+    aCopy.member = 4;
+
+    <span class="keyword">assert</span>(variable1.member == 3);
+    <span class="keyword">assert</span>(variable2.member == 4);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The  variable above first references the same object as , and then the same object as . As a consequence, the  that is modified through  is first 's and then 's.
+</p>
+<br><br>
+<h6>Variables of reference types may not be referencing any object</h6>
+<br><br>
+<p>With a reference variable, there is always an actual variable that it is an alias of; it can not start its life without a variable. On the other hand, variables of reference types can start their lives without referencing any object.
+</p>
+<br><br>
+<p>For example, a  variable can be defined without an actual object having been created by :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    MyClass variable;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Such variables have the special value of . We will cover  and the  keyword in <a href="null_is.html">a later chapter</a>.
+</p>
+<br><br>
+<h5>Fixed-length arrays are value types, slices are reference types</h5>
+<br><br>
+<p>D's arrays and slices diverge when it comes to value type versus reference type.
+</p>
+<br><br>
+<p>As we have already seen above, slices are reference types. On the other hand, fixed-length arrays are value types. They own their elements and behave as individual values:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span>[3] array1 = [ 10, 20, 30 ];
+
+    <span class="keyword">auto</span> array2 = array1; <span class="comment">// array2's elements are different
+</span>                          <span class="comment">// from array1's
+</span>    array2[0] = 11;
+
+    <span class="comment">// First array is not affected:
+</span>    <span class="keyword">assert</span>(array1[0] == 10);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p> is a fixed-length array because its length is specified when it has been defined. Since  makes the compiler infer the type of , it is a fixed-length array as well. The values of 's elements are copied from the values of the elements of . Each array has its own elements. Modifying an element through one does not affect the other.
+</p>
+<br><br>
+<br><br>
+<h5>Experiment</h5>
+<br><br>
+<p>The following program is an experiment of applying the  operator to different types. It applies the operator to both variables of a certain type and to the addresses of those variables. The program produces the following output:
+</p>
+<br><br>
+
+<br><br>
+<p>The table above has been generated by the following program:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+<span class="keyword">import</span> std.array;
+
+<span class="keyword">int</span> moduleVariable = 9;
+
+<span class="keyword">class</span> MyClass {
+    <span class="keyword">int</span> member;
+}
+
+<span class="keyword">void</span> printHeader() {
+    <span class="keyword">immutable</span> <span class="keyword">dchar</span>[] header =
+        <span class="string_literal">"                     Type of variable"</span> ~
+        <span class="string_literal">"                      a == b  &amp;a == &amp;b"</span>;
+
+    writeln();
+    writeln(header);
+    writeln(replicate(<span class="string_literal">"="</span>, header.length));
+}
+
+<span class="keyword">void</span> printInfo(<span class="keyword">const</span> <span class="keyword">dchar</span>[] label,
+               <span class="keyword">bool</span> valueEquality,
+               <span class="keyword">bool</span> addressEquality) {
+    writefln(<span class="string_literal">"%55s%9s%9s"</span>,
+             label, valueEquality, addressEquality);
+}
+
+<span class="keyword">void</span> main() {
+    printHeader();
+
+    <span class="keyword">int</span> number1 = 12;
+    <span class="keyword">int</span> number2 = 12;
+    printInfo(<span class="string_literal">"variables with equal values (value type)"</span>,
+              number1 == number2,
+              &amp;number1 == &amp;number2);
+
+    <span class="keyword">int</span> number3 = 3;
+    printInfo(<span class="string_literal">"variables with different values (value type)"</span>,
+              number1 == number3,
+              &amp;number1 == &amp;number3);
+
+    <span class="keyword">int</span>[] slice = [ 4 ];
+    <span class="keyword">foreach</span> (i, <span class="keyword">ref</span> element; slice) {
+        printInfo(<span class="string_literal">"foreach with 'ref' variable"</span>,
+                  element == slice[i],
+                  &amp;element == &amp;slice[i]);
+    }
+
+    <span class="keyword">foreach</span> (i, element; slice) {
+        printInfo(<span class="string_literal">"foreach without 'ref' variable"</span>,
+                  element == slice[i],
+                  &amp;element == &amp;slice[i]);
+    }
+
+    outParameter(moduleVariable);
+    refParameter(moduleVariable);
+    inParameter(moduleVariable);
+
+    <span class="keyword">int</span>[] longSlice = [ 5, 6, 7 ];
+    <span class="keyword">int</span>[] slice1 = longSlice;
+    <span class="keyword">int</span>[] slice2 = slice1;
+    printInfo(<span class="string_literal">"slices providing access to same elements"</span>,
+              slice1 == slice2,
+              &amp;slice1 == &amp;slice2);
+
+    <span class="keyword">int</span>[] slice3 = slice1[0 .. $ - 1];
+    printInfo(<span class="string_literal">"slices providing access to different elements"</span>,
+              slice1 == slice3,
+              &amp;slice1 == &amp;slice3);
+
+    <span class="keyword">auto</span> variable1 = <span class="keyword">new</span> MyClass;
+    <span class="keyword">auto</span> variable2 = variable1;
+    printInfo(
+        <span class="string_literal">"MyClass variables to same object (reference type)"</span>,
+        variable1 == variable2,
+        &amp;variable1 == &amp;variable2);
+
+    <span class="keyword">auto</span> variable3 = <span class="keyword">new</span> MyClass;
+    printInfo(
+        <span class="string_literal">"MyClass variables to different objects (reference type)"</span>,
+        variable1 == variable3,
+        &amp;variable1 == &amp;variable3);
+}
+
+<span class="keyword">void</span> outParameter(<span class="keyword">out</span> <span class="keyword">int</span> parameter) {
+    printInfo(<span class="string_literal">"function with 'out' parameter"</span>,
+              parameter == moduleVariable,
+              &amp;parameter == &amp;moduleVariable);
+}
+
+<span class="keyword">void</span> refParameter(<span class="keyword">ref</span> <span class="keyword">int</span> parameter) {
+    printInfo(<span class="string_literal">"function with 'ref' parameter"</span>,
+              parameter == moduleVariable,
+              &amp;parameter == &amp;moduleVariable);
+}
+
+<span class="keyword">void</span> inParameter(<span class="keyword">in</span> <span class="keyword">int</span> parameter) {
+    printInfo(<span class="string_literal">"function with 'in' parameter"</span>,
+              parameter == moduleVariable,
+              &amp;parameter == &amp;moduleVariable);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Notes:
+</p>
+<br><br>
+<ul><br><br>
+<li>  The program makes use of a module variable when comparing different types of function parameters. Module variables are defined at module level, outside of all of the functions. They are globally accessible to all of the code in the module.
+</li>
+<br><br>
+<li> The  function of the  module takes an array (the  string above) and repeats it the specified number of times.
+</li>
+<br><br>
+</ul>
+<br><br>
+<h5>Summary</h5>
+<br><br>
+<ul><br><br>
+<li>Variables of value types have their own values and adresses.</li>
+<br><br>
+<li>Reference variables do not have their own values nor addresses. They are aliases of existing variables.</li>
+<br><br>
+<li>Variables of reference types have their own addresses but the values that they reference do not belong to them.</li>
+<br><br>
+<li>With reference types, assignment does not change value, it changes which value is being accessed.</li>
+<br><br>
+<li>Variables of reference types may be .</li>
+<br><br>
+</ul>
+
+</section>
+      </article>
+    </div>
+  </body>
+</html>

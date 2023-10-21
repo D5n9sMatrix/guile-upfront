@@ -1,0 +1,1582 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Bit Operations</title>
+    <style type="text/css" media="screen">
+      html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p,
+      blockquote, pre, a, abbr, address, cite, code, del, dfn, em, figure,
+      img, ins, kbd, q, s, samp, small, strong, sub, sup, var, b, u, i, dl,
+      dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption,
+      tbody, tfoot, thead, tr, th, td {
+        background: transparent none repeat scroll 0 0;
+        border: 0 none;
+        font-size: 100%;
+        margin: 0;
+        outline: 0 none;
+        padding: 0;
+        vertical-align: baseline;
+      }
+
+      h1 { font-size: 200%; }
+      h2 { font-size: 160%; }
+      h3 { font-size: 120%; }
+      h4 { font-size: 100%; }
+      h5 { font-size: 80%; }
+      h6 { font-size: 80%; font-weight: normal; }
+
+      ul, ol {
+        margin: 1.4em 0;
+      }
+      ul ul, ol ol, ul ol, ol ul {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      ul, ol {
+        margin-left: 2.8em;
+      }
+
+      ol {
+        list-style: decimal;
+      }
+      ol ol {
+        list-style: lower-alpha;
+      }
+      ol ol ol {
+        list-style: lower-roman;
+      }
+      ol ol ol ol {
+        list-style: decimal;
+      }
+
+      blockquote {
+        margin: 0.1em;
+        margin-left: 1em;
+        border-left: 2px solid #cccccc;
+        padding-left: 0.7em;
+      }
+
+      .color_red { color: #dc322f; }
+      .color_blue { color: #268bd2; }
+      .color_green { color: #859901; }
+      .color_yellow { color: #b58901; }
+      .color_black { color: black; }
+      .color_white { color: white; }
+
+      .font_big {
+        font-size: 1.2em;
+      }
+
+      .ddoc_section_h {
+        font-weight: bold;
+        font-size: 13px;
+        line-height: 19.5px;
+        margin-top: 11px;
+        display: block;
+      }
+
+      body.dlang .dlang {
+        display: inline-block;
+      }
+
+      body.dlang .declaration .dlang {
+          display: block;
+      }
+
+      body.dlang .ddoc_header_anchor a.dlang {
+        display: block;
+        color: rgba(0, 136, 204, 1);
+        text-decoration: none;
+      }
+
+      body.dlang .ddoc_header_anchor .code {
+        color: rgba(0, 136, 204, 1);
+      }
+
+      #ddoc_main .module {
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          overflow-x: hidden;
+          padding: 15px;
+      }
+
+      #ddoc_main .section .section {
+        margin-top: 0;
+      }
+
+      #ddoc_main .ddoc_module_members_section {
+          padding: 1px 0 0;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members section.intro {
+          background: #fff none repeat scroll 0 0;
+          list-style-type: none;
+          width: 100%;
+      }
+
+      #ddoc_main .ddoc_header_anchor {
+          font-size: 1.4em;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_header_anchor > .code {
+          display: inline-block;
+
+      }
+
+      #ddoc_main .ddoc_decl {
+        background-color: transparent;
+        height: 100%;
+        left: 0;
+        top: 0;
+        padding: 0;
+        padding-left: 15px;
+      }
+
+      #ddoc_main .ddoc_decl .section, #ddoc_main .section.ddoc_sections {
+        background: white none repeat scroll 0 0;
+        margin: 0;
+        padding: 5px;
+        position: relative;
+        border-radius: 5px;
+      }
+
+      #ddoc_main .ddoc_decl .section h4:first-of-type, #ddoc_main .section.ddoc_sections h4:first-of-type {
+        font-size: 13px;
+        line-height: 1.5;
+        margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration {
+          margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration .code {
+          color: rgba(0, 0, 0, 1);
+          margin-bottom: 15px;
+          padding-bottom: 6px;
+      }
+
+      #ddoc_main .declaration div .para {
+          margin-bottom: 0;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr td:first-of-type {
+        padding: 7px;
+        text-align: right;
+        vertical-align: top;
+        word-break: normal;
+        white-space: nowrap;
+      }
+
+      #ddoc_main .ddoc_params .graybox {
+        border: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox td {
+        border-color: rgba(214, 214, 214, 1);
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:first-child > td {
+        border-top: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:last-child > td {
+        border-bottom: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:first-child {
+        border-left: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:last-child {
+        border-right: 0 none;
+        width: 100%;
+      }
+
+      #ddoc_main em.term, #ddoc_main em.term .code {
+        color: rgba(65, 65, 65, 1);
+        font-size: 12px;
+        font-style: italic;
+        line-height: 1.5;
+      }
+
+      #ddoc_main .see-also {
+        cursor: pointer;
+        font-family: Menlo,monospace;
+      }
+
+      #ddoc_main .ddoc_decl .section > div:last-of-type {
+        margin-bottom: 15px;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members {
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .code_sample {
+        background: inherit;
+      }
+
+      #ddoc_main .declaration .code-line {
+          display: block;
+          font: 1em Menlo,monospace;
+      }
+
+      #ddoc_main a[name] {
+        margin: -112px 0 0;
+        padding-top: 112px;
+      }
+
+      #ddoc_main .ddoc_decl td {
+        max-width: inherit;
+      }
+
+      #ddoc_main .declaration a {
+        color: inherit;
+      }
+
+      #ddoc_main .declaration a:hover {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: underline;
+      }
+
+      body.ddoc {
+        background-color: transparent;
+        color: rgba(0, 0, 0, 1);
+        font-family: Helvetica,Arial,sans-serif;
+        font-size: 62.5%;
+        margin: 0;
+        border: 0;
+        left: 0;
+        top: 0;
+        padding: 0;
+      }
+
+      .ddoc a[name] {
+        display: block;
+        height: 0;
+        margin: -85px 0 0;
+        padding-top: 85px;
+        width: 0;
+      }
+
+      .ddoc .module {
+          border-color: transparent;
+          background-color: rgba(255, 255, 255, 1);
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-image: none;
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          box-shadow: 0 0 1px rgba(0, 0, 0, 0.07);
+          display: block;
+          margin-left: 0;
+          min-height: calc(100% - 173px);
+          overflow: auto;
+          padding-bottom: 100px;
+      }
+
+      .ddoc .content_wrapper {
+          background-color: rgba(242, 242, 242, 1);
+          margin: 0 auto;
+          max-width: 980px;
+      }
+
+      .ddoc .section {
+        padding: 15px 25px 30px;
+      }
+
+      .ddoc .section .section {
+        margin: 30px 0 0;
+        padding: 0;
+      }
+
+      .ddoc .para {
+        color: rgba(65, 65, 65, 1);
+        font-size: 1.4em;
+        line-height: 145%;
+        margin-bottom: 15px;
+      }
+
+      .ddoc .ddoc_examples .para {
+        margin-bottom: 0;
+      }
+
+      .ddoc .module_name {
+          color: rgba(0, 0, 0, 1);
+          display: block;
+          font-family: Helvetica;
+          font-size: 2.8em;
+          font-weight: 100;
+          margin-bottom: 0;
+          padding: 15px 0;
+      }
+
+      .ddoc .module a {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: none;
+      }
+
+      .ddoc .code {
+        color: rgba(128, 128, 128, 1);
+        font-family: Menlo,monospace;
+        font-size: 0.85em;
+        word-wrap: break-word;
+      }
+
+      .ddoc .code i {
+        font-style: normal;
+      }
+
+      .ddoc .code .code {
+        font-size: 1em;
+      }
+
+      .ddoc .code_sample {
+        background-clip: padding-box;
+        margin: 1px 0;
+        text-align: left;
+      }
+
+      .ddoc .code_sample {
+        display: block;
+        font-size: 1.4em;
+        margin-left: 21px;
+      }
+
+      .ddoc ol .code_sample {
+        font-size: 1em;
+      }
+
+      .ddoc .code_lines {
+        counter-reset: li;
+        line-height: 1.6em;
+        list-style: outside none none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .ddoc .code_listing .code_sample div {
+        margin-left: 13px;
+        width: 93%;
+      }
+
+      .ddoc .code_listing .code_sample div .code_lines li {
+        list-style-type: none;
+        margin: 0;
+        padding-right: 10px;
+      }
+
+      .ddoc .code_sample div .code_lines li::before {
+        margin-left: -33px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+10)::before {
+        margin-left: -39px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+100)::before {
+        margin-left: -46px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample .code_lines .code {
+        color: #000;
+      }
+
+      .ddoc div.dlang {
+        margin: 10px 0 21px;
+        padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+          margin: 10px 0 21px;
+          padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+        border-left: 5px solid rgba(0, 155, 51, 0.2);
+      }
+
+      .ddoc .code_lines li::before {
+        color: rgba(128, 128, 128, 1);
+        content: counter(li, decimal);
+        counter-increment: li;
+        font-family: Menlo,monospace;
+        font-size: 0.9em;
+        margin-right: 16px;
+      }
+
+      .ddoc .code_lines li {
+        padding-left: 0;
+        white-space: pre-wrap;
+      }
+
+      .ddoc .code_lines li:only-of-type::before {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:only-of-type {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:nth-child(n+10) {
+        text-indent: -17px;
+      }
+
+      .ddoc .code_lines li:nth-child(n+10)::before {
+        margin-right: 12px;
+      }
+
+      .ddoc .graybox {
+        border: 1px solid rgba(233, 233, 233, 1);
+        border-collapse: collapse;
+        border-spacing: 0;
+        empty-cells: hide;
+        margin: 20px 0 36px;
+        text-align: left;
+      }
+
+      .ddoc .graybox p {
+        margin: 0;
+        min-width: 50px;
+      }
+
+      .ddoc th {
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: bottom;
+      }
+
+      .ddoc td {
+        border: 1px solid rgba(233, 233, 233, 1);
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: middle;
+      }
+
+      .punctuation {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .comment {
+        color: rgba(0, 131, 18, 1);
+      }
+
+      .operator {
+        color: #000;
+      }
+
+      .keyword {
+        color: rgba(170, 13, 145, 1);
+      }
+
+      .keyword_type {
+        color: rgba(170, 51, 145, 1);
+      }
+
+      .string_literal {
+        color: rgba(196, 26, 22, 1);
+      }
+
+      .ddoc_psuper_symbol {
+        color: rgba(92, 38, 153, 1);
+      }
+
+      .param {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .psymbol {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .ddoc_member_header .ddoc_header_anchor .code {
+        font-size: 1em;
+      }
+    </style>
+  </head>
+  <body id="ddoc_main" class="ddoc dlang">
+    <div class="content_wrapper">
+      <article class="module">
+        <h1 class="module_name">Bit Operations</h1>
+        <section id="module_content"><br><br>
+<br><br>
+
+<br><br>
+<p>This chapter covers operations on bits, the smallest data units. Bit operations are among the most fundamental features of microprocessors.
+</p>
+<br><br>
+<p>System programmers must understand bit operations at least to use <i>flag</i> parameters correctly.
+</p>
+<br><br>
+<h5>Representation of data at the lowest level</h5>
+<br><br>
+<p>Programming languages are abstractions. A user type like  defined in a programming language is not directly related to the internals of the computer. Programming languages are tools that help humans use the hardware without needing to know the details of the hardware.
+</p>
+<br><br>
+<p>Although it is usually not necessary to deal with the hardware directly, it is helpful to understand how data is represented at hardware level.
+</p>
+<br><br>
+<h6> Transistor</h6>
+<br><br>
+<p>The processing abilities of modern electronic devices are mostly based on the electronic element called <i>the transistor</i>. A significant ability of the transistor is that it can be controlled by other parts of the electronic circuit that the transistor is a part of. In a way, it allows the electronic circuit be aware of itself and be able to change its own state.
+</p>
+<br><br>
+<h6> Bit</h6>
+<br><br>
+<p>The smallest unit of information is a bit. A bit can be represented by any two-state system (e.g. by a special arrangement of a few transistors of an electronic circuit). A bit can have one of two values: 0 or 1. In the computer's memory, the information that is stored in a bit persists until a new value is stored or until the energy source is disconnected.
+</p>
+<br><br>
+<p>Computers do not provide direct access to bits. One reason is that doing so would complicate the design of the computer and as a consequence make the computer more expensive. Another reason is that there are not many concepts that can be represented by a single bit.
+</p>
+<br><br>
+<h6> Byte</h6>
+<br><br>
+<p>A byte is a combination of 8 bits. The smallest unit of information that can be addressed uniquely is a byte. Computers read from or write to memory at least one byte at a time.
+</p>
+<br><br>
+<p>For that reason, although it carries one bit of information ( or ), even  must be implemented as one byte:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    writefln(<span class="string_literal">"%s is %s byte(s)"</span>, <span class="keyword">bool</span>.stringof, <span class="keyword">bool</span>.sizeof);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<h6> Register</h6>
+<br><br>
+<p>Data that are being operated on in a microprocessor are stored in registers. Registers provide very limited but very fast operations.
+</p>
+<br><br>
+<p>The size of the registers depend on the architecture of the microprocessor. For example, 32-bit microprocessors commonly have 4-byte registers and 64-bit microprocessors commonly have 8-byte registers. The size of the registers determine how much information the microprocessor can process efficiently at a time and how many memory addresses that it can support.
+</p>
+<br><br>
+<p>Every task that is achieved by a programming language ends up being executed by one or more registers of the microprocessor.
+</p>
+<br><br>
+<h5> Binary number system</h5>
+<br><br>
+<p>The decimal number system which is used in daily life consists of 10 numerals: 0123456789. In contrast, the binary number system which is used by computer hardware consists of 2 numerals: 0 and 1. This is a direct consequence of a bit consisting of two values. If bits had three values then the computers would use a number system based on three numerals.
+</p>
+<br><br>
+<p>The digits of the decimal system are named incrementally as <i>ones</i>, <i>tens</i>, <i>hundreds</i>, <i>thousands</i>, etc. For example, the number 1023 can be expanded as in the following way:
+</p>
+<br><br>
+
+<br><br>
+<p>Naturally, moving one digit to the left multiplies the value of that digit by 10: 1, 10, 100, 1000, etc.
+</p>
+<br><br>
+<p>When the same rules are applied to a system that has two numerals, we arrive at the binary number system. The digits are named incrementally as <i>ones</i>, <i>twos</i>, <i>fours</i>, <i>eights</i>, etc. In other words, moving one digit to the left would multiply the value of that digit by 2: 1, 2, 4, 8, etc. For example, the <i>binary</i> number 1011 can be expanded as in the following way:
+</p>
+<br><br>
+
+<br><br>
+<p>To make it easy to refer to digits, they are numbered from the rightmost digit to the leftmost digit, starting by 0. The following table lists the values of all of the digits of a 32-bit unsigned number in the binary system:
+</p>
+<br><br>
+<table class="narrow" border="1" cellpadding="4" cellspacing="0"><tr><th scope="col">Digit</th> <th scope="col">Value</th></tr>
+<tr align="right"><td>31</td><td>2,147,483,648</td></tr>
+<tr align="right"><td>30</td><td>1,073,741,824</td></tr>
+<tr align="right"><td>29</td><td>536,870,912</td></tr>
+<tr align="right"><td>28</td><td>268,435,456</td></tr>
+<tr align="right"><td>27</td><td>134,217,728</td></tr>
+<tr align="right"><td>26</td><td>67,108,864</td></tr>
+<tr align="right"><td>25</td><td>33,554,432</td></tr>
+<tr align="right"><td>24</td><td>16,777,216</td></tr>
+<tr align="right"><td>23</td><td>8,388,608</td></tr>
+<tr align="right"><td>22</td><td>4,194,304</td></tr>
+<tr align="right"><td>21</td><td>2,097,152</td></tr>
+<tr align="right"><td>20</td><td>1,048,576</td></tr>
+<tr align="right"><td>19</td><td>524,288</td></tr>
+<tr align="right"><td>18</td><td>262,144</td></tr>
+<tr align="right"><td>17</td><td>131,072</td></tr>
+<tr align="right"><td>16</td><td>65,536</td></tr>
+<tr align="right"><td>15</td><td>32,768</td></tr>
+<tr align="right"><td>14</td><td>16,384</td></tr>
+<tr align="right"><td>13</td><td>8,192</td></tr>
+<tr align="right"><td>12</td><td>4,096</td></tr>
+<tr align="right"><td>11</td><td>2,048</td></tr>
+<tr align="right"><td>10</td><td>1,024</td></tr>
+<tr align="right"><td>9</td><td>512</td></tr>
+<tr align="right"><td>8</td><td>256</td></tr>
+<tr align="right"><td>7</td><td>128</td></tr>
+<tr align="right"><td>6</td><td>64</td></tr>
+<tr align="right"><td>5</td><td>32</td></tr>
+<tr align="right"><td>4</td><td>16</td></tr>
+<tr align="right"><td>3</td><td>8</td></tr>
+<tr align="right"><td>2</td><td>4</td></tr>
+<tr align="right"><td>1</td><td>2</td></tr>
+<tr align="right"><td>0</td><td>1</td></tr>
+</table>
+<br><br>
+<p>The bits that have higher values are called the <i>upper</i> bits and the bits that have lower values are called the <i>lower</i> bits.
+</p>
+<br><br>
+<p>Remembering from <a href="literals.html">the Literals chapter</a> that binary literals are specified by the  prefix, the following program demonstrates how the value of a literal would correspond to the rows of the previous table:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> main() {
+    <span class="comment">//               1073741824                     4 1
+</span>    <span class="comment">//               ↓                              ↓ ↓
+</span>    <span class="keyword">int</span> number = 0b_01000000_00000000_00000000_00000101;
+    writeln(number);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output:
+</p>
+<br><br>
+
+<br><br>
+<p>Note that the literal consists of only three nonzero bits. The value that is printed is the sum of the values that correspond to those bits from the previous table: 1073741824 + 4 + 1 == 1073741829.
+</p>
+<br><br>
+<h6> The <i>sign</i> bit of signed integer types</h6>
+<br><br>
+<p>The uppermost bit of a signed type determines whether the value is positive or negative:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span> number = 0b_0000000_00000000_00000000_00000000;
+    writeln(number);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<p>However, the uppermost bit is not entirely separate from the value. For example, as evidenced above, the fact that all of the other bits of the number being 0 does not mean that the value is -0. (In fact, -0 is not a valid value for integers.) I will not get into more detail in this chapter other than noting that this is due to the <i>twos complement</i> representation, which is used by D as well.
+</p>
+<br><br>
+<p>What is important here is that 2,147,483,648; the highest value in the previous table, is only for unsigned integer types. The same experiment with  would print that exact value:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">     number = 0b_10000000_00000000_00000000_00000000;
+    writeln(number);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<p>Partly for that reason, unless there is a reason not to, bit operations must always be executed on unsigned types: , , , and .
+</p>
+<br><br>
+<h5> Hexadecimal number system</h5>
+<br><br>
+<p>As can be seen in the literals above, consisting only of 0s and 1s, the binary system may not be readable especially when the numbers are large. For that reason, the more readable hexadecimal system has been widely adopted especially in computer technologies.
+</p>
+<br><br>
+<p>The hexadecimal system has 16 numerals. Since alphabets do not have more than 10 numerals, this system borrows 6 letters from the Latin alphabet and uses them along with regular numerals: 0123456789abcdef. The numerals a, b, c, d, e, and f have the values 10, 11, 12, 13, 14, and 15, respectively. The letters ABCDEF can be used as well.
+</p>
+<br><br>
+<p>Similar to other number systems, the value of every digit is 16 times the value of the digit on its right-hand side: 1, 16, 256, 4096, etc. For example, the values of all of the digits of an 8-digit unsigned hexadecimal number are the following:
+</p>
+<br><br>
+<table class="narrow" border="1" cellpadding="4" cellspacing="0"><tr><th scope="col">Digit</th> <th scope="col">Value</th></tr>
+<tr align="right"><td>7</td><td>268,435,456</td></tr>
+<tr align="right"><td>6</td><td>16,777,216</td></tr>
+<tr align="right"><td>5</td><td>1,048,576</td></tr>
+<tr align="right"><td>4</td><td>65,536</td></tr>
+<tr align="right"><td>3</td><td>4,096</td></tr>
+<tr align="right"><td>2</td><td>256</td></tr>
+<tr align="right"><td>1</td><td>16</td></tr>
+<tr align="right"><td>0</td><td>1</td></tr>
+</table>
+<br><br>
+<p>Remembering that hexadecimal literals are specified by the  prefix, we can see how the values of the digits contribute to the overall value of a number:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="comment">//           1048576 4096 1
+</span>    <span class="comment">//                 ↓  ↓  ↓
+</span>    <span class="keyword">uint</span> number = 0x_0030_a00f;
+    writeln(number);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<p>The value that is printed is by the contributions of all of the nonzero digits: 3 count of 1048576,  count of 4096, and  count of 1. Remembering that  represents 10 and  represents 15, the value is 3145728 + 40960 + 15 == 3186703.
+</p>
+<br><br>
+<p>It is straightforward to convert between binary and hexadecimal numbers. In order to convert a hexadecimal number to binary, the digits of the hexadecimal number are converted to their binary representations individually. The corresponding representations in the three number systems are as in the following table:
+</p>
+<br><br>
+<table class="narrow" border="1" cellpadding="4" cellspacing="0"><tr><th scope="col" align="center">Hexadecimal</th> <th scope="col">Binary</th>  <th scope="col">Decimal</th></tr>
+<tr align="center"><td>0</td><td>0000</td><td>0</td></tr>
+<tr align="center"><td>1</td><td>0001</td><td>1</td></tr>
+<tr align="center"><td>2</td><td>0010</td><td>2</td></tr>
+<tr align="center"><td>3</td><td>0011</td><td>3</td></tr>
+<tr align="center"><td>4</td><td>0100</td><td>4</td></tr>
+<tr align="center"><td>5</td><td>0101</td><td>5</td></tr>
+<tr align="center"><td>6</td><td>0110</td><td>6</td></tr>
+<tr align="center"><td>7</td><td>0111</td><td>7</td></tr>
+<tr align="center"><td>8</td><td>1000</td><td>8</td></tr>
+<tr align="center"><td>9</td><td>1001</td><td>9</td></tr>
+<tr align="center"><td>a</td><td>1010</td><td>10</td></tr>
+<tr align="center"><td>b</td><td>1011</td><td>11</td></tr>
+<tr align="center"><td>c</td><td>1100</td><td>12</td></tr>
+<tr align="center"><td>d</td><td>1101</td><td>13</td></tr>
+<tr align="center"><td>e</td><td>1110</td><td>14</td></tr>
+<tr align="center"><td>f</td><td>1111</td><td>15</td></tr>
+</table>
+<br><br>
+<p>For example, the hexadecimal number 0x0030a00f can be written in the binary form by converting its digits individually according to the previous table:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="comment">// hexadecimal:     0    0    3    0    a    0    0    f
+</span>    <span class="keyword">uint</span> binary = 0b_0000_0000_0011_0000_1010_0000_0000_1111;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Converting from binary to hexadecimal is the reverse: The digits of the binary number are converted to their hexadecimal representations four digits at a time. For example, here is how to write in hexadecimal the same binary value that we have used earlier:
+</p>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="comment">// binary:           0100 0000 0000 0000 0000 0000 0000 0101
+</span>    <span class="keyword">uint</span> hexadecimal = 0x___4____0____0____0____0____0____0____5;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h5>Bit operations</h5>
+<br><br>
+<p>After going over how values are represented by bits and how numbers are represented in binary and hexadecimal, we can now see operations that change values at bit-level.
+</p>
+<br><br>
+<p>Because there is no direct access to individual bits, even though these operations are at bit-level, they affect at least 8 bits at a time. For example, for a variable of type , a bit operation would be applied to all of the 8 bits of that variable.
+</p>
+<br><br>
+<p>As the uppermost bit is the sign bit for signed types, I will ignore signed types and use only  in the examples below. You can repeat these operations with , , and ; as well as , , , and  as long as you remember the special meaning of the uppermost bit.
+</p>
+<br><br>
+<p>Let's first define a function which will be useful later when examining how bit operators work. This function will print a value in binary, hexadecimal, and decimal systems:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> print(<span class="keyword">uint</span> number) {
+    writefln(<span class="string_literal">"  %032b %08x %10s"</span>, number, number, number);
+}
+
+<span class="keyword">void</span> main() {
+    print(123456789);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Here is the same value printed in the binary, hexadecimal, and decimal number systems:
+</p>
+<br><br>
+
+<br><br>
+<h6>  Complement operator: </h6>
+<br><br>
+<p><i>Not to be confused with the <i>binary</i>  operator that is used for array concatenation, this is the unary  operator.</i>
+</p>
+<br><br>
+<p>This operator converts each bit of a value to its opposite: The bits that are 0 become 1, and the bits that are 1 become 0.
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">uint</span> value = 123456789;
+    print(value);
+    writeln(<span class="string_literal">"~ --------------------------------"</span>);
+    print(value);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The effect is obvious in the binary representation. Every bit has been reversed (under the dashed line):
+</p>
+<br><br>
+
+<br><br>
+<p>Here is the summary of how the unary  operator works:
+</p>
+<br><br>
+
+<br><br>
+<h6>  <i>And</i> operator: </h6>
+<br><br>
+<p> is a binary operator, written between two expressions. The microprocessor considers two corresponding bits of the two expressions separately from all of the other bits: Bits 31, 30, 29, etc. of the expressions are evaluated separately. The value of each resultant bit is 1 if both of the corresponding bits of the expressions are 1; 0 otherwise.
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">uint</span> lhs = 123456789;
+    <span class="keyword">uint</span> rhs = 987654321;
+
+    print(lhs);
+    print(rhs);
+    writeln(<span class="string_literal">"&amp; --------------------------------"</span>);
+    print(lhs  rhs);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The following output contains first the left-hand side expression (lhs) and then the right-hand side expression (rhs). The result of the  operation is under the dashed line:
+</p>
+<br><br>
+
+<br><br>
+<p>Note that the bits of the result that have the value 1 are the ones where the corresponding bits of the expressions are both 1.
+</p>
+<br><br>
+<p>This operator is called the <i>and</i> operator because it produces 1 when both the left-hand side <i>and</i> the right-hand side bits are 1. Among the four possible combinations of 0 and 1 values, only the one where both of the values are 1 produces 1:
+</p>
+<br><br>
+
+<br><br>
+<p>Observations:
+</p>
+<br><br>
+<ul><br><br>
+<li>When one of the bits is 0, regardless of the other bit the result is always 0. Accordingly, "<i>anding</i> a bit by 0" means to clear that bit.</li>
+<br><br>
+<li>When one of the bits is 1, the result is the value of the other bit; <i>anding</i> by 1 has no effect.</li>
+<br><br>
+</ul>
+<br><br>
+<h6>  <i>Or</i> operator: </h6>
+<br><br>
+<p> is a binary operator, written between two expressions. The microprocessor considers two corresponding bits of the two expressions separately from all of the other bits. The value of each resultant bit is 0 if both of the corresponding bits of the expressions are 0; 1 otherwise.
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">uint</span> lhs = 123456789;
+    <span class="keyword">uint</span> rhs = 987654321;
+
+    print(lhs);
+    print(rhs);
+    writeln(<span class="string_literal">"| --------------------------------"</span>);
+    print(lhs  rhs);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<p>Note that the bits of the result that have the value 0 are the ones where the corresponding bits of the expressions are both 0. When the corresponding bit in the left-hand side or in the right-hand side is 1, then the result is 1:
+</p>
+<br><br>
+
+<br><br>
+<p>Observations:
+</p>
+<br><br>
+<ul><br><br>
+<li>When one of the bits is 1, regardless of the other bit the result is always 1. Accordingly, "<i>orring</i> a bit by 1" means to set it.</li>
+<br><br>
+<li>When one of the bits is 0, the result is the value of the other bit; <i>orring</i> by 0 has no effect.</li>
+<br><br>
+</ul>
+<br><br>
+<h6>   <i>Xor</i> operator: </h6>
+<br><br>
+<p><i>Xor</i> is the short for <i>exclusive or</i>. This is a binary operator as well. It produces 1 if the corresponding bits of the two expressions are different:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">uint</span> lhs = 123456789;
+    <span class="keyword">uint</span> rhs = 987654321;
+
+    print(lhs);
+    print(rhs);
+    writeln(<span class="string_literal">"^ --------------------------------"</span>);
+    print(lhs  rhs);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<p>Note that the bits of the result that have the value 1 are the ones where the corresponding bits of the expressions are different from each other.
+</p>
+<br><br>
+
+<br><br>
+<p>Observation:
+</p>
+<br><br>
+<ul><li>"<i>Xorring</i> a bit" with itself means to clear that bit.</li>
+</ul>
+<br><br>
+<p>Regardless of its value, <i>xorring</i> a variable with itself always produces 0:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">uint</span> value = 123456789;
+
+    print(value ^ value);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<h6>  Right-shift operator: </h6>
+<br><br>
+<p>This operator shifts the bits of an expression by the specified number of bits to the right. The rightmost bits, which do not have room to shift into, get <i>dropped</i> from the value. For unsigned types, the leftmost bits are filled with zeros.
+</p>
+<br><br>
+<p>The following example produces a result by shifting a value by two bits to the right:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">uint</span> value = 123456789;
+    print(value);
+    print(value  2);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>In the following output, I highlighted both the bits that are going to be lost due to dropping off from the right-hand side and the leftmost bits that get the value 0:
+</p>
+<br><br>
+
+<br><br>
+<p>Note that the bits that are not highlighted have been shifted two bit positions to the right.
+</p>
+<br><br>
+<p> The new bits that enter from the left-hand side are 0 only for unsigned types. For signed types, the value of the leftmost bits are determined by a process called <i>sign extension</i>. Sign extension preserves the value of the sign bit of the original expression. The value of that bit is used for all of the bits that <i>enter</i> from the left.
+</p>
+<br><br>
+<p>Let's see this effect on a value of a signed type where the sign bit is 1 (i.e. the value is negative):
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">     value = 0x80010300;
+    print(value);
+    print(value &gt;&gt; 3);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Because the leftmost bit of the original value is 1, all of the new bits of the result are 1 as well:
+</p>
+<br><br>
+
+<br><br>
+<p>When the leftmost bit is 0, then all new bits are 0:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">     value = 0x40010300;
+    print(value);
+    print(value &gt;&gt; 3);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<h6>  Unsigned right-shift operator: </h6>
+<br><br>
+<p>This operator works similarly to the regular right-shift operator. The difference is that the new leftmost bits are always 0 regardless of the type of the expression and the value of the leftmost bit:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span> value = 0x80010300;
+    print(value);
+    print(value  3);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<h6>  Left-shift operator: </h6>
+<br><br>
+<p>This operator works as the reverse of the right-shift operator. The bits are shifted to the left:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">uint</span> value = 123456789;
+    print(value);
+    print(value  4);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The bits on the left-hand side are lost and the new bits on the right-hand side are 0:
+</p>
+<br><br>
+
+<br><br>
+<h6> Operators with assignment</h6>
+<br><br>
+<p>All of the binary operators above have assignment counterparts: , , , , , and . Similar to the operators that we saw in <a href="arithmetic.html">the Integers and Arithmetic Operations chapter</a>, these operators assign the result back to the left-hand operand.
+</p>
+<br><br>
+<p>Let's see this on the  operator:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    value = value &amp; 123;
+    value &amp;= 123;         <span class="comment">// the same as above
+</span></code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h5>Semantics</h5>
+<br><br>
+<p>Merely understanding how these operators work at bit-level may not be sufficient to see how they are useful in programs. The following sections describe common ways that these operators are used in.
+</p>
+<br><br>
+<h6> is a union set</h6>
+<br><br>
+<p>The  operator produces the union of the 1 bits in the two expressions.
+</p>
+<br><br>
+<p>As an extreme example, let's consider two values that both have alternating bits set to 1. The union of these values would produce a result where all of the bits are 1:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">uint</span> lhs = 0xaaaaaaaa;
+    <span class="keyword">uint</span> rhs = 0x55555555;
+
+    print(lhs);
+    print(rhs);
+    writeln(<span class="string_literal">"| --------------------------------"</span>);
+    print(lhs | rhs);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<h6> is an intersection set</h6>
+<br><br>
+<p>The  operator produces the intersection of the 1 bits in the two expressions.
+</p>
+<br><br>
+<p>As an extreme example, let's consider the last two values again. Since none of the 1 bits of the previous two expressions match the ones in the other expression, all of the bits of the result are 0:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">uint</span> lhs = 0xaaaaaaaa;
+    <span class="keyword">uint</span> rhs = 0x55555555;
+
+    print(lhs);
+    print(rhs);
+    writeln(<span class="string_literal">"&amp; --------------------------------"</span>);
+    print(lhs &amp; rhs);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<h6> sets selected bits to 1</h6>
+<br><br>
+<p>To understand how this works, it helps to see one of the expressions as the <i>actual</i> expression and the other expression as a <i>selector</i> for the bits to set to 1:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">uint</span> expression = 0x00ff00ff;
+    <span class="keyword">uint</span> bitsToSet = 0x10001000;
+
+    write(<span class="string_literal">"before     :"</span>); print(expression);
+    write(<span class="string_literal">"to set to 1:"</span>); print(bitsToSet);
+
+    expression  bitsToSet;
+    write(<span class="string_literal">"after      :"</span>); print(expression);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The before and after values of the bits that are affected are highlighted:
+</p>
+<br><br>
+
+<br><br>
+<p>In a sense,  determines which bits to set to 1. The other bits are not affected.
+</p>
+<br><br>
+<h6> clears selected bits</h6>
+<br><br>
+<p>One of the expressions can be seen as the <i>actual</i> expression and the other expression can be seen as a <i>selector</i> for the bits to clear (to set to 0):
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">uint</span> expression = 0x00ff00ff;
+    <span class="keyword">uint</span> bitsToClear = 0xffefffef;
+
+    write(<span class="string_literal">"before       :"</span>); print(expression);
+    write(<span class="string_literal">"bits to clear:"</span>); print(bitsToClear);
+
+    expression  bitsToClear;
+    write(<span class="string_literal">"after        :"</span>); print(expression);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The before and after values of the bits that are affected are highlighted:
+</p>
+<br><br>
+
+<br><br>
+<p>In a sense,  determines which bits to set to 0. The other bits are not affected.
+</p>
+<br><br>
+<h6> determines whether a bit is 1 or not</h6>
+<br><br>
+<p>If one of the expressions has only one bit set to 1, then it can be used to query whether the corresponding bit of the other expression is 1:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">uint</span> expression = 123456789;
+    <span class="keyword">uint</span> bitToQuery = 0x00010000;
+
+    print(expression);
+    print(bitToQuery);
+    writeln(expression  bitToQuery ? <span class="string_literal">"yes, 1"</span> : <span class="string_literal">"not 1"</span>);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The bit that is being <i>queried</i> is highlighted:
+</p>
+<br><br>
+
+<br><br>
+<p>Let's query another bit of the same expression by this time having another bit of  set to 1:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">uint</span> bitToQuery = 0x00001000;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<p>When the query expression has more than one bit set to 1, then the query would determine whether <i>any</i> of the corresponding bits in the other expression are 1.
+</p>
+<br><br>
+<h6>Right-shifting by one is the equivalent of dividing by two</h6>
+<br><br>
+<p>Shifting all of the bits of a value by one position to the right produces half of the original value. The reason for this can be seen in the digit-value table above: In that table, every bit has half the value of the bit that is on its left.
+</p>
+<br><br>
+<p>Shifting a value to the right multiple bits at a time means dividing by 2 for that many times. For example, right-shifting by 3 bits would divide a value by 8:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">uint</span> value = 8000;
+
+    writeln(value &gt;&gt; 3);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<p>According to how the <i>twos complement</i> system works, right-shifting has the same effect on signed values:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">     value = -8000;
+
+    writeln(value &gt;&gt; 3);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<h6>Left-shifting by one is the equivalent of multiplying by two</h6>
+<br><br>
+<p>Because each bit is two times the value of the bit on its right, shifting a value one bit to the left means multiplying that value by two:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">uint</span> value = 10;
+
+    writeln(value &lt;&lt; 5);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Multiplying by 2 a total of 5 times is the same as multiplying by 32:
+</p>
+<br><br>
+
+<br><br>
+<h5>Common uses</h5>
+<br><br>
+<h6> Flags</h6>
+<br><br>
+<p>Flags are single-bit independent data that are kept together in the same variable. As they are only one bit wide each, they are suitable for representing binary concepts like enabled/disabled, valid/invalid, etc.
+</p>
+<br><br>
+<p>Such one-bit concepts are sometimes encountered in D modules that are based on C libraries.
+</p>
+<br><br>
+<p>Flags are usually defined as non-overlapping values of an  type.
+</p>
+<br><br>
+<p>As an example, let's consider a car racing game where the realism of the game is configurable:
+</p>
+<br><br>
+<ul><li>The fuel consumption is realistic or not.</li>
+<li>Collisions can damage the cars or not.</li>
+<li>Tires can deteriorate by use or not.</li>
+<li>Skid marks are left on the road surface or not.</li>
+</ul>
+<br><br>
+<p>These configuration options can be specified at run time by the following  values:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">enum</span> Realism {
+    fuelUse    = 1 &lt;&lt; 0,
+    bodyDamage = 1 &lt;&lt; 1,
+    tireUse    = 1 &lt;&lt; 2,
+    skidMarks  = 1 &lt;&lt; 3
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Note that all of those values consist of single bits that do not conflict with each other. Each value is determined by left-shifting 1 by a different number of bits. The corresponding bit representations are the following:
+</p>
+<br><br>
+
+<br><br>
+<p>Since their 1 bits do not match others', these values can be combined by the  operator to be kept in the same variable. For example, the two configuration options that are related to tires can be combined as in the following code:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    Realism flags = Realism.tireUse | Realism.skidMarks;
+    writefln(<span class="string_literal">"%b"</span>, flags);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The bits of these two flags would be side-by-side in the variable :
+</p>
+<br><br>
+
+<br><br>
+<p>Later, these flags can be queried by the  operator:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">if</span> (flags &amp; Realism.fuelUse) {
+        <span class="comment">// ... code related to fuel consumption ...
+</span>    }
+
+    <span class="keyword">if</span> (flags &amp; Realism.tireUse) {
+        <span class="comment">// ... code related to tire consumption ...
+</span>    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The  operator produces 1 only if the specified flag is set in .
+</p>
+<br><br>
+<p>Also note that the result is usable in the  condition due to automatic conversion of the nonzero value to . The conditional expression is  when the result of  is 0 and  otherwise. As a result, the corresponding code block is executed only if the flag is enabled.
+</p>
+<br><br>
+<h6> Masking</h6>
+<br><br>
+<p>In some libraries and some protocols an integer value may carry more than one piece of information. For example, the upper 3 bits of a 32-bit value may have a certain meaning, while the lower 29 bits may have another meaning. These separate parts of data can be extracted from the variable by masking.
+</p>
+<br><br>
+<p>The four octets of an IPv4 address are an example of this concept. The octets are the individual values that make up the common dotted representation of an IPv4 address. They are all kept in a single 32-bit value.  For example, the IPv4 address 192.168.1.2 is the 32-bit value 0xc0a80102:
+</p>
+<br><br>
+
+<br><br>
+<p>A mask consists of a number of 1 bits that would <i>cover</i> the specific part of a variable. <i>"And"ing</i> the value by the mask extracts the part of the variable that is covered by that mask. For example, the mask value of 0x000000ff would cover the lower 8 bits of a value:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">uint</span> value = 123456789;
+    <span class="keyword">uint</span> mask  = 0x000000ff;
+
+    write(<span class="string_literal">"value :"</span>); print(value);
+    write(<span class="string_literal">"mask  :"</span>); print(mask);
+    write(<span class="string_literal">"result:"</span>); print(value &amp; mask);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The bits that are covered by the mask are highlighted. All of the other bits are cleared:
+</p>
+<br><br>
+
+<br><br>
+<p>Let's apply the same method to the 0xc0a80102 IPv4 address with a mask that would cover the uppermost 8 bits:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">uint</span> value = 0xc0a80102;
+    <span class="keyword">uint</span> mask  = 0xff000000;
+
+    write(<span class="string_literal">"value :"</span>); print(value);
+    write(<span class="string_literal">"mask  :"</span>); print(mask);
+    write(<span class="string_literal">"result:"</span>); print(value &amp; mask);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>This mask covers the uppermost 8 bits of the value:
+</p>
+<br><br>
+
+<br><br>
+<p>However, note that the printed result is not the expected 192 but 3221225472. That is because the masked value must also be shifted all the way to the right-hand side. Shifting the value 24 bit positions to the right would produce the value that those 8 bits represent:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">uint</span> value = 0xc0a80102;
+    <span class="keyword">uint</span> mask  = 0xff000000;
+
+    write(<span class="string_literal">"value :"</span>); print(value);
+    write(<span class="string_literal">"mask  :"</span>); print(mask);
+    write(<span class="string_literal">"result:"</span>); print((value &amp; mask) );
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+
+
+</section>
+      </article>
+    </div>
+  </body>
+</html>

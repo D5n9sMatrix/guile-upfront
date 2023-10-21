@@ -1,0 +1,6 @@
+{
+    "name": "upfront",
+    "targetName": "upfront",
+    "targetType": "executable",
+    "targetPath": "bin"
+}

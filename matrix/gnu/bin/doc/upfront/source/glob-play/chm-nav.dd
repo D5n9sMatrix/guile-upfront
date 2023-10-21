@@ -1,0 +1,78 @@
+Ddoc
+
+
+Macros:
+DDOC=
+[
+    {
+        "hook" : "",
+        "root" : "",
+        "nav" : [
+            {"t":"D Programming Language","a":"index.html"},
+            $(NAVIGATION)
+            {"t":"Change Log","a":"changelog/index.html"}
+        ]
+    },
+    {
+        "hook" : "Language Reference",
+        "root" : "",
+        "nav" : [$(SUBNAV_SPEC)]
+    },
+    {
+        "hook" : "Library Reference",
+        "root" : "phobos/",
+        "nav" : [{"t":"Library Reference","a":"index.html"},$(MODULE_MENU)]
+    },
+    {
+        "hook" : "Articles",
+        "root" : "",
+        "nav" : [$(SUBNAV_ARTICLES)]
+    },
+    {
+        "hook" : "D-Specific Tools",
+        "root" : "",
+        "nav" : [$(SUBNAV_CLI_REFERENCE)]
+    },
+    {
+        "hook" : "Change Log",
+        "root" : "changelog/",
+        "nav" : [{"t":"Change Log","a":"index.html"},$(CHANGELOG_VERSIONS)]
+    },
+]$(LF)
+_=
+
+DIVID=$2
+B=$0
+TT=$0
+UL=$0
+_LI=$0,
+AMP=&
+NBSP=
+LATEST=
+MENU={"t":"$2","a":"$1"},
+MENU_W_SUBMENU=[{"t":"$2"},
+MENU_W_SUBMENU_END=
+MENU_W_SUBMENU_LINK=[{"t":"$2","a":"$1"},
+MENU_INTERNAL_SEPARATOR=
+ITEMIZE=$(ITEMS_HELPER $1, $+)],
+ITEMS_HELPER = $1$(ITEMS_HELPER $+)
+SUBMENU=$(SUBMENU2 $1,$+)],
+SUBMENU2={"t":"$2","a":"$1"},
+        $(SUBMENU3 $+)
+SUBMENU3=$(SUBMENU2 $+)
+SUBMENU_MANUAL=$0],
+SUBMENU_LINK={"t":"$2","a":"$1"},
+SUBMENU_LINK_DIVIDER={"t":"$2","a":"$1"},
+SUBNAV_TEMPLATE=$0
+SUBNAV_HEAD={"t":"$3","a":"$2"},
+MODULE=
+        {"t":"$1","a":"$2$(JOIN_LINE_TAIL $+).html"},
+PACKAGE=[$1$(ITEMIZE $+)
+PACKAGE_NAME={"t":"$1"},
+CHANGELOG_VERSION_NIGHTLY=
+CHANGELOG_VERSION_PRE={"t":"$1","a":"$1_pre.html"},
+CHANGELOG_VERSION={"t":"$1","a":"$1.html"},
+CHANGELOG_VERSIONS=
+ESCAPES=/"/\"/
+ROOT_DIR=
+_=

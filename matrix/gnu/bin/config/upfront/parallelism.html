@@ -1,0 +1,1665 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>parallelism</title>
+    <style type="text/css" media="screen">
+      html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p,
+      blockquote, pre, a, abbr, address, cite, code, del, dfn, em, figure,
+      img, ins, kbd, q, s, samp, small, strong, sub, sup, var, b, u, i, dl,
+      dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption,
+      tbody, tfoot, thead, tr, th, td {
+        background: transparent none repeat scroll 0 0;
+        border: 0 none;
+        font-size: 100%;
+        margin: 0;
+        outline: 0 none;
+        padding: 0;
+        vertical-align: baseline;
+      }
+
+      h1 { font-size: 200%; }
+      h2 { font-size: 160%; }
+      h3 { font-size: 120%; }
+      h4 { font-size: 100%; }
+      h5 { font-size: 80%; }
+      h6 { font-size: 80%; font-weight: normal; }
+
+      ul, ol {
+        margin: 1.4em 0;
+      }
+      ul ul, ol ol, ul ol, ol ul {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      ul, ol {
+        margin-left: 2.8em;
+      }
+
+      ol {
+        list-style: decimal;
+      }
+      ol ol {
+        list-style: lower-alpha;
+      }
+      ol ol ol {
+        list-style: lower-roman;
+      }
+      ol ol ol ol {
+        list-style: decimal;
+      }
+
+      blockquote {
+        margin: 0.1em;
+        margin-left: 1em;
+        border-left: 2px solid #cccccc;
+        padding-left: 0.7em;
+      }
+
+      .color_red { color: #dc322f; }
+      .color_blue { color: #268bd2; }
+      .color_green { color: #859901; }
+      .color_yellow { color: #b58901; }
+      .color_black { color: black; }
+      .color_white { color: white; }
+
+      .font_big {
+        font-size: 1.2em;
+      }
+
+      .ddoc_section_h {
+        font-weight: bold;
+        font-size: 13px;
+        line-height: 19.5px;
+        margin-top: 11px;
+        display: block;
+      }
+
+      body.dlang .dlang {
+        display: inline-block;
+      }
+
+      body.dlang .declaration .dlang {
+          display: block;
+      }
+
+      body.dlang .ddoc_header_anchor a.dlang {
+        display: block;
+        color: rgba(0, 136, 204, 1);
+        text-decoration: none;
+      }
+
+      body.dlang .ddoc_header_anchor .code {
+        color: rgba(0, 136, 204, 1);
+      }
+
+      #ddoc_main .module {
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          overflow-x: hidden;
+          padding: 15px;
+      }
+
+      #ddoc_main .section .section {
+        margin-top: 0;
+      }
+
+      #ddoc_main .ddoc_module_members_section {
+          padding: 1px 0 0;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members section.intro {
+          background: #fff none repeat scroll 0 0;
+          list-style-type: none;
+          width: 100%;
+      }
+
+      #ddoc_main .ddoc_header_anchor {
+          font-size: 1.4em;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_header_anchor > .code {
+          display: inline-block;
+
+      }
+
+      #ddoc_main .ddoc_decl {
+        background-color: transparent;
+        height: 100%;
+        left: 0;
+        top: 0;
+        padding: 0;
+        padding-left: 15px;
+      }
+
+      #ddoc_main .ddoc_decl .section, #ddoc_main .section.ddoc_sections {
+        background: white none repeat scroll 0 0;
+        margin: 0;
+        padding: 5px;
+        position: relative;
+        border-radius: 5px;
+      }
+
+      #ddoc_main .ddoc_decl .section h4:first-of-type, #ddoc_main .section.ddoc_sections h4:first-of-type {
+        font-size: 13px;
+        line-height: 1.5;
+        margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration {
+          margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration .code {
+          color: rgba(0, 0, 0, 1);
+          margin-bottom: 15px;
+          padding-bottom: 6px;
+      }
+
+      #ddoc_main .declaration div .para {
+          margin-bottom: 0;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr td:first-of-type {
+        padding: 7px;
+        text-align: right;
+        vertical-align: top;
+        word-break: normal;
+        white-space: nowrap;
+      }
+
+      #ddoc_main .ddoc_params .graybox {
+        border: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox td {
+        border-color: rgba(214, 214, 214, 1);
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:first-child > td {
+        border-top: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:last-child > td {
+        border-bottom: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:first-child {
+        border-left: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:last-child {
+        border-right: 0 none;
+        width: 100%;
+      }
+
+      #ddoc_main em.term, #ddoc_main em.term .code {
+        color: rgba(65, 65, 65, 1);
+        font-size: 12px;
+        font-style: italic;
+        line-height: 1.5;
+      }
+
+      #ddoc_main .see-also {
+        cursor: pointer;
+        font-family: Menlo,monospace;
+      }
+
+      #ddoc_main .ddoc_decl .section > div:last-of-type {
+        margin-bottom: 15px;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members {
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .code_sample {
+        background: inherit;
+      }
+
+      #ddoc_main .declaration .code-line {
+          display: block;
+          font: 1em Menlo,monospace;
+      }
+
+      #ddoc_main a[name] {
+        margin: -112px 0 0;
+        padding-top: 112px;
+      }
+
+      #ddoc_main .ddoc_decl td {
+        max-width: inherit;
+      }
+
+      #ddoc_main .declaration a {
+        color: inherit;
+      }
+
+      #ddoc_main .declaration a:hover {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: underline;
+      }
+
+      body.ddoc {
+        background-color: transparent;
+        color: rgba(0, 0, 0, 1);
+        font-family: Helvetica,Arial,sans-serif;
+        font-size: 62.5%;
+        margin: 0;
+        border: 0;
+        left: 0;
+        top: 0;
+        padding: 0;
+      }
+
+      .ddoc a[name] {
+        display: block;
+        height: 0;
+        margin: -85px 0 0;
+        padding-top: 85px;
+        width: 0;
+      }
+
+      .ddoc .module {
+          border-color: transparent;
+          background-color: rgba(255, 255, 255, 1);
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-image: none;
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          box-shadow: 0 0 1px rgba(0, 0, 0, 0.07);
+          display: block;
+          margin-left: 0;
+          min-height: calc(100% - 173px);
+          overflow: auto;
+          padding-bottom: 100px;
+      }
+
+      .ddoc .content_wrapper {
+          background-color: rgba(242, 242, 242, 1);
+          margin: 0 auto;
+          max-width: 980px;
+      }
+
+      .ddoc .section {
+        padding: 15px 25px 30px;
+      }
+
+      .ddoc .section .section {
+        margin: 30px 0 0;
+        padding: 0;
+      }
+
+      .ddoc .para {
+        color: rgba(65, 65, 65, 1);
+        font-size: 1.4em;
+        line-height: 145%;
+        margin-bottom: 15px;
+      }
+
+      .ddoc .ddoc_examples .para {
+        margin-bottom: 0;
+      }
+
+      .ddoc .module_name {
+          color: rgba(0, 0, 0, 1);
+          display: block;
+          font-family: Helvetica;
+          font-size: 2.8em;
+          font-weight: 100;
+          margin-bottom: 0;
+          padding: 15px 0;
+      }
+
+      .ddoc .module a {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: none;
+      }
+
+      .ddoc .code {
+        color: rgba(128, 128, 128, 1);
+        font-family: Menlo,monospace;
+        font-size: 0.85em;
+        word-wrap: break-word;
+      }
+
+      .ddoc .code i {
+        font-style: normal;
+      }
+
+      .ddoc .code .code {
+        font-size: 1em;
+      }
+
+      .ddoc .code_sample {
+        background-clip: padding-box;
+        margin: 1px 0;
+        text-align: left;
+      }
+
+      .ddoc .code_sample {
+        display: block;
+        font-size: 1.4em;
+        margin-left: 21px;
+      }
+
+      .ddoc ol .code_sample {
+        font-size: 1em;
+      }
+
+      .ddoc .code_lines {
+        counter-reset: li;
+        line-height: 1.6em;
+        list-style: outside none none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .ddoc .code_listing .code_sample div {
+        margin-left: 13px;
+        width: 93%;
+      }
+
+      .ddoc .code_listing .code_sample div .code_lines li {
+        list-style-type: none;
+        margin: 0;
+        padding-right: 10px;
+      }
+
+      .ddoc .code_sample div .code_lines li::before {
+        margin-left: -33px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+10)::before {
+        margin-left: -39px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+100)::before {
+        margin-left: -46px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample .code_lines .code {
+        color: #000;
+      }
+
+      .ddoc div.dlang {
+        margin: 10px 0 21px;
+        padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+          margin: 10px 0 21px;
+          padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+        border-left: 5px solid rgba(0, 155, 51, 0.2);
+      }
+
+      .ddoc .code_lines li::before {
+        color: rgba(128, 128, 128, 1);
+        content: counter(li, decimal);
+        counter-increment: li;
+        font-family: Menlo,monospace;
+        font-size: 0.9em;
+        margin-right: 16px;
+      }
+
+      .ddoc .code_lines li {
+        padding-left: 0;
+        white-space: pre-wrap;
+      }
+
+      .ddoc .code_lines li:only-of-type::before {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:only-of-type {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:nth-child(n+10) {
+        text-indent: -17px;
+      }
+
+      .ddoc .code_lines li:nth-child(n+10)::before {
+        margin-right: 12px;
+      }
+
+      .ddoc .graybox {
+        border: 1px solid rgba(233, 233, 233, 1);
+        border-collapse: collapse;
+        border-spacing: 0;
+        empty-cells: hide;
+        margin: 20px 0 36px;
+        text-align: left;
+      }
+
+      .ddoc .graybox p {
+        margin: 0;
+        min-width: 50px;
+      }
+
+      .ddoc th {
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: bottom;
+      }
+
+      .ddoc td {
+        border: 1px solid rgba(233, 233, 233, 1);
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: middle;
+      }
+
+      .punctuation {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .comment {
+        color: rgba(0, 131, 18, 1);
+      }
+
+      .operator {
+        color: #000;
+      }
+
+      .keyword {
+        color: rgba(170, 13, 145, 1);
+      }
+
+      .keyword_type {
+        color: rgba(170, 51, 145, 1);
+      }
+
+      .string_literal {
+        color: rgba(196, 26, 22, 1);
+      }
+
+      .ddoc_psuper_symbol {
+        color: rgba(92, 38, 153, 1);
+      }
+
+      .param {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .psymbol {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .ddoc_member_header .ddoc_header_anchor .code {
+        font-size: 1em;
+      }
+    </style>
+  </head>
+  <body id="ddoc_main" class="ddoc dlang">
+    <div class="content_wrapper">
+      <article class="module">
+        <h1 class="module_name">parallelism</h1>
+        <section id="module_content"><br><br>
+<br><br>
+
+<br><br>
+<p> Most modern microprocessors consist of more than one <i>core</i>, each of which can operate as an individual processing unit. They can execute different parts of different programs at the same time. The features of the  module make it possible for programs to take advantage of all of the cores in order to run faster.
+</p>
+<br><br>
+<p>This chapter covers the following range algorithms. These algorithms should be used only when the operations that are to be executed <i>in parallel</i> are truly independent from each other. <i>In parallel</i> means that operations are executed on multiple cores at the same time:
+</p>
+<br><br>
+<ul><br><br>
+<li>: Accesses the elements of a range in parallel.</li>
+<br><br>
+<li>: Creates tasks that are executed in parallel.</li>
+<br><br>
+<li>: Iterates the elements of an  semi-eagerly in parallel.</li>
+<br><br>
+<li>: Calls functions with the elements of an  semi-eagerly in parallel.</li>
+<br><br>
+<li>: Calls functions with the elements of a  fully-eagerly in parallel.</li>
+<br><br>
+<li>: Makes calculations over the elements of a  in parallel.</li>
+<br><br>
+</ul>
+<br><br>
+<p>In the programs that we have written so far we have been assuming that the expressions of a program are executed in a certain order, at least in general line-by-line:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    ++i;
+    ++j;
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>In the code above, we expect that the value of  is incremented before the value of  is incremented. Although that is semantically correct, it is rarely the case in reality: microprocessors and compilers use optimization techniques to have some variables reside in microprocessor's registers that are independent from each other. When that is the case, the microprocessor would execute operations like the increments above in parallel.
+</p>
+<br><br>
+<p>Although these optimizations are effective, they cannot be applied automatically to layers higher than the very low-level operations. Only the programmer can determine that certain high-level operations are independent and that they can be executed in parallel.
+</p>
+<br><br>
+<p>In a loop, the elements of a range are normally processed one after the other, operations of each element following the operations of previous elements:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> students =
+        [ Student(1), Student(2), Student(3), Student(4) ];
+
+    <span class="keyword">foreach</span> (student; students) {
+        student.aSlowOperation();
+    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Normally, a program would be executed on one of the cores of the microprocessor, which has been assigned by the operating system to execute the program. As the  loop normally operates on elements one after the other,  would be called for each student sequentially. However, in many cases it is not necessary for the operations of preceding students to be completed before starting the operations of successive students. If the operations on the  objects were truly independent, it would be wasteful to ignore the other microprocessor cores, which might potentially be waiting idle on the system.
+</p>
+<br><br>
+<p> To simulate long-lasting operations, the following examples call  from the  module.  suspends the operations for the specified amount of time.  is admittedly an artifical method to use in the following examples because it takes time without ever busying any core. Despite being an unrealistic tool, it is still useful in this chapter to demonstrate the power of parallelism.
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+<span class="keyword">import</span> core.thread;
+
+<span class="keyword">struct</span> Student {
+    <span class="keyword">int</span> number;
+
+    <span class="keyword">void</span> aSlowOperation() {
+        writefln(<span class="string_literal">"The work on student %s has begun"</span>, number);
+
+        <span class="comment">// Wait for a while to simulate a long-lasting operation
+</span>        Thread.sleep(1.seconds);
+
+        writefln(<span class="string_literal">"The work on student %s has ended"</span>, number);
+    }
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">auto</span> students =
+        [ Student(1), Student(2), Student(3), Student(4) ];
+
+    <span class="keyword">foreach</span> (student; students) {
+        student.aSlowOperation();
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The execution time of the program can be measured in a terminal by :
+</p>
+<br><br>
+
+<br><br>
+<p>Since the students are iterated over in sequence and since the work of each student takes 1 second, the total execution time comes out to be 4 seconds. However, if these operations were executed in an environment that had 4 cores, they could be operated on at the same time and the total time would be reduced to about 1 second.
+</p>
+<br><br>
+<p> Before seeing how this is done, let's first determine the number of cores that are available on the system by :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+<span class="keyword">import</span> std.parallelism;
+
+<span class="keyword">void</span> main() {
+    writefln(<span class="string_literal">"There are %s cores on this system."</span>, totalCPUs);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output of the program in the environment that this chapter has been written is the following:
+</p>
+<br><br>
+
+<br><br>
+<h5> </h5>
+<br><br>
+<p>This function can also be called simply as .
+</p>
+<br><br>
+<p>  accesses the elements of a range in parallel. An effective usage is with  loops. Merely importing the  module and replacing  with  in the program above is sufficient to take advantage of all of the cores of the system:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.parallelism;
+<span class="comment">// ...
+</span>    <span class="keyword">foreach</span> (student; ) {
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>We have seen earlier in the <a href="foreach_opapply.html"> for structs and classes chapter</a> that the expressions that are in  blocks are passed to  member functions as delegates.  returns a range object that knows how to distribute the execution of the  to a separate core for each element.
+</p>
+<br><br>
+<p>As a result, passing the  range through  makes the program above finish in 1 second on a system that has 4 cores:
+</p>
+<br><br>
+
+<br><br>
+<p><i><b>Note:</b> The execution time of the program may be different on other systems but it is expected to be roughly "4 seconds divided by the number of cores".</i>
+</p>
+<br><br>
+<p> A flow of execution through certain parts of a program is called a a <i>thread of execution</i> or a <i>thread</i>. Programs can consist of multiple threads that are being actively executed at the same time. The operating system starts and executes each thread on a core and then suspends it to execute other threads. The execution of each thread may involve many cycles of starting and suspending.
+</p>
+<br><br>
+<p>All of the threads of all of the programs that are active at a given time are executed on the very cores of the microprocessor. The operating system decides when and under what condition to start and suspend each thread. That is the reason why the messages that are printed by  are in mixed order in the output above. This undeterministic order of thread execution may not matter if the operations of the  objects are truly independent from each other.
+</p>
+<br><br>
+<p>It is the responsibility of the programmer to call  only when the operations applied to each element are independent for each iteration. For example, if it were important that the messages appear in a certain order in the output, calling  should be considered an error in the program above. The programming model that supports threads that depend on other threads is called <i>concurrency</i>. Concurrency is the topic of the next chapter.
+</p>
+<br><br>
+<p>By the time parallel  ends, all of the operations inside the loop have been completed for all of the elements. The program can safely continue after the  loop.
+</p>
+<br><br>
+<h6> Work unit size</h6>
+<br><br>
+<p>The second parameter of  has an overloaded meaning and is ignored in some cases:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="comment">/* ... */</span> = parallel(<i>range</i>, <i>work_unit_size</i> = 100);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<ul><br><br>
+<li>When iterating over  ranges:
+<br><br>
+<p>The distribution of threads to cores has some minimal cost. This cost may sometimes be significant especially when the operations of the loop are completed in a very short time. In such cases, it may be faster to have each thread execute more than one iteration of the loop. The work unit size determines the number of elements that each thread should execute at each of its iterations:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">foreach</span> (student; parallel(students, )) {
+        <span class="comment">// ...
+</span>    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The default value of work unit size is 100 and is suitable for most cases.
+</p>
+<br><br>
+</li>
+<br><br>
+<li>When iterating over non- ranges:
+<br><br>
+<p> does not start parallel executions until <i>work unit size</i> number of elements of a non- have been executed serially first. Due to the relatively high value of 100,  may give the wrong impression that it is not effective when tried on short non- ranges.
+</p>
+<br><br>
+</li>
+<br><br>
+<li>When iterating over the result ranges of  or parallel  (both are explained later in this chapter):
+<br><br>
+<p>When  works on the results of  or , it ignores the work unit size parameter. Instead,  reuses the internal buffer of the result range.
+</p>
+<br><br>
+</li>
+<br><br>
+</ul>
+<br><br>
+<h5> </h5>
+<br><br>
+<p>Operations that are executed in parallel with other operations of a program are called <i>tasks</i>. Tasks are represented by the type .
+</p>
+<br><br>
+<p>In fact,  constructs a new  object for every worker thread and starts that task automatically.  then waits for all of the tasks to be completed before finally exiting the loop.  is very convenient as it <i>constructs</i>, <i>starts</i>, and <i>waits for</i> the tasks automatically.
+</p>
+<br><br>
+<p>   When tasks do not correspond to or cannot be represented by elements of a range, these three steps can be handled explicitly by the programmer.  constructs,  starts, and  waits for a task object. These three functions are explained further in the comments of the following program.
+</p>
+<br><br>
+<p>The  function is started twice in the following program. It prints the first letter of  to indicate which task it is working for.
+</p>
+<br><br>
+<p> <i><b>Note:</b> Normally, the characters that are printed to output streams like  do not appear on the output right away. They are instead stored in an output buffer until a line of output is completed. Since  does not output a new-line character, in order to observe the parallel execution of the following program,  is called to send the contents of the buffer to  even before reaching the end of a line.</i>
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+<span class="keyword">import</span> std.parallelism;
+<span class="keyword">import</span> std.array;
+<span class="keyword">import</span> core.thread;
+
+<span class="comment">/* Prints the first letter of 'id' every half a second. It
+ * arbitrarily returns the value 1 to simulate functions that
+ * do calculations. This result will be used later in main. */</span>
+<span class="keyword">int</span> anOperation(string id, <span class="keyword">int</span> duration) {
+    writefln(<span class="string_literal">"%s will take %s seconds"</span>, id, duration);
+
+    <span class="keyword">foreach</span> (i; 0 .. (duration * 2)) {
+        Thread.sleep(500.msecs);  <span class="comment">/* half a second */</span>
+        write(id.front);
+        stdout.flush();
+    }
+
+    <span class="keyword">return</span> 1;
+}
+
+<span class="keyword">void</span> main() {
+    <span class="comment">/* Construct a task object that will execute
+     * anOperation(). The function parameters that are
+     * specified here are passed to the task function as its
+     * function parameters. */</span>
+    <span class="keyword">auto</span> theTask = (<span class="string_literal">"theTask"</span>, 5);
+
+    <span class="comment">/* Start the task object */</span>
+    theTask.;
+
+    <span class="comment">/* As 'theTask' continues executing, 'anOperation()' is
+     * being called again, this time directly in main. */</span>
+    <span class="keyword">immutable</span> result = anOperation(<span class="string_literal">"main's call"</span>, 3);
+
+    <span class="comment">/* At this point we are sure that the operation that has
+     * been started directly from within main has been
+     * completed, because it has been started by a regular
+     * function call, not as a task. */</span>
+
+    <span class="comment">/* On the other hand, it is not certain at this point
+     * whether 'theTask' has completed its operations
+     * yet. yieldForce() waits for the task to complete its
+     * operations; it returns only when the task has been
+     * completed. Its return value is the return value of
+     * the task function, i.e. anOperation(). */</span>
+    <span class="keyword">immutable</span> taskResult = theTask.;
+
+    writeln();
+    writefln(<span class="string_literal">"All finished; the result is %s."</span>,
+             result + taskResult);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output of the program should be similar to the following. The fact that the  and  letters are printed in mixed order indicates that the operations are executed in parallel:
+</p>
+<br><br>
+
+<br><br>
+<p>The task function above has been specified as a template parameter to  as . Although this method works well in most cases, as we have seen in <a href="templates.html">the Templates chapter</a>, each different instantiation of a template is a different type. This distinction may be undesirable in certain situations where seemingly <i>equivalent</i> task objects would actually have different types.
+</p>
+<br><br>
+<p>For example, although the following two functions have the same signature, the two  instantiations that are produced through calls to the  function template would have different types. As a result, they cannot be members of the same array:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.parallelism;
+
+<span class="keyword">double</span> foo(<span class="keyword">int</span> i) {
+    <span class="keyword">return</span> i * 1.5;
+}
+
+<span class="keyword">double</span> bar(<span class="keyword">int</span> i) {
+    <span class="keyword">return</span> i * 2.5;
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">auto</span> tasks = [ taskfoo(1),
+                   taskbar(2) ];    
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<p>Another overload of  takes the function as its first function parameter instead:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">void</span> someFunction(<span class="keyword">int</span> value) {
+        <span class="comment">// ...
+</span>    }
+
+    <span class="keyword">auto</span> theTask = task(, 42);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>As this method does not involve different instantiations of the  template, it makes it possible to put such objects in the same array:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.parallelism;
+
+<span class="keyword">double</span> foo(<span class="keyword">int</span> i) {
+    <span class="keyword">return</span> i * 1.5;
+}
+
+<span class="keyword">double</span> bar(<span class="keyword">int</span> i) {
+    <span class="keyword">return</span> i * 2.5;
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">auto</span> tasks = [ task(foo, 1),
+                   task(bar, 2) ];    
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>A lambda function or an object of a type that defines the  member can also be used as the task function. The following example starts a task that executes a lambda:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> theTask = task((<span class="keyword">int</span> value) 
+                            <span class="comment">/* ... */</span>
+                        , 42);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h6> Exceptions</h6>
+<br><br>
+<p>As tasks are executed on separate threads, the exceptions that they throw cannot be caught by the thread that started them. For that reason, the exceptions that are thrown are automatically caught by the tasks themselves, to be rethrown later when  member functions like  are called. This makes it possible for the main thread to catch exceptions that are thrown by a task.
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+<span class="keyword">import</span> std.parallelism;
+<span class="keyword">import</span> core.thread;
+
+<span class="keyword">void</span> mayThrow() {
+    writeln(<span class="string_literal">"mayThrow() is started"</span>);
+    Thread.sleep(1.seconds);
+    writeln(<span class="string_literal">"mayThrow() is throwing an exception"</span>);
+    <span class="keyword">throw</span> <span class="keyword">new</span> Exception(<span class="string_literal">"Error message"</span>);
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">auto</span> theTask = task!mayThrow();
+    theTask.executeInNewThread();
+
+    writeln(<span class="string_literal">"main is continuing"</span>);
+    Thread.sleep(3.seconds);
+
+    writeln(<span class="string_literal">"main is waiting for the task"</span>);
+    theTask.yieldForce();
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output of the program shows that the uncaught exception that has been thrown by the task does not terminate the entire program right away (it terminates only the task):
+</p>
+<br><br>
+
+<br><br>
+<p> can be called in a  block to catch the exceptions that are thrown by the task. Note that this is different from single threads: In single-threaded programs like the samples that we have been writing until this chapter,  wraps the code that may throw. In parallelism, it wraps :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">try</span> {
+        theTask.yieldForce();
+
+    } <span class="keyword">catch</span> (Exception exc) {
+        writefln(<span class="string_literal">"Detected an error in the task: '%s'"</span>, exc.msg);
+    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>This time the exception is caught by the main thread instead of terminating the program:
+</p>
+<br><br>
+
+<br><br>
+<h6>Member functions of </h6>
+<br><br>
+<ul><br><br>
+<li>: Specifies whether the task has been completed; rethrows the exception if the task has been terminated with an exception.
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">if</span> (theTask.done) {
+        writeln(<span class="string_literal">"Yes, the task has been completed"</span>);
+
+    } <span class="keyword">else</span> {
+        writeln(<span class="string_literal">"No, the task is still going on"</span>);
+    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+</li>
+<br><br>
+<li>: Starts the task in a new thread.</li>
+<br><br>
+<li>: Starts the task in a new thread with the specified priority. (Priority is an operating system concept that determines execution priorities of threads.)</li>
+<br><br>
+</ul>
+<br><br>
+<p>There are three functions to wait for the completion of a task:
+</p>
+<br><br>
+<ul><br><br>
+<li>: Starts the task if it has not been started yet; if it has already been completed, returns its return value; if it is still running, waits for its completion without making the microprocessor busy; if an exception has been thrown, rethrows that exception.</li>
+<br><br>
+<li> : Works similarly to , except that it makes the microprocessor busy while waiting, in order to catch the completion as early as possible.</li>
+<br><br>
+<li> : Works similarly to , except that it starts a new task in the current thread while waiting for the task to be completed.</li>
+<br><br>
+</ul>
+<br><br>
+<p>In most cases  is the most suitable function to call when waiting for a task to complete; it suspends the thread that calls  until the task is completed. Although  makes the microprocessor busy while waiting, it is suitable when the task is expected to be completed in a very short time.  can be called when starting other tasks is preferred over suspending the current thread.
+</p>
+<br><br>
+<p>Please see the online documentation of Phobos for the other member functions of .
+</p>
+<br><br>
+<h5> </h5>
+<br><br>
+<p>Similarly to ,  iterates  ranges in parallel. It stores the elements in a buffer as they are produced by the range, and serves the elements from that buffer to its user.
+</p>
+<br><br>
+<p>In order to avoid making a potentially fully-lazy input range a fully-eager range, it iterates the elements in <i>waves</i>. Once it prepares certain number of elements in parallel, it waits until those elements are consumed by  before producing the elements of the next wave.
+</p>
+<br><br>
+<p> takes a range and an optional <i>buffer size</i> that determines how many elements to be made available during each wave:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> elements = taskPool.asyncBuf(<i>range</i>, <i>buffer_size</i>);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>To see the effects of , let's use a range that takes half a second to iterate and half a second to process each element. This range simply produces integers up to the specified limit:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+<span class="keyword">import</span> core.thread;
+
+<span class="keyword">struct</span> Range {
+    <span class="keyword">int</span> limit;
+    <span class="keyword">int</span> i;
+
+    <span class="keyword">bool</span> empty() <span class="keyword">const</span> {
+        <span class="keyword">return</span> i &gt;= limit;
+    }
+
+    <span class="keyword">int</span> front() <span class="keyword">const</span> {
+        <span class="keyword">return</span> i;
+    }
+
+    <span class="keyword">void</span> popFront() {
+        writefln(<span class="string_literal">"Producing the element after %s"</span>, i);
+        Thread.sleep(500.msecs);
+        ++i;
+    }
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">auto</span> range = Range(10);
+
+    <span class="keyword">foreach</span> (element; range) {
+        writefln(<span class="string_literal">"Using element %s"</span>, element);
+        Thread.sleep(500.msecs);
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The elements are produced and used lazily. Since it takes one second for each element, the whole range takes ten seconds to process in this program:
+</p>
+<br><br>
+
+<br><br>
+<p>According to that output, the elements are produced and used sequentially.
+</p>
+<br><br>
+<p>On the other hand, it may not be necessary to wait for preceding elements to be processed before starting to produce the successive elements. The program would take less time if other elements could be produced while the front element is in use:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.parallelism;
+<span class="comment">//...
+</span>    <span class="keyword">foreach</span> (element; (range, )) {
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>In the call above,  makes two elements ready in its buffer. Elements are produced in parallel while they are being used:
+</p>
+<br><br>
+
+<br><br>
+<p>The default value of buffer size is 100. The buffer size that produces the best performance would be different under different situations.
+</p>
+<br><br>
+<p> can be used outside of  loops as well. For example, the following code uses the return value of  as an  which operates semi-eagerly:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> range = Range(10);
+    <span class="keyword">auto</span> asyncRange = taskPool.asyncBuf(range, 2);
+    writeln();
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h5> </h5>
+<br><br>
+<p> It helps to explain  from the  module before explaining .  is an algorithm commonly found in many functional languages. It calls a function with the elements of a range one-by-one and returns a range that consists of the results of calling that function with each element. It is a lazy algorithm: It calls the function as needed. (There is also , which is for generating side effects for each element, as opposed to producing a result from it.)
+</p>
+<br><br>
+<p>The fact that  operates lazily is very powerful in many programs. However, if the function needs to be called with every element anyway and the operations on each element are independent from each other, laziness may be unnecessarily slower than parallel execution.  and  from the  module take advantage of multiple cores and run faster in many cases.
+</p>
+<br><br>
+<p>Let's compare these three algorithms using the  example. Let's assume that  has a member function that returns the average grade of the student. To demonstrate how parallel algorithms are faster, let's again slow this function down with .
+</p>
+<br><br>
+<p> takes the function as its template parameter, and the range as its function parameter. It returns a range that consists of the results of applying that function to the elements of the range:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> <i>result_range</i> = map!<i>func</i>(<i>range</i>);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The function may be specified by the  syntax as a <i>lambda expression</i> as we have seen in earlier chapters. The following program uses  to call the  member function on each element:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+<span class="keyword">import</span> std.algorithm;
+<span class="keyword">import</span> core.thread;
+
+<span class="keyword">struct</span> Student {
+    <span class="keyword">int</span> number;
+    <span class="keyword">int</span>[] grades;
+
+    <span class="keyword">double</span> averageGrade() {
+        writefln(<span class="string_literal">"Started working on student %s"</span>,
+                 number);
+        Thread.sleep(1.seconds);
+
+        <span class="keyword">const</span> average = grades.sum / grades.length;
+
+        writefln(<span class="string_literal">"Finished working on student %s"</span>, number);
+        <span class="keyword">return</span> average;
+    }
+}
+
+<span class="keyword">void</span> main() {
+    Student[] students;
+
+    <span class="keyword">foreach</span> (i; 0 .. 10) {
+        <span class="comment">/* Two grades for each student */</span>
+        students ~= Student(i, [80 + i, 90 + i]);
+    }
+
+    <span class="keyword">auto</span> results = !(a =&gt; a.averageGrade)(students);
+
+    <span class="keyword">foreach</span> (result; results) {
+        writeln(result);
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output of the program demonstrates that  operates lazily;  is called for each result as the  loop iterates:
+</p>
+<br><br>
+
+<br><br>
+<p>If  were an eager algorithm, the messages about the starts and finishes of the operations would be printed altogether at the top.
+</p>
+<br><br>
+<p> from the  module works essentially the same as . The only difference is that it executes the function calls semi-eagerly and stores the results in a buffer to be served from as needed. The size of this buffer is determined by the second parameter. For example, the following code would make ready the results of the function calls for three elements at a time:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.parallelism;
+<span class="comment">// ...
+</span><span class="keyword">double</span> averageGrade(Student student) {
+    <span class="keyword">return</span> student.averageGrade;
+}
+<span class="comment">// ...
+</span>    <span class="keyword">auto</span> results = !averageGrade(students, );
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p><i><b>Note:</b> The free-standing  function above is needed due to a limitation that involves using local delegates with member function templates like . There would be a compilation error without that free-standing function:
+</i></p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">auto</span> results =
+    taskPool.map!(a =&gt; a.averageGrade)(students, 3);  
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>This time the operations are executed in waves of three elements:
+</p>
+<br><br>
+
+<br><br>
+<p>The second parameter of  has the same meaning as : It determines the size of the buffer that  uses to store the results in. The third parameter is the work unit size as in ; the difference being its default value, which is :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="comment">/* ... */</span> = taskPool.map!<i>func</i>(<i>range</i>,
+                                  <i>buffer_size</i> = 100
+                                  <i>work_unit_size</i> = size_t.max);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h5> </h5>
+<br><br>
+<p>Parallel  works the same as parallel  with two differences:
+</p>
+<br><br>
+<ul><br><br>
+<li>It is fully eager.
+</li>
+<br><br>
+<li>It works with  ranges.
+</li>
+<br><br>
+</ul>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> results = !averageGrade(students);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Since it is eager, all of the results are ready by the time  returns:
+</p>
+<br><br>
+
+<br><br>
+<p> works faster than  at the expense of using an array that is large enough to store all of the results. It consumes more memory to gain speed.
+</p>
+<br><br>
+<p>The optional second parameter of  is the work unit size as well:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">auto</span> results = taskPool.amap!averageGrade(students, );
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The results can also be stored in a  that is passed to  as its third parameter:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">double</span>[] results;
+    results.length = students.length;
+    taskPool.amap!averageGrade(students, 2, );
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h5> </h5>
+<br><br>
+<p> As with , it helps to explain  from the  module first.
+</p>
+<br><br>
+<p>  is the equivalent of , which we have seen before in the <a href="ranges.html">Ranges chapter</a>. The main difference between the two is that their function parameters are reversed. (For that reason, I recommend that you prefer  for non-parallel code as it can take advantage of <a href="ufcs.html">UFCS</a> in chained range expressions.)
+</p>
+<br><br>
+<p> is another high-level algorithm commonly found in many functional languages. Just like , it takes one or more functions as template parameters. As its function parameters, it takes a value to be used as the initial value of the result, and a range.  calls the functions with the current value of the result and each element of the range. When no initial value is specified, the first element of the range is used instead.
+</p>
+<br><br>
+<p>Assuming that it defines a variable named  in its implementation, the way that  works can be described by the following steps:
+</p>
+<br><br>
+<ol><br><br>
+<li>Assigns the initial value to </li>
+<br><br>
+<li>Executes the expression  for every element</li>
+<br><br>
+<li>Returns the final value of </li>
+<br><br>
+</ol>
+<br><br>
+<p>For example, the sum of the squares of the elements of an array can be calculated as in the following program:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+<span class="keyword">import</span> std.algorithm;
+
+<span class="keyword">void</span> main() {
+    writeln(reduce!((a, b) =&gt; a + b * b)(0, [5, 10]));
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>When the function is specified by the  syntax as in the program above, the first parameter (here ) represents the current value of the result (initialized by the parameter  above) and the second parameter (here ) represents the current element.
+</p>
+<br><br>
+<p>The program outputs the sum of 25 and 100, the squares of 5 and 10:
+</p>
+<br><br>
+
+<br><br>
+<p>As obvious from its behavior,  uses a loop in its implementation. Because that loop is normally executed on a single core, it may be unnecessarily slow when the function calls for each element are independent from each other. In such cases  from the  module can be used for taking advantage of all of the cores.
+</p>
+<br><br>
+<p>To see an example of this let's use  with a function that is slowed down again artificially:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+<span class="keyword">import</span> std.algorithm;
+<span class="keyword">import</span> core.thread;
+
+<span class="keyword">int</span> aCalculation(<span class="keyword">int</span> result, <span class="keyword">int</span> element) {
+    writefln(<span class="string_literal">"started  - element: %s, result: %s"</span>,
+             element, result);
+
+    Thread.sleep(1.seconds);
+    result += element;
+
+    writefln(<span class="string_literal">"finished - element: %s, result: %s"</span>,
+             element, result);
+
+    <span class="keyword">return</span> result;
+}
+
+<span class="keyword">void</span> main() {
+    writeln(<span class="string_literal">"Result: "</span>, !aCalculation(0, [1, 2, 3, 4]));
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p> uses the elements in sequence to reach the final value of the result:
+</p>
+<br><br>
+
+<br><br>
+<p>As in the  and  examples, importing the  module and calling  is sufficient to take advantage of all of the cores:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.parallelism;
+<span class="comment">// ...
+</span>    writeln(<span class="string_literal">"Result: "</span>, !aCalculation(0, [1, 2, 3, 4]));
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>However, there are important differences in the way  works.
+</p>
+<br><br>
+<p>Like the other parallel algorithms,  executes the functions in parallel by using elements in different tasks. Each task works on the elements that it is assigned to and calculates a  that corresponds to the elements of that task. Since  is called with only a single initial value, every task must use that same initial value to initialize its own  (the parameter  above).
+</p>
+<br><br>
+<p>The final values of the results that each task produces are themselves used in the same  calculation one last time. These final calculations are executed sequentially, not in parallel. For that reason,  may execute slower in short examples as in this chapter as will be observed in the following output.
+</p>
+<br><br>
+<p>The fact that the same initial value is used for all of the tasks, effectively being used in the calculations multiple times,  may calculate a result that is different from what  calculates. For that reason, the initial value must be the <i>identity value</i> for the calculation that is being performed, e.g. the  in this example which does not have any effect in addition.
+</p>
+<br><br>
+<p>Additionally, as the results are used by the same functions one last time in the sequential calculations, the types of the parameters that the functions take must be compatible with the types of the values that the functions return.
+</p>
+<br><br>
+<p> should be used only under these considerations.
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.parallelism;
+<span class="comment">// ...
+</span>    writeln(<span class="string_literal">"Result: "</span>, !aCalculation(0, [1, 2, 3, 4]));
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output of the program indicates that first the calculations are performed in parallel, and then their results are calculated sequentially. The calculations that are performed sequentially are highlighted:
+</p>
+<br><br>
+
+<br><br>
+<p>Parallel  is faster in many other calculations like the calculation of the math constant <i>pi</i> (π) by quadrature.
+</p>
+<br><br>
+<h5>Multiple functions and tuple results</h5>
+<br><br>
+<p>, , , and  can all take more than one function, in which case the results are returned as a . We have seen the  type in the <a href="tuples.html">Tuples chapter</a> before. The results of individual functions correspond to the elements of the tuple in the order that the functions are specified. For example, the result of the first function is the first member of the tuple.
+</p>
+<br><br>
+<p>The following program demonstrates multiple functions with . Note that the return types of the functions need not be the same, as seen in the  and  functions below. In that case, the types of the members of the tuples would be different as well:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+<span class="keyword">import</span> std.algorithm;
+<span class="keyword">import</span> std.conv;
+
+<span class="keyword">double</span> quarterOf(<span class="keyword">double</span> value) {
+    <span class="keyword">return</span> value / 4;
+}
+
+string tenTimes(<span class="keyword">double</span> value) {
+    <span class="keyword">return</span> to!string(value * 10);
+}
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">auto</span> values = [10, 42, 100];
+    <span class="keyword">auto</span> results = map!()(values);
+
+    writefln(<span class="string_literal">" Quarters  Ten Times"</span>);
+
+    <span class="keyword">foreach</span> (quarterResult, tenTimesResult; results) {
+        writefln(<span class="string_literal">"%8.2f%8s"</span>, quarterResult, tenTimesResult);
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output:
+</p>
+<br><br>
+
+<br><br>
+<p>In the case of , the initial values of the results must be specified as a tuple:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    taskPool.reduce!(foo, bar)(, [1, 2, 3, 4]);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h5> </h5>
+<br><br>
+<p>Behind the scenes, the parallel algorithms from the  module all use task objects that are elements of a  container. Normally, all of the algorithms use the same container object named .
+</p>
+<br><br>
+<p> contains appropriate number of tasks depending on the environment that the program runs under. For that reason, usually there is no need to create any other  object. Even so, explicit  objects may be created and used as needed.
+</p>
+<br><br>
+<p>The  constructor takes the number of threads to use during the parallel operations that are later started through it. The default value of the number of threads is one less than the number of cores on the system. All of the features that we have seen in this chapter can be applied to a separate  object.
+</p>
+<br><br>
+<p>The following example calls  on a local  object:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+<span class="keyword">import</span> std.parallelism;
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">auto</span> workers = <span class="keyword">new</span> ;
+
+    <span class="keyword">foreach</span> (i; .parallel([1, 2, 3, 4])) {
+        writefln(<span class="string_literal">"Working on %s"</span>, i);
+    }
+
+    .finish();
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p> tells the object to stop processing when all of its current tasks are completed.
+</p>
+<br><br>
+<h5>Summary</h5>
+<br><br>
+<br><br>
+<ul><br><br>
+<li>It is an error to execute operations in parallel unless those operations are independent from each other.</li>
+<br><br>
+<li> accesses the elements of a range in parallel.</li>
+<br><br>
+<li>Tasks can explicitly be created, started, and waited for by , , and , respectively.</li>
+<br><br>
+<li>The exceptions that are escaped from tasks can be caught later by most of the parallelism functions like .</li>
+<br><br>
+<li> iterates the elements of an  semi-eagerly in parallel.</li>
+<br><br>
+<li> calls functions with the elements of an  semi-eagerly in parallel.</li>
+<br><br>
+<li> calls functions with the elements of a  fully-eagerly in parallel.</li>
+<br><br>
+<li> makes calculations over the elements of a  in parallel.</li>
+<br><br>
+<li>, , and  can take multiple functions and return the results as tuples.</li>
+<br><br>
+<li>When needed,  objects other than  can be used.</li>
+<br><br>
+</ul>
+<br><br>
+macros:
+        TITLE=Parallelism
+<br><br>
+        DESCRIPTION=Parallel programming that enables taking advantage of microprocessor cores
+<br><br>
+        KEYWORDS=d programming language tutorial book parallel programming
+<br><br>
+MINI_SOZLUK=
+</section>
+      </article>
+    </div>
+  </body>
+</html>

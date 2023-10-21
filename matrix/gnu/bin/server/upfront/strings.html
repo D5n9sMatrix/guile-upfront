@@ -1,0 +1,1036 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Strings</title>
+    <style type="text/css" media="screen">
+      html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p,
+      blockquote, pre, a, abbr, address, cite, code, del, dfn, em, figure,
+      img, ins, kbd, q, s, samp, small, strong, sub, sup, var, b, u, i, dl,
+      dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption,
+      tbody, tfoot, thead, tr, th, td {
+        background: transparent none repeat scroll 0 0;
+        border: 0 none;
+        font-size: 100%;
+        margin: 0;
+        outline: 0 none;
+        padding: 0;
+        vertical-align: baseline;
+      }
+
+      h1 { font-size: 200%; }
+      h2 { font-size: 160%; }
+      h3 { font-size: 120%; }
+      h4 { font-size: 100%; }
+      h5 { font-size: 80%; }
+      h6 { font-size: 80%; font-weight: normal; }
+
+      ul, ol {
+        margin: 1.4em 0;
+      }
+      ul ul, ol ol, ul ol, ol ul {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      ul, ol {
+        margin-left: 2.8em;
+      }
+
+      ol {
+        list-style: decimal;
+      }
+      ol ol {
+        list-style: lower-alpha;
+      }
+      ol ol ol {
+        list-style: lower-roman;
+      }
+      ol ol ol ol {
+        list-style: decimal;
+      }
+
+      blockquote {
+        margin: 0.1em;
+        margin-left: 1em;
+        border-left: 2px solid #cccccc;
+        padding-left: 0.7em;
+      }
+
+      .color_red { color: #dc322f; }
+      .color_blue { color: #268bd2; }
+      .color_green { color: #859901; }
+      .color_yellow { color: #b58901; }
+      .color_black { color: black; }
+      .color_white { color: white; }
+
+      .font_big {
+        font-size: 1.2em;
+      }
+
+      .ddoc_section_h {
+        font-weight: bold;
+        font-size: 13px;
+        line-height: 19.5px;
+        margin-top: 11px;
+        display: block;
+      }
+
+      body.dlang .dlang {
+        display: inline-block;
+      }
+
+      body.dlang .declaration .dlang {
+          display: block;
+      }
+
+      body.dlang .ddoc_header_anchor a.dlang {
+        display: block;
+        color: rgba(0, 136, 204, 1);
+        text-decoration: none;
+      }
+
+      body.dlang .ddoc_header_anchor .code {
+        color: rgba(0, 136, 204, 1);
+      }
+
+      #ddoc_main .module {
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          overflow-x: hidden;
+          padding: 15px;
+      }
+
+      #ddoc_main .section .section {
+        margin-top: 0;
+      }
+
+      #ddoc_main .ddoc_module_members_section {
+          padding: 1px 0 0;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members section.intro {
+          background: #fff none repeat scroll 0 0;
+          list-style-type: none;
+          width: 100%;
+      }
+
+      #ddoc_main .ddoc_header_anchor {
+          font-size: 1.4em;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_header_anchor > .code {
+          display: inline-block;
+
+      }
+
+      #ddoc_main .ddoc_decl {
+        background-color: transparent;
+        height: 100%;
+        left: 0;
+        top: 0;
+        padding: 0;
+        padding-left: 15px;
+      }
+
+      #ddoc_main .ddoc_decl .section, #ddoc_main .section.ddoc_sections {
+        background: white none repeat scroll 0 0;
+        margin: 0;
+        padding: 5px;
+        position: relative;
+        border-radius: 5px;
+      }
+
+      #ddoc_main .ddoc_decl .section h4:first-of-type, #ddoc_main .section.ddoc_sections h4:first-of-type {
+        font-size: 13px;
+        line-height: 1.5;
+        margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration {
+          margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration .code {
+          color: rgba(0, 0, 0, 1);
+          margin-bottom: 15px;
+          padding-bottom: 6px;
+      }
+
+      #ddoc_main .declaration div .para {
+          margin-bottom: 0;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr td:first-of-type {
+        padding: 7px;
+        text-align: right;
+        vertical-align: top;
+        word-break: normal;
+        white-space: nowrap;
+      }
+
+      #ddoc_main .ddoc_params .graybox {
+        border: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox td {
+        border-color: rgba(214, 214, 214, 1);
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:first-child > td {
+        border-top: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:last-child > td {
+        border-bottom: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:first-child {
+        border-left: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:last-child {
+        border-right: 0 none;
+        width: 100%;
+      }
+
+      #ddoc_main em.term, #ddoc_main em.term .code {
+        color: rgba(65, 65, 65, 1);
+        font-size: 12px;
+        font-style: italic;
+        line-height: 1.5;
+      }
+
+      #ddoc_main .see-also {
+        cursor: pointer;
+        font-family: Menlo,monospace;
+      }
+
+      #ddoc_main .ddoc_decl .section > div:last-of-type {
+        margin-bottom: 15px;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members {
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .code_sample {
+        background: inherit;
+      }
+
+      #ddoc_main .declaration .code-line {
+          display: block;
+          font: 1em Menlo,monospace;
+      }
+
+      #ddoc_main a[name] {
+        margin: -112px 0 0;
+        padding-top: 112px;
+      }
+
+      #ddoc_main .ddoc_decl td {
+        max-width: inherit;
+      }
+
+      #ddoc_main .declaration a {
+        color: inherit;
+      }
+
+      #ddoc_main .declaration a:hover {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: underline;
+      }
+
+      body.ddoc {
+        background-color: transparent;
+        color: rgba(0, 0, 0, 1);
+        font-family: Helvetica,Arial,sans-serif;
+        font-size: 62.5%;
+        margin: 0;
+        border: 0;
+        left: 0;
+        top: 0;
+        padding: 0;
+      }
+
+      .ddoc a[name] {
+        display: block;
+        height: 0;
+        margin: -85px 0 0;
+        padding-top: 85px;
+        width: 0;
+      }
+
+      .ddoc .module {
+          border-color: transparent;
+          background-color: rgba(255, 255, 255, 1);
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-image: none;
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          box-shadow: 0 0 1px rgba(0, 0, 0, 0.07);
+          display: block;
+          margin-left: 0;
+          min-height: calc(100% - 173px);
+          overflow: auto;
+          padding-bottom: 100px;
+      }
+
+      .ddoc .content_wrapper {
+          background-color: rgba(242, 242, 242, 1);
+          margin: 0 auto;
+          max-width: 980px;
+      }
+
+      .ddoc .section {
+        padding: 15px 25px 30px;
+      }
+
+      .ddoc .section .section {
+        margin: 30px 0 0;
+        padding: 0;
+      }
+
+      .ddoc .para {
+        color: rgba(65, 65, 65, 1);
+        font-size: 1.4em;
+        line-height: 145%;
+        margin-bottom: 15px;
+      }
+
+      .ddoc .ddoc_examples .para {
+        margin-bottom: 0;
+      }
+
+      .ddoc .module_name {
+          color: rgba(0, 0, 0, 1);
+          display: block;
+          font-family: Helvetica;
+          font-size: 2.8em;
+          font-weight: 100;
+          margin-bottom: 0;
+          padding: 15px 0;
+      }
+
+      .ddoc .module a {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: none;
+      }
+
+      .ddoc .code {
+        color: rgba(128, 128, 128, 1);
+        font-family: Menlo,monospace;
+        font-size: 0.85em;
+        word-wrap: break-word;
+      }
+
+      .ddoc .code i {
+        font-style: normal;
+      }
+
+      .ddoc .code .code {
+        font-size: 1em;
+      }
+
+      .ddoc .code_sample {
+        background-clip: padding-box;
+        margin: 1px 0;
+        text-align: left;
+      }
+
+      .ddoc .code_sample {
+        display: block;
+        font-size: 1.4em;
+        margin-left: 21px;
+      }
+
+      .ddoc ol .code_sample {
+        font-size: 1em;
+      }
+
+      .ddoc .code_lines {
+        counter-reset: li;
+        line-height: 1.6em;
+        list-style: outside none none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .ddoc .code_listing .code_sample div {
+        margin-left: 13px;
+        width: 93%;
+      }
+
+      .ddoc .code_listing .code_sample div .code_lines li {
+        list-style-type: none;
+        margin: 0;
+        padding-right: 10px;
+      }
+
+      .ddoc .code_sample div .code_lines li::before {
+        margin-left: -33px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+10)::before {
+        margin-left: -39px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+100)::before {
+        margin-left: -46px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample .code_lines .code {
+        color: #000;
+      }
+
+      .ddoc div.dlang {
+        margin: 10px 0 21px;
+        padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+          margin: 10px 0 21px;
+          padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+        border-left: 5px solid rgba(0, 155, 51, 0.2);
+      }
+
+      .ddoc .code_lines li::before {
+        color: rgba(128, 128, 128, 1);
+        content: counter(li, decimal);
+        counter-increment: li;
+        font-family: Menlo,monospace;
+        font-size: 0.9em;
+        margin-right: 16px;
+      }
+
+      .ddoc .code_lines li {
+        padding-left: 0;
+        white-space: pre-wrap;
+      }
+
+      .ddoc .code_lines li:only-of-type::before {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:only-of-type {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:nth-child(n+10) {
+        text-indent: -17px;
+      }
+
+      .ddoc .code_lines li:nth-child(n+10)::before {
+        margin-right: 12px;
+      }
+
+      .ddoc .graybox {
+        border: 1px solid rgba(233, 233, 233, 1);
+        border-collapse: collapse;
+        border-spacing: 0;
+        empty-cells: hide;
+        margin: 20px 0 36px;
+        text-align: left;
+      }
+
+      .ddoc .graybox p {
+        margin: 0;
+        min-width: 50px;
+      }
+
+      .ddoc th {
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: bottom;
+      }
+
+      .ddoc td {
+        border: 1px solid rgba(233, 233, 233, 1);
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: middle;
+      }
+
+      .punctuation {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .comment {
+        color: rgba(0, 131, 18, 1);
+      }
+
+      .operator {
+        color: #000;
+      }
+
+      .keyword {
+        color: rgba(170, 13, 145, 1);
+      }
+
+      .keyword_type {
+        color: rgba(170, 51, 145, 1);
+      }
+
+      .string_literal {
+        color: rgba(196, 26, 22, 1);
+      }
+
+      .ddoc_psuper_symbol {
+        color: rgba(92, 38, 153, 1);
+      }
+
+      .param {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .psymbol {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .ddoc_member_header .ddoc_header_anchor .code {
+        font-size: 1em;
+      }
+    </style>
+  </head>
+  <body id="ddoc_main" class="ddoc dlang">
+    <div class="content_wrapper">
+      <article class="module">
+        <h1 class="module_name">Strings</h1>
+        <section id="module_content"><br><br>
+<br><br>
+
+<br><br>
+<p>We have used strings in many programs that we have seen so far. Strings are a combination of the two features that we have covered in the last three chapters: characters and arrays. In the simplest definition, strings are nothing but arrays of characters. For example,  is a type of string.
+</p>
+<br><br>
+<p>This simple definition may be misleading. As we have seen in the <a href="characters.html">Characters chapter</a>, D has three separate character types. Arrays of these character types lead to three separate string types, some of which may have surprising outcomes in some string operations.
+</p>
+<br><br>
+<h5>   and , instead of </h5>
+<br><br>
+<p>There are surprises even when reading strings from the terminal.
+</p>
+<br><br>
+<p>Being character arrays, strings can contain control characters like  as well. When reading strings from the input, the control character that corresponds to the Enter key that is pressed at the end of the input becomes a part of the string as well. Further, because there is no way to tell  how many characters to read, it continues to read until the end of the entire input. For these reasons,  does not work as intended when reading strings:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">char</span>[] name;
+
+    write(<span class="string_literal">"What is your name? "</span>);
+    readf(<span class="string_literal">" %s"</span>, &amp;name);
+
+    writeln(<span class="string_literal">"Hello "</span>, name, <span class="string_literal">"!"</span>);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The Enter key that the user presses after the name does not terminate the input.  continues to wait for more characters to add to the string:
+</p>
+<br><br>
+
+<br><br>
+<p>One way of terminating the standard input stream in a terminal is pressing Ctrl-D under Unix-based systems and Ctrl-Z under Windows systems. If the user eventually terminates the input that way, we see that the new-line characters have been read as parts of the string as well:
+</p>
+<br><br>
+
+<br><br>
+<p>The exclamation mark appears after those characters instead of being printed right after the name.
+</p>
+<br><br>
+<p> is more suitable when reading strings. Short for "read line",  reads until the end of the line. It is used differently because the  format string and the  operator are not needed:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">char</span>[] name;
+
+    write(<span class="string_literal">"What is your name? "</span>);
+    ;
+
+    writeln(<span class="string_literal">"Hello "</span>, name, <span class="string_literal">"!"</span>);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p> stores the new-line character as well. This is so that the program has a way of determining whether the input consisted of a complete line or whether the end of input has been reached:
+</p>
+<br><br>
+
+<br><br>
+<p>Such control characters as well as all whitespace characters at both ends of strings can be removed by :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">char</span>[] name;
+
+    write(<span class="string_literal">"What is your name? "</span>);
+    readln(name);
+    
+
+    writeln(<span class="string_literal">"Hello "</span>, name, <span class="string_literal">"!"</span>);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The  expression above returns a new string that does not contain the trailing control characters. Assigning that return value back to  produces the intended output:
+</p>
+<br><br>
+
+<br><br>
+<p> can be used without a parameter. In that case it <i>returns</i> the line that it has just read. Chaining the result of  to  enables a shorter and more readable syntax:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    string name = strip(readln());
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>I will start using that form after introducing the  type below.
+</p>
+<br><br>
+<h5>  for parsing strings</h5>
+<br><br>
+<p>Once a line is read from the input or from any other source, it is possible to parse and convert separate data that it may contain with  from the  module. Its first parameter is the line that contains the data, and the rest of the parameters are used exacly like :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+<span class="keyword">import</span> std.string;
+
+
+<span class="keyword">void</span> main() {
+    write(<span class="string_literal">"Please enter your name and age,"</span> ~
+          <span class="string_literal">" separated with a space: "</span>);
+
+    string line = strip(readln());
+
+    string name;
+    <span class="keyword">int</span> age;
+    (line, <span class="string_literal">" %s %s"</span>, name, age);
+
+    writeln(<span class="string_literal">"Your name is "</span>, name,
+            <span class="string_literal">", and your age is "</span>, age, '.');
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+
+<br><br>
+<p>Both  and  <i>return</i> the number of items that they could parse and convert successfully. That value can be compared against the expected number of data items so that the input can be validated. For example, as the  call above expects to read <i>two</i> items (a  as name and an  as age), the following check ensures that it really is the case:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">     = formattedRead(line, <span class="string_literal">" %s %s"</span>, name, age);
+
+    <span class="keyword">if</span> () {
+        writeln(<span class="string_literal">"Error: Unexpected line."</span>);
+
+    } <span class="keyword">else</span> {
+        writeln(<span class="string_literal">"Your name is "</span>, name,
+                <span class="string_literal">", and your age is "</span>, age, '.');
+    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>When the input cannot be converted to  and , the program prints an error:
+</p>
+<br><br>
+
+<br><br>
+<h5> Double quotes, not single quotes</h5>
+<br><br>
+<p>We have seen that single quotes are used to define character literals. String literals are defined with double quotes.  is a character;  is a string that contains a single character.
+</p>
+<br><br>
+<h5>       , , and  are immutable</h5>
+<br><br>
+<p>There are three string types that correspond to the three character types: , , and .
+</p>
+<br><br>
+<p>There are three <i>aliases</i> of the <i>immutable</i> versions of those types: , , and . The characters of the variables that are defined by these aliases cannot be modified. For example, the characters of a  can be modified but the characters of a  cannot be modified. (We will see D's <i>immutability</i> concept in later chapters.)
+</p>
+<br><br>
+<p>For example, the following code that tries to capitalize the first letter of a  would cause a compilation error:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    string cannotBeMutated = <span class="string_literal">"hello"</span>;
+    cannotBeMutated[0] = 'H';             
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>We may think of defining the variable as a  instead of the  alias but that cannot be compiled either:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">char</span>[] a_slice = <span class="string_literal">"hello"</span>;  
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>This time the compilation error is due to the combination of two factors:
+</p>
+<br><br>
+<ol><li>The type of string literals like  is , not , so they are immutable.
+</li>
+<li>The  on the left-hand side is a slice, which, if the code compiled, would provide access to all of the characters of the right-hand side.
+</li>
+</ol>
+<br><br>
+<p>Since  is mutable and  is not, there is a mismatch. The compiler does not allow accessing characters of an immutable array through a mutable slice.
+</p>
+<br><br>
+<p>The solution here is to take a copy of the immutable string by using the  property:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">char</span>[] s = <span class="string_literal">"hello"</span>;
+    s[0] = 'H';
+    writeln(s);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The program can now be compiled and will print the modified string:
+</p>
+<br><br>
+
+<br><br>
+<p>Similarly,  cannot be used where a  is needed. In such cases, the  property can be used to produce an immutable  variable from a mutable  variable. For example, if  is a variable of type , the following line will fail to compile:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    string result = s ~ '.';          
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>When the type of  is , the type of the expression on the right-hand side of the assignment above is  as well.  is used for producing immutable strings from existing strings:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    string result = (s ~ '.');   <span class="comment">// ← now compiles
+</span></code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<h5> Potentially confusing length of strings</h5>
+<br><br>
+<p>We have seen that some Unicode characters are represented by more than one byte. For example, the character 'é' (the latin letter 'e' combined with an acute accent) is represented by Unicode encodings using at least two bytes. This fact is reflected in the  property of strings:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    writeln(<span class="string_literal">"résumé"</span>.length);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Although "résumé" contains six <i>letters</i>, the length of the  is the number of UTF-8 code units that it contains:
+</p>
+<br><br>
+
+<br><br>
+<p>The type of the elements of string literals like  is  and each  value represents a UTF-8 code unit. A problem that this may cause is when we try to replace a two-code-unit character with a single-code-unit character:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">char</span>[] s = <span class="string_literal">"résumé"</span>.dup;
+    writeln(<span class="string_literal">"Before: "</span>, s);
+    s[1] = 'e';
+    s[5] = 'e';
+    writeln(<span class="string_literal">"After : "</span>, s);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The two 'e' characters do not replace the two 'é' characters; they replace single code units, resulting in an invalid UTF-8 encoding:
+</p>
+<br><br>
+
+<br><br>
+<p>When dealing with letters, symbols, and other Unicode characters directly, as in the code above, the correct type to use is :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">dchar</span>[] s = <span class="string_literal">"résumé"d</span>.dup;
+    writeln(<span class="string_literal">"Before: "</span>, s);
+    s[1] = 'e';
+    s[5] = 'e';
+    writeln(<span class="string_literal">"After : "</span>, s);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output:
+</p>
+<br><br>
+
+<br><br>
+<p>Please note the two differences in the new code:
+</p>
+<ol><li>The type of the string is .
+<li>There is a  at the end of the literal , specifying its type as an array of s.</li>
+</li>
+</ol>
+<br><br>
+<p>In any case, keep in mind that the use of  and  does not solve all of the problems of manipulating Unicode characters. For instance, if the user inputs the text "résumé" you and your program cannot assume that the string length will be 6 even for  strings. It might be greater if e.g. at least one of the 'é' characters is not encoded as a single code point but as the combination of an 'e' and a combining accute accent. To avoid dealing with this and many other Unicode issues, consider using a Unicode-aware text manipulation library in your programs.
+</p>
+<br><br>
+<h5> String literals</h5>
+<br><br>
+<p>The optional character that is specified after string literals determines the type of the elements of the string:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> main() {
+     string s = <span class="string_literal">"résumé"c</span>;   <span class="comment">// same as "résumé"
+</span>    wstring w = <span class="string_literal">"résumé"w</span>;
+    dstring d = <span class="string_literal">"résumé"d</span>;
+
+    writeln(s.length);
+    writeln(w.length);
+    writeln(d.length);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output:
+</p>
+<br><br>
+
+<br><br>
+<p>Because all of the Unicode characters of "résumé" can be represented by a single  or , the last two lengths are equal to the number of characters.
+</p>
+<br><br>
+<h5> String concatenation</h5>
+<br><br>
+<p>Since they are actually arrays, all of the array operations can be applied to strings as well.  concatenates two strings and  appends to an existing string:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+<span class="keyword">import</span> std.string;
+
+<span class="keyword">void</span> main() {
+    write(<span class="string_literal">"What is your name? "</span>);
+    string name = strip(readln());
+
+    <span class="comment">// Concatenate:
+</span>    string greeting = <span class="string_literal">"Hello "</span> ~ name;
+
+    <span class="comment">// Append:
+</span>    greeting ~= <span class="string_literal">"! Welcome..."</span>;
+
+    writeln(greeting);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output:
+</p>
+<br><br>
+
+<br><br>
+<h5>Comparing strings</h5>
+<br><br>
+<p><i><b>Note:</b> Unicode does not define how the characters are ordered other than their Unicode codes. For that reason, you may get results that don't match your expectations below.</i>
+</p>
+<br><br>
+<p>We have used comparison operators , , etc. with integer and floating point values before. The same operators can be used with strings as well, but with a different meaning: strings are ordered <i>lexicographically</i>. This ordering takes each character's Unicode code to be its place in a hypothetical grand Unicode alphabet. The concepts of <i>less</i> and <i>greater</i> are replaced with <i>before</i> and <i>after</i> in this hypothetical alphabet:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+<span class="keyword">import</span> std.string;
+
+<span class="keyword">void</span> main() {
+    write(<span class="string_literal">"      Enter a string: "</span>);
+    string s1 = strip(readln());
+
+    write(<span class="string_literal">"Enter another string: "</span>);
+    string s2 = strip(readln());
+
+    <span class="keyword">if</span> (s1  s2) {
+        writeln(<span class="string_literal">"They are the same!"</span>);
+
+    } <span class="keyword">else</span> {
+        string former;
+        string latter;
+
+        <span class="keyword">if</span> (s1  s2) {
+            former = s1;
+            latter = s2;
+
+        } <span class="keyword">else</span> {
+            former = s2;
+            latter = s1;
+        }
+
+        writeln(<span class="string_literal">"'"</span>, former, <span class="string_literal">"' comes before '"</span>, latter, <span class="string_literal">"'."</span>);
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Because Unicode adopts the letters of the basic Latin alphabet from the ASCII table, the strings that contain only the letters of the ASCII table will always be ordered correctly.
+</p>
+<br><br>
+<h5>Lowercase and uppercase are different</h5>
+<br><br>
+<p>Because each character has a unique code, every letter variant is different from the others. For example, 'A' and 'a' are different letters, when directly comparing Unicode strings.
+</p>
+<br><br>
+<p>Additionally, as a consequence of their ASCII code values, all of the latin uppercase letters are sorted before all of the lowercase letters. For example, 'B' comes before 'a'. The  function of the  module can be used when strings need to be compared regardless of lowercase and uppercase. You can see the functions of this module at <a href="http://dlang.org/phobos/std_string.html">its online documentation</a>.
+</p>
+<br><br>
+<p>Because strings are arrays (and as a corollary, <i>ranges</i>), the functions of the , , and  modules are very useful with strings as well.
+</p>
+<br><br>
+
+
+</section>
+      </article>
+    </div>
+  </body>
+</html>

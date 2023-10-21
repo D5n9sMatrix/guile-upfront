@@ -1,0 +1,963 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Floating Point Types</title>
+    <style type="text/css" media="screen">
+      html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p,
+      blockquote, pre, a, abbr, address, cite, code, del, dfn, em, figure,
+      img, ins, kbd, q, s, samp, small, strong, sub, sup, var, b, u, i, dl,
+      dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption,
+      tbody, tfoot, thead, tr, th, td {
+        background: transparent none repeat scroll 0 0;
+        border: 0 none;
+        font-size: 100%;
+        margin: 0;
+        outline: 0 none;
+        padding: 0;
+        vertical-align: baseline;
+      }
+
+      h1 { font-size: 200%; }
+      h2 { font-size: 160%; }
+      h3 { font-size: 120%; }
+      h4 { font-size: 100%; }
+      h5 { font-size: 80%; }
+      h6 { font-size: 80%; font-weight: normal; }
+
+      ul, ol {
+        margin: 1.4em 0;
+      }
+      ul ul, ol ol, ul ol, ol ul {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      ul, ol {
+        margin-left: 2.8em;
+      }
+
+      ol {
+        list-style: decimal;
+      }
+      ol ol {
+        list-style: lower-alpha;
+      }
+      ol ol ol {
+        list-style: lower-roman;
+      }
+      ol ol ol ol {
+        list-style: decimal;
+      }
+
+      blockquote {
+        margin: 0.1em;
+        margin-left: 1em;
+        border-left: 2px solid #cccccc;
+        padding-left: 0.7em;
+      }
+
+      .color_red { color: #dc322f; }
+      .color_blue { color: #268bd2; }
+      .color_green { color: #859901; }
+      .color_yellow { color: #b58901; }
+      .color_black { color: black; }
+      .color_white { color: white; }
+
+      .font_big {
+        font-size: 1.2em;
+      }
+
+      .ddoc_section_h {
+        font-weight: bold;
+        font-size: 13px;
+        line-height: 19.5px;
+        margin-top: 11px;
+        display: block;
+      }
+
+      body.dlang .dlang {
+        display: inline-block;
+      }
+
+      body.dlang .declaration .dlang {
+          display: block;
+      }
+
+      body.dlang .ddoc_header_anchor a.dlang {
+        display: block;
+        color: rgba(0, 136, 204, 1);
+        text-decoration: none;
+      }
+
+      body.dlang .ddoc_header_anchor .code {
+        color: rgba(0, 136, 204, 1);
+      }
+
+      #ddoc_main .module {
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          overflow-x: hidden;
+          padding: 15px;
+      }
+
+      #ddoc_main .section .section {
+        margin-top: 0;
+      }
+
+      #ddoc_main .ddoc_module_members_section {
+          padding: 1px 0 0;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members section.intro {
+          background: #fff none repeat scroll 0 0;
+          list-style-type: none;
+          width: 100%;
+      }
+
+      #ddoc_main .ddoc_header_anchor {
+          font-size: 1.4em;
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .ddoc_header_anchor > .code {
+          display: inline-block;
+
+      }
+
+      #ddoc_main .ddoc_decl {
+        background-color: transparent;
+        height: 100%;
+        left: 0;
+        top: 0;
+        padding: 0;
+        padding-left: 15px;
+      }
+
+      #ddoc_main .ddoc_decl .section, #ddoc_main .section.ddoc_sections {
+        background: white none repeat scroll 0 0;
+        margin: 0;
+        padding: 5px;
+        position: relative;
+        border-radius: 5px;
+      }
+
+      #ddoc_main .ddoc_decl .section h4:first-of-type, #ddoc_main .section.ddoc_sections h4:first-of-type {
+        font-size: 13px;
+        line-height: 1.5;
+        margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration {
+          margin-top: 21px;
+      }
+
+      #ddoc_main .section .declaration .code {
+          color: rgba(0, 0, 0, 1);
+          margin-bottom: 15px;
+          padding-bottom: 6px;
+      }
+
+      #ddoc_main .declaration div .para {
+          margin-bottom: 0;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr td:first-of-type {
+        padding: 7px;
+        text-align: right;
+        vertical-align: top;
+        word-break: normal;
+        white-space: nowrap;
+      }
+
+      #ddoc_main .ddoc_params .graybox {
+        border: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox td {
+        border-color: rgba(214, 214, 214, 1);
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:first-child > td {
+        border-top: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr:last-child > td {
+        border-bottom: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:first-child {
+        border-left: 0 none;
+      }
+
+      #ddoc_main .ddoc_params .graybox tr > td:last-child {
+        border-right: 0 none;
+        width: 100%;
+      }
+
+      #ddoc_main em.term, #ddoc_main em.term .code {
+        color: rgba(65, 65, 65, 1);
+        font-size: 12px;
+        font-style: italic;
+        line-height: 1.5;
+      }
+
+      #ddoc_main .see-also {
+        cursor: pointer;
+        font-family: Menlo,monospace;
+      }
+
+      #ddoc_main .ddoc_decl .section > div:last-of-type {
+        margin-bottom: 15px;
+      }
+
+      #ddoc_main .ddoc_member, #ddoc_main .ddoc_module_members {
+          transition: transform 0.3s ease 0s;
+      }
+
+      #ddoc_main .code_sample {
+        background: inherit;
+      }
+
+      #ddoc_main .declaration .code-line {
+          display: block;
+          font: 1em Menlo,monospace;
+      }
+
+      #ddoc_main a[name] {
+        margin: -112px 0 0;
+        padding-top: 112px;
+      }
+
+      #ddoc_main .ddoc_decl td {
+        max-width: inherit;
+      }
+
+      #ddoc_main .declaration a {
+        color: inherit;
+      }
+
+      #ddoc_main .declaration a:hover {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: underline;
+      }
+
+      body.ddoc {
+        background-color: transparent;
+        color: rgba(0, 0, 0, 1);
+        font-family: Helvetica,Arial,sans-serif;
+        font-size: 62.5%;
+        margin: 0;
+        border: 0;
+        left: 0;
+        top: 0;
+        padding: 0;
+      }
+
+      .ddoc a[name] {
+        display: block;
+        height: 0;
+        margin: -85px 0 0;
+        padding-top: 85px;
+        width: 0;
+      }
+
+      .ddoc .module {
+          border-color: transparent;
+          background-color: rgba(255, 255, 255, 1);
+          border-color: currentColor rgba(233, 233, 233, 1) rgba(233, 233, 233, 1);
+          border-image: none;
+          border-style: none solid solid;
+          border-width: 0 1px 1px;
+          box-shadow: 0 0 1px rgba(0, 0, 0, 0.07);
+          display: block;
+          margin-left: 0;
+          min-height: calc(100% - 173px);
+          overflow: auto;
+          padding-bottom: 100px;
+      }
+
+      .ddoc .content_wrapper {
+          background-color: rgba(242, 242, 242, 1);
+          margin: 0 auto;
+          max-width: 980px;
+      }
+
+      .ddoc .section {
+        padding: 15px 25px 30px;
+      }
+
+      .ddoc .section .section {
+        margin: 30px 0 0;
+        padding: 0;
+      }
+
+      .ddoc .para {
+        color: rgba(65, 65, 65, 1);
+        font-size: 1.4em;
+        line-height: 145%;
+        margin-bottom: 15px;
+      }
+
+      .ddoc .ddoc_examples .para {
+        margin-bottom: 0;
+      }
+
+      .ddoc .module_name {
+          color: rgba(0, 0, 0, 1);
+          display: block;
+          font-family: Helvetica;
+          font-size: 2.8em;
+          font-weight: 100;
+          margin-bottom: 0;
+          padding: 15px 0;
+      }
+
+      .ddoc .module a {
+          color: rgba(0, 136, 204, 1);
+          text-decoration: none;
+      }
+
+      .ddoc .code {
+        color: rgba(128, 128, 128, 1);
+        font-family: Menlo,monospace;
+        font-size: 0.85em;
+        word-wrap: break-word;
+      }
+
+      .ddoc .code i {
+        font-style: normal;
+      }
+
+      .ddoc .code .code {
+        font-size: 1em;
+      }
+
+      .ddoc .code_sample {
+        background-clip: padding-box;
+        margin: 1px 0;
+        text-align: left;
+      }
+
+      .ddoc .code_sample {
+        display: block;
+        font-size: 1.4em;
+        margin-left: 21px;
+      }
+
+      .ddoc ol .code_sample {
+        font-size: 1em;
+      }
+
+      .ddoc .code_lines {
+        counter-reset: li;
+        line-height: 1.6em;
+        list-style: outside none none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .ddoc .code_listing .code_sample div {
+        margin-left: 13px;
+        width: 93%;
+      }
+
+      .ddoc .code_listing .code_sample div .code_lines li {
+        list-style-type: none;
+        margin: 0;
+        padding-right: 10px;
+      }
+
+      .ddoc .code_sample div .code_lines li::before {
+        margin-left: -33px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+10)::before {
+        margin-left: -39px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample div .code_lines li:nth-child(n+100)::before {
+        margin-left: -46px;
+        margin-right: 25px;
+      }
+
+      .ddoc .code_sample .code_lines .code {
+        color: #000;
+      }
+
+      .ddoc div.dlang {
+        margin: 10px 0 21px;
+        padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+          margin: 10px 0 21px;
+          padding: 4px 0 2px 10px;
+      }
+
+      .ddoc div.dlang {
+        border-left: 5px solid rgba(0, 155, 51, 0.2);
+      }
+
+      .ddoc .code_lines li::before {
+        color: rgba(128, 128, 128, 1);
+        content: counter(li, decimal);
+        counter-increment: li;
+        font-family: Menlo,monospace;
+        font-size: 0.9em;
+        margin-right: 16px;
+      }
+
+      .ddoc .code_lines li {
+        padding-left: 0;
+        white-space: pre-wrap;
+      }
+
+      .ddoc .code_lines li:only-of-type::before {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:only-of-type {
+        color: rgba(255, 255, 255, 1);
+        content: " ";
+      }
+
+      .ddoc .code_lines li:nth-child(n+10) {
+        text-indent: -17px;
+      }
+
+      .ddoc .code_lines li:nth-child(n+10)::before {
+        margin-right: 12px;
+      }
+
+      .ddoc .graybox {
+        border: 1px solid rgba(233, 233, 233, 1);
+        border-collapse: collapse;
+        border-spacing: 0;
+        empty-cells: hide;
+        margin: 20px 0 36px;
+        text-align: left;
+      }
+
+      .ddoc .graybox p {
+        margin: 0;
+        min-width: 50px;
+      }
+
+      .ddoc th {
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: bottom;
+      }
+
+      .ddoc td {
+        border: 1px solid rgba(233, 233, 233, 1);
+        margin: 0;
+        max-width: 260px;
+        padding: 5px 10px 5px 10px;
+        vertical-align: middle;
+      }
+
+      .punctuation {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .comment {
+        color: rgba(0, 131, 18, 1);
+      }
+
+      .operator {
+        color: #000;
+      }
+
+      .keyword {
+        color: rgba(170, 13, 145, 1);
+      }
+
+      .keyword_type {
+        color: rgba(170, 51, 145, 1);
+      }
+
+      .string_literal {
+        color: rgba(196, 26, 22, 1);
+      }
+
+      .ddoc_psuper_symbol {
+        color: rgba(92, 38, 153, 1);
+      }
+
+      .param {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .psymbol {
+        color: rgba(0, 0, 0, 1);
+      }
+
+      .ddoc_member_header .ddoc_header_anchor .code {
+        font-size: 1em;
+      }
+    </style>
+  </head>
+  <body id="ddoc_main" class="ddoc dlang">
+    <div class="content_wrapper">
+      <article class="module">
+        <h1 class="module_name">Floating Point Types</h1>
+        <section id="module_content"><br><br>
+<br><br>
+
+<br><br>
+<p>In the previous chapter, we have seen that despite their ease of use, arithmetic operations on integers are prone to programming errors due to overflow and truncation. We have also seen that integers cannot have values with fractional parts, as in 1.25.
+</p>
+<br><br>
+<p>Floating point types are designed to support fractional parts. The "point" in their name comes from the <i>radix point</i>, which separates the integer part from the fractional part, and "floating" refers to a detail in how these types are implemented: the decimal point <i>floats</i> left and right as appropriate. (This detail is not important when using these types.)
+</p>
+<br><br>
+<p>We must cover important details in this chapter as well. Before doing that, I would like to give a list of some of the interesting aspects of floating point types:
+</p>
+<br><br>
+<ul><br><br>
+<li>Adding 0.001 a thousand times is not the same as adding 1.</li>
+<br><br>
+<li>Using the logical operators  and  with floating point types is erroneous in most cases.</li>
+<br><br>
+<li>The initial value of floating point types is , not 0.  may not be used in expressions in any meaningful way. When used in comparison operations,  is not less than nor greater than any value.</li>
+<br><br>
+<li>The two overflow values are  and negative .</li>
+</ul>
+<br><br>
+<p>Although floating point types are more useful in some cases, they have peculiarities that every programmer must know. Compared to integers, they are very good at avoiding truncation because their main purpose is to support fractional values. Like any other type, being based on a certain number of bits, they too are prone to overflow, but compared to integers, the range of values that they can support is vast. Additionally, instead of being silent in the case of overflow, they get the special values of positive and negative <i>infinity</i>.
+</p>
+<br><br>
+<p>
+
+
+As a reminder, the floating point types are the following:
+</p>
+<br><br>
+<table class="wide" border="1" cellpadding="4" cellspacing="0">
+<tr align="center"><th scope="col">Type</th> <th scope="col">Number of Bits</th> <th scope="col">Initial Value</th></tr>
+<tr align="center"><td>float</td>
+	<td>32</td>
+	<td>float.nan</td>
+</tr>
+<tr align="center"><td>double</td>
+<br><br>
+	<td>64</td>
+	<td>double.nan</td>
+</tr>
+<tr align="center"><td>real</td>
+	<td>at least 64, maybe more<br>(e.g. 80, depending on hardware support)</td>
+<br><br>
+	<td>real.nan</td>
+</tr>
+</table>
+<br><br>
+<h5>Floating point type properties</h5>
+<br><br>
+<p>Floating point types have more properties than other types:
+</p>
+<br><br>
+<ul><br><br>
+<li> is the name of the type.</li>
+<br><br>
+<li> is the length of the type in terms of bytes. (In order to determine the bit count, this value must be multiplied by 8, the number of bits in a byte.)</li>
+<br><br>
+<li>  is the short for "maximum" and is the maximum value that the type can have. There is no separate  property for floating types; the negative of  is the minimum value that the type can have. For example, the minimum value of  is .</li>
+<br><br>
+<li>   is the smallest positive value that this type can represent with its normal precision. (Precision is explained below.) The type can represent smaller values than  but those values cannot be as precise as other values of the type and are generally slower to compute.  The condition of a floating point value being between negative  and positive  (excluding 0) is called <i>underflow</i>.</li>
+<br><br>
+<li>  is short for "digits" and specifies the number of digits that signify the precision of the type.</li>
+<br><br>
+<li>   is the special value used to denote overflow.</li>
+<br><br>
+</ul>
+<br><br>
+<p>Other properties of floating point types are used less commonly. You can see all of them at <a href="http://dlang.org/property.html">Properties for Floating Point Types at dlang.org</a>.
+</p>
+<br><br>
+<p>The properties of floating point types and their relations can be shown on a number line like the following:
+</p>
+<br><br>
+
+<br><br>
+<p>Other than the two special infinity values, the line above is to scale: the number of values that can be represented between  and 1 is equal to the number of values that can be represented between 1 and . This means that the precision of the fractional parts of the values that are between  and 1 is very high. (The same is true for the negative side as well.)
+</p>
+<br><br>
+<h5> </h5>
+<br><br>
+<p>We have already seen that this is the default value of floating point variables.  may appear as a result of meaningless floating point expressions as well. For example, the floating point expressions in the following program all produce :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">double</span> zero = 0;
+    <span class="keyword">double</span> infinity = <span class="keyword">double</span>.infinity;
+
+    writeln(<span class="string_literal">"any expression with nan: "</span>, <span class="keyword">double</span>.nan + 1);
+    writeln(<span class="string_literal">"zero / zero            : "</span>, zero / zero);
+    writeln(<span class="string_literal">"zero * infinity        : "</span>, zero * infinity);
+    writeln(<span class="string_literal">"infinity / infinity    : "</span>, infinity / infinity);
+    writeln(<span class="string_literal">"infinity - infinity    : "</span>, infinity - infinity);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p> is not useful just because it indicates an uninitialized value. It is also useful because it is propagated through computations, making it easier and earlier to detect errors.
+</p>
+<br><br>
+<h5>Specifying floating point values</h5>
+<br><br>
+<p>Floating point values can be built from integer values without a decimal point, like 123, or created directly with a decimal point, like 123.0.
+</p>
+<br><br>
+<p>Floating point values can also be specified with the special floating point syntax, as in . The  part in that syntax can be read as "times 10 to the power of". According to that reading, the previous value is "1.23 times 10 to the power of 4", which is the same as "1.23 times 10", which in turn is the same as 1.23x10000, being equal to 12300.
+</p>
+<br><br>
+<p>If the value after  is negative, as in , then it is read as "divided by 10 to the power of". Accordingly, this example is "5.67 divided by 10", which in turn is the same as 5.67/1000, being equal to 0.00567.
+</p>
+<br><br>
+<p>The floating point format is apparent in the output of the following program that prints the properties of the three floating point types:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> main() {
+    writeln(<span class="string_literal">"Type                    : "</span>, <span class="keyword">float</span>.stringof);
+    writeln(<span class="string_literal">"Precision               : "</span>, <span class="keyword">float</span>.dig);
+    writeln(<span class="string_literal">"Minimum normalized value: "</span>, <span class="keyword">float</span>.min_normal);
+    writeln(<span class="string_literal">"Minimum value           : "</span>, -<span class="keyword">float</span>.max);
+    writeln(<span class="string_literal">"Maximum value           : "</span>, <span class="keyword">float</span>.max);
+    writeln();
+
+    writeln(<span class="string_literal">"Type                    : "</span>, <span class="keyword">double</span>.stringof);
+    writeln(<span class="string_literal">"Precision               : "</span>, <span class="keyword">double</span>.dig);
+    writeln(<span class="string_literal">"Minimum normalized value: "</span>, <span class="keyword">double</span>.min_normal);
+    writeln(<span class="string_literal">"Minimum value           : "</span>, -<span class="keyword">double</span>.max);
+    writeln(<span class="string_literal">"Maximum value           : "</span>, <span class="keyword">double</span>.max);
+    writeln();
+
+    writeln(<span class="string_literal">"Type                    : "</span>, <span class="keyword">real</span>.stringof);
+    writeln(<span class="string_literal">"Precision               : "</span>, <span class="keyword">real</span>.dig);
+    writeln(<span class="string_literal">"Minimum normalized value: "</span>, <span class="keyword">real</span>.min_normal);
+    writeln(<span class="string_literal">"Minimum value           : "</span>, -<span class="keyword">real</span>.max);
+    writeln(<span class="string_literal">"Maximum value           : "</span>, <span class="keyword">real</span>.max);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>The output of the program is the following in my environment. Since  depends on the hardware, you may get a different output:
+</p>
+<br><br>
+
+<br><br>
+<p><i><b>Note:</b> Although  and  have more precision than ,  prints all floating point values with 6 digits of precision. (Precision is explained below.)</i>
+</p>
+<br><br>
+<h6>Observations</h6>
+<br><br>
+<p>As you will remember from the previous chapter, the maximum value of  has 20 digits: 18,446,744,073,709,551,616. That value looks small when compared to even the smallest floating point type:  can have values up to the 10 range, e.g. 340,282,000,000,000,000,000,000,000,000,000,000,000. The maximum value of  is in the range 10, a value with more than 4900 digits!
+</p>
+<br><br>
+<p>As another observation, let's look at the minimum value that  can represent with 15-digit precision:
+</p>
+<br><br>
+
+<br><br>
+<h5>Overflow is not ignored</h5>
+<br><br>
+<p>Despite being able to take very large values, floating point types are prone to overflow as well. The floating point types are safer than integer types in this regard because overflow is not ignored. The values that overflow on the positive side become , and the values that overflow on the negative side become . To see this, let's increase the value of  by 10%. Since the value is already at the maximum, increasing by 10% would overflow:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">real</span> value = <span class="keyword">real</span>.max;
+
+    writeln(<span class="string_literal">"Before         : "</span>, value);
+
+    <span class="comment">// Multiplying by 1.1 is the same as adding 10%
+</span>    value *= 1.1;
+    writeln(<span class="string_literal">"Added 10%      : "</span>, value);
+
+    <span class="comment">// Let's try to reduce its value by dividing in half
+</span>    value /= 2;
+    writeln(<span class="string_literal">"Divided in half: "</span>, value);
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Once the value overflows and becomes , it remains that way even after being divided in half:
+</p>
+<br><br>
+
+<br><br>
+<h5> Precision</h5>
+<br><br>
+<p>Precision is a concept that we come across in daily life but do not talk about much. Precision is the number of digits that is used when specifying a value. For example, when we say that the third of 100 is 33, the precision is 2 because 33 has 2 digits. When the value is specified more precisely as 33.33, then the precision is 4 digits.
+</p>
+<br><br>
+<p>The number of bits that each floating type has, not only affects its maximum value, but also its precision. The greater the number of bits, the more precise the values are.
+</p>
+<br><br>
+<h5>There is no truncation in division</h5>
+<br><br>
+<p>As we have seen in the previous chapter, integer division cannot preserve the fractional part of a result:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">int</span> first = 3;
+    <span class="keyword">int</span> second = 2;
+    writeln(first / second);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Output:
+</p>
+<br><br>
+
+<br><br>
+<p>Floating point types don't have this <i>truncation</i> problem; they are specifically designed for preserving the fractional parts:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">double</span> first = 3;
+    <span class="keyword">double</span> second = 2;
+    writeln(first / second);
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Output:
+</p>
+<br><br>
+
+<br><br>
+<p>The accuracy of the fractional part depends on the precision of the type:  has the highest precision and  has the lowest precision.
+</p>
+<br><br>
+<h5>Which type to use</h5>
+<br><br>
+<p>Unless there is a specific reason not to, you can choose  for floating point values.  has low precision but due to being smaller than the other types it may be useful when memory is limited. On the other hand, since the precision of  is higher than  on some hardware, it would be preferable for high precision calculations.
+</p>
+<br><br>
+<h5>Cannot represent all values</h5>
+<br><br>
+<p>We cannot represent certain values in our daily lives. In the decimal system that we use daily, the digits before the decimal point represent ones, tens, hundreds, etc. and the digits after the decimal point represent tenths, hundredths, thousandths, etc.
+</p>
+<br><br>
+<p>If a value is created from a combination of these values, it can be represented exactly. For example, because the value 0.23 consists of 2 tenths and 3 hundredths it is represented exactly. On the other hand, the value 1/3 cannot be exactly represented in the decimal system because the number of digits is always insufficient, no matter how many are specified: 0.33333...
+</p>
+<br><br>
+<p>The situation is very similar with the floating point types. Because these types are based on a certain number of bits, they cannot represent every value exactly.
+</p>
+<br><br>
+<p>The difference with the binary system that the computers use is that the digits before the decimal point are ones, twos, fours, etc. and the digits after the decimal point are halves, quarters, eighths, etc. Only the values that are exact combinations of those digits can be represented exactly.
+</p>
+<br><br>
+<p>A value that cannot be represented exactly in the binary system used by computers is 0.1, as in 10 cents. Although this value can be represented exactly in the decimal system, its binary representation never ends and continuously repeats four digits: 0.0001100110011... (Note that the value is written in binary system, not decimal.) It is always inaccurate at some level depending on the precision of the floating point type that is used.
+</p>
+<br><br>
+<p>The following program demonstrates this problem. The value of a variable is being incremented by 0.001 a thousand times in a loop. Surprisingly, the result is not 1:
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">float</span> result = 0;
+
+    <span class="comment">// Adding 0.001 for a thousand times:
+</span>    <span class="keyword">int</span> counter = 1;
+    <span class="keyword">while</span> (counter &lt;= 1000) {
+        result += 0.001;
+        ++counter;
+    }
+
+    <span class="keyword">if</span> (result == 1) {
+        writeln(<span class="string_literal">"As expected: 1"</span>);
+
+    } <span class="keyword">else</span> {
+        writeln(<span class="string_literal">"DIFFERENT: "</span>, result);
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Because 0.001 cannot be represented exactly, that inaccuracy affects the result at every iteration:
+</p>
+<br><br>
+
+<br><br>
+<p><i><b>Note:</b> The variable  above is a loop counter. Defining a variable explicitly for that purpose is not recommended. Instead, a common approach is to use a  loop, which we will see in <a href="foreach.html">a later chapter</a>.</i>
+</p>
+<br><br>
+<h5>  Unorderedness</h5>
+<br><br>
+<p>The same comparison operators that we have covered with integers are used with floating point types as well. However, since the special value  represents invalid floating point values, comparing  to other values is not meaningful. For example, it does not make sense to ask whether  or  is greater.
+</p>
+<br><br>
+<p>For that reason, floating point values introduce another comparison concept: unorderedness. Being unordered means that at least one of the values is .
+</p>
+<br><br>
+<p>The following table lists all the floating point comparison operators. All of them are binary operators (meaning that they take two operands) and used as in . The columns that contain  and  are the results of the comparison operations.
+</p>
+<br><br>
+<p>The last column indicates whether the operation is meaningful if one of the operands is . For example, even though the result of the expression  is , that result is meaningless because one of the operands is . The result of the reverse comparison  would produce  as well. The abreviation lhs stands for <i>left-hand side</i>, indicating the expression on the left-hand side of each operator.
+</p>
+<br><br>
+<table class="full" border="1" cellpadding="4" cellspacing="0">
+<tr align="center">	<th scope="col"><br>Operator</th>
+<th scope="col"><br>Meaning</th>
+<th scope="col">If lhs<br>is greater</th>
+<th scope="col">If lhs<br>is less</th>
+<th scope="col">If both<br>are equal</th>
+<br><br>
+<th scope="col">If at least<br>one is .nan</th>
+<th scope="col">Meaningful<br>with .nan</th>
+</tr>
+<tr align="center">	<td>==</td><td>is equal to</td>	<td></td><td></td><td></td><td></td><td></td>
+<br><br>
+</tr>
+<tr align="center">	<td>!=</td><td>is not equal to</td>	<td></td><td></td><td></td><td></td><td></td>
+</tr>
+<tr align="center">	<td>&gt;</td><td>is greater than</td>	<td></td><td></td><td></td><td></td><td></td>
+<br><br>
+</tr>
+<tr align="center">	<td>&gt;=</td><td>is greater than or equal to</td>	<td></td><td></td><td></td><td></td><td></td>
+</tr>
+<tr align="center">	<td>&lt;</td><td>is less than</td>	<td></td><td></td><td></td><td></td><td></td>
+<br><br>
+</tr>
+<tr align="center">	<td>&lt;=</td><td>is less than or equal to</td>	<td></td><td></td><td></td><td></td><td></td>
+</tr>
+</table>
+<br><br>
+<p>Although meaningful to use with , the  operator always produces  when used with a  value. This is the case even when both values are :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.stdio;
+
+<span class="keyword">void</span> main() {
+    <span class="keyword">if</span> (<span class="keyword">double</span>.nan == <span class="keyword">double</span>.nan) {
+        writeln(<span class="string_literal">"equal"</span>);
+
+    } <span class="keyword">else</span> {
+        writeln(<span class="string_literal">"not equal"</span>);
+    }
+}
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Although one would expect  to be equal to itself, the result of the comparison is :
+</p>
+<br><br>
+
+<br><br>
+<h6>  for  equality comparison</h6>
+<br><br>
+<p>As we have seen above, it is not possible to use the  operator to determine whether the value of a floating point variable is :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code">    <span class="keyword">if</span> (variable == <span class="keyword">double</span>.nan) {    
+        <span class="comment">// ...
+</span>    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p> function from the  module is for determining whether a value is :
+</p>
+<br><br>
+
+<section class="code_listing">
+  <div class="code_sample">
+    <div class="dlang">
+      <ol class="code_lines">
+        <li><code class="code"><span class="keyword">import</span> std.math;
+<span class="comment">// ...
+</span>    <span class="keyword">if</span> (isNaN(variable)) {           
+        <span class="comment">// ...
+</span>    }
+</code></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<br><br>
+<p>Similarly, to determine whether a value is <i>not</i> , one must use  because otherwise the  operator would always produce .
+</p>
+<br><br>
+
+
+</section>
+      </article>
+    </div>
+  </body>
+</html>
