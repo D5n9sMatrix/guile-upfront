@@ -1,0 +1,7 @@
+Ddoc
+
+$(D_S Sitemap, $(LINKS))
+
+Macros:
+        TITLE=Sitemap
+    LINKS=

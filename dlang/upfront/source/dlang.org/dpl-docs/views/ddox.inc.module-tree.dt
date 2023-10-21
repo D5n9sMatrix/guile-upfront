@@ -1,0 +1,26 @@
+- import ddox.entities;
+
+- void moduleNavTree(Package pack, Module pack_mod)
+	- string pack_class = "expand-container";
+	- foreach(i, p; pack.packages)
+		- auto subpackmod = getPackageModule(p);
+		- bool is_active = p.isAncestorOf(info.node) || subpackmod && subpackmod.isAncestorOf(info.node) || subpackmod is info.node;
+		li(class=is_active ? pack_class ~ " open" : pack_class)
+			a.package(href="#", class="expand-toggle")
+				span= p !is info.rootPackage ? p.name : null
+			ul.tree-view
+				- moduleNavTree(p, subpackmod);
+
+	- if (pack_mod)
+		li
+			a.module(href="#{info.linkTo(pack_mod)}", class='#{info.node is pack_mod || pack_mod.isAncestorOf(info.node) ? "selected" : ""}')
+				span Package members
+
+	- foreach(m; pack.modules)
+		- if (pack.lookup!Package(m.name))
+			- continue;
+		li
+			a.module(href="#{info.linkTo(m)}", class='#{info.node is m || m.isAncestorOf(info.node) ? "selected" : ""}')
+				span= m.name
+
+- moduleNavTree(info.rootPackage, null);

@@ -1,0 +1,8 @@
+{
+	"fileVersion": 1,
+	"versions": {
+		"dmd": {"path":"../../dmd"},
+		"libdparse": "0.15.4",
+		"stdx-allocator": "2.77.5"
+	}
+}
